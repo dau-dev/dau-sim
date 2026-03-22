@@ -1,0 +1,12 @@
+# Changes here will be overwritten by Copier
+_commit: 9be318c
+_src_path: https://github.com/python-project-templates/base.git
+add_docs: false
+add_extension: python
+add_wiki: false
+email: dev@dau.dev
+github: dau-dev
+project_description: dau simulator
+project_name: dau sim
+python_version_primary: '3.11'
+team: the dau authors
