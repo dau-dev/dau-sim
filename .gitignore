@@ -150,3 +150,14 @@ multirun/
 ROADMAP.md
 AGENTS.md
 .github/hooks/sdlc.json
+
+# VCD files
+/*.vcd
+
+# Peer repos
+amaranth
+cocotb
+csp
+dau-build
+slang
+verilator

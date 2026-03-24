@@ -29,7 +29,10 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
 ]
 
-dependencies = []
+dependencies = [
+    "csp",
+
+]
 
 [project.optional-dependencies]
 develop = [
@@ -47,6 +50,9 @@ develop = [
     "ty",
     "uv",
     "wheel",
+    # frontends
+    "amaranth",
+    "pyslang",
 ]
 
 [project.scripts]
@@ -125,6 +131,14 @@ default-section = "third-party"
 known-first-party = [
     "dau_sim",
 ]
+known-third-party = [
+    "amaranth",
+    "cocotb",
+    "csp",
+    "dau-build",
+    "slang",
+    "verilator",
+]
 section-order = [
     "future",
     "standard-library",
@@ -138,3 +152,6 @@ section-order = [
     "F401",
     "F403",
 ]
+
+[tool.codespell]
+ignore-words-list = ["inout"]

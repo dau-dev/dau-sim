@@ -1,6 +1,6 @@
-# dau sim
+# dau-sim
 
-dau simulator
+A cycle-accurate hardware simulator built on [csp](https://github.com/Point72/csp).
 
 [![Build Status](https://github.com/dau-dev/dau-sim/actions/workflows/build.yaml/badge.svg?branch=main&event=push)](https://github.com/dau-dev/dau-sim/actions/workflows/build.yaml)
 [![codecov](https://codecov.io/gh/dau-dev/dau-sim/branch/main/graph/badge.svg)](https://codecov.io/gh/dau-dev/dau-sim)
@@ -9,5 +9,222 @@ dau simulator
 
 ## Overview
 
-> [!NOTE]
-> This library was generated using [copier](https://copier.readthedocs.io/en/stable/) from the [Base Python Project Template repository](https://github.com/python-project-templates/base).
+dau-sim simulates digital hardware designs using [csp](https://github.com/Point72/csp)'s reactive stream processing engine. Hardware signals become CSP time-series edges, combinational logic becomes CSP nodes, and clock domains become CSP clock processes — giving you cycle-accurate simulation with deterministic event scheduling and multi-clock support.
+
+**Supported inputs:**
+
+- [Amaranth HDL](https://amaranth-lang.org/) — Python-native hardware description
+- [SystemVerilog / Verilog](https://www.systemverilog.io/) — via [pyslang](https://github.com/MikePopoloski/pyslang)
+- Hand-constructed IR — for programmatic design generation
+
+**Output formats:** VCD (IEEE 1364-2001) waveform files, with FST and live streaming planned.
+
+## Installation
+
+```bash
+pip install dau-sim
+```
+
+For development:
+
+```bash
+git clone https://github.com/dau-dev/dau-sim.git
+cd dau-sim
+pip install -e ".[develop]"
+```
+
+## Quick Start
+
+### Amaranth Design → Simulate → VCD
+
+```python
+from amaranth.hdl import Module
+from amaranth.lib import wiring
+from amaranth.lib.wiring import In, Out
+
+from dau_sim.frontends import from_amaranth
+from dau_sim.compiler import compile_module
+
+
+# Define a simple counter in Amaranth
+class Counter(wiring.Component):
+    en: In(1)
+    count: Out(8)
+
+    def elaborate(self, platform):
+        m = Module()
+        with m.If(self.en):
+            m.d.sync += self.count.eq(self.count + 1)
+        return m
+
+
+# Lower to IR, compile, and simulate
+ir_module = from_amaranth(Counter())
+cm = compile_module(ir_module)
+traces = cm.run(cycles=20, inputs={"en": 1})
+
+# Write VCD waveform file
+cm.write_vcd("counter.vcd", traces)
+
+# Or get the VCD as a string
+vcd_str = cm.traces_to_vcd(traces)
+```
+
+### SystemVerilog → Simulate
+
+```python
+from dau_sim.frontends import parse_sv
+from dau_sim.compiler import compile_module
+
+ir_module = parse_sv("""
+    module adder(
+        input  logic [7:0] a, b,
+        output logic [7:0] y
+    );
+        assign y = a + b;
+    endmodule
+""", top_module="adder")
+
+cm = compile_module(ir_module)
+traces = cm.run(cycles=1, inputs={"a": 100, "b": 55})
+
+# traces["y"] contains [(timestamp, 155)]
+```
+
+### Hand-Constructed IR
+
+```python
+from dau_sim.ir import *
+from dau_sim.compiler import compile_module
+
+# Build a 4-bit AND gate from IR primitives
+a = Signal("a", Shape(4))
+b = Signal("b", Shape(4))
+y = Signal("y", Shape(4))
+
+mod = Module(
+    name="and_gate",
+    ports=(
+        Port(a, PortDirection.INPUT),
+        Port(b, PortDirection.INPUT),
+        Port(y, PortDirection.OUTPUT),
+    ),
+    signals=(),
+    clock_domains=(),
+    comb_blocks=(
+        CombBlock(stmts=(
+            Assign("y", Binary(Shape(4), BinaryOp.AND, SignalRef(Shape(4), "a"), SignalRef(Shape(4), "b"))),
+        )),
+    ),
+    seq_blocks=(),
+)
+
+cm = compile_module(mod)
+traces = cm.run(cycles=1, inputs={"a": 0b1100, "b": 0b1010})
+# traces["y"] -> [(timestamp, 0b1000)]
+```
+
+### Sequential Design with Clock Domains
+
+```python
+from amaranth.hdl import Cat, Module, Signal
+from amaranth.lib import wiring
+from amaranth.lib.wiring import In, Out
+from datetime import timedelta
+
+from dau_sim.frontends import from_amaranth
+from dau_sim.compiler import compile_module
+
+
+class ShiftRegister(wiring.Component):
+    d_in: In(1)
+    d_out: Out(1)
+
+    def elaborate(self, platform):
+        m = Module()
+        reg = Signal(4)
+        m.d.sync += reg.eq(Cat(self.d_in, reg[:-1]))
+        m.d.comb += self.d_out.eq(reg[-1])
+        return m
+
+
+ir = from_amaranth(ShiftRegister())
+cm = compile_module(ir)
+
+# Run with custom clock period
+traces = cm.run(
+    cycles=10,
+    clock_period=timedelta(microseconds=1),
+    inputs={"d_in": 1},
+)
+
+cm.write_vcd("shift_reg.vcd", traces, timescale="1ns")
+```
+
+## Architecture
+
+```
+Amaranth / SystemVerilog / Hand-built IR
+                │
+                ▼
+        ┌───────────────┐
+        │   Frontends   │  from_amaranth() / parse_sv()
+        └───────┬───────┘
+                │
+                ▼
+        ┌───────────────┐
+        │      IR       │  Module, Signal, Expr, Stmt
+        └───────┬───────┘
+                │
+                ▼
+        ┌───────────────┐
+        │   Compiler    │  compile_module() → CompiledModule
+        └───────┬───────┘
+                │
+                ▼
+        ┌───────────────┐
+        │  CSP Engine   │  cm.run() → traces
+        └───────┬───────┘
+                │
+                ▼
+        ┌───────────────┐
+        │   Adapters    │  write_vcd() / traces_to_vcd()
+        └───────────────┘
+```
+
+## API Reference
+
+### Frontends
+
+| Function                               | Description                                           |
+| -------------------------------------- | ----------------------------------------------------- |
+| `from_amaranth(elaboratable)`          | Lower an Amaranth `Elaboratable` or `Component` to IR |
+| `parse_sv(source, top_module=None)`    | Parse SystemVerilog source string to IR               |
+| `parse_sv_file(path, top_module=None)` | Parse SystemVerilog file to IR                        |
+| `from_dau_build(mod)`                  | Bridge from a `dau_build.Module` to IR                |
+
+### Compiler
+
+| Function / Method                              | Description                            |
+| ---------------------------------------------- | -------------------------------------- |
+| `compile_module(module, four_state=False)`     | Compile IR `Module` → `CompiledModule` |
+| `cm.run(cycles, clock_period, inputs, clocks)` | Simulate and return traces             |
+| `cm.write_vcd(path, traces, timescale="1ns")`  | Write traces to VCD file               |
+| `cm.traces_to_vcd(traces, timescale="1ns")`    | Convert traces to VCD string           |
+
+### IR Types
+
+| Type                                                              | Description                                                    |
+| ----------------------------------------------------------------- | -------------------------------------------------------------- |
+| `Module`                                                          | Top-level container with ports, signals, clock domains, blocks |
+| `Signal`                                                          | Named bit-vector with shape and initial value                  |
+| `Port`                                                            | Signal with direction (`INPUT`/`OUTPUT`/`INOUT`)               |
+| `Shape(width, signed)`                                            | Bit-width and signedness                                       |
+| `ClockDomain`                                                     | Clock signal, edge polarity, optional reset                    |
+| `CombBlock` / `SeqBlock`                                          | Combinational / sequential logic blocks                        |
+| `Assign`, `IfElse`, `Switch`                                      | Statement types                                                |
+| `Const`, `SignalRef`, `Binary`, `Unary`, `Mux`, `Concat`, `Slice` | Expression types                                               |
+
+## License
+
+This project is licensed under the Apache 2.0 License — see [LICENSE](LICENSE) for details.
