@@ -23,13 +23,10 @@ from dau_sim.ir import (
     SignalRef,
     Slice,
 )
+from dau_sim.ir.module import Instance, Memory, PortBinding, ReadPort, WritePort
 from dau_sim.ir.printer import fmt_expr, fmt_module
 from dau_sim.ir.stmt import Delay, Finish
 from dau_sim.ir.validate import validate_module
-
-# ═══════════════════════════════════════════════════════════════════
-# Shape
-# ═══════════════════════════════════════════════════════════════════
 
 
 def test_shape_basics():
@@ -51,11 +48,6 @@ def test_shape_frozen():
         raise Exception("Should have raised")
     except AttributeError:
         pass
-
-
-# ═══════════════════════════════════════════════════════════════════
-# Expression IR nodes
-# ═══════════════════════════════════════════════════════════════════
 
 
 def test_const_expr():
@@ -98,11 +90,6 @@ def test_slice_expr():
     assert s.high == 4
 
 
-# ═══════════════════════════════════════════════════════════════════
-# Statement / IR node frozen checks
-# ═══════════════════════════════════════════════════════════════════
-
-
 class TestIRNodes(unittest.TestCase):
     def test_delay_frozen(self):
         d = Delay(ticks=5)
@@ -122,11 +109,6 @@ class TestIRNodes(unittest.TestCase):
         ib = InitBlock(stmts=())
         with self.assertRaises(AttributeError):
             ib.stmts = ()
-
-
-# ═══════════════════════════════════════════════════════════════════
-# Module construction
-# ═══════════════════════════════════════════════════════════════════
 
 
 def _make_counter_module() -> Module:
@@ -191,11 +173,6 @@ def test_module_all_signal_names():
     assert names == {"clk", "rst", "count"}
 
 
-# ═══════════════════════════════════════════════════════════════════
-# Validation
-# ═══════════════════════════════════════════════════════════════════
-
-
 def test_validate_valid_module():
     m = _make_counter_module()
     result = validate_module(m)
@@ -254,11 +231,6 @@ def test_validate_duplicate_signal():
     assert "duplicate" in str(result).lower()
 
 
-# ═══════════════════════════════════════════════════════════════════
-# Pretty-printer
-# ═══════════════════════════════════════════════════════════════════
-
-
 def test_fmt_expr_const():
     c = Const(shape=Shape(8), value=42)
     assert "42" in fmt_expr(c)
@@ -282,3 +254,74 @@ def test_fmt_module():
     assert "rst" in s
     assert "count" in s
     assert "seq block" in s
+
+
+def test_module_submodules():
+    """Module can hold child module definitions."""
+    child = Module(name="child", ports=(Port(Signal("a", Shape(1)), PortDirection.INPUT),))
+    parent = Module(name="parent", submodules=(child,))
+    assert len(parent.submodules) == 1
+    assert parent.submodules[0].name == "child"
+
+
+def test_module_submodules_default_empty():
+    """Module.submodules defaults to empty tuple."""
+    m = Module(name="top")
+    assert m.submodules == ()
+
+
+def test_readport_en_and_transparent():
+    """ReadPort supports en and transparent_for fields."""
+    rp = ReadPort(addr="addr", data="rd", en="re", domain="sync", transparent_for=(0,))
+    assert rp.en == "re"
+    assert rp.transparent_for == (0,)
+
+
+def test_readport_defaults():
+    """ReadPort defaults: en=None, transparent_for=()."""
+    rp = ReadPort(addr="addr", data="rd")
+    assert rp.en is None
+    assert rp.transparent_for == ()
+
+
+def test_writeport_granularity():
+    """WritePort supports granularity field."""
+    wp = WritePort(addr="addr", data="wd", en="we", domain="sync", granularity=8)
+    assert wp.granularity == 8
+
+
+def test_writeport_granularity_default():
+    """WritePort granularity defaults to 0."""
+    wp = WritePort(addr="addr", data="wd", en="we", domain="sync")
+    assert wp.granularity == 0
+
+
+def test_instance_construction():
+    """Instance with port bindings and parameters."""
+    inst = Instance(
+        name="u0",
+        module_name="counter",
+        bindings=(PortBinding("clk", SignalRef(Shape(1), "top_clk")),),
+        parameters={"WIDTH": 8},
+    )
+    assert inst.name == "u0"
+    assert inst.module_name == "counter"
+    assert len(inst.bindings) == 1
+    assert inst.parameters["WIDTH"] == 8
+
+
+def test_memory_construction():
+    """Memory with read/write ports and init."""
+    mem = Memory(
+        name="ram",
+        shape=Shape(8),
+        depth=16,
+        read_ports=(ReadPort(addr="ra", data="rd", domain=None),),
+        write_ports=(WritePort(addr="wa", data="wd", en="we", domain="sync"),),
+        init=(0, 1, 2, 3),
+    )
+    assert mem.depth == 16
+    assert mem.shape.width == 8
+    assert len(mem.read_ports) == 1
+    assert len(mem.write_ports) == 1
+    assert mem.init == (0, 1, 2, 3)

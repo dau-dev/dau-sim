@@ -962,3 +962,423 @@ class TestErrorHandling:
 
         with pytest.raises(NotImplementedError, match="Part"):
             from_amaranth(C())
+
+
+class TestMemoryLowering:
+    """Test Amaranth Memory → IR Memory lowering."""
+
+    def test_memory_instance_detected(self):
+        """MemoryInstance subfragment should produce IR Memory."""
+        from amaranth.lib.memory import Memory as AMemory
+
+        class MemMod(Elaboratable):
+            def __init__(self):
+                self.addr = Signal(3)
+                self.data_r = Signal(8)
+                self.data_w = Signal(8)
+                self.we = Signal()
+
+            def elaborate(self, platform):
+                m = Module()
+                m.submodules.mem = mem = AMemory(shape=8, depth=8, init=[])
+                rp = mem.read_port()
+                wp = mem.write_port()
+                m.d.comb += [
+                    rp.addr.eq(self.addr),
+                    self.data_r.eq(rp.data),
+                    wp.addr.eq(self.addr),
+                    wp.data.eq(self.data_w),
+                    wp.en.eq(self.we),
+                ]
+                return m
+
+        mod = from_amaranth(MemMod())
+        assert len(mod.memories) == 1
+        mem = mod.memories[0]
+        assert mem.depth == 8
+        assert mem.shape.width == 8
+        assert len(mem.read_ports) == 1
+        assert len(mem.write_ports) == 1
+
+    def test_memory_read_port_signals(self):
+        """Memory read port should reference correct signal names."""
+        from amaranth.lib.memory import Memory as AMemory
+
+        class MemMod(Elaboratable):
+            def __init__(self):
+                self.addr = Signal(3)
+                self.data_r = Signal(8)
+
+            def elaborate(self, platform):
+                m = Module()
+                m.submodules.mem = mem = AMemory(shape=8, depth=8, init=[])
+                rp = mem.read_port()
+                m.d.comb += [
+                    rp.addr.eq(self.addr),
+                    self.data_r.eq(rp.data),
+                ]
+                return m
+
+        mod = from_amaranth(MemMod())
+        rp = mod.memories[0].read_ports[0]
+        # addr and data should be actual signal names
+        all_names = {s.name for s in mod.signals} | {p.name for p in mod.ports}
+        assert rp.addr in all_names or rp.addr.startswith("rp_")
+        assert rp.data in all_names or rp.data.startswith("rp_")
+
+    def test_memory_write_port_domain(self):
+        """Memory write port should reference the correct domain."""
+        from amaranth.lib.memory import Memory as AMemory
+
+        class MemMod(Elaboratable):
+            def __init__(self):
+                self.addr = Signal(3)
+                self.data_w = Signal(8)
+                self.we = Signal()
+
+            def elaborate(self, platform):
+                m = Module()
+                m.submodules.mem = mem = AMemory(shape=8, depth=8, init=[])
+                wp = mem.write_port()
+                m.d.comb += [
+                    wp.addr.eq(self.addr),
+                    wp.data.eq(self.data_w),
+                    wp.en.eq(self.we),
+                ]
+                return m
+
+        mod = from_amaranth(MemMod())
+        wp = mod.memories[0].write_ports[0]
+        assert wp.domain == "sync"
+
+    def test_memory_init_data(self):
+        """Memory init data should be preserved through lowering."""
+        from amaranth.lib.memory import Memory as AMemory
+
+        class MemMod(Elaboratable):
+            def __init__(self):
+                self.addr = Signal(2)
+                self.data_r = Signal(8)
+
+            def elaborate(self, platform):
+                m = Module()
+                m.submodules.mem = mem = AMemory(shape=8, depth=4, init=[0xAA, 0xBB, 0xCC, 0xDD])
+                rp = mem.read_port()
+                m.d.comb += [
+                    rp.addr.eq(self.addr),
+                    self.data_r.eq(rp.data),
+                ]
+                return m
+
+        mod = from_amaranth(MemMod())
+        mem = mod.memories[0]
+        assert list(mem.init) == [0xAA, 0xBB, 0xCC, 0xDD]
+
+    def test_memory_sync_domain_created(self):
+        """Memory with write port should ensure sync domain exists."""
+        from amaranth.lib.memory import Memory as AMemory
+
+        class MemMod(Elaboratable):
+            def __init__(self):
+                self.addr = Signal(3)
+                self.data_w = Signal(8)
+                self.we = Signal()
+
+            def elaborate(self, platform):
+                m = Module()
+                m.submodules.mem = mem = AMemory(shape=8, depth=8, init=[])
+                wp = mem.write_port()
+                m.d.comb += [
+                    wp.addr.eq(self.addr),
+                    wp.data.eq(self.data_w),
+                    wp.en.eq(self.we),
+                ]
+                return m
+
+        mod = from_amaranth(MemMod())
+        domain_names = {d.name for d in mod.clock_domains}
+        assert "sync" in domain_names
+
+
+class TestEndToEndMemory:
+    """End-to-end: Amaranth Memory → compile → simulate."""
+
+    def test_memory_write_read(self):
+        """Write to memory, then read back."""
+        from amaranth.lib.memory import Memory as AMemory
+
+        class MemDesign(Elaboratable):
+            def __init__(self):
+                self.wr_addr = Signal(3)
+                self.wr_data = Signal(8)
+                self.wr_en = Signal()
+                self.rd_addr = Signal(3)
+                self.rd_data = Signal(8)
+
+            def elaborate(self, platform):
+                m = Module()
+                m.submodules.mem = mem = AMemory(shape=8, depth=8, init=[])
+                rp = mem.read_port()
+                wp = mem.write_port()
+                m.d.comb += [
+                    rp.addr.eq(self.rd_addr),
+                    self.rd_data.eq(rp.data),
+                    wp.addr.eq(self.wr_addr),
+                    wp.data.eq(self.wr_data),
+                    wp.en.eq(self.wr_en),
+                ]
+                return m
+
+        mod = from_amaranth(MemDesign())
+        cm = compile_module(mod)
+        # Write 0x42 to address 1, read from address 1
+        traces = cm.run(
+            cycles=5,
+            inputs={"wr_en": 1, "wr_addr": 1, "wr_data": 0x42, "rd_addr": 1},
+        )
+        rd_vals = [v for _, v in traces["rd_data"]]
+        assert 0x42 in rd_vals
+
+    def test_memory_read_init(self):
+        """Reading initialized memory should return init data."""
+        from amaranth.lib.memory import Memory as AMemory
+
+        class MemDesign(Elaboratable):
+            def __init__(self):
+                self.rd_addr = Signal(2)
+                self.rd_data = Signal(8)
+
+            def elaborate(self, platform):
+                m = Module()
+                m.submodules.mem = mem = AMemory(shape=8, depth=4, init=[0xDE, 0xAD, 0xBE, 0xEF])
+                rp = mem.read_port()
+                m.d.comb += [
+                    rp.addr.eq(self.rd_addr),
+                    self.rd_data.eq(rp.data),
+                ]
+                return m
+
+        mod = from_amaranth(MemDesign())
+        cm = compile_module(mod)
+        traces = cm.run(cycles=3, inputs={"rd_addr": 2})
+        rd_vals = [v for _, v in traces["rd_data"]]
+        # Address 2 init = 0xBE
+        assert 0xBE in rd_vals
+
+
+class TestStdlibInterop:
+    """End-to-end tests with Amaranth stdlib patterns.
+
+    Verifies that common Amaranth design patterns using lib.memory,
+    wiring.Component composition, and hierarchical submodules work
+    through the full from_amaranth → compile → simulate pipeline.
+    """
+
+    def test_memory_stdlib_write_read(self):
+        """lib.memory.Memory: write then read in a single run."""
+        from amaranth.lib.memory import Memory as AMemory
+
+        class MemTB(Elaboratable):
+            def __init__(self):
+                self.wr_addr = Signal(3)
+                self.wr_data = Signal(8)
+                self.wr_en = Signal()
+                self.rd_addr = Signal(3)
+                self.rd_data = Signal(8)
+
+            def elaborate(self, platform):
+                m = Module()
+                m.submodules.mem = mem = AMemory(shape=8, depth=8, init=[0] * 8)
+                rp = mem.read_port(domain="comb")
+                wp = mem.write_port()
+                m.d.comb += [
+                    rp.addr.eq(self.rd_addr),
+                    self.rd_data.eq(rp.data),
+                    wp.addr.eq(self.wr_addr),
+                    wp.data.eq(self.wr_data),
+                    wp.en.eq(self.wr_en),
+                ]
+                return m
+
+        mod = from_amaranth(MemTB())
+        cm = compile_module(mod)
+        # Write 0xAB to address 3, then read from address 3
+        traces = cm.run(
+            cycles=5,
+            inputs={"wr_en": 1, "wr_addr": 3, "wr_data": 0xAB, "rd_addr": 3},
+        )
+        rd_vals = [v for _, v in traces["rd_data"]]
+        assert 0xAB in rd_vals
+
+    def test_memory_stdlib_init_data(self):
+        """lib.memory.Memory with init data readable via comb port."""
+        from amaranth.lib.memory import Memory as AMemory
+
+        class InitMem(Elaboratable):
+            def __init__(self):
+                self.addr = Signal(2)
+                self.data = Signal(8)
+
+            def elaborate(self, platform):
+                m = Module()
+                m.submodules.mem = mem = AMemory(shape=8, depth=4, init=[10, 20, 30, 40])
+                rp = mem.read_port(domain="comb")
+                m.d.comb += [
+                    rp.addr.eq(self.addr),
+                    self.data.eq(rp.data),
+                ]
+                return m
+
+        mod = from_amaranth(InitMem())
+        cm = compile_module(mod)
+        # Read each address in sequence
+        for addr, expected in [(0, 10), (1, 20), (2, 30), (3, 40)]:
+            traces = cm.run(cycles=2, inputs={"addr": addr})
+            vals = [v for _, v in traces["data"]]
+            assert expected in vals, f"addr={addr}: expected {expected} in {vals}"
+
+    def test_hierarchical_submodule(self):
+        """Component containing another Component as a submodule."""
+
+        class Inner(Component):
+            x: In(8)
+            y: Out(8)
+
+            def elaborate(self, platform):
+                m = Module()
+                m.d.comb += self.y.eq(self.x + 1)
+                return m
+
+        class Outer(Elaboratable):
+            def __init__(self):
+                self.a = Signal(8)
+                self.b = Signal(8)
+
+            def elaborate(self, platform):
+                m = Module()
+                m.submodules.inner = inner = Inner()
+                m.d.comb += [
+                    inner.x.eq(self.a),
+                    self.b.eq(inner.y),
+                ]
+                return m
+
+        mod = from_amaranth(Outer())
+        cm = compile_module(mod)
+        traces = cm.run(cycles=2, inputs={"a": 42})
+        vals = [v for _, v in traces["b"]]
+        assert 43 in vals
+
+    def test_sequential_with_comb_submodule(self):
+        """Sequential counter with combinational decode submodule."""
+
+        class Decode(Component):
+            value: In(4)
+            is_zero: Out(1)
+
+            def elaborate(self, platform):
+                m = Module()
+                m.d.comb += self.is_zero.eq(self.value == 0)
+                return m
+
+        class CounterWithDecode(Elaboratable):
+            def __init__(self):
+                self.en = Signal()
+                self.count = Signal(4)
+                self.at_zero = Signal()
+
+            def elaborate(self, platform):
+                m = Module()
+                m.submodules.dec = dec = Decode()
+                with m.If(self.en):
+                    m.d.sync += self.count.eq(self.count + 1)
+                m.d.comb += [
+                    dec.value.eq(self.count),
+                    self.at_zero.eq(dec.is_zero),
+                ]
+                return m
+
+        mod = from_amaranth(CounterWithDecode())
+        cm = compile_module(mod)
+        # Verify count increments with enable, using cm.run for continuous sim
+        traces = cm.run(cycles=4, inputs={"en": 1})
+        count_vals = [v for _, v in traces["count"]]
+        assert count_vals == [1, 2, 3, 4]
+
+    def test_memory_write_at_multiple_addresses(self):
+        """Write to address 0, then verify it's stored in same run."""
+        from amaranth.lib.memory import Memory as AMemory
+
+        class SingleWrite(Elaboratable):
+            def __init__(self):
+                self.wr_addr = Signal(3)
+                self.wr_data = Signal(8)
+                self.wr_en = Signal()
+                self.rd_addr = Signal(3)
+                self.rd_data = Signal(8)
+
+            def elaborate(self, platform):
+                m = Module()
+                m.submodules.mem = mem = AMemory(shape=8, depth=8, init=[0] * 8)
+                rp = mem.read_port(domain="comb")
+                wp = mem.write_port()
+                m.d.comb += [
+                    rp.addr.eq(self.rd_addr),
+                    self.rd_data.eq(rp.data),
+                    wp.addr.eq(self.wr_addr),
+                    wp.data.eq(self.wr_data),
+                    wp.en.eq(self.wr_en),
+                ]
+                return m
+
+        mod = from_amaranth(SingleWrite())
+        cm = compile_module(mod)
+        # Write 0x77 to address 0, read from address 0
+        traces = cm.run(
+            cycles=5,
+            inputs={"wr_en": 1, "wr_addr": 0, "wr_data": 0x77, "rd_addr": 0},
+        )
+        rd_vals = [v for _, v in traces["rd_data"]]
+        assert 0x77 in rd_vals
+
+    def test_component_wiring_passthrough(self):
+        """Component that passes through a signal unchanged."""
+
+        class Passthrough(Component):
+            inp: In(16)
+            out: Out(16)
+
+            def elaborate(self, platform):
+                m = Module()
+                m.d.comb += self.out.eq(self.inp)
+                return m
+
+        mod = from_amaranth(Passthrough())
+        cm = compile_module(mod)
+        traces = cm.run(cycles=1, inputs={"inp": 0xDEAD})
+        vals = [v for _, v in traces["out"]]
+        assert 0xDEAD in vals
+
+    def test_component_multi_output(self):
+        """Component with multiple outputs derived from one input."""
+
+        class SplitByte(Component):
+            byte: In(8)
+            lo: Out(4)
+            hi: Out(4)
+
+            def elaborate(self, platform):
+                m = Module()
+                m.d.comb += [
+                    self.lo.eq(self.byte[:4]),
+                    self.hi.eq(self.byte[4:]),
+                ]
+                return m
+
+        mod = from_amaranth(SplitByte())
+        cm = compile_module(mod)
+        traces = cm.run(cycles=1, inputs={"byte": 0xAB})
+        lo_vals = [v for _, v in traces["lo"]]
+        hi_vals = [v for _, v in traces["hi"]]
+        assert 0xB in lo_vals  # lower nibble of 0xAB
+        assert 0xA in hi_vals  # upper nibble of 0xAB

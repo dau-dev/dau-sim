@@ -35,10 +35,6 @@ from dau_sim.ir import (
     Slice,
 )
 
-# ═══════════════════════════════════════════════════════════════════
-# Basic sequential end-to-end (counter)
-# ═══════════════════════════════════════════════════════════════════
-
 
 def _make_counter_module() -> Module:
     """4-bit counter with synchronous reset (if/else in seq block)."""
@@ -104,11 +100,6 @@ def test_compile_and_run_counter_with_reset():
     assert all(v == 0 for v in count_values), f"Expected all 0s, got {count_values}"
 
 
-# ═══════════════════════════════════════════════════════════════════
-# D Flip-Flop
-# ═══════════════════════════════════════════════════════════════════
-
-
 def _make_dff() -> Module:
     """D flip-flop: q <= d on posedge clk."""
     return Module(
@@ -140,11 +131,6 @@ class TestDFlipFlop:
         traces = cm.run(cycles=2, inputs={"d": 0xFF})
         q_vals = [v for _, v in traces["q"]]
         assert all(v == 255 for v in q_vals)
-
-
-# ═══════════════════════════════════════════════════════════════════
-# Shift Register (4-bit serial-in/parallel-out)
-# ═══════════════════════════════════════════════════════════════════
 
 
 def _make_shift_register() -> Module:
@@ -195,11 +181,6 @@ class TestShiftRegister:
         traces = cm.run(cycles=4, inputs={"sin": 0})
         q_vals = [v for _, v in traces["q"]]
         assert q_vals == [0, 0, 0, 0]
-
-
-# ═══════════════════════════════════════════════════════════════════
-# Counter with sync reset (domain-level reset)
-# ═══════════════════════════════════════════════════════════════════
 
 
 def _make_counter_sync_reset() -> Module:
@@ -266,11 +247,6 @@ class TestCounterSyncReset:
         assert vals == [0, 0, 0]
 
 
-# ═══════════════════════════════════════════════════════════════════
-# Counter with async reset
-# ═══════════════════════════════════════════════════════════════════
-
-
 def _make_counter_async_reset() -> Module:
     """4-bit counter with asynchronous reset."""
     return Module(
@@ -328,11 +304,6 @@ class TestCounterAsyncReset:
             assert v == (i + 1) & 0xF
 
 
-# ═══════════════════════════════════════════════════════════════════
-# Negedge-sensitive counter
-# ═══════════════════════════════════════════════════════════════════
-
-
 def _make_negedge_counter() -> Module:
     """4-bit counter sensitive to negedge clk."""
     return Module(
@@ -371,11 +342,6 @@ class TestNegedgeCounter:
         assert len(vals) == 5
         for i, v in enumerate(vals):
             assert v == (i + 1) & 0xF
-
-
-# ═══════════════════════════════════════════════════════════════════
-# Mixed seq + comb: counter with combinational output decode
-# ═══════════════════════════════════════════════════════════════════
 
 
 def _make_counter_with_decode() -> Module:
@@ -458,11 +424,6 @@ class TestCounterWithDecode:
             assert v == expected, f"cycle {i}: is_max expected {expected}, got {v}"
 
 
-# ═══════════════════════════════════════════════════════════════════
-# Dual-clock domain
-# ═══════════════════════════════════════════════════════════════════
-
-
 def _make_dual_clock() -> Module:
     """Two counters on different clock domains."""
     return Module(
@@ -530,11 +491,6 @@ class TestDualClock:
         assert slow_vals[-1] == 5, f"Expected slow_count=5, got {slow_vals[-1]}"
 
 
-# ═══════════════════════════════════════════════════════════════════
-# Graduation: 4-bit counter with reset across 100 cycles
-# ═══════════════════════════════════════════════════════════════════
-
-
 class TestLongRunCounter:
     def test_100_cycle_counter(self):
         """Simulate 4-bit counter with reset for 100 cycles."""
@@ -556,11 +512,6 @@ class TestLongRunCounter:
         assert len(vals) == 100
         for i, v in enumerate(vals):
             assert v == (i + 1) % 16
-
-
-# ═══════════════════════════════════════════════════════════════════
-# Four-state sequential simulation
-# ═══════════════════════════════════════════════════════════════════
 
 
 class TestFourStateSequential:

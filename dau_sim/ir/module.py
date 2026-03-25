@@ -100,7 +100,9 @@ class ReadPort:
 
     addr: str  # signal name for address
     data: str  # signal name for read data
+    en: str | None = None  # signal name for read enable (None = always enabled)
     domain: str | None = None  # None = combinational read, str = synchronous read
+    transparent_for: tuple[int, ...] = ()  # write port indices for transparency
 
 
 @dataclass(frozen=True)
@@ -111,6 +113,7 @@ class WritePort:
     data: str  # signal name for write data
     en: str  # signal name for write enable
     domain: str  # clock domain for writes
+    granularity: int = 0  # 0 = full-width write, >0 = per-granule write enable
 
 
 @dataclass(frozen=True)
@@ -142,6 +145,7 @@ class Module:
     init_blocks: tuple[InitBlock, ...] = ()
     instances: tuple[Instance, ...] = ()
     memories: tuple[Memory, ...] = ()
+    submodules: tuple[Module, ...] = ()
 
     def port_by_name(self, name: str) -> Port | None:
         for p in self.ports:
