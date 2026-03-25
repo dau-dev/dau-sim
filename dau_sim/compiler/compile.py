@@ -247,6 +247,76 @@ def _compute_half_period_ticks(
     return gcd_ns
 
 
+def _exec_mem_writes(
+    mem_state: dict[str, list[int]],
+    memories: tuple,
+    signals: dict[str, int],
+    shapes: dict[str, Shape],
+    fired_domains: list[str],
+) -> None:
+    """Execute memory write ports for fired clock domains."""
+    for mem in memories:
+        for wp in mem.write_ports:
+            if wp.domain not in fired_domains:
+                continue
+            en_val = signals.get(wp.en, 0)
+            if not en_val:
+                continue
+            addr = signals.get(wp.addr, 0)
+            if addr < 0 or addr >= mem.depth:
+                continue
+            data = signals.get(wp.data, 0)
+            if wp.granularity > 0:
+                bits_per_gran = wp.granularity
+                n_grans = mem.shape.width // bits_per_gran
+                for g in range(n_grans):
+                    if (en_val >> g) & 1:
+                        mask = ((1 << bits_per_gran) - 1) << (g * bits_per_gran)
+                        mem_state[mem.name][addr] = (mem_state[mem.name][addr] & ~mask) | (data & mask)
+            else:
+                mem_state[mem.name][addr] = mask_value(data, mem.shape)
+
+
+def _exec_mem_reads(
+    mem_state: dict[str, list[int]],
+    memories: tuple,
+    signals: dict[str, int],
+    fired_domains: list[str] | None,
+) -> None:
+    """Execute memory read ports.
+
+    For combinational reads (domain is None), always execute.
+    For synchronous reads, only execute on fired domains.
+    Transparent reads forward write data from same-cycle writes.
+    """
+    for mem in memories:
+        for rp in mem.read_ports:
+            if rp.domain is None:
+                # Combinational read: always active
+                if rp.en and not signals.get(rp.en, 1):
+                    continue
+                addr = signals.get(rp.addr, 0)
+                if 0 <= addr < mem.depth:
+                    signals[rp.data] = mem_state[mem.name][addr]
+            else:
+                # Synchronous read: only on clock edge
+                if fired_domains is not None and rp.domain in fired_domains:
+                    if rp.en and not signals.get(rp.en, 1):
+                        continue
+                    addr = signals.get(rp.addr, 0)
+                    if 0 <= addr < mem.depth:
+                        val = mem_state[mem.name][addr]
+                        # Check for transparent forwarding
+                        for wp_idx in rp.transparent_for:
+                            wp = mem.write_ports[wp_idx]
+                            wp_en = signals.get(wp.en, 0)
+                            wp_addr = signals.get(wp.addr, 0)
+                            if wp_en and wp_addr == addr:
+                                val = signals.get(wp.data, 0)
+                                break
+                        signals[rp.data] = val
+
+
 def _edge_fires(edge: EdgePolarity, old_clk: int, new_clk: int) -> bool:
     """Check if a clock transition triggers the given edge polarity."""
     if edge == EdgePolarity.POSEDGE:
@@ -264,6 +334,8 @@ def _sim_tick(
     comb_order: ts[object],
     seq_blocks: ts[object],
     shapes: ts[object],
+    memories: ts[object],
+    mem_init: ts[object],
 ) -> ts[dict]:
     """Combinational-only simulation node (no clock edge semantics).
 
@@ -277,6 +349,8 @@ def _sim_tick(
         s_shapes: dict = {}
         s_initialized: bool = False
         s_finished: bool = False
+        s_memories: tuple = ()
+        s_mem_state: dict = {}
 
     if csp.ticked(init_signals):
         s_signals = dict(init_signals)
@@ -287,12 +361,20 @@ def _sim_tick(
         s_seq_blocks = seq_blocks
     if csp.ticked(shapes):
         s_shapes = shapes
+    if csp.ticked(memories):
+        s_memories = memories
+    if csp.ticked(mem_init):
+        s_mem_state = {k: list(v) for k, v in mem_init.items()}
 
     if csp.ticked(tick) and s_initialized and not s_finished:
         try:
             # Sequential blocks (legacy path — no edge gating)
             for sb in s_seq_blocks:
                 _exec_stmts(sb.stmts, s_signals, s_shapes)
+
+            # Memory reads (combinational only, no fired domains)
+            if s_memories:
+                _exec_mem_reads(s_mem_state, s_memories, s_signals, [])
 
             # Combinational blocks in dependency order
             for assignment in s_comb_order:
@@ -310,6 +392,8 @@ def _sim_tick_4(
     comb_order: ts[object],
     seq_blocks: ts[object],
     shapes: ts[object],
+    memories: ts[object],
+    mem_init: ts[object],
 ) -> ts[dict]:
     """Four-state combinational-only simulation node."""
     with csp.state():
@@ -319,6 +403,8 @@ def _sim_tick_4(
         s_shapes: dict = {}
         s_initialized: bool = False
         s_finished: bool = False
+        s_memories: tuple = ()
+        s_mem_state: dict = {}
 
     if csp.ticked(init_signals):
         s_signals = dict(init_signals)
@@ -329,11 +415,20 @@ def _sim_tick_4(
         s_seq_blocks = seq_blocks
     if csp.ticked(shapes):
         s_shapes = shapes
+    if csp.ticked(memories):
+        s_memories = memories
+    if csp.ticked(mem_init):
+        s_mem_state = {k: list(v) for k, v in mem_init.items()}
 
     if csp.ticked(tick) and s_initialized and not s_finished:
         try:
             for sb in s_seq_blocks:
                 _exec_stmts_4(sb.stmts, s_signals, s_shapes)
+
+            # Memory reads (combinational only, no fired domains)
+            if s_memories:
+                _exec_mem_reads(s_mem_state, s_memories, s_signals, [])
+
             for assignment in s_comb_order:
                 _exec_stmts_4(assignment.stmts, s_signals, s_shapes)
         except SimulationFinish:
@@ -349,6 +444,8 @@ def _sim_engine_seq(
     domain_info: ts[object],
     shapes: ts[object],
     init_values: ts[object],
+    memories: ts[object],
+    mem_init: ts[object],
 ) -> ts[dict]:
     """Clock-aware simulation engine (two-state).
 
@@ -367,6 +464,8 @@ def _sim_engine_seq(
         s_tick_count: int = 0
         s_clock_states: dict = {}  # domain_name -> current clk value (0 or 1)
         s_half_period_ticks: dict = {}  # domain_name -> int
+        s_memories: tuple = ()
+        s_mem_state: dict = {}
 
     if csp.ticked(init_signals):
         s_signals = dict(init_signals)
@@ -382,6 +481,10 @@ def _sim_engine_seq(
         s_shapes = shapes
     if csp.ticked(init_values):
         s_init_values = init_values
+    if csp.ticked(memories):
+        s_memories = memories
+    if csp.ticked(mem_init):
+        s_mem_state = {k: list(v) for k, v in mem_init.items()}
 
     if csp.ticked(tick) and s_initialized and not s_finished:
         s_tick_count += 1
@@ -433,6 +536,14 @@ def _sim_engine_seq(
                 for sb in dinfo["seq_blocks"]:
                     _exec_stmts(sb.stmts, s_signals, s_shapes)
 
+            # Memory writes (after seq blocks, before comb settle)
+            if s_memories and fired_domains:
+                _exec_mem_writes(s_mem_state, s_memories, s_signals, s_shapes, fired_domains)
+
+            # Memory reads (synchronous reads on fired domains, combinational reads always)
+            if s_memories:
+                _exec_mem_reads(s_mem_state, s_memories, s_signals, fired_domains)
+
             # Settle combinational logic
             if fired_domains:
                 for assignment in s_comb_order:
@@ -452,6 +563,8 @@ def _sim_engine_seq_4(
     domain_info: ts[object],
     shapes: ts[object],
     init_values: ts[object],
+    memories: ts[object],
+    mem_init: ts[object],
 ) -> ts[dict]:
     """Clock-aware simulation engine (four-state)."""
     with csp.state():
@@ -465,6 +578,8 @@ def _sim_engine_seq_4(
         s_tick_count: int = 0
         s_clock_states: dict = {}
         s_half_period_ticks: dict = {}
+        s_memories: tuple = ()
+        s_mem_state: dict = {}
 
     if csp.ticked(init_signals):
         s_signals = dict(init_signals)
@@ -480,6 +595,10 @@ def _sim_engine_seq_4(
         s_shapes = shapes
     if csp.ticked(init_values):
         s_init_values = init_values
+    if csp.ticked(memories):
+        s_memories = memories
+    if csp.ticked(mem_init):
+        s_mem_state = {k: list(v) for k, v in mem_init.items()}
 
     if csp.ticked(tick) and s_initialized and not s_finished:
         s_tick_count += 1
@@ -528,6 +647,14 @@ def _sim_engine_seq_4(
                         continue
                 for sb in dinfo["seq_blocks"]:
                     _exec_stmts_4(sb.stmts, s_signals, s_shapes)
+
+            # Memory writes (after seq blocks, before comb settle)
+            if s_memories and fired_domains:
+                _exec_mem_writes(s_mem_state, s_memories, s_signals, s_shapes, fired_domains)
+
+            # Memory reads (synchronous reads on fired domains, combinational reads always)
+            if s_memories:
+                _exec_mem_reads(s_mem_state, s_memories, s_signals, fired_domains)
 
             # Settle comb
             if fired_domains:
@@ -591,7 +718,37 @@ class CompiledModule:
         # Phase 2: precompute domain info and init values
         self._domain_info = _build_domain_info(module)
         self._init_values = _collect_init_values(module)
-        self._has_seq = len(module.seq_blocks) > 0
+        self._has_seq = (
+            len(module.seq_blocks) > 0
+            or any(mem.write_ports for mem in module.memories)
+            or any(rp.domain is not None for mem in module.memories for rp in mem.read_ports)
+        )
+        self._has_memories = len(module.memories) > 0
+
+        # Build memory init state
+        self._mem_init: dict[str, list[int]] = {}
+        self._mem_defs = {mem.name: mem for mem in module.memories}
+        for mem in module.memories:
+            init_data = list(mem.init) if mem.init else []
+            # Pad to depth with zeros
+            init_data.extend([0] * (mem.depth - len(init_data)))
+            self._mem_init[mem.name] = init_data
+            # Register memory port signals in shapes if not already present
+            for rp in mem.read_ports:
+                if rp.addr not in self._shapes:
+                    self._shapes[rp.addr] = Shape(max(1, (mem.depth - 1).bit_length()))
+                if rp.data not in self._shapes:
+                    self._shapes[rp.data] = mem.shape
+                if rp.en and rp.en not in self._shapes:
+                    self._shapes[rp.en] = Shape(1)
+            for wp in mem.write_ports:
+                if wp.addr not in self._shapes:
+                    self._shapes[wp.addr] = Shape(max(1, (mem.depth - 1).bit_length()))
+                if wp.data not in self._shapes:
+                    self._shapes[wp.data] = mem.shape
+                if wp.en not in self._shapes:
+                    en_width = mem.shape.width // wp.granularity if wp.granularity > 0 else 1
+                    self._shapes[wp.en] = Shape(en_width)
 
     def write_vcd(
         self,
@@ -707,6 +864,16 @@ class CompiledModule:
             if inputs:
                 for name, val in inputs.items():
                     init[name] = FourState.from_int(val, shapes[name])
+            # Initialize memory port signals
+            for mem in module.memories:
+                for rp in mem.read_ports:
+                    for sname in (rp.addr, rp.data, rp.en):
+                        if sname and sname not in init:
+                            init[sname] = FourState.from_int(0, shapes[sname])
+                for wp in mem.write_ports:
+                    for sname in (wp.addr, wp.data, wp.en):
+                        if sname and sname not in init:
+                            init[sname] = FourState.from_int(0, shapes[sname])
         else:
             init = {}
             for p in module.ports:
@@ -716,6 +883,16 @@ class CompiledModule:
             if inputs:
                 for name, val in inputs.items():
                     init[name] = mask_value(val, shapes[name])
+            # Initialize memory port signals
+            for mem in module.memories:
+                for rp in mem.read_ports:
+                    for sname in (rp.addr, rp.data, rp.en):
+                        if sname and sname not in init:
+                            init[sname] = 0
+                for wp in mem.write_ports:
+                    for sname in (wp.addr, wp.data, wp.en):
+                        if sname and sname not in init:
+                            init[sname] = 0
 
         all_names = list(shapes.keys())
 
@@ -771,14 +948,16 @@ class CompiledModule:
             comb_edge = csp.const(comb_order)
             seq_edge = csp.const(seq_blocks)
             shapes_edge = csp.const(shapes)
+            mem_edge = csp.const(self.module.memories)
+            mem_init_edge = csp.const(self._mem_init)
 
             if four_state:
-                all_signals = _sim_tick_4(tick, init_edge, comb_edge, seq_edge, shapes_edge)
+                all_signals = _sim_tick_4(tick, init_edge, comb_edge, seq_edge, shapes_edge, mem_edge, mem_init_edge)
                 for name in all_names:
                     sig_out = _extract_signal_4(all_signals, csp.const(name))
                     csp.add_graph_output(name, sig_out)
             else:
-                all_signals = _sim_tick(tick, init_edge, comb_edge, seq_edge, shapes_edge)
+                all_signals = _sim_tick(tick, init_edge, comb_edge, seq_edge, shapes_edge, mem_edge, mem_init_edge)
                 for name in all_names:
                     sig_out = _extract_signal(all_signals, csp.const(name))
                     csp.add_graph_output(name, sig_out)
@@ -823,14 +1002,16 @@ class CompiledModule:
             domain_edge = csp.const(domain_info)
             shapes_edge = csp.const(shapes)
             init_vals_edge = csp.const(init_values)
+            mem_edge = csp.const(self.module.memories)
+            mem_init_edge = csp.const(self._mem_init)
 
             if four_state:
-                all_signals = _sim_engine_seq_4(tick, init_edge, comb_edge, domain_edge, shapes_edge, init_vals_edge)
+                all_signals = _sim_engine_seq_4(tick, init_edge, comb_edge, domain_edge, shapes_edge, init_vals_edge, mem_edge, mem_init_edge)
                 for name in all_names:
                     sig_out = _extract_signal_4(all_signals, csp.const(name))
                     csp.add_graph_output(name, sig_out)
             else:
-                all_signals = _sim_engine_seq(tick, init_edge, comb_edge, domain_edge, shapes_edge, init_vals_edge)
+                all_signals = _sim_engine_seq(tick, init_edge, comb_edge, domain_edge, shapes_edge, init_vals_edge, mem_edge, mem_init_edge)
                 for name in all_names:
                     sig_out = _extract_signal(all_signals, csp.const(name))
                     csp.add_graph_output(name, sig_out)
@@ -869,6 +1050,12 @@ def compile_module(module: Module, four_state: bool = False) -> CompiledModule:
     Raises:
         CombLoopError: If combinational assignments form a cycle.
     """
+    # Flatten hierarchy if needed
+    if module.instances or module.submodules:
+        from dau_sim.compiler.flatten import flatten_module
+
+        module = flatten_module(module)
+
     # Build dependency-sorted comb block order
     stmts_list = [(i, cb.stmts) for i, cb in enumerate(module.comb_blocks)]
     assignments = build_assignments(stmts_list)

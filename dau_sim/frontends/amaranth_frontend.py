@@ -14,6 +14,7 @@ from amaranth.hdl._ast import (
     SwitchValue,
 )
 from amaranth.hdl._ir import Fragment
+from amaranth.hdl._mem import MemoryInstance
 
 from dau_sim.ir.expr import (
     Binary,
@@ -30,10 +31,13 @@ from dau_sim.ir.expr import (
 from dau_sim.ir.module import (
     ClockDomain,
     CombBlock,
+    Memory,
     Module,
     Port,
+    ReadPort,
     SeqBlock,
     Signal,
+    WritePort,
 )
 from dau_sim.ir.stmt import Assign, Stmt, Switch
 from dau_sim.ir.types import EdgePolarity, PortDirection, ResetStyle, Shape
@@ -278,11 +282,29 @@ def _collect_signals_from_value(val, signals: dict[int, ASignal]):
 
 
 def _collect_all_signals(frag: Fragment) -> dict[int, ASignal]:
-    """Walk all statements in a fragment and collect referenced signals."""
+    """Walk all statements in a fragment and collect referenced signals.
+
+    Also collects signals from MemoryInstance subfragment ports and
+    recursively from non-MemoryInstance subfragments (which share signals
+    with the parent in Amaranth's Fragment tree).
+    """
     signals: dict[int, ASignal] = {}
     for _domain, stmts in frag.statements.items():
         for stmt in stmts:
             _collect_signals_from_stmt(stmt, signals)
+    # Collect signals from subfragments
+    for sf, _name, _loc in frag.subfragments:
+        if isinstance(sf, MemoryInstance):
+            for rp in sf._read_ports:
+                for val in (rp._addr, rp._data, rp._en):
+                    _collect_signals_from_value(val, signals)
+            for wp in sf._write_ports:
+                for val in (wp._addr, wp._data, wp._en):
+                    _collect_signals_from_value(val, signals)
+        else:
+            # Non-memory subfragments share signals with parent — collect recursively
+            child_signals = _collect_all_signals(sf)
+            signals.update(child_signals)
     return signals
 
 
@@ -297,28 +319,128 @@ def _collect_signals_from_stmt(stmt, signals: dict[int, ASignal]):
                 _collect_signals_from_stmt(s, signals)
 
 
+def _lower_memory_instance(
+    mi: MemoryInstance,
+    mem_name: str,
+    names: _SignalNames,
+) -> Memory:
+    """Lower an Amaranth MemoryInstance to a dau-sim IR Memory."""
+    data = mi._data
+    shape = Shape(width=data.shape.width if hasattr(data.shape, "width") else int(data.shape))
+    depth = data.depth
+    init_data = tuple(int(v) for v in data.init)
+
+    ir_read_ports: list[ReadPort] = []
+    for i, rp in enumerate(mi._read_ports):
+        addr_name = names.get(rp._addr) if isinstance(rp._addr, ASignal) else f"{mem_name}_rp{i}_addr"
+        data_name = names.get(rp._data) if isinstance(rp._data, ASignal) else f"{mem_name}_rp{i}_data"
+        en_name = names.get(rp._en) if isinstance(rp._en, ASignal) else None
+        domain = None if rp._domain == "comb" else rp._domain
+
+        ir_read_ports.append(
+            ReadPort(
+                addr=addr_name,
+                data=data_name,
+                en=en_name,
+                domain=domain,
+                transparent_for=rp._transparent_for,
+            )
+        )
+
+    ir_write_ports: list[WritePort] = []
+    for i, wp in enumerate(mi._write_ports):
+        addr_name = names.get(wp._addr) if isinstance(wp._addr, ASignal) else f"{mem_name}_wp{i}_addr"
+        data_name = names.get(wp._data) if isinstance(wp._data, ASignal) else f"{mem_name}_wp{i}_data"
+        en_name = names.get(wp._en) if isinstance(wp._en, ASignal) else f"{mem_name}_wp{i}_en"
+
+        ir_write_ports.append(
+            WritePort(
+                addr=addr_name,
+                data=data_name,
+                en=en_name,
+                domain=wp._domain,
+                granularity=wp._granularity,
+            )
+        )
+
+    return Memory(
+        name=mem_name,
+        shape=shape,
+        depth=depth,
+        read_ports=tuple(ir_read_ports),
+        write_ports=tuple(ir_write_ports),
+        init=init_data,
+    )
+
+
+def _collect_fragment_tree(frag: Fragment):
+    """Recursively collect statements, domains, and MemoryInstances from a Fragment tree.
+
+    Amaranth's Fragment tree shares Signal objects between parent and children,
+    so non-MemoryInstance subfragments' statements are merged into the parent's
+    flat statement/domain set.
+
+    Returns (merged_statements, merged_domains, memory_instances) where:
+      - merged_statements: dict[str, list[stmt]] — domain → list of all stmts
+      - merged_domains: dict[str, domain_obj] — explicit domains from all fragments
+      - memory_instances: list[(MemoryInstance, name)]
+    """
+    merged_stmts: dict[str, list] = {}
+    merged_domains: dict = {}
+    memory_instances: list[tuple] = []
+
+    def _walk(f: Fragment):
+        # Merge this fragment's statements
+        for domain, stmts in f.statements.items():
+            if domain not in merged_stmts:
+                merged_stmts[domain] = []
+            merged_stmts[domain].extend(stmts)
+
+        # Merge explicit domains
+        for d_name in f.iter_domains():
+            if d_name not in merged_domains:
+                merged_domains[d_name] = f.domains[d_name]
+
+        # Process subfragments
+        for sf, sf_name, _loc in f.subfragments:
+            if isinstance(sf, MemoryInstance):
+                memory_instances.append((sf, sf_name or f"mem{len(memory_instances)}"))
+            else:
+                _walk(sf)
+
+    _walk(frag)
+    return merged_stmts, merged_domains, memory_instances
+
+
 def _lower_fragment(
     frag: Fragment,
     mod_name: str,
     port_map: dict[int, PortDirection] | None = None,
 ) -> Module:
-    """Lower a single Amaranth Fragment to a dau-sim IR Module."""
+    """Lower a single Amaranth Fragment to a dau-sim IR Module.
+
+    Non-MemoryInstance subfragments are flattened into the parent since
+    Amaranth's Fragment tree shares Signal objects between parent and children.
+    """
     names = _SignalNames()
     port_map = port_map or {}
+
+    # Recursively collect all statements, domains, and memory instances
+    merged_stmts, merged_domains, memory_instances = _collect_fragment_tree(frag)
 
     # Build domain signal name mapping
     domain_signals: dict[str, tuple[str, str]] = {}
     ir_clock_domains: list[ClockDomain] = []
 
-    # Collect all domain names: explicit (frag.domains) + implicit (statement keys)
-    all_domain_names: set[str] = set(frag.iter_domains())
-    for d_name in frag.statements:
+    # Collect all domain names: explicit (merged_domains) + implicit (statement keys)
+    all_domain_names: set[str] = set(merged_domains.keys())
+    for d_name in merged_stmts:
         if d_name != "comb":
             all_domain_names.add(d_name)
 
     for d_name in sorted(all_domain_names):
-        if d_name in frag.domains:
-            dom = frag.domains[d_name]
+        if d_name in merged_domains:
+            dom = merged_domains[d_name]
             clk_name = names.get(dom.clk)
             rst_name = names.get(dom.rst)
             edge = EdgePolarity.POSEDGE if dom.clk_edge == "pos" else EdgePolarity.NEGEDGE
@@ -354,8 +476,7 @@ def _lower_fragment(
         names.get(sig)
 
     # Also register domain clk/rst (already done above for explicit domains)
-    for d_name in frag.iter_domains():
-        dom = frag.domains[d_name]
+    for d_name, dom in merged_domains.items():
         all_signals[id(dom.clk)] = dom.clk
         all_signals[id(dom.rst)] = dom.rst
 
@@ -363,7 +484,7 @@ def _lower_fragment(
     comb_blocks: list[CombBlock] = []
     seq_blocks: list[SeqBlock] = []
 
-    for domain, stmts in frag.statements.items():
+    for domain, stmts in merged_stmts.items():
         ir_stmts = _lower_stmts(stmts, names, domain_signals)
         if not ir_stmts:
             continue
@@ -399,6 +520,41 @@ def _lower_fragment(
                 ir_sig = Signal(name=sig_name, shape=Shape(1, False))
                 ports.append(Port(signal=ir_sig, direction=PortDirection.INPUT))
 
+    # Lower memory instances (collected from the full fragment tree)
+    ir_memories: list[Memory] = []
+    for mi, mem_name in memory_instances:
+        ir_memories.append(_lower_memory_instance(mi, mem_name, names))
+
+    # If memory subfragments reference domains not yet in parent, add them
+    for mem in ir_memories:
+        for wp in mem.write_ports:
+            if wp.domain not in {d.name for d in ir_clock_domains}:
+                # Add implicit domain
+                if wp.domain == "sync":
+                    clk_name, rst_name = "clk", "rst"
+                else:
+                    clk_name, rst_name = f"{wp.domain}_clk", f"{wp.domain}_rst"
+                domain_signals[wp.domain] = (clk_name, rst_name)
+                ir_clock_domains.append(ClockDomain(name=wp.domain, clk=clk_name, rst=rst_name))
+                for sig_name in (clk_name, rst_name):
+                    if sig_name not in seen_names:
+                        seen_names.add(sig_name)
+                        ir_sig = Signal(name=sig_name, shape=Shape(1, False))
+                        ports.append(Port(signal=ir_sig, direction=PortDirection.INPUT))
+        for rp in mem.read_ports:
+            if rp.domain and rp.domain not in {d.name for d in ir_clock_domains}:
+                if rp.domain == "sync":
+                    clk_name, rst_name = "clk", "rst"
+                else:
+                    clk_name, rst_name = f"{rp.domain}_clk", f"{rp.domain}_rst"
+                domain_signals[rp.domain] = (clk_name, rst_name)
+                ir_clock_domains.append(ClockDomain(name=rp.domain, clk=clk_name, rst=rst_name))
+                for sig_name in (clk_name, rst_name):
+                    if sig_name not in seen_names:
+                        seen_names.add(sig_name)
+                        ir_sig = Signal(name=sig_name, shape=Shape(1, False))
+                        ports.append(Port(signal=ir_sig, direction=PortDirection.INPUT))
+
     return Module(
         name=mod_name,
         ports=tuple(ports),
@@ -406,6 +562,7 @@ def _lower_fragment(
         clock_domains=tuple(ir_clock_domains),
         comb_blocks=tuple(comb_blocks),
         seq_blocks=tuple(seq_blocks),
+        memories=tuple(ir_memories),
     )
 
 

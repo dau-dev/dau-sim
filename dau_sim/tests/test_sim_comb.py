@@ -29,10 +29,6 @@ from dau_sim.ir import (
     Switch,
 )
 
-# ═══════════════════════════════════════════════════════════════════
-# Basic combinational end-to-end
-# ═══════════════════════════════════════════════════════════════════
-
 
 def test_compile_combinational_adder():
     """Pure combinational: a + b = sum, driven each tick."""
@@ -108,11 +104,6 @@ def test_compile_mux_module():
     traces = compiled.run(cycles=1, inputs={"sel": 0, "a": 42, "b": 99})
     out_vals = [v for _, v in traces["out"]]
     assert out_vals[0] == 99
-
-
-# ═══════════════════════════════════════════════════════════════════
-# Ripple-carry adder (4-bit)
-# ═══════════════════════════════════════════════════════════════════
 
 
 def _make_ripple_carry_adder() -> Module:
@@ -214,11 +205,6 @@ class TestRippleCarryAdder:
         assert "wide_sum" in c._comb_order[0].writes
 
 
-# ═══════════════════════════════════════════════════════════════════
-# Multiplexer tree (4:1)
-# ═══════════════════════════════════════════════════════════════════
-
-
 def _make_mux_tree() -> Module:
     """4:1 multiplexer tree using two 2:1 muxes and a final 2:1 mux.
 
@@ -311,11 +297,6 @@ class TestMuxTree:
         c = compile_module(m)
         traces = c.run(cycles=1, inputs={"in0": 10, "in1": 20, "in2": 30, "in3": 40, "sel": 3})
         assert traces["out"][0][1] == 40
-
-
-# ═══════════════════════════════════════════════════════════════════
-# ALU (8-bit, 4 operations)
-# ═══════════════════════════════════════════════════════════════════
 
 
 def _make_alu() -> Module:
@@ -457,11 +438,6 @@ class TestALU:
         assert traces["zero"][0][1] == 0
 
 
-# ═══════════════════════════════════════════════════════════════════
-# Priority encoder (8→3)
-# ═══════════════════════════════════════════════════════════════════
-
-
 def _make_priority_encoder() -> Module:
     """8-to-3 priority encoder.
 
@@ -576,11 +552,6 @@ class TestPriorityEncoder:
         traces = c.run(cycles=1, inputs={"inp": 0b10000001})  # bits 7 and 0
         assert traces["idx"][0][1] == 7
         assert traces["valid"][0][1] == 1
-
-
-# ═══════════════════════════════════════════════════════════════════
-# Four-State Simulation
-# ═══════════════════════════════════════════════════════════════════
 
 
 class TestFourStateSimulation:

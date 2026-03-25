@@ -53,6 +53,9 @@ develop = [
     # frontends
     "amaranth",
     "pyslang",
+    # integrations
+    "cocotb",
+    "dau-build",
 ]
 
 [project.scripts]

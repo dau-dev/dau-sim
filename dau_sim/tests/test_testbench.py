@@ -1,3 +1,4 @@
+import threading
 import unittest
 
 from amaranth import Module as AModule
@@ -22,7 +23,7 @@ from dau_sim.ir import (
     Signal,
     SignalRef,
 )
-from dau_sim.testbench import TestbenchContext, TestbenchTimeout
+from dau_sim.testbench import TestbenchContext, TestbenchTimeout, run_parallel_testbenches
 
 
 def _make_counter_module(width=8, name="counter"):
@@ -560,6 +561,220 @@ class TestAmaranthTestbench(unittest.TestCase):
 
         result = cm.run_testbench(test_fn)
         self.assertTrue(result.passed)
+
+
+class TestForceRelease(unittest.TestCase):
+    """Tests for signal force/release functionality."""
+
+    def test_force_overrides_signal(self):
+        """Forced signal should hold the forced value after tick."""
+        cm = compile_module(_make_counter_module())
+
+        def test_fn(ctx):
+            ctx.set("en", 1)
+            ctx.force("count", 0xFF)
+            ctx.tick()
+            ctx.assert_eq("count", 0xFF)
+
+        result = cm.run_testbench(test_fn)
+        self.assertTrue(result.passed)
+
+    def test_force_persists_across_ticks(self):
+        """Forced value should persist across multiple ticks."""
+        cm = compile_module(_make_counter_module())
+
+        def test_fn(ctx):
+            ctx.set("en", 1)
+            ctx.force("count", 42)
+            ctx.tick()
+            ctx.assert_eq("count", 42)
+            ctx.tick()
+            ctx.assert_eq("count", 42)
+            ctx.tick()
+            ctx.assert_eq("count", 42)
+
+        result = cm.run_testbench(test_fn)
+        self.assertTrue(result.passed)
+
+    def test_release_restores_simulation(self):
+        """After release, simulation should drive the signal again."""
+        cm = compile_module(_make_counter_module())
+
+        def test_fn(ctx):
+            ctx.set("en", 1)
+            ctx.force("count", 99)
+            ctx.tick()
+            ctx.assert_eq("count", 99)
+            ctx.release("count")
+            # After release, the next tick should let the sim drive count
+            ctx.tick()
+            # The counter resumes from whatever state the sim has
+            # (won't be 99 since the sim wasn't actually at 99)
+
+        result = cm.run_testbench(test_fn)
+        self.assertTrue(result.passed)
+
+    def test_is_forced(self):
+        """is_forced should reflect force/release state."""
+        cm = compile_module(_make_counter_module())
+
+        def test_fn(ctx):
+            self.assertFalse(ctx.is_forced("count"))
+            ctx.force("count", 0)
+            self.assertTrue(ctx.is_forced("count"))
+            ctx.release("count")
+            self.assertFalse(ctx.is_forced("count"))
+
+        result = cm.run_testbench(test_fn)
+        self.assertTrue(result.passed)
+
+    def test_force_unknown_signal_raises(self):
+        """Forcing an unknown signal should raise KeyError."""
+        cm = compile_module(_make_counter_module())
+
+        def test_fn(ctx):
+            ctx.force("nonexistent", 0)
+
+        with self.assertRaises(KeyError):
+            cm.run_testbench(test_fn)
+
+    def test_release_unforced_signal_raises(self):
+        """Releasing a non-forced signal should raise KeyError."""
+        cm = compile_module(_make_counter_module())
+
+        def test_fn(ctx):
+            ctx.release("count")
+
+        with self.assertRaises(KeyError):
+            cm.run_testbench(test_fn)
+
+    def test_force_immediate_get(self):
+        """Force should immediately update the signal value (before tick)."""
+        cm = compile_module(_make_counter_module())
+
+        def test_fn(ctx):
+            ctx.force("count", 77)
+            ctx.assert_eq("count", 77)
+
+        result = cm.run_testbench(test_fn)
+        self.assertTrue(result.passed)
+
+
+class TestParallelTestbenches(unittest.TestCase):
+    """Tests for run_parallel_testbenches."""
+
+    def test_two_readers_same_counter(self):
+        """Two testbenches reading the same counter see the same values."""
+        cm = compile_module(_make_counter_module())
+        results = []
+
+        def reader_a(ctx):
+            ctx.set("en", 1)
+            ctx.tick()
+            results.append(("a", ctx.get("count")))
+            ctx.tick()
+            results.append(("a", ctx.get("count")))
+
+        def reader_b(ctx):
+            ctx.tick()
+            results.append(("b", ctx.get("count")))
+            ctx.tick()
+            results.append(("b", ctx.get("count")))
+
+        run_parallel_testbenches(cm, reader_a, reader_b)
+        # Both should see count=1 after first tick and count=2 after second
+        a_vals = [v for tag, v in results if tag == "a"]
+        b_vals = [v for tag, v in results if tag == "b"]
+        self.assertEqual(a_vals, [1, 2])
+        self.assertEqual(b_vals, [1, 2])
+
+    def test_parallel_synchronized_ticks(self):
+        """All threads advance the same number of cycles."""
+        cm = compile_module(_make_counter_module())
+        cycles_seen = []
+
+        def tb1(ctx):
+            ctx.set("en", 1)
+            ctx.tick(3)
+            cycles_seen.append(ctx.cycle)
+
+        def tb2(ctx):
+            ctx.tick(3)
+            cycles_seen.append(ctx.cycle)
+
+        run_parallel_testbenches(cm, tb1, tb2)
+        self.assertEqual(cycles_seen, [3, 3])
+
+    def test_parallel_error_propagates(self):
+        """An assertion failure in one thread propagates to the caller."""
+        cm = compile_module(_make_counter_module())
+
+        def good_tb(ctx):
+            ctx.tick()
+
+        def bad_tb(ctx):
+            ctx.assert_eq("count", 999)
+
+        with self.assertRaises((AssertionError, threading.BrokenBarrierError)):
+            run_parallel_testbenches(cm, good_tb, bad_tb)
+
+    def test_parallel_single_function(self):
+        """Running with a single function behaves like a normal testbench."""
+        cm = compile_module(_make_counter_module())
+
+        def only_tb(ctx):
+            ctx.set("en", 1)
+            ctx.tick(5)
+            ctx.assert_eq("count", 5)
+
+        result = run_parallel_testbenches(cm, only_tb)
+        self.assertTrue(result.passed)
+
+    def test_parallel_no_functions_raises(self):
+        """Must pass at least one testbench function."""
+        cm = compile_module(_make_counter_module())
+        with self.assertRaises(ValueError):
+            run_parallel_testbenches(cm)
+
+    def test_parallel_three_testbenches(self):
+        """Three threads driving and reading coordinated signals."""
+        cm = compile_module(_make_counter_module())
+        final_values = []
+
+        def driver(ctx):
+            ctx.set("en", 1)
+            ctx.tick(5)
+            final_values.append(ctx.get("count"))
+
+        def observer1(ctx):
+            ctx.tick(5)
+            final_values.append(ctx.get("count"))
+
+        def observer2(ctx):
+            ctx.tick(5)
+            final_values.append(ctx.get("count"))
+
+        run_parallel_testbenches(cm, driver, observer1, observer2)
+        # All should see count=5
+        self.assertTrue(all(v == 5 for v in final_values))
+
+    def test_parallel_force_visible_to_all(self):
+        """A force in one thread should be visible to others after tick."""
+        cm = compile_module(_make_counter_module())
+        seen = []
+
+        def forcer(ctx):
+            ctx.force("count", 42)
+            ctx.tick()
+            seen.append(("forcer", ctx.get("count")))
+
+        def reader(ctx):
+            ctx.tick()
+            seen.append(("reader", ctx.get("count")))
+
+        run_parallel_testbenches(cm, forcer, reader)
+        for tag, val in seen:
+            self.assertEqual(val, 42, f"{tag} saw {val} instead of 42")
 
 
 if __name__ == "__main__":

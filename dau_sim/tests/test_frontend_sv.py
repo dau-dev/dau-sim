@@ -196,11 +196,6 @@ class TestExpressionLowering:
         assert len(mod.comb_blocks) == 2
 
 
-# ═══════════════════════════════════════════════════════════════════
-# Statement lowering
-# ═══════════════════════════════════════════════════════════════════
-
-
 class TestStatementLowering:
     """Test SV always blocks lower to correct IR blocks."""
 
@@ -263,11 +258,6 @@ class TestStatementLowering:
         assert len(stmts) == 1  # single IfElse
 
 
-# ═══════════════════════════════════════════════════════════════════
-# Clock domain inference
-# ═══════════════════════════════════════════════════════════════════
-
-
 class TestClockDomainInference:
     """Test clock domain extraction from always blocks."""
 
@@ -327,11 +317,6 @@ class TestClockDomainInference:
         """)
         assert len(mod.clock_domains) == 1
         assert len(mod.seq_blocks) == 2
-
-
-# ═══════════════════════════════════════════════════════════════════
-# End-to-end simulation: SV → IR → compile → simulate
-# ═══════════════════════════════════════════════════════════════════
 
 
 class TestEndToEndSimulation:
@@ -606,11 +591,6 @@ class TestEndToEndSimulation:
         assert count_vals == list(range(1, 6))
 
 
-# ═══════════════════════════════════════════════════════════════════
-# Error handling
-# ═══════════════════════════════════════════════════════════════════
-
-
 class TestErrorHandling:
     """Test that errors are reported properly."""
 
@@ -629,10 +609,6 @@ class TestErrorHandling:
                 top="nonexistent",
             )
 
-
-# ═══════════════════════════════════════════════════════════════════
-# dau-build bridge
-# ═══════════════════════════════════════════════════════════════════
 
 _dau_build_available = False
 try:
