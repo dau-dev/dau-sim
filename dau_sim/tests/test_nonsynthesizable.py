@@ -1,10 +1,13 @@
 """Tests for non-synthesizable constructs.
 
 Covers: initial blocks, $display (Print), assertions, $finish (Finish),
-delay statements, and SimulationFinish exception.
+delay statements, $random (SysRandom), $readmemh/$readmemb (ReadMem),
+and SimulationFinish exception.
 """
 
 import io
+import os
+import tempfile
 import unittest
 from contextlib import redirect_stdout
 
@@ -28,7 +31,8 @@ from dau_sim.ir import (
     Signal,
     SignalRef,
 )
-from dau_sim.ir.stmt import Delay, Finish
+from dau_sim.ir.expr import SysRandom
+from dau_sim.ir.stmt import Delay, Finish, ReadMem
 
 
 def _make_signal(name, width=8, init=0):
@@ -431,6 +435,258 @@ class TestIntegration(unittest.TestCase):
         self.assertEqual(vals[0], 51)
         self.assertEqual(vals[1], 52)
         self.assertEqual(vals[2], 53)
+
+
+class TestSysRandom(unittest.TestCase):
+    """Tests for $random system function."""
+
+    def test_random_returns_value_in_shape(self):
+        """$random assigns a value that fits within the output shape."""
+        y = _make_signal("y", 8, init=0)
+        mod = Module(
+            name="random_test",
+            ports=(Port(y, PortDirection.OUTPUT),),
+            signals=(),
+            clock_domains=(),
+            comb_blocks=(CombBlock(stmts=(Assign("y", SysRandom(Shape(8))),)),),
+            seq_blocks=(),
+        )
+        cm = compile_module(mod)
+        traces = cm.run(cycles=1)
+        val = traces["y"][0][1]
+        # Value must fit in 8 unsigned bits
+        self.assertGreaterEqual(val, 0)
+        self.assertLessEqual(val, 255)
+
+    def test_random_produces_varying_values(self):
+        """Multiple $random evaluations produce different values (high probability)."""
+        y = _make_signal("y", 32, init=0)
+        clk = _make_port("clk", 1)
+        mod = Module(
+            name="random_seq",
+            ports=(clk, Port(y, PortDirection.OUTPUT)),
+            signals=(),
+            clock_domains=(ClockDomain("sync", "clk"),),
+            comb_blocks=(),
+            seq_blocks=(SeqBlock(domain="sync", stmts=(Assign("y", SysRandom(Shape(32))),)),),
+        )
+        cm = compile_module(mod)
+        traces = cm.run(cycles=10)
+        vals = [v for _, v in traces["y"]]
+        # At least 2 distinct values over 10 cycles
+        self.assertGreater(len(set(vals)), 1)
+
+    def test_random_with_seed_is_deterministic(self):
+        """$random(seed) produces the same sequence across runs."""
+        y = _make_signal("y", 16, init=0)
+        mod = Module(
+            name="random_seeded",
+            ports=(Port(y, PortDirection.OUTPUT),),
+            signals=(),
+            clock_domains=(),
+            comb_blocks=(CombBlock(stmts=(Assign("y", SysRandom(Shape(16), seed=Const(Shape(32), 12345))),)),),
+            seq_blocks=(),
+        )
+        cm1 = compile_module(mod)
+        traces1 = cm1.run(cycles=5)
+        vals1 = [v for _, v in traces1["y"]]
+
+        cm2 = compile_module(mod)
+        traces2 = cm2.run(cycles=5)
+        vals2 = [v for _, v in traces2["y"]]
+
+        self.assertEqual(vals1, vals2)
+
+    def test_random_in_init_block(self):
+        """$random works inside initial blocks."""
+        y = _make_signal("y", 8, init=0)
+        mod = Module(
+            name="random_init",
+            ports=(Port(y, PortDirection.OUTPUT),),
+            signals=(),
+            clock_domains=(),
+            comb_blocks=(),
+            seq_blocks=(),
+            init_blocks=(InitBlock(stmts=(Assign("y", SysRandom(Shape(8))),)),),
+        )
+        cm = compile_module(mod)
+        traces = cm.run(cycles=1)
+        val = traces["y"][0][1]
+        self.assertGreaterEqual(val, 0)
+        self.assertLessEqual(val, 255)
+
+    def test_random_signed_shape(self):
+        """$random with signed shape can produce negative values (over many runs)."""
+        y = Signal("y", Shape(8, signed=True), init=0)
+        mod = Module(
+            name="random_signed",
+            ports=(Port(y, PortDirection.OUTPUT),),
+            signals=(),
+            clock_domains=(),
+            comb_blocks=(CombBlock(stmts=(Assign("y", SysRandom(Shape(8, signed=True))),)),),
+            seq_blocks=(),
+        )
+        # Run multiple times to check at least one negative
+        found_negative = False
+        for _ in range(20):
+            cm = compile_module(mod)
+            traces = cm.run(cycles=1)
+            val = traces["y"][0][1]
+            if val < 0:
+                found_negative = True
+                break
+        self.assertTrue(found_negative, "Expected at least one negative value from signed $random")
+
+
+class TestReadMem(unittest.TestCase):
+    """Tests for $readmemh/$readmemb system tasks."""
+
+    def _make_mem_module(self, init_stmts):
+        """Helper: create a module with a 8x8 memory and init blocks."""
+        from dau_sim.ir.module import Memory, ReadPort
+
+        mem = Memory(
+            name="rom",
+            shape=Shape(8),
+            depth=8,
+            read_ports=(ReadPort(addr="addr", data="data", en="re"),),
+            write_ports=(),
+        )
+        addr_sig = _make_signal("addr", 3, init=0)
+        data_sig = _make_signal("data", 8, init=0)
+        re_sig = _make_signal("re", 1, init=1)
+        return Module(
+            name="readmem_test",
+            ports=(
+                Port(addr_sig, PortDirection.INPUT),
+                Port(data_sig, PortDirection.OUTPUT),
+            ),
+            signals=(re_sig,),
+            clock_domains=(),
+            comb_blocks=(),
+            seq_blocks=(),
+            init_blocks=(InitBlock(stmts=init_stmts),),
+            memories=(mem,),
+        )
+
+    def test_readmemh_basic(self):
+        """$readmemh loads hex values into memory."""
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".hex", delete=False) as f:
+            f.write("AA\nBB\nCC\nDD\n")
+            f.flush()
+            path = f.name
+        try:
+            mod = self._make_mem_module((ReadMem(path=path, mem_name="rom", is_hex=True),))
+            cm = compile_module(mod)
+            cm.run(cycles=1)
+            # Memory should be loaded: rom[0]=0xAA, rom[1]=0xBB, ...
+            self.assertEqual(cm._mem_init["rom"][0], 0xAA)
+            self.assertEqual(cm._mem_init["rom"][1], 0xBB)
+            self.assertEqual(cm._mem_init["rom"][2], 0xCC)
+            self.assertEqual(cm._mem_init["rom"][3], 0xDD)
+        finally:
+            os.unlink(path)
+
+    def test_readmemb_basic(self):
+        """$readmemb loads binary values into memory."""
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".bin", delete=False) as f:
+            f.write("10101010\n11001100\n11110000\n")
+            f.flush()
+            path = f.name
+        try:
+            mod = self._make_mem_module((ReadMem(path=path, mem_name="rom", is_hex=False),))
+            cm = compile_module(mod)
+            cm.run(cycles=1)
+            self.assertEqual(cm._mem_init["rom"][0], 0b10101010)
+            self.assertEqual(cm._mem_init["rom"][1], 0b11001100)
+            self.assertEqual(cm._mem_init["rom"][2], 0b11110000)
+        finally:
+            os.unlink(path)
+
+    def test_readmemh_with_comments(self):
+        """$readmemh ignores // comments and blank lines."""
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".hex", delete=False) as f:
+            f.write("// header comment\n\n01\n// middle\n02\n03\n")
+            f.flush()
+            path = f.name
+        try:
+            mod = self._make_mem_module((ReadMem(path=path, mem_name="rom", is_hex=True),))
+            cm = compile_module(mod)
+            cm.run(cycles=1)
+            self.assertEqual(cm._mem_init["rom"][0], 1)
+            self.assertEqual(cm._mem_init["rom"][1], 2)
+            self.assertEqual(cm._mem_init["rom"][2], 3)
+        finally:
+            os.unlink(path)
+
+    def test_readmemh_with_address(self):
+        """$readmemh supports @address directives."""
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".hex", delete=False) as f:
+            f.write("@03\nFF\nFE\n")
+            f.flush()
+            path = f.name
+        try:
+            mod = self._make_mem_module((ReadMem(path=path, mem_name="rom", is_hex=True),))
+            cm = compile_module(mod)
+            cm.run(cycles=1)
+            # Addresses 0-2 untouched (0), address 3-4 set
+            self.assertEqual(cm._mem_init["rom"][0], 0)
+            self.assertEqual(cm._mem_init["rom"][3], 0xFF)
+            self.assertEqual(cm._mem_init["rom"][4], 0xFE)
+        finally:
+            os.unlink(path)
+
+    def test_readmemh_with_start_end_addr(self):
+        """$readmemh with start/end address limits the range."""
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".hex", delete=False) as f:
+            f.write("11\n22\n33\n44\n55\n66\n77\n88\n")
+            f.flush()
+            path = f.name
+        try:
+            mod = self._make_mem_module((ReadMem(path=path, mem_name="rom", is_hex=True, start_addr=2, end_addr=4),))
+            cm = compile_module(mod)
+            cm.run(cycles=1)
+            # Only addresses 2-4 filled
+            self.assertEqual(cm._mem_init["rom"][0], 0)
+            self.assertEqual(cm._mem_init["rom"][1], 0)
+            self.assertEqual(cm._mem_init["rom"][2], 0x11)
+            self.assertEqual(cm._mem_init["rom"][3], 0x22)
+            self.assertEqual(cm._mem_init["rom"][4], 0x33)
+            self.assertEqual(cm._mem_init["rom"][5], 0)
+        finally:
+            os.unlink(path)
+
+    def test_readmemh_multiple_tokens_per_line(self):
+        """$readmemh handles multiple space-separated values per line."""
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".hex", delete=False) as f:
+            f.write("0A 0B 0C\n0D 0E\n")
+            f.flush()
+            path = f.name
+        try:
+            mod = self._make_mem_module((ReadMem(path=path, mem_name="rom", is_hex=True),))
+            cm = compile_module(mod)
+            cm.run(cycles=1)
+            self.assertEqual(cm._mem_init["rom"][0], 0x0A)
+            self.assertEqual(cm._mem_init["rom"][1], 0x0B)
+            self.assertEqual(cm._mem_init["rom"][2], 0x0C)
+            self.assertEqual(cm._mem_init["rom"][3], 0x0D)
+            self.assertEqual(cm._mem_init["rom"][4], 0x0E)
+        finally:
+            os.unlink(path)
+
+    def test_readmem_bad_memory_name(self):
+        """$readmemh with unknown memory name raises RuntimeError."""
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".hex", delete=False) as f:
+            f.write("01\n")
+            f.flush()
+            path = f.name
+        try:
+            mod = self._make_mem_module((ReadMem(path=path, mem_name="nonexistent", is_hex=True),))
+            with self.assertRaises(RuntimeError):
+                cm = compile_module(mod)
+                cm.run(cycles=1)
+        finally:
+            os.unlink(path)
 
 
 if __name__ == "__main__":

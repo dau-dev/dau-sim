@@ -21,6 +21,7 @@ from dau_sim.ir.expr import (
     Mux,
     SignalRef,
     Slice,
+    SysRandom,
     Unary,
     UnaryOp,
 )
@@ -73,6 +74,15 @@ def eval_expr_4(expr: Expr, signals: dict[str, FourState]) -> FourState:
         aval = (v.aval >> expr.low) & slice_mask
         bval = (v.bval >> expr.low) & slice_mask
         return FourState(shape=expr.shape, aval=aval, bval=bval)
+
+    if isinstance(expr, SysRandom):
+        from dau_sim.compiler.eval import _sys_random_rng
+
+        if expr.seed is not None:
+            seed_fs = eval_expr_4(expr.seed, signals)
+            _sys_random_rng.seed(seed_fs.aval)
+        val = _sys_random_rng.randint(-(1 << 31), (1 << 31) - 1)
+        return FourState.from_int(val, expr.shape)
 
     raise TypeError(f"Unknown expression type: {type(expr).__name__}")
 

@@ -161,6 +161,64 @@ traces = cm.run(
 cm.write_vcd("shift_reg.vcd", traces, timescale="1ns")
 ```
 
+### cocotb Integration
+
+dau-sim includes a pure-Python [cocotb](https://www.cocotb.org/) backend that lets
+you run existing cocotb testbenches directly on dau-sim — no Verilog compilation or
+external simulator required. The backend implements Verilog-style non-blocking
+assignment (NBA) semantics so that `RisingEdge` callbacks see pre-NBA values,
+matching real HDL simulator behavior.
+
+```python
+from dau_sim.frontends import from_amaranth
+from dau_sim.backends.cocotb_backend import run_cocotb
+
+from amaranth.hdl import Module
+from amaranth.lib import wiring
+from amaranth.lib.wiring import In, Out
+
+
+class Counter(wiring.Component):
+    en: In(1)
+    count: Out(8)
+
+    def elaborate(self, platform):
+        m = Module()
+        with m.If(self.en):
+            m.d.sync += self.count.eq(self.count + 1)
+        return m
+
+
+# Run cocotb testbench against the Amaranth design
+run_cocotb(Counter(), test_module="test_counter")
+```
+
+Then write your cocotb test as usual in `test_counter.py`:
+
+```python
+import cocotb
+from cocotb.clock import Clock
+from cocotb._gpi_triggers import RisingEdge
+
+
+@cocotb.test()
+async def test_counting(dut):
+    clock = Clock(dut.clk, 10, unit="ns")
+    clock.start()
+
+    dut.en.value = 0
+    await RisingEdge(dut.clk)
+
+    dut.en.value = 1
+    for expected in range(10):
+        await RisingEdge(dut.clk)
+        # NBA semantics: value visible one cycle after the edge
+        await RisingEdge(dut.clk)
+        assert int(dut.count.value) == expected + 1
+```
+
+You can also pass an IR `Module` directly instead of an Amaranth design.
+
 ## Architecture
 
 ```
@@ -211,6 +269,13 @@ Amaranth / SystemVerilog / Hand-built IR
 | `cm.run(cycles, clock_period, inputs, clocks)` | Simulate and return traces             |
 | `cm.write_vcd(path, traces, timescale="1ns")`  | Write traces to VCD file               |
 | `cm.traces_to_vcd(traces, timescale="1ns")`    | Convert traces to VCD string           |
+
+### Backends
+
+| Function / Class                       | Description                                                 |
+| -------------------------------------- | ----------------------------------------------------------- |
+| `run_cocotb(design, test_module, ...)` | Run cocotb testbench against Amaranth design or IR `Module` |
+| `SimulationEngine(module)`             | Low-level engine with NBA-correct event scheduling          |
 
 ### IR Types
 

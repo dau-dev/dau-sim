@@ -2,12 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum, auto
-from typing import TYPE_CHECKING
 
 from dau_sim.ir.types import Shape
-
-if TYPE_CHECKING:
-    pass
 
 
 class UnaryOp(Enum):
@@ -143,3 +139,15 @@ class Slice(Expr):
             raise ValueError(f"Invalid slice bounds: [{self.low}:{self.high})")
         if self.shape.width != self.high - self.low:
             raise ValueError(f"Slice shape width {self.shape.width} doesn't match bounds [{self.low}:{self.high})")
+
+
+@dataclass(frozen=True)
+class SysRandom(Expr):
+    """``$random`` system function.
+
+    Returns a pseudo-random 32-bit signed integer.  An optional *seed*
+    expression, when provided, seeds the PRNG on first call (matching
+    Verilog ``$random(seed)`` semantics).
+    """
+
+    seed: Expr | None = None

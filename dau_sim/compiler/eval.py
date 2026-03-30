@@ -6,6 +6,8 @@ Values are Python ints, masked/truncated to the signal's width.
 
 from __future__ import annotations
 
+import random as _random
+
 from dau_sim.ir.expr import (
     Binary,
     BinaryOp,
@@ -15,10 +17,14 @@ from dau_sim.ir.expr import (
     Mux,
     SignalRef,
     Slice,
+    SysRandom,
     Unary,
     UnaryOp,
 )
 from dau_sim.ir.types import Shape
+
+# Module-level PRNG instance for $random — seeded lazily.
+_sys_random_rng: _random.Random = _random.Random()
 
 
 def mask_value(value: int, shape: Shape) -> int:
@@ -69,6 +75,13 @@ def eval_expr(expr: Expr, signals: dict[str, int]) -> int:
         # Extract bits [low:high)
         extracted = (val >> expr.low) & ((1 << (expr.high - expr.low)) - 1)
         return mask_value(extracted, expr.shape)
+
+    if isinstance(expr, SysRandom):
+        if expr.seed is not None:
+            seed_val = eval_expr(expr.seed, signals)
+            _sys_random_rng.seed(seed_val)
+        # Verilog $random returns a 32-bit signed integer
+        return mask_value(_sys_random_rng.randint(-(1 << 31), (1 << 31) - 1), expr.shape)
 
     raise TypeError(f"Unknown expression type: {type(expr).__name__}")
 
