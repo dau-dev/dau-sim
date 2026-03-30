@@ -491,6 +491,66 @@ class TestDualClock:
         assert slow_vals[-1] == 5, f"Expected slow_count=5, got {slow_vals[-1]}"
 
 
+def _make_mixed_edge_single_clock() -> Module:
+    """Two counters sharing one clock, one posedge and one negedge."""
+    return Module(
+        name="mixed_edge",
+        ports=(
+            Port(Signal("clk", Shape(1)), PortDirection.INPUT),
+            Port(Signal("pos_count", Shape(8), init=0), PortDirection.OUTPUT),
+            Port(Signal("neg_count", Shape(8), init=0), PortDirection.OUTPUT),
+        ),
+        clock_domains=(
+            ClockDomain("pos", clk="clk", edge=EdgePolarity.POSEDGE),
+            ClockDomain("neg", clk="clk", edge=EdgePolarity.NEGEDGE),
+        ),
+        seq_blocks=(
+            SeqBlock(
+                "pos",
+                stmts=(
+                    Assign(
+                        "pos_count",
+                        Binary(
+                            Shape(8),
+                            BinaryOp.ADD,
+                            SignalRef(Shape(8), "pos_count"),
+                            Const(Shape(8), 1),
+                        ),
+                    ),
+                ),
+            ),
+            SeqBlock(
+                "neg",
+                stmts=(
+                    Assign(
+                        "neg_count",
+                        Binary(
+                            Shape(8),
+                            BinaryOp.ADD,
+                            SignalRef(Shape(8), "neg_count"),
+                            Const(Shape(8), 1),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    )
+
+
+class TestMixedClockEdges:
+    def test_posedge_and_negedge_domains_progress_equally(self):
+        """Both domains should tick once per full period on shared clock."""
+        m = _make_mixed_edge_single_clock()
+        cm = compile_module(m)
+        traces = cm.run(cycles=8)
+
+        pos_vals = [v for _, v in traces["pos_count"]]
+        neg_vals = [v for _, v in traces["neg_count"]]
+
+        assert pos_vals[-1] == 8, f"Expected pos_count=8, got {pos_vals[-1]}"
+        assert neg_vals[-1] == 8, f"Expected neg_count=8, got {neg_vals[-1]}"
+
+
 class TestLongRunCounter:
     def test_100_cycle_counter(self):
         """Simulate 4-bit counter with reset for 100 cycles."""
