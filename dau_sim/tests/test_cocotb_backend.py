@@ -956,3 +956,45 @@ class TestCocotbIntegration:
             assert results == [1, 0]
         finally:
             self._teardown_cocotb()
+
+    def test_timer_and_edge_same_timestep(self):
+        """Timer+edge combination should complete when both happen together."""
+        import cocotb
+
+        engine = self._setup_cocotb(_make_comb_module())
+        try:
+            from cocotb._gpi_triggers import RisingEdge, Timer
+            from cocotb.task import Task
+            from cocotb.triggers import Combine
+
+            result = []
+
+            async def driver():
+                # Schedule a rising edge at the exact same time as Timer(100).
+                await Timer(100, unit="step")
+                cocotb.top.a.value = 1
+
+            async def waiter():
+                await Combine(
+                    Timer(100, unit="step"),
+                    RisingEdge(cocotb.top.a),
+                )
+                result.append(engine._sim_time)
+                engine.stop()
+
+            t1 = Task(driver())
+            t2 = Task(waiter())
+            cocotb._scheduler_inst._schedule_task_internal(t1)
+            cocotb._scheduler_inst._schedule_task_internal(t2)
+            cocotb.handle._start_write_scheduler()
+            cocotb._scheduler_inst._event_loop()
+
+            engine._running = True
+            engine.run(max_steps=100_000)
+
+            cocotb.handle._stop_write_scheduler()
+
+            assert len(result) == 1
+            assert result[0] == 100
+        finally:
+            self._teardown_cocotb()
