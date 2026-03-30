@@ -86,3 +86,20 @@ class Finish(Stmt):
     """
 
     exit_code: int = 0
+
+
+@dataclass(frozen=True)
+class ReadMem(Stmt):
+    """Load memory contents from a file (``$readmemh``/``$readmemb``).
+
+    *path* is the file path (resolved relative to the caller).
+    *mem_name* is the name of the IR ``Memory`` to populate.
+    *is_hex* selects hex (True, ``$readmemh``) or binary (False, ``$readmemb``).
+    Optional *start_addr* / *end_addr* limit the address range filled.
+    """
+
+    path: str
+    mem_name: str
+    is_hex: bool = True
+    start_addr: int | None = None
+    end_addr: int | None = None

@@ -15,7 +15,7 @@ from dau_sim.compiler.depanalysis import (
 from dau_sim.compiler.eval import eval_expr, mask_value
 from dau_sim.compiler.eval4 import eval_expr_4
 from dau_sim.ir.module import Module, SeqBlock
-from dau_sim.ir.stmt import Assert, Assign, Delay, Finish, IfElse, Print, Stmt, Switch
+from dau_sim.ir.stmt import Assert, Assign, Delay, Finish, IfElse, Print, ReadMem, Stmt, Switch
 from dau_sim.ir.types import EdgePolarity, FourState, NetKind, ResetStyle, Shape
 
 
@@ -31,16 +31,18 @@ def _exec_stmts(
     stmts: tuple[Stmt, ...],
     signals: dict[str, int],
     shapes: dict[str, Shape],
+    mem_state: dict[str, list[int]] | None = None,
 ) -> None:
     """Execute a list of statements, mutating signals in-place."""
     for stmt in stmts:
-        _exec_stmt(stmt, signals, shapes)
+        _exec_stmt(stmt, signals, shapes, mem_state)
 
 
 def _exec_stmt(
     stmt: Stmt,
     current: dict[str, int],
     shapes: dict[str, Shape],
+    mem_state: dict[str, list[int]] | None = None,
 ) -> None:
     """Execute a single statement, mutating current signal values."""
     if isinstance(stmt, Assign):
@@ -52,7 +54,7 @@ def _exec_stmt(
         cond = eval_expr(stmt.cond, current)
         body = stmt.then_body if cond else stmt.else_body
         for s in body:
-            _exec_stmt(s, current, shapes)
+            _exec_stmt(s, current, shapes, mem_state)
 
     elif isinstance(stmt, Switch):
         test = eval_expr(stmt.test, current)
@@ -64,11 +66,11 @@ def _exec_stmt(
             elif pattern == test:
                 matched = True
                 for s in stmts:
-                    _exec_stmt(s, current, shapes)
+                    _exec_stmt(s, current, shapes, mem_state)
                 break
         if not matched and default_stmts:
             for s in default_stmts:
-                _exec_stmt(s, current, shapes)
+                _exec_stmt(s, current, shapes, mem_state)
 
     elif isinstance(stmt, Assert):
         cond = eval_expr(stmt.cond, current)
@@ -85,6 +87,42 @@ def _exec_stmt(
 
     elif isinstance(stmt, Delay):
         pass  # Delay is a no-op in synchronous execution; handled by InitBlock runner
+
+    elif isinstance(stmt, ReadMem):
+        if mem_state is None:
+            raise RuntimeError("$readmemh/$readmemb requires mem_state (use in initial block)")
+        _exec_readmem(stmt, mem_state)
+
+
+def _exec_readmem(stmt: ReadMem, mem_state: dict[str, list[int]]) -> None:
+    """Execute a $readmemh/$readmemb statement, loading data into memory."""
+    if stmt.mem_name not in mem_state:
+        raise RuntimeError(f"Memory '{stmt.mem_name}' not found for $readmem")
+
+    mem = mem_state[stmt.mem_name]
+    base = 16 if stmt.is_hex else 2
+
+    with open(stmt.path) as f:
+        addr = stmt.start_addr if stmt.start_addr is not None else 0
+        end = stmt.end_addr if stmt.end_addr is not None else len(mem) - 1
+
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("//"):
+                continue
+            # Address override: @<hex_addr>
+            if line.startswith("@"):
+                addr = int(line[1:], 16)
+                continue
+            # Parse data value
+            for token in line.split():
+                if token.startswith("//"):
+                    break
+                if addr > end:
+                    break
+                if addr < len(mem):
+                    mem[addr] = int(token, base)
+                addr += 1
 
 
 def _exec_stmts_4(
@@ -161,6 +199,9 @@ def _exec_stmt_4(
 
     elif isinstance(stmt, Delay):
         pass  # No-op in synchronous execution
+
+    elif isinstance(stmt, ReadMem):
+        pass  # ReadMem is handled at init-block level only (two-state exec)
 
 
 def _build_domain_info(
@@ -896,13 +937,20 @@ class CompiledModule:
 
         all_names = list(shapes.keys())
 
+        # Set up memory state for init blocks ($readmemh/$readmemb)
+        init_mem_state = {k: list(v) for k, v in self._mem_init.items()} if self._mem_init else None
+
         for ib in module.init_blocks:
             try:
-                _exec_stmts(ib.stmts, init, shapes)
+                _exec_stmts(ib.stmts, init, shapes, mem_state=init_mem_state)
             except SimulationFinish:
                 # $finish in init block → return single-point traces
                 starttime = datetime(2000, 1, 1)
                 return {name: [(starttime, init.get(name, 0))] for name in all_names}
+
+        # Persist any $readmemh/$readmemb changes back to mem_init
+        if init_mem_state:
+            self._mem_init.update(init_mem_state)
 
         if self._has_seq:
             return self._run_sequential(
