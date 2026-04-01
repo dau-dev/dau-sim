@@ -1,6 +1,6 @@
-# dau-sim
+# dau sim
 
-A cycle-accurate hardware simulator built on [csp](https://github.com/Point72/csp).
+dau simulator
 
 [![Build Status](https://github.com/dau-dev/dau-sim/actions/workflows/build.yaml/badge.svg?branch=main&event=push)](https://github.com/dau-dev/dau-sim/actions/workflows/build.yaml)
 [![codecov](https://codecov.io/gh/dau-dev/dau-sim/branch/main/graph/badge.svg)](https://codecov.io/gh/dau-dev/dau-sim)

@@ -1,6 +1,7 @@
 [build-system]
 requires = [
     "hatchling",
+    "hatch-js",
 ]
 build-backend = "hatchling.build"
 
@@ -31,7 +32,6 @@ classifiers = [
 
 dependencies = [
     "csp",
-
 ]
 
 [project.optional-dependencies]
@@ -40,6 +40,7 @@ develop = [
     "bump-my-version",
     "check-dist",
     "codespell",
+    "hatch-js",
     "hatchling",
     "mdformat",
     "mdformat-tables>=1",
@@ -80,6 +81,14 @@ filename = "pyproject.toml"
 search = 'version = "{current_version}"'
 replace = 'version = "{new_version}"'
 
+[[tool.bumpversion.files]]
+filename = "js/package.json"
+search = '"version": "{current_version}"'
+replace = '"version": "{new_version}"'
+
+[tool.codespell]
+ignore-words-list = ["inout"]
+
 [tool.coverage.run]
 branch = true
 omit = [
@@ -96,7 +105,9 @@ ignore_errors = true
 fail_under = 50
 
 [tool.hatch.build]
-artifacts = []
+artifacts = [
+    "dau_sim/extension",
+]
 
 [tool.hatch.build.sources]
 src = "/"
@@ -104,14 +115,28 @@ src = "/"
 [tool.hatch.build.targets.sdist]
 packages = [
     "dau_sim",
+    "js",
+]
+exclude = [
+    "js/dist",
+    "js/node_modules",
 ]
 
 [tool.hatch.build.targets.wheel]
 packages = [
     "dau_sim",
 ]
+exclude = [
+    "js",
+]
 
-[tool.hatch.build.targets.wheel.shared-data]
+[tool.hatch.build.hooks.hatch-js]
+path = "js"
+build_cmd = "build"
+tool = "pnpm"
+targets = [
+    "dau_sim/extension/cdn/index.js",
+]
 
 [tool.pytest.ini_options]
 addopts = [
@@ -156,5 +181,8 @@ section-order = [
     "F403",
 ]
 
-[tool.codespell]
-ignore-words-list = ["inout"]
+[tool.yardang]
+title = "dau sim"
+root = "README.md"
+pages = []
+use-autoapi = true
