@@ -1,0 +1,65 @@
+dau_sim.ir.printer
+==================
+
+.. py:module:: dau_sim.ir.printer
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   dau_sim.ir.printer._UNARY_SYMBOLS
+   dau_sim.ir.printer._BINARY_SYMBOLS
+   dau_sim.ir.printer._DIR_SYMBOLS
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   dau_sim.ir.printer.fmt_expr
+   dau_sim.ir.printer.fmt_stmt
+   dau_sim.ir.printer.fmt_signal
+   dau_sim.ir.printer.fmt_port
+   dau_sim.ir.printer.fmt_module
+
+
+Module Contents
+---------------
+
+.. py:data:: _UNARY_SYMBOLS
+   :type:  dict[dau_sim.ir.expr.UnaryOp, str]
+
+.. py:data:: _BINARY_SYMBOLS
+   :type:  dict[dau_sim.ir.expr.BinaryOp, str]
+
+.. py:data:: _DIR_SYMBOLS
+   :type:  dict[dau_sim.ir.types.PortDirection, str]
+
+.. py:function:: fmt_expr(e: dau_sim.ir.expr.Expr) -> str
+
+   Format an expression as a compact string.
+
+
+.. py:function:: fmt_stmt(s: dau_sim.ir.stmt.Stmt, indent: int = 0) -> str
+
+   Format a statement with indentation.
+
+
+.. py:function:: fmt_signal(s: dau_sim.ir.module.Signal) -> str
+
+   Format a signal declaration.
+
+
+.. py:function:: fmt_port(p: dau_sim.ir.module.Port) -> str
+
+   Format a port declaration.
+
+
+.. py:function:: fmt_module(m: dau_sim.ir.module.Module) -> str
+
+   Format a complete module as a readable string.
+
+

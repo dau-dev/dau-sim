@@ -1,0 +1,2067 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="dau_sim.ir.expr" href="expr/index.html"><link rel="prev" title="dau_sim.frontends.pyslang_frontend" href="../frontends/pyslang_frontend/index.html">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>dau_sim.ir - dau sim v0.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/custom.css?v=890fd012" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">dau sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.1.0</code></div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <span class="sidebar-brand-text">dau sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.1.0</code></span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html">dau_sim</a><input aria-label="Toggle navigation of dau_sim" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../adapters/index.html">dau_sim.adapters</a><input aria-label="Toggle navigation of dau_sim.adapters" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../adapters/selectors/index.html">dau_sim.adapters.selectors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../adapters/vcd/index.html">dau_sim.adapters.vcd</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../backends/index.html">dau_sim.backends</a><input aria-label="Toggle navigation of dau_sim.backends" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../backends/cocotb_backend/index.html">dau_sim.backends.cocotb_backend</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../compiler/index.html">dau_sim.compiler</a><input aria-label="Toggle navigation of dau_sim.compiler" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../compiler/compile/index.html">dau_sim.compiler.compile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../compiler/depanalysis/index.html">dau_sim.compiler.depanalysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../compiler/eval/index.html">dau_sim.compiler.eval</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../compiler/eval4/index.html">dau_sim.compiler.eval4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../compiler/flatten/index.html">dau_sim.compiler.flatten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../compiler/resolve/index.html">dau_sim.compiler.resolve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../compiler/rewrite/index.html">dau_sim.compiler.rewrite</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../frontends/index.html">dau_sim.frontends</a><input aria-label="Toggle navigation of dau_sim.frontends" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../frontends/amaranth_frontend/index.html">dau_sim.frontends.amaranth_frontend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../frontends/pyslang_frontend/index.html">dau_sim.frontends.pyslang_frontend</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current has-children current-page"><a class="current reference internal" href="#">dau_sim.ir</a><input aria-label="Toggle navigation of dau_sim.ir" checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="expr/index.html">dau_sim.ir.expr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="module/index.html">dau_sim.ir.module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="printer/index.html">dau_sim.ir.printer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stmt/index.html">dau_sim.ir.stmt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="types/index.html">dau_sim.ir.types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validate/index.html">dau_sim.ir.validate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../runtime/index.html">dau_sim.runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../testbench/index.html">dau_sim.testbench</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_ir/index.html">test_ir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_vcd/index.html">test_vcd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_eval/index.html">test_eval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_sim_seq/index.html">test_sim_seq</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_sim_comb/index.html">test_sim_comb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_compiler/index.html">test_compiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_testbench/index.html">test_testbench</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_selectors/index.html">test_selectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_frontend_sv/index.html">test_frontend_sv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_cocotb_backend/index.html">test_cocotb_backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_cocotb_examples/index.html">test_cocotb_examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_nonsynthesizable/index.html">test_nonsynthesizable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_frontend_amaranth/index.html">test_frontend_amaranth</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../_sources/autoapi/dau_sim/ir/index.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-dau_sim.ir">
+<span id="dau-sim-ir"></span><h1>dau_sim.ir<a class="headerlink" href="#module-dau_sim.ir" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="expr/index.html">dau_sim.ir.expr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module/index.html">dau_sim.ir.module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="printer/index.html">dau_sim.ir.printer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stmt/index.html">dau_sim.ir.stmt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types/index.html">dau_sim.ir.types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validate/index.html">dau_sim.ir.validate</a></li>
+</ul>
+</div>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id28" title="dau_sim.ir.Shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Shape</span></code></a></p></td>
+<td><p>Bit-width and signedness of a signal.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.ir.UnaryOp" title="dau_sim.ir.UnaryOp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UnaryOp</span></code></a></p></td>
+<td><p>Unary operators.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.ir.BinaryOp" title="dau_sim.ir.BinaryOp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BinaryOp</span></code></a></p></td>
+<td><p>Binary operators.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id9" title="dau_sim.ir.Expr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Expr</span></code></a></p></td>
+<td><p>Base class for all IR expressions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.ir.Const" title="dau_sim.ir.Const"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Const</span></code></a></p></td>
+<td><p>Constant integer value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.ir.SignalRef" title="dau_sim.ir.SignalRef"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SignalRef</span></code></a></p></td>
+<td><p>Reference to a named signal.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.ir.Unary" title="dau_sim.ir.Unary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Unary</span></code></a></p></td>
+<td><p>Unary operation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.ir.Binary" title="dau_sim.ir.Binary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Binary</span></code></a></p></td>
+<td><p>Binary operation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.ir.Mux" title="dau_sim.ir.Mux"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Mux</span></code></a></p></td>
+<td><p>Two-input multiplexer (ternary operator).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.ir.Concat" title="dau_sim.ir.Concat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Concat</span></code></a></p></td>
+<td><p>Bit concatenation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.ir.Slice" title="dau_sim.ir.Slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Slice</span></code></a></p></td>
+<td><p>Bit slice extraction.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.ir.SysRandom" title="dau_sim.ir.SysRandom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SysRandom</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$random</span></code> system function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id9" title="dau_sim.ir.Expr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Expr</span></code></a></p></td>
+<td><p>Base class for all IR expressions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id11" title="dau_sim.ir.Stmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Stmt</span></code></a></p></td>
+<td><p>Base class for all IR statements.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id16" title="dau_sim.ir.EdgePolarity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EdgePolarity</span></code></a></p></td>
+<td><p>Clock edge sensitivity.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id23" title="dau_sim.ir.NetKind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NetKind</span></code></a></p></td>
+<td><p>Net resolution semantics for multi-driver signals.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id12" title="dau_sim.ir.PortDirection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PortDirection</span></code></a></p></td>
+<td><p>Direction of a module port.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id20" title="dau_sim.ir.ResetStyle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ResetStyle</span></code></a></p></td>
+<td><p>Reset behavior.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id28" title="dau_sim.ir.Shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Shape</span></code></a></p></td>
+<td><p>Bit-width and signedness of a signal.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.ir.Signal" title="dau_sim.ir.Signal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Signal</span></code></a></p></td>
+<td><p>A named net within a module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.ir.Port" title="dau_sim.ir.Port"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Port</span></code></a></p></td>
+<td><p>A module port — a signal with direction.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.ir.ClockDomain" title="dau_sim.ir.ClockDomain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ClockDomain</span></code></a></p></td>
+<td><p>A clock domain with clock signal, edge, and optional reset.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.ir.CombBlock" title="dau_sim.ir.CombBlock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CombBlock</span></code></a></p></td>
+<td><p>Combinational logic block (always_comb / assign).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.ir.SeqBlock" title="dau_sim.ir.SeqBlock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SeqBlock</span></code></a></p></td>
+<td><p>Sequential logic block (always_ff).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.ir.InitBlock" title="dau_sim.ir.InitBlock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InitBlock</span></code></a></p></td>
+<td><p>Initial block (non-synthesizable).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.ir.PortBinding" title="dau_sim.ir.PortBinding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PortBinding</span></code></a></p></td>
+<td><p>Binds an instance port to a signal expression in the parent module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.ir.Instance" title="dau_sim.ir.Instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Instance</span></code></a></p></td>
+<td><p>Hierarchical instantiation of another module.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.ir.ReadPort" title="dau_sim.ir.ReadPort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReadPort</span></code></a></p></td>
+<td><p>Memory read port descriptor.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.ir.WritePort" title="dau_sim.ir.WritePort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WritePort</span></code></a></p></td>
+<td><p>Memory write port descriptor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.ir.Memory" title="dau_sim.ir.Memory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Memory</span></code></a></p></td>
+<td><p>Memory array with read and write ports.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.ir.Module" title="dau_sim.ir.Module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Module</span></code></a></p></td>
+<td><p>Top-level module definition.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id9" title="dau_sim.ir.Expr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Expr</span></code></a></p></td>
+<td><p>Base class for all IR expressions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id11" title="dau_sim.ir.Stmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Stmt</span></code></a></p></td>
+<td><p>Base class for all IR statements.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.ir.Assign" title="dau_sim.ir.Assign"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Assign</span></code></a></p></td>
+<td><p>Assign expression value to a signal.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.ir.IfElse" title="dau_sim.ir.IfElse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IfElse</span></code></a></p></td>
+<td><p>Conditional statement.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.ir.Switch" title="dau_sim.ir.Switch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Switch</span></code></a></p></td>
+<td><p>Multi-way branch (case/casez/casex).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.ir.Assert" title="dau_sim.ir.Assert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Assert</span></code></a></p></td>
+<td><p>Assertion statement.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.ir.Print" title="dau_sim.ir.Print"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Print</span></code></a></p></td>
+<td><p>Print statement ($display equivalent).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.ir.Delay" title="dau_sim.ir.Delay"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Delay</span></code></a></p></td>
+<td><p>Delay statement (#N equivalent).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.ir.Finish" title="dau_sim.ir.Finish"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Finish</span></code></a></p></td>
+<td><p>Halt simulation ($finish equivalent).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.ir.ReadMem" title="dau_sim.ir.ReadMem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReadMem</span></code></a></p></td>
+<td><p>Load memory contents from a file (<code class="docutils literal notranslate"><span class="pre">$readmemh</span></code>/<code class="docutils literal notranslate"><span class="pre">$readmemb</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id12" title="dau_sim.ir.PortDirection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PortDirection</span></code></a></p></td>
+<td><p>Direction of a module port.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id16" title="dau_sim.ir.EdgePolarity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EdgePolarity</span></code></a></p></td>
+<td><p>Clock edge sensitivity.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id20" title="dau_sim.ir.ResetStyle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ResetStyle</span></code></a></p></td>
+<td><p>Reset behavior.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id23" title="dau_sim.ir.NetKind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NetKind</span></code></a></p></td>
+<td><p>Net resolution semantics for multi-driver signals.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id28" title="dau_sim.ir.Shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Shape</span></code></a></p></td>
+<td><p>Bit-width and signedness of a signal.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.ir.FourState" title="dau_sim.ir.FourState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FourState</span></code></a></p></td>
+<td><p>Four-state value using the VPI convention.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.ir._signed_int" title="dau_sim.ir._signed_int"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_signed_int</span></code></a>(→ int)</p></td>
+<td><p>Convert an unsigned bit-pattern to a signed int if shape.signed.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="package-contents">
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.Shape">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Shape</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#Shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Shape" title="Link to this definition">¶</a></dt>
+<dd><p>Bit-width and signedness of a signal.</p>
+<p>Canonical type representation shared across all frontends.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Shape.width">
+<span class="sig-name descname"><span class="pre">width</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dau_sim.ir.Shape.width" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Shape.signed">
+<span class="sig-name descname"><span class="pre">signed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#dau_sim.ir.Shape.signed" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.ir.Shape.__post_init__">
+<span class="sig-name descname"><span class="pre">__post_init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#Shape.__post_init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Shape.__post_init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dau_sim.ir.Shape.max_value">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dau_sim.ir.Shape.max_value" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dau_sim.ir.Shape.min_value">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">min_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dau_sim.ir.Shape.min_value" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.ir.Shape.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#Shape.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Shape.__repr__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.UnaryOp">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">UnaryOp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dau_sim/ir/expr.html#UnaryOp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.UnaryOp" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Unary operators.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.UnaryOp.NOT">
+<span class="sig-name descname"><span class="pre">NOT</span></span><a class="headerlink" href="#dau_sim.ir.UnaryOp.NOT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.UnaryOp.NEG">
+<span class="sig-name descname"><span class="pre">NEG</span></span><a class="headerlink" href="#dau_sim.ir.UnaryOp.NEG" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.UnaryOp.BOOL">
+<span class="sig-name descname"><span class="pre">BOOL</span></span><a class="headerlink" href="#dau_sim.ir.UnaryOp.BOOL" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.UnaryOp.RED_AND">
+<span class="sig-name descname"><span class="pre">RED_AND</span></span><a class="headerlink" href="#dau_sim.ir.UnaryOp.RED_AND" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.UnaryOp.RED_OR">
+<span class="sig-name descname"><span class="pre">RED_OR</span></span><a class="headerlink" href="#dau_sim.ir.UnaryOp.RED_OR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.UnaryOp.RED_XOR">
+<span class="sig-name descname"><span class="pre">RED_XOR</span></span><a class="headerlink" href="#dau_sim.ir.UnaryOp.RED_XOR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.BinaryOp">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">BinaryOp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dau_sim/ir/expr.html#BinaryOp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.BinaryOp" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Binary operators.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.BinaryOp.ADD">
+<span class="sig-name descname"><span class="pre">ADD</span></span><a class="headerlink" href="#dau_sim.ir.BinaryOp.ADD" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.BinaryOp.SUB">
+<span class="sig-name descname"><span class="pre">SUB</span></span><a class="headerlink" href="#dau_sim.ir.BinaryOp.SUB" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.BinaryOp.MUL">
+<span class="sig-name descname"><span class="pre">MUL</span></span><a class="headerlink" href="#dau_sim.ir.BinaryOp.MUL" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.BinaryOp.DIV">
+<span class="sig-name descname"><span class="pre">DIV</span></span><a class="headerlink" href="#dau_sim.ir.BinaryOp.DIV" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.BinaryOp.MOD">
+<span class="sig-name descname"><span class="pre">MOD</span></span><a class="headerlink" href="#dau_sim.ir.BinaryOp.MOD" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.BinaryOp.AND">
+<span class="sig-name descname"><span class="pre">AND</span></span><a class="headerlink" href="#dau_sim.ir.BinaryOp.AND" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.BinaryOp.OR">
+<span class="sig-name descname"><span class="pre">OR</span></span><a class="headerlink" href="#dau_sim.ir.BinaryOp.OR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.BinaryOp.XOR">
+<span class="sig-name descname"><span class="pre">XOR</span></span><a class="headerlink" href="#dau_sim.ir.BinaryOp.XOR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.BinaryOp.SHL">
+<span class="sig-name descname"><span class="pre">SHL</span></span><a class="headerlink" href="#dau_sim.ir.BinaryOp.SHL" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.BinaryOp.SHR">
+<span class="sig-name descname"><span class="pre">SHR</span></span><a class="headerlink" href="#dau_sim.ir.BinaryOp.SHR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.BinaryOp.EQ">
+<span class="sig-name descname"><span class="pre">EQ</span></span><a class="headerlink" href="#dau_sim.ir.BinaryOp.EQ" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.BinaryOp.NE">
+<span class="sig-name descname"><span class="pre">NE</span></span><a class="headerlink" href="#dau_sim.ir.BinaryOp.NE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.BinaryOp.LT">
+<span class="sig-name descname"><span class="pre">LT</span></span><a class="headerlink" href="#dau_sim.ir.BinaryOp.LT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.BinaryOp.LE">
+<span class="sig-name descname"><span class="pre">LE</span></span><a class="headerlink" href="#dau_sim.ir.BinaryOp.LE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.BinaryOp.GT">
+<span class="sig-name descname"><span class="pre">GT</span></span><a class="headerlink" href="#dau_sim.ir.BinaryOp.GT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.BinaryOp.GE">
+<span class="sig-name descname"><span class="pre">GE</span></span><a class="headerlink" href="#dau_sim.ir.BinaryOp.GE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.BinaryOp.LOGIC_AND">
+<span class="sig-name descname"><span class="pre">LOGIC_AND</span></span><a class="headerlink" href="#dau_sim.ir.BinaryOp.LOGIC_AND" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.BinaryOp.LOGIC_OR">
+<span class="sig-name descname"><span class="pre">LOGIC_OR</span></span><a class="headerlink" href="#dau_sim.ir.BinaryOp.LOGIC_OR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.Expr">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Expr</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/expr.html#Expr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Expr" title="Link to this definition">¶</a></dt>
+<dd><p>Base class for all IR expressions.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Expr.shape">
+<span class="sig-name descname"><span class="pre">shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="types/index.html#dau_sim.ir.types.Shape" title="dau_sim.ir.types.Shape"><span class="pre">dau_sim.ir.types.Shape</span></a></em><a class="headerlink" href="#dau_sim.ir.Expr.shape" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.Const">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Const</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/expr.html#Const"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Const" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#id9" title="dau_sim.ir.Expr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<p>Constant integer value.</p>
+<p>Value is stored as a Python int, truncated/sign-extended to the given shape
+when evaluated.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Const.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dau_sim.ir.Const.value" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.ir.Const.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/expr.html#Const.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Const.__repr__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.SignalRef">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">SignalRef</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/expr.html#SignalRef"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.SignalRef" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#id9" title="dau_sim.ir.Expr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<p>Reference to a named signal.</p>
+<p><cite>name</cite> is the signal’s unique name within its containing module.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.SignalRef.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.SignalRef.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.ir.SignalRef.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/expr.html#SignalRef.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.SignalRef.__repr__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.Unary">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Unary</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/expr.html#Unary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Unary" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#id9" title="dau_sim.ir.Expr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<p>Unary operation.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Unary.op">
+<span class="sig-name descname"><span class="pre">op</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dau_sim.ir.UnaryOp" title="dau_sim.ir.UnaryOp"><span class="pre">UnaryOp</span></a></em><a class="headerlink" href="#dau_sim.ir.Unary.op" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Unary.operand">
+<span class="sig-name descname"><span class="pre">operand</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#id9" title="dau_sim.ir.Expr"><span class="pre">Expr</span></a></em><a class="headerlink" href="#dau_sim.ir.Unary.operand" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.Binary">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Binary</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/expr.html#Binary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Binary" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#id9" title="dau_sim.ir.Expr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<p>Binary operation.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Binary.op">
+<span class="sig-name descname"><span class="pre">op</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dau_sim.ir.BinaryOp" title="dau_sim.ir.BinaryOp"><span class="pre">BinaryOp</span></a></em><a class="headerlink" href="#dau_sim.ir.Binary.op" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Binary.left">
+<span class="sig-name descname"><span class="pre">left</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#id9" title="dau_sim.ir.Expr"><span class="pre">Expr</span></a></em><a class="headerlink" href="#dau_sim.ir.Binary.left" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Binary.right">
+<span class="sig-name descname"><span class="pre">right</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#id9" title="dau_sim.ir.Expr"><span class="pre">Expr</span></a></em><a class="headerlink" href="#dau_sim.ir.Binary.right" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.Mux">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Mux</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/expr.html#Mux"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Mux" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#id9" title="dau_sim.ir.Expr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<p>Two-input multiplexer (ternary operator).</p>
+<p>sel ? if_true : if_false</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Mux.sel">
+<span class="sig-name descname"><span class="pre">sel</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#id9" title="dau_sim.ir.Expr"><span class="pre">Expr</span></a></em><a class="headerlink" href="#dau_sim.ir.Mux.sel" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Mux.if_true">
+<span class="sig-name descname"><span class="pre">if_true</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#id9" title="dau_sim.ir.Expr"><span class="pre">Expr</span></a></em><a class="headerlink" href="#dau_sim.ir.Mux.if_true" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Mux.if_false">
+<span class="sig-name descname"><span class="pre">if_false</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#id9" title="dau_sim.ir.Expr"><span class="pre">Expr</span></a></em><a class="headerlink" href="#dau_sim.ir.Mux.if_false" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.Concat">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Concat</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/expr.html#Concat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Concat" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#id9" title="dau_sim.ir.Expr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<p>Bit concatenation.</p>
+<p>parts[0] is MSB, parts[-1] is LSB.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Concat.parts">
+<span class="sig-name descname"><span class="pre">parts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#id9" title="dau_sim.ir.Expr"><span class="pre">Expr</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.ir.Concat.parts" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.Slice">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Slice</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/expr.html#Slice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Slice" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#id9" title="dau_sim.ir.Expr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<p>Bit slice extraction.</p>
+<p>Extracts bits [low:high) from value (0-indexed, exclusive upper bound).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Slice.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#id9" title="dau_sim.ir.Expr"><span class="pre">Expr</span></a></em><a class="headerlink" href="#dau_sim.ir.Slice.value" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Slice.low">
+<span class="sig-name descname"><span class="pre">low</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dau_sim.ir.Slice.low" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Slice.high">
+<span class="sig-name descname"><span class="pre">high</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dau_sim.ir.Slice.high" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.ir.Slice.__post_init__">
+<span class="sig-name descname"><span class="pre">__post_init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dau_sim/ir/expr.html#Slice.__post_init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Slice.__post_init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.SysRandom">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">SysRandom</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/expr.html#SysRandom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.SysRandom" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#id9" title="dau_sim.ir.Expr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<p><code class="docutils literal notranslate"><span class="pre">$random</span></code> system function.</p>
+<p>Returns a pseudo-random 32-bit signed integer.  An optional <em>seed</em>
+expression, when provided, seeds the PRNG on first call (matching
+Verilog <code class="docutils literal notranslate"><span class="pre">$random(seed)</span></code> semantics).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.SysRandom.seed">
+<span class="sig-name descname"><span class="pre">seed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#id9" title="dau_sim.ir.Expr"><span class="pre">Expr</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dau_sim.ir.SysRandom.seed" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="id0">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Expr</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/expr.html#Expr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd><p>Base class for all IR expressions.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="types/index.html#dau_sim.ir.types.Shape" title="dau_sim.ir.types.Shape"><span class="pre">dau_sim.ir.types.Shape</span></a></em><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.Stmt">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Stmt</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/stmt.html#Stmt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Stmt" title="Link to this definition">¶</a></dt>
+<dd><p>Base class for all IR statements.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.EdgePolarity">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">EdgePolarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#EdgePolarity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.EdgePolarity" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Clock edge sensitivity.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.EdgePolarity.POSEDGE">
+<span class="sig-name descname"><span class="pre">POSEDGE</span></span><a class="headerlink" href="#dau_sim.ir.EdgePolarity.POSEDGE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.EdgePolarity.NEGEDGE">
+<span class="sig-name descname"><span class="pre">NEGEDGE</span></span><a class="headerlink" href="#dau_sim.ir.EdgePolarity.NEGEDGE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.EdgePolarity.BOTH">
+<span class="sig-name descname"><span class="pre">BOTH</span></span><a class="headerlink" href="#dau_sim.ir.EdgePolarity.BOTH" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.NetKind">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">NetKind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#NetKind"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.NetKind" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Net resolution semantics for multi-driver signals.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.NetKind.WIRE">
+<span class="sig-name descname"><span class="pre">WIRE</span></span><a class="headerlink" href="#dau_sim.ir.NetKind.WIRE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.NetKind.TRI">
+<span class="sig-name descname"><span class="pre">TRI</span></span><a class="headerlink" href="#dau_sim.ir.NetKind.TRI" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.NetKind.WAND">
+<span class="sig-name descname"><span class="pre">WAND</span></span><a class="headerlink" href="#dau_sim.ir.NetKind.WAND" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.NetKind.WOR">
+<span class="sig-name descname"><span class="pre">WOR</span></span><a class="headerlink" href="#dau_sim.ir.NetKind.WOR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.PortDirection">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">PortDirection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#PortDirection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.PortDirection" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Direction of a module port.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.PortDirection.INPUT">
+<span class="sig-name descname"><span class="pre">INPUT</span></span><a class="headerlink" href="#dau_sim.ir.PortDirection.INPUT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.PortDirection.OUTPUT">
+<span class="sig-name descname"><span class="pre">OUTPUT</span></span><a class="headerlink" href="#dau_sim.ir.PortDirection.OUTPUT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.PortDirection.INOUT">
+<span class="sig-name descname"><span class="pre">INOUT</span></span><a class="headerlink" href="#dau_sim.ir.PortDirection.INOUT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.ResetStyle">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">ResetStyle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#ResetStyle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.ResetStyle" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Reset behavior.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.ResetStyle.SYNC">
+<span class="sig-name descname"><span class="pre">SYNC</span></span><a class="headerlink" href="#dau_sim.ir.ResetStyle.SYNC" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.ResetStyle.ASYNC">
+<span class="sig-name descname"><span class="pre">ASYNC</span></span><a class="headerlink" href="#dau_sim.ir.ResetStyle.ASYNC" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="id2">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Shape</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#Shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
+<dd><p>Bit-width and signedness of a signal.</p>
+<p>Canonical type representation shared across all frontends.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">width</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#id3" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">signed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#id4" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">__post_init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#Shape.__post_init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="id6">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#id6" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="id7">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">min_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#id7" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#Shape.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id8" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.Signal">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Signal</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/module.html#Signal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Signal" title="Link to this definition">¶</a></dt>
+<dd><p>A named net within a module.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Signal.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.Signal.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Signal.shape">
+<span class="sig-name descname"><span class="pre">shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="types/index.html#dau_sim.ir.types.Shape" title="dau_sim.ir.types.Shape"><span class="pre">dau_sim.ir.types.Shape</span></a></em><a class="headerlink" href="#dau_sim.ir.Signal.shape" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Signal.init">
+<span class="sig-name descname"><span class="pre">init</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#dau_sim.ir.Signal.init" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Signal.net_kind">
+<span class="sig-name descname"><span class="pre">net_kind</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="types/index.html#dau_sim.ir.types.NetKind" title="dau_sim.ir.types.NetKind"><span class="pre">dau_sim.ir.types.NetKind</span></a></em><a class="headerlink" href="#dau_sim.ir.Signal.net_kind" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.Port">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Port</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/module.html#Port"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Port" title="Link to this definition">¶</a></dt>
+<dd><p>A module port — a signal with direction.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Port.signal">
+<span class="sig-name descname"><span class="pre">signal</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dau_sim.ir.Signal" title="dau_sim.ir.Signal"><span class="pre">Signal</span></a></em><a class="headerlink" href="#dau_sim.ir.Port.signal" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Port.direction">
+<span class="sig-name descname"><span class="pre">direction</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="types/index.html#dau_sim.ir.types.PortDirection" title="dau_sim.ir.types.PortDirection"><span class="pre">dau_sim.ir.types.PortDirection</span></a></em><a class="headerlink" href="#dau_sim.ir.Port.direction" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dau_sim.ir.Port.name">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.Port.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dau_sim.ir.Port.shape">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="types/index.html#dau_sim.ir.types.Shape" title="dau_sim.ir.types.Shape"><span class="pre">dau_sim.ir.types.Shape</span></a></em><a class="headerlink" href="#dau_sim.ir.Port.shape" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.ClockDomain">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">ClockDomain</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/module.html#ClockDomain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.ClockDomain" title="Link to this definition">¶</a></dt>
+<dd><p>A clock domain with clock signal, edge, and optional reset.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.ClockDomain.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.ClockDomain.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.ClockDomain.clk">
+<span class="sig-name descname"><span class="pre">clk</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.ClockDomain.clk" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.ClockDomain.edge">
+<span class="sig-name descname"><span class="pre">edge</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="types/index.html#dau_sim.ir.types.EdgePolarity" title="dau_sim.ir.types.EdgePolarity"><span class="pre">dau_sim.ir.types.EdgePolarity</span></a></em><a class="headerlink" href="#dau_sim.ir.ClockDomain.edge" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.ClockDomain.rst">
+<span class="sig-name descname"><span class="pre">rst</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dau_sim.ir.ClockDomain.rst" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.ClockDomain.rst_style">
+<span class="sig-name descname"><span class="pre">rst_style</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="types/index.html#dau_sim.ir.types.ResetStyle" title="dau_sim.ir.types.ResetStyle"><span class="pre">dau_sim.ir.types.ResetStyle</span></a></em><a class="headerlink" href="#dau_sim.ir.ClockDomain.rst_style" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.ClockDomain.rst_active_high">
+<span class="sig-name descname"><span class="pre">rst_active_high</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#dau_sim.ir.ClockDomain.rst_active_high" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.CombBlock">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">CombBlock</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/module.html#CombBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.CombBlock" title="Link to this definition">¶</a></dt>
+<dd><p>Combinational logic block (always_comb / assign).</p>
+<p>All statements execute whenever any referenced input signal changes.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.CombBlock.stmts">
+<span class="sig-name descname"><span class="pre">stmts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="stmt/index.html#dau_sim.ir.stmt.Stmt" title="dau_sim.ir.stmt.Stmt"><span class="pre">dau_sim.ir.stmt.Stmt</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.ir.CombBlock.stmts" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.SeqBlock">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">SeqBlock</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/module.html#SeqBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.SeqBlock" title="Link to this definition">¶</a></dt>
+<dd><p>Sequential logic block (always_ff).</p>
+<p>Statements execute on the clock edge of the specified domain.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.SeqBlock.domain">
+<span class="sig-name descname"><span class="pre">domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.SeqBlock.domain" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.SeqBlock.stmts">
+<span class="sig-name descname"><span class="pre">stmts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="stmt/index.html#dau_sim.ir.stmt.Stmt" title="dau_sim.ir.stmt.Stmt"><span class="pre">dau_sim.ir.stmt.Stmt</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.ir.SeqBlock.stmts" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.InitBlock">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">InitBlock</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/module.html#InitBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.InitBlock" title="Link to this definition">¶</a></dt>
+<dd><p>Initial block (non-synthesizable).</p>
+<p>Runs once at simulation start.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.InitBlock.stmts">
+<span class="sig-name descname"><span class="pre">stmts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="stmt/index.html#dau_sim.ir.stmt.Stmt" title="dau_sim.ir.stmt.Stmt"><span class="pre">dau_sim.ir.stmt.Stmt</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.ir.InitBlock.stmts" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.PortBinding">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">PortBinding</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/module.html#PortBinding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.PortBinding" title="Link to this definition">¶</a></dt>
+<dd><p>Binds an instance port to a signal expression in the parent module.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.PortBinding.port_name">
+<span class="sig-name descname"><span class="pre">port_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.PortBinding.port_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.PortBinding.expr">
+<span class="sig-name descname"><span class="pre">expr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="expr/index.html#dau_sim.ir.expr.Expr" title="dau_sim.ir.expr.Expr"><span class="pre">dau_sim.ir.expr.Expr</span></a></em><a class="headerlink" href="#dau_sim.ir.PortBinding.expr" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.Instance">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Instance</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/module.html#Instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Instance" title="Link to this definition">¶</a></dt>
+<dd><p>Hierarchical instantiation of another module.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Instance.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.Instance.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Instance.module_name">
+<span class="sig-name descname"><span class="pre">module_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.Instance.module_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Instance.bindings">
+<span class="sig-name descname"><span class="pre">bindings</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dau_sim.ir.PortBinding" title="dau_sim.ir.PortBinding"><span class="pre">PortBinding</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.ir.Instance.bindings" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Instance.parameters">
+<span class="sig-name descname"><span class="pre">parameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.ir.Instance.parameters" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.ReadPort">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">ReadPort</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/module.html#ReadPort"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.ReadPort" title="Link to this definition">¶</a></dt>
+<dd><p>Memory read port descriptor.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.ReadPort.addr">
+<span class="sig-name descname"><span class="pre">addr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.ReadPort.addr" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.ReadPort.data">
+<span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.ReadPort.data" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.ReadPort.en">
+<span class="sig-name descname"><span class="pre">en</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dau_sim.ir.ReadPort.en" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.ReadPort.domain">
+<span class="sig-name descname"><span class="pre">domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dau_sim.ir.ReadPort.domain" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.ReadPort.transparent_for">
+<span class="sig-name descname"><span class="pre">transparent_for</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#dau_sim.ir.ReadPort.transparent_for" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.WritePort">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">WritePort</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/module.html#WritePort"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.WritePort" title="Link to this definition">¶</a></dt>
+<dd><p>Memory write port descriptor.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.WritePort.addr">
+<span class="sig-name descname"><span class="pre">addr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.WritePort.addr" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.WritePort.data">
+<span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.WritePort.data" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.WritePort.en">
+<span class="sig-name descname"><span class="pre">en</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.WritePort.en" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.WritePort.domain">
+<span class="sig-name descname"><span class="pre">domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.WritePort.domain" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.WritePort.granularity">
+<span class="sig-name descname"><span class="pre">granularity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#dau_sim.ir.WritePort.granularity" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.Memory">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Memory</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/module.html#Memory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Memory" title="Link to this definition">¶</a></dt>
+<dd><p>Memory array with read and write ports.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Memory.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.Memory.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Memory.shape">
+<span class="sig-name descname"><span class="pre">shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="types/index.html#dau_sim.ir.types.Shape" title="dau_sim.ir.types.Shape"><span class="pre">dau_sim.ir.types.Shape</span></a></em><a class="headerlink" href="#dau_sim.ir.Memory.shape" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Memory.depth">
+<span class="sig-name descname"><span class="pre">depth</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dau_sim.ir.Memory.depth" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Memory.read_ports">
+<span class="sig-name descname"><span class="pre">read_ports</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dau_sim.ir.ReadPort" title="dau_sim.ir.ReadPort"><span class="pre">ReadPort</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.ir.Memory.read_ports" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Memory.write_ports">
+<span class="sig-name descname"><span class="pre">write_ports</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dau_sim.ir.WritePort" title="dau_sim.ir.WritePort"><span class="pre">WritePort</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.ir.Memory.write_ports" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Memory.init">
+<span class="sig-name descname"><span class="pre">init</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#dau_sim.ir.Memory.init" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.Module">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Module</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/module.html#Module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Module" title="Link to this definition">¶</a></dt>
+<dd><p>Top-level module definition.</p>
+<p>A named container with ports, internal signals, clock domains,
+logic blocks, submodule instances, and memories.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Module.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.Module.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Module.ports">
+<span class="sig-name descname"><span class="pre">ports</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dau_sim.ir.Port" title="dau_sim.ir.Port"><span class="pre">Port</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#dau_sim.ir.Module.ports" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Module.signals">
+<span class="sig-name descname"><span class="pre">signals</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dau_sim.ir.Signal" title="dau_sim.ir.Signal"><span class="pre">Signal</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#dau_sim.ir.Module.signals" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Module.clock_domains">
+<span class="sig-name descname"><span class="pre">clock_domains</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dau_sim.ir.ClockDomain" title="dau_sim.ir.ClockDomain"><span class="pre">ClockDomain</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#dau_sim.ir.Module.clock_domains" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Module.comb_blocks">
+<span class="sig-name descname"><span class="pre">comb_blocks</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dau_sim.ir.CombBlock" title="dau_sim.ir.CombBlock"><span class="pre">CombBlock</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#dau_sim.ir.Module.comb_blocks" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Module.seq_blocks">
+<span class="sig-name descname"><span class="pre">seq_blocks</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dau_sim.ir.SeqBlock" title="dau_sim.ir.SeqBlock"><span class="pre">SeqBlock</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#dau_sim.ir.Module.seq_blocks" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Module.init_blocks">
+<span class="sig-name descname"><span class="pre">init_blocks</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dau_sim.ir.InitBlock" title="dau_sim.ir.InitBlock"><span class="pre">InitBlock</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#dau_sim.ir.Module.init_blocks" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Module.instances">
+<span class="sig-name descname"><span class="pre">instances</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dau_sim.ir.Instance" title="dau_sim.ir.Instance"><span class="pre">Instance</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#dau_sim.ir.Module.instances" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Module.memories">
+<span class="sig-name descname"><span class="pre">memories</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dau_sim.ir.Memory" title="dau_sim.ir.Memory"><span class="pre">Memory</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#dau_sim.ir.Module.memories" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Module.submodules">
+<span class="sig-name descname"><span class="pre">submodules</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dau_sim.ir.Module" title="dau_sim.ir.Module"><span class="pre">Module</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#dau_sim.ir.Module.submodules" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.ir.Module.port_by_name">
+<span class="sig-name descname"><span class="pre">port_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#dau_sim.ir.Port" title="dau_sim.ir.Port"><span class="pre">Port</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/module.html#Module.port_by_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Module.port_by_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.ir.Module.signal_by_name">
+<span class="sig-name descname"><span class="pre">signal_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#dau_sim.ir.Signal" title="dau_sim.ir.Signal"><span class="pre">Signal</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/module.html#Module.signal_by_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Module.signal_by_name" title="Link to this definition">¶</a></dt>
+<dd><p>Look up a signal by name, checking ports then internal signals.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dau_sim.ir.Module.all_signal_names">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_signal_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.ir.Module.all_signal_names" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="id9">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Expr</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/expr.html#Expr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id9" title="Link to this definition">¶</a></dt>
+<dd><p>Base class for all IR expressions.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="types/index.html#dau_sim.ir.types.Shape" title="dau_sim.ir.types.Shape"><span class="pre">dau_sim.ir.types.Shape</span></a></em><a class="headerlink" href="#id10" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="id11">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Stmt</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/stmt.html#Stmt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id11" title="Link to this definition">¶</a></dt>
+<dd><p>Base class for all IR statements.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.Assign">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Assign</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/stmt.html#Assign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Assign" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#id11" title="dau_sim.ir.Stmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Stmt</span></code></a></p>
+<p>Assign expression value to a signal.</p>
+<p>target is the signal name (str), value is the expression to evaluate.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Assign.target">
+<span class="sig-name descname"><span class="pre">target</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.Assign.target" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Assign.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="expr/index.html#dau_sim.ir.expr.Expr" title="dau_sim.ir.expr.Expr"><span class="pre">dau_sim.ir.expr.Expr</span></a></em><a class="headerlink" href="#dau_sim.ir.Assign.value" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.IfElse">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">IfElse</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/stmt.html#IfElse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.IfElse" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#id11" title="dau_sim.ir.Stmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Stmt</span></code></a></p>
+<p>Conditional statement.</p>
+<p>if cond: then_stmts else: else_stmts</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.IfElse.cond">
+<span class="sig-name descname"><span class="pre">cond</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="expr/index.html#dau_sim.ir.expr.Expr" title="dau_sim.ir.expr.Expr"><span class="pre">dau_sim.ir.expr.Expr</span></a></em><a class="headerlink" href="#dau_sim.ir.IfElse.cond" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.IfElse.then_body">
+<span class="sig-name descname"><span class="pre">then_body</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#id11" title="dau_sim.ir.Stmt"><span class="pre">Stmt</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.ir.IfElse.then_body" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.IfElse.else_body">
+<span class="sig-name descname"><span class="pre">else_body</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#id11" title="dau_sim.ir.Stmt"><span class="pre">Stmt</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#dau_sim.ir.IfElse.else_body" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.Switch">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Switch</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/stmt.html#Switch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Switch" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#id11" title="dau_sim.ir.Stmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Stmt</span></code></a></p>
+<p>Multi-way branch (case/casez/casex).</p>
+<p>test is the expression to match. cases is a tuple of (pattern, stmts) pairs.
+Pattern is an int (matched by equality) or None for the default case.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Switch.test">
+<span class="sig-name descname"><span class="pre">test</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="expr/index.html#dau_sim.ir.expr.Expr" title="dau_sim.ir.expr.Expr"><span class="pre">dau_sim.ir.expr.Expr</span></a></em><a class="headerlink" href="#dau_sim.ir.Switch.test" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Switch.cases">
+<span class="sig-name descname"><span class="pre">cases</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#id11" title="dau_sim.ir.Stmt"><span class="pre">Stmt</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.ir.Switch.cases" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.Assert">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Assert</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/stmt.html#Assert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Assert" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#id11" title="dau_sim.ir.Stmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Stmt</span></code></a></p>
+<p>Assertion statement.</p>
+<p>Checks condition at simulation time, reports message on failure.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Assert.cond">
+<span class="sig-name descname"><span class="pre">cond</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="expr/index.html#dau_sim.ir.expr.Expr" title="dau_sim.ir.expr.Expr"><span class="pre">dau_sim.ir.expr.Expr</span></a></em><a class="headerlink" href="#dau_sim.ir.Assert.cond" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Assert.message">
+<span class="sig-name descname"><span class="pre">message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#dau_sim.ir.Assert.message" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.Print">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Print</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/stmt.html#Print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Print" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#id11" title="dau_sim.ir.Stmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Stmt</span></code></a></p>
+<p>Print statement ($display equivalent).</p>
+<p>format_str uses Python-style {} placeholders. args are expressions.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Print.format_str">
+<span class="sig-name descname"><span class="pre">format_str</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.Print.format_str" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Print.args">
+<span class="sig-name descname"><span class="pre">args</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="expr/index.html#dau_sim.ir.expr.Expr" title="dau_sim.ir.expr.Expr"><span class="pre">dau_sim.ir.expr.Expr</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#dau_sim.ir.Print.args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.Delay">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Delay</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/stmt.html#Delay"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Delay" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#id11" title="dau_sim.ir.Stmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Stmt</span></code></a></p>
+<p>Delay statement (#N equivalent).</p>
+<p>Pauses execution for <em>ticks</em> simulation time units.
+Only meaningful inside initial blocks or testbench procedures.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Delay.ticks">
+<span class="sig-name descname"><span class="pre">ticks</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dau_sim.ir.Delay.ticks" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.Finish">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Finish</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/stmt.html#Finish"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.Finish" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#id11" title="dau_sim.ir.Stmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Stmt</span></code></a></p>
+<p>Halt simulation ($finish equivalent).</p>
+<p>When executed, raises SimulationFinish to stop the simulation cleanly.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.Finish.exit_code">
+<span class="sig-name descname"><span class="pre">exit_code</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#dau_sim.ir.Finish.exit_code" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.ReadMem">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">ReadMem</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/stmt.html#ReadMem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.ReadMem" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#id11" title="dau_sim.ir.Stmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Stmt</span></code></a></p>
+<p>Load memory contents from a file (<code class="docutils literal notranslate"><span class="pre">$readmemh</span></code>/<code class="docutils literal notranslate"><span class="pre">$readmemb</span></code>).</p>
+<p><em>path</em> is the file path (resolved relative to the caller).
+<em>mem_name</em> is the name of the IR <code class="docutils literal notranslate"><span class="pre">Memory</span></code> to populate.
+<em>is_hex</em> selects hex (True, <code class="docutils literal notranslate"><span class="pre">$readmemh</span></code>) or binary (False, <code class="docutils literal notranslate"><span class="pre">$readmemb</span></code>).
+Optional <em>start_addr</em> / <em>end_addr</em> limit the address range filled.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.ReadMem.path">
+<span class="sig-name descname"><span class="pre">path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.ReadMem.path" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.ReadMem.mem_name">
+<span class="sig-name descname"><span class="pre">mem_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.ir.ReadMem.mem_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.ReadMem.is_hex">
+<span class="sig-name descname"><span class="pre">is_hex</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#dau_sim.ir.ReadMem.is_hex" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.ReadMem.start_addr">
+<span class="sig-name descname"><span class="pre">start_addr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dau_sim.ir.ReadMem.start_addr" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.ReadMem.end_addr">
+<span class="sig-name descname"><span class="pre">end_addr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dau_sim.ir.ReadMem.end_addr" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="id12">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">PortDirection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#PortDirection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id12" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Direction of a module port.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id13">
+<span class="sig-name descname"><span class="pre">INPUT</span></span><a class="headerlink" href="#id13" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id14">
+<span class="sig-name descname"><span class="pre">OUTPUT</span></span><a class="headerlink" href="#id14" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id15">
+<span class="sig-name descname"><span class="pre">INOUT</span></span><a class="headerlink" href="#id15" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="id16">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">EdgePolarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#EdgePolarity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id16" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Clock edge sensitivity.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id17">
+<span class="sig-name descname"><span class="pre">POSEDGE</span></span><a class="headerlink" href="#id17" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id18">
+<span class="sig-name descname"><span class="pre">NEGEDGE</span></span><a class="headerlink" href="#id18" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id19">
+<span class="sig-name descname"><span class="pre">BOTH</span></span><a class="headerlink" href="#id19" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="id20">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">ResetStyle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#ResetStyle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id20" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Reset behavior.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id21">
+<span class="sig-name descname"><span class="pre">SYNC</span></span><a class="headerlink" href="#id21" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id22">
+<span class="sig-name descname"><span class="pre">ASYNC</span></span><a class="headerlink" href="#id22" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="id23">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">NetKind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#NetKind"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id23" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Net resolution semantics for multi-driver signals.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id24">
+<span class="sig-name descname"><span class="pre">WIRE</span></span><a class="headerlink" href="#id24" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id25">
+<span class="sig-name descname"><span class="pre">TRI</span></span><a class="headerlink" href="#id25" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id26">
+<span class="sig-name descname"><span class="pre">WAND</span></span><a class="headerlink" href="#id26" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id27">
+<span class="sig-name descname"><span class="pre">WOR</span></span><a class="headerlink" href="#id27" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="id28">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">Shape</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#Shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id28" title="Link to this definition">¶</a></dt>
+<dd><p>Bit-width and signedness of a signal.</p>
+<p>Canonical type representation shared across all frontends.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id29">
+<span class="sig-name descname"><span class="pre">width</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#id29" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id30">
+<span class="sig-name descname"><span class="pre">signed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#id30" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id31">
+<span class="sig-name descname"><span class="pre">__post_init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#Shape.__post_init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id31" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="id32">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#id32" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="id33">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">min_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#id33" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id34">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#Shape.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id34" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.ir.FourState">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">FourState</span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#FourState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.FourState" title="Link to this definition">¶</a></dt>
+<dd><p>Four-state value using the VPI convention.</p>
+<dl class="simple">
+<dt>Two bitmaps of <code class="docutils literal notranslate"><span class="pre">width</span></code> bits:</dt><dd><p>aval=0, bval=0 → logic 0
+aval=1, bval=0 → logic 1
+aval=0, bval=1 → Z (high-impedance)
+aval=1, bval=1 → X (unknown)</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">shape</span></code> determines the width and signedness.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.FourState.shape">
+<span class="sig-name descname"><span class="pre">shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#id28" title="dau_sim.ir.Shape"><span class="pre">Shape</span></a></em><a class="headerlink" href="#dau_sim.ir.FourState.shape" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.FourState.aval">
+<span class="sig-name descname"><span class="pre">aval</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dau_sim.ir.FourState.aval" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.ir.FourState.bval">
+<span class="sig-name descname"><span class="pre">bval</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dau_sim.ir.FourState.bval" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.ir.FourState.__post_init__">
+<span class="sig-name descname"><span class="pre">__post_init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#FourState.__post_init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.FourState.__post_init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dau_sim.ir.FourState.has_unknown">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_unknown</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#dau_sim.ir.FourState.has_unknown" title="Link to this definition">¶</a></dt>
+<dd><p>True if any bit is X or Z.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dau_sim.ir.FourState.is_fully_defined">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fully_defined</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#dau_sim.ir.FourState.is_fully_defined" title="Link to this definition">¶</a></dt>
+<dd><p>True if all bits are 0 or 1 (no X/Z).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dau_sim.ir.FourState.to_int">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to_int</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dau_sim.ir.FourState.to_int" title="Link to this definition">¶</a></dt>
+<dd><p>Convert to Python int.  Returns None if any bits are X/Z.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.ir.FourState.from_int">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#id28" title="dau_sim.ir.Shape"><span class="pre">Shape</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#dau_sim.ir.FourState" title="dau_sim.ir.FourState"><span class="pre">FourState</span></a></span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#FourState.from_int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.FourState.from_int" title="Link to this definition">¶</a></dt>
+<dd><p>Create a fully-defined FourState value from a Python int.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.ir.FourState.x">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#id28" title="dau_sim.ir.Shape"><span class="pre">Shape</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#dau_sim.ir.FourState" title="dau_sim.ir.FourState"><span class="pre">FourState</span></a></span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#FourState.x"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.FourState.x" title="Link to this definition">¶</a></dt>
+<dd><p>Create an all-X value of the given shape.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.ir.FourState.z">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">z</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#id28" title="dau_sim.ir.Shape"><span class="pre">Shape</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#dau_sim.ir.FourState" title="dau_sim.ir.FourState"><span class="pre">FourState</span></a></span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#FourState.z"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.FourState.z" title="Link to this definition">¶</a></dt>
+<dd><p>Create an all-Z value of the given shape.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.ir.FourState.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/dau_sim/ir/types.html#FourState.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.ir.FourState.__repr__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dau_sim.ir._signed_int">
+<span class="sig-prename descclassname"><span class="pre">dau_sim.ir.</span></span><span class="sig-name descname"><span class="pre">_signed_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#id28" title="dau_sim.ir.Shape"><span class="pre">Shape</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#dau_sim.ir._signed_int" title="Link to this definition">¶</a></dt>
+<dd><p>Convert an unsigned bit-pattern to a signed int if shape.signed.</p>
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="expr/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">dau_sim.ir.expr</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../frontends/pyslang_frontend/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">dau_sim.frontends.pyslang_frontend</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; the dau authors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">dau_sim.ir</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#package-contents">Package Contents</a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.Shape"><code class="docutils literal notranslate"><span class="pre">Shape</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.Shape.width"><code class="docutils literal notranslate"><span class="pre">Shape.width</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Shape.signed"><code class="docutils literal notranslate"><span class="pre">Shape.signed</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Shape.__post_init__"><code class="docutils literal notranslate"><span class="pre">Shape.__post_init__()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Shape.max_value"><code class="docutils literal notranslate"><span class="pre">Shape.max_value</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Shape.min_value"><code class="docutils literal notranslate"><span class="pre">Shape.min_value</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Shape.__repr__"><code class="docutils literal notranslate"><span class="pre">Shape.__repr__()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.UnaryOp"><code class="docutils literal notranslate"><span class="pre">UnaryOp</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.UnaryOp.NOT"><code class="docutils literal notranslate"><span class="pre">UnaryOp.NOT</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.UnaryOp.NEG"><code class="docutils literal notranslate"><span class="pre">UnaryOp.NEG</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.UnaryOp.BOOL"><code class="docutils literal notranslate"><span class="pre">UnaryOp.BOOL</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.UnaryOp.RED_AND"><code class="docutils literal notranslate"><span class="pre">UnaryOp.RED_AND</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.UnaryOp.RED_OR"><code class="docutils literal notranslate"><span class="pre">UnaryOp.RED_OR</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.UnaryOp.RED_XOR"><code class="docutils literal notranslate"><span class="pre">UnaryOp.RED_XOR</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.BinaryOp"><code class="docutils literal notranslate"><span class="pre">BinaryOp</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.BinaryOp.ADD"><code class="docutils literal notranslate"><span class="pre">BinaryOp.ADD</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.BinaryOp.SUB"><code class="docutils literal notranslate"><span class="pre">BinaryOp.SUB</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.BinaryOp.MUL"><code class="docutils literal notranslate"><span class="pre">BinaryOp.MUL</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.BinaryOp.DIV"><code class="docutils literal notranslate"><span class="pre">BinaryOp.DIV</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.BinaryOp.MOD"><code class="docutils literal notranslate"><span class="pre">BinaryOp.MOD</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.BinaryOp.AND"><code class="docutils literal notranslate"><span class="pre">BinaryOp.AND</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.BinaryOp.OR"><code class="docutils literal notranslate"><span class="pre">BinaryOp.OR</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.BinaryOp.XOR"><code class="docutils literal notranslate"><span class="pre">BinaryOp.XOR</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.BinaryOp.SHL"><code class="docutils literal notranslate"><span class="pre">BinaryOp.SHL</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.BinaryOp.SHR"><code class="docutils literal notranslate"><span class="pre">BinaryOp.SHR</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.BinaryOp.EQ"><code class="docutils literal notranslate"><span class="pre">BinaryOp.EQ</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.BinaryOp.NE"><code class="docutils literal notranslate"><span class="pre">BinaryOp.NE</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.BinaryOp.LT"><code class="docutils literal notranslate"><span class="pre">BinaryOp.LT</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.BinaryOp.LE"><code class="docutils literal notranslate"><span class="pre">BinaryOp.LE</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.BinaryOp.GT"><code class="docutils literal notranslate"><span class="pre">BinaryOp.GT</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.BinaryOp.GE"><code class="docutils literal notranslate"><span class="pre">BinaryOp.GE</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.BinaryOp.LOGIC_AND"><code class="docutils literal notranslate"><span class="pre">BinaryOp.LOGIC_AND</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.BinaryOp.LOGIC_OR"><code class="docutils literal notranslate"><span class="pre">BinaryOp.LOGIC_OR</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.Expr"><code class="docutils literal notranslate"><span class="pre">Expr</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.Expr.shape"><code class="docutils literal notranslate"><span class="pre">Expr.shape</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.Const"><code class="docutils literal notranslate"><span class="pre">Const</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.Const.value"><code class="docutils literal notranslate"><span class="pre">Const.value</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Const.__repr__"><code class="docutils literal notranslate"><span class="pre">Const.__repr__()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.SignalRef"><code class="docutils literal notranslate"><span class="pre">SignalRef</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.SignalRef.name"><code class="docutils literal notranslate"><span class="pre">SignalRef.name</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.SignalRef.__repr__"><code class="docutils literal notranslate"><span class="pre">SignalRef.__repr__()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.Unary"><code class="docutils literal notranslate"><span class="pre">Unary</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.Unary.op"><code class="docutils literal notranslate"><span class="pre">Unary.op</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Unary.operand"><code class="docutils literal notranslate"><span class="pre">Unary.operand</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.Binary"><code class="docutils literal notranslate"><span class="pre">Binary</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.Binary.op"><code class="docutils literal notranslate"><span class="pre">Binary.op</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Binary.left"><code class="docutils literal notranslate"><span class="pre">Binary.left</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Binary.right"><code class="docutils literal notranslate"><span class="pre">Binary.right</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.Mux"><code class="docutils literal notranslate"><span class="pre">Mux</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.Mux.sel"><code class="docutils literal notranslate"><span class="pre">Mux.sel</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Mux.if_true"><code class="docutils literal notranslate"><span class="pre">Mux.if_true</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Mux.if_false"><code class="docutils literal notranslate"><span class="pre">Mux.if_false</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.Concat"><code class="docutils literal notranslate"><span class="pre">Concat</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.Concat.parts"><code class="docutils literal notranslate"><span class="pre">Concat.parts</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.Slice"><code class="docutils literal notranslate"><span class="pre">Slice</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.Slice.value"><code class="docutils literal notranslate"><span class="pre">Slice.value</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Slice.low"><code class="docutils literal notranslate"><span class="pre">Slice.low</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Slice.high"><code class="docutils literal notranslate"><span class="pre">Slice.high</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Slice.__post_init__"><code class="docutils literal notranslate"><span class="pre">Slice.__post_init__()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.SysRandom"><code class="docutils literal notranslate"><span class="pre">SysRandom</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.SysRandom.seed"><code class="docutils literal notranslate"><span class="pre">SysRandom.seed</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">Expr</span></code></a><ul>
+<li><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">Expr.shape</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.Stmt"><code class="docutils literal notranslate"><span class="pre">Stmt</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.EdgePolarity"><code class="docutils literal notranslate"><span class="pre">EdgePolarity</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.EdgePolarity.POSEDGE"><code class="docutils literal notranslate"><span class="pre">EdgePolarity.POSEDGE</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.EdgePolarity.NEGEDGE"><code class="docutils literal notranslate"><span class="pre">EdgePolarity.NEGEDGE</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.EdgePolarity.BOTH"><code class="docutils literal notranslate"><span class="pre">EdgePolarity.BOTH</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.NetKind"><code class="docutils literal notranslate"><span class="pre">NetKind</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.NetKind.WIRE"><code class="docutils literal notranslate"><span class="pre">NetKind.WIRE</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.NetKind.TRI"><code class="docutils literal notranslate"><span class="pre">NetKind.TRI</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.NetKind.WAND"><code class="docutils literal notranslate"><span class="pre">NetKind.WAND</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.NetKind.WOR"><code class="docutils literal notranslate"><span class="pre">NetKind.WOR</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.PortDirection"><code class="docutils literal notranslate"><span class="pre">PortDirection</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.PortDirection.INPUT"><code class="docutils literal notranslate"><span class="pre">PortDirection.INPUT</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.PortDirection.OUTPUT"><code class="docutils literal notranslate"><span class="pre">PortDirection.OUTPUT</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.PortDirection.INOUT"><code class="docutils literal notranslate"><span class="pre">PortDirection.INOUT</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.ResetStyle"><code class="docutils literal notranslate"><span class="pre">ResetStyle</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.ResetStyle.SYNC"><code class="docutils literal notranslate"><span class="pre">ResetStyle.SYNC</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.ResetStyle.ASYNC"><code class="docutils literal notranslate"><span class="pre">ResetStyle.ASYNC</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id2"><code class="docutils literal notranslate"><span class="pre">Shape</span></code></a><ul>
+<li><a class="reference internal" href="#id3"><code class="docutils literal notranslate"><span class="pre">Shape.width</span></code></a></li>
+<li><a class="reference internal" href="#id4"><code class="docutils literal notranslate"><span class="pre">Shape.signed</span></code></a></li>
+<li><a class="reference internal" href="#id5"><code class="docutils literal notranslate"><span class="pre">Shape.__post_init__()</span></code></a></li>
+<li><a class="reference internal" href="#id6"><code class="docutils literal notranslate"><span class="pre">Shape.max_value</span></code></a></li>
+<li><a class="reference internal" href="#id7"><code class="docutils literal notranslate"><span class="pre">Shape.min_value</span></code></a></li>
+<li><a class="reference internal" href="#id8"><code class="docutils literal notranslate"><span class="pre">Shape.__repr__()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.Signal"><code class="docutils literal notranslate"><span class="pre">Signal</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.Signal.name"><code class="docutils literal notranslate"><span class="pre">Signal.name</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Signal.shape"><code class="docutils literal notranslate"><span class="pre">Signal.shape</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Signal.init"><code class="docutils literal notranslate"><span class="pre">Signal.init</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Signal.net_kind"><code class="docutils literal notranslate"><span class="pre">Signal.net_kind</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.Port"><code class="docutils literal notranslate"><span class="pre">Port</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.Port.signal"><code class="docutils literal notranslate"><span class="pre">Port.signal</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Port.direction"><code class="docutils literal notranslate"><span class="pre">Port.direction</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Port.name"><code class="docutils literal notranslate"><span class="pre">Port.name</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Port.shape"><code class="docutils literal notranslate"><span class="pre">Port.shape</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.ClockDomain"><code class="docutils literal notranslate"><span class="pre">ClockDomain</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.ClockDomain.name"><code class="docutils literal notranslate"><span class="pre">ClockDomain.name</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.ClockDomain.clk"><code class="docutils literal notranslate"><span class="pre">ClockDomain.clk</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.ClockDomain.edge"><code class="docutils literal notranslate"><span class="pre">ClockDomain.edge</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.ClockDomain.rst"><code class="docutils literal notranslate"><span class="pre">ClockDomain.rst</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.ClockDomain.rst_style"><code class="docutils literal notranslate"><span class="pre">ClockDomain.rst_style</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.ClockDomain.rst_active_high"><code class="docutils literal notranslate"><span class="pre">ClockDomain.rst_active_high</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.CombBlock"><code class="docutils literal notranslate"><span class="pre">CombBlock</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.CombBlock.stmts"><code class="docutils literal notranslate"><span class="pre">CombBlock.stmts</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.SeqBlock"><code class="docutils literal notranslate"><span class="pre">SeqBlock</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.SeqBlock.domain"><code class="docutils literal notranslate"><span class="pre">SeqBlock.domain</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.SeqBlock.stmts"><code class="docutils literal notranslate"><span class="pre">SeqBlock.stmts</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.InitBlock"><code class="docutils literal notranslate"><span class="pre">InitBlock</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.InitBlock.stmts"><code class="docutils literal notranslate"><span class="pre">InitBlock.stmts</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.PortBinding"><code class="docutils literal notranslate"><span class="pre">PortBinding</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.PortBinding.port_name"><code class="docutils literal notranslate"><span class="pre">PortBinding.port_name</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.PortBinding.expr"><code class="docutils literal notranslate"><span class="pre">PortBinding.expr</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.Instance"><code class="docutils literal notranslate"><span class="pre">Instance</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.Instance.name"><code class="docutils literal notranslate"><span class="pre">Instance.name</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Instance.module_name"><code class="docutils literal notranslate"><span class="pre">Instance.module_name</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Instance.bindings"><code class="docutils literal notranslate"><span class="pre">Instance.bindings</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Instance.parameters"><code class="docutils literal notranslate"><span class="pre">Instance.parameters</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.ReadPort"><code class="docutils literal notranslate"><span class="pre">ReadPort</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.ReadPort.addr"><code class="docutils literal notranslate"><span class="pre">ReadPort.addr</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.ReadPort.data"><code class="docutils literal notranslate"><span class="pre">ReadPort.data</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.ReadPort.en"><code class="docutils literal notranslate"><span class="pre">ReadPort.en</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.ReadPort.domain"><code class="docutils literal notranslate"><span class="pre">ReadPort.domain</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.ReadPort.transparent_for"><code class="docutils literal notranslate"><span class="pre">ReadPort.transparent_for</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.WritePort"><code class="docutils literal notranslate"><span class="pre">WritePort</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.WritePort.addr"><code class="docutils literal notranslate"><span class="pre">WritePort.addr</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.WritePort.data"><code class="docutils literal notranslate"><span class="pre">WritePort.data</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.WritePort.en"><code class="docutils literal notranslate"><span class="pre">WritePort.en</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.WritePort.domain"><code class="docutils literal notranslate"><span class="pre">WritePort.domain</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.WritePort.granularity"><code class="docutils literal notranslate"><span class="pre">WritePort.granularity</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.Memory"><code class="docutils literal notranslate"><span class="pre">Memory</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.Memory.name"><code class="docutils literal notranslate"><span class="pre">Memory.name</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Memory.shape"><code class="docutils literal notranslate"><span class="pre">Memory.shape</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Memory.depth"><code class="docutils literal notranslate"><span class="pre">Memory.depth</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Memory.read_ports"><code class="docutils literal notranslate"><span class="pre">Memory.read_ports</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Memory.write_ports"><code class="docutils literal notranslate"><span class="pre">Memory.write_ports</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Memory.init"><code class="docutils literal notranslate"><span class="pre">Memory.init</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.Module"><code class="docutils literal notranslate"><span class="pre">Module</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.Module.name"><code class="docutils literal notranslate"><span class="pre">Module.name</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Module.ports"><code class="docutils literal notranslate"><span class="pre">Module.ports</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Module.signals"><code class="docutils literal notranslate"><span class="pre">Module.signals</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Module.clock_domains"><code class="docutils literal notranslate"><span class="pre">Module.clock_domains</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Module.comb_blocks"><code class="docutils literal notranslate"><span class="pre">Module.comb_blocks</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Module.seq_blocks"><code class="docutils literal notranslate"><span class="pre">Module.seq_blocks</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Module.init_blocks"><code class="docutils literal notranslate"><span class="pre">Module.init_blocks</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Module.instances"><code class="docutils literal notranslate"><span class="pre">Module.instances</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Module.memories"><code class="docutils literal notranslate"><span class="pre">Module.memories</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Module.submodules"><code class="docutils literal notranslate"><span class="pre">Module.submodules</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Module.port_by_name"><code class="docutils literal notranslate"><span class="pre">Module.port_by_name()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Module.signal_by_name"><code class="docutils literal notranslate"><span class="pre">Module.signal_by_name()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Module.all_signal_names"><code class="docutils literal notranslate"><span class="pre">Module.all_signal_names</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id9"><code class="docutils literal notranslate"><span class="pre">Expr</span></code></a><ul>
+<li><a class="reference internal" href="#id10"><code class="docutils literal notranslate"><span class="pre">Expr.shape</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id11"><code class="docutils literal notranslate"><span class="pre">Stmt</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Assign"><code class="docutils literal notranslate"><span class="pre">Assign</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.Assign.target"><code class="docutils literal notranslate"><span class="pre">Assign.target</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Assign.value"><code class="docutils literal notranslate"><span class="pre">Assign.value</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.IfElse"><code class="docutils literal notranslate"><span class="pre">IfElse</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.IfElse.cond"><code class="docutils literal notranslate"><span class="pre">IfElse.cond</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.IfElse.then_body"><code class="docutils literal notranslate"><span class="pre">IfElse.then_body</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.IfElse.else_body"><code class="docutils literal notranslate"><span class="pre">IfElse.else_body</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.Switch"><code class="docutils literal notranslate"><span class="pre">Switch</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.Switch.test"><code class="docutils literal notranslate"><span class="pre">Switch.test</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Switch.cases"><code class="docutils literal notranslate"><span class="pre">Switch.cases</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.Assert"><code class="docutils literal notranslate"><span class="pre">Assert</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.Assert.cond"><code class="docutils literal notranslate"><span class="pre">Assert.cond</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Assert.message"><code class="docutils literal notranslate"><span class="pre">Assert.message</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.Print"><code class="docutils literal notranslate"><span class="pre">Print</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.Print.format_str"><code class="docutils literal notranslate"><span class="pre">Print.format_str</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.Print.args"><code class="docutils literal notranslate"><span class="pre">Print.args</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.Delay"><code class="docutils literal notranslate"><span class="pre">Delay</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.Delay.ticks"><code class="docutils literal notranslate"><span class="pre">Delay.ticks</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.Finish"><code class="docutils literal notranslate"><span class="pre">Finish</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.Finish.exit_code"><code class="docutils literal notranslate"><span class="pre">Finish.exit_code</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.ReadMem"><code class="docutils literal notranslate"><span class="pre">ReadMem</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.ReadMem.path"><code class="docutils literal notranslate"><span class="pre">ReadMem.path</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.ReadMem.mem_name"><code class="docutils literal notranslate"><span class="pre">ReadMem.mem_name</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.ReadMem.is_hex"><code class="docutils literal notranslate"><span class="pre">ReadMem.is_hex</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.ReadMem.start_addr"><code class="docutils literal notranslate"><span class="pre">ReadMem.start_addr</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.ReadMem.end_addr"><code class="docutils literal notranslate"><span class="pre">ReadMem.end_addr</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id12"><code class="docutils literal notranslate"><span class="pre">PortDirection</span></code></a><ul>
+<li><a class="reference internal" href="#id13"><code class="docutils literal notranslate"><span class="pre">PortDirection.INPUT</span></code></a></li>
+<li><a class="reference internal" href="#id14"><code class="docutils literal notranslate"><span class="pre">PortDirection.OUTPUT</span></code></a></li>
+<li><a class="reference internal" href="#id15"><code class="docutils literal notranslate"><span class="pre">PortDirection.INOUT</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id16"><code class="docutils literal notranslate"><span class="pre">EdgePolarity</span></code></a><ul>
+<li><a class="reference internal" href="#id17"><code class="docutils literal notranslate"><span class="pre">EdgePolarity.POSEDGE</span></code></a></li>
+<li><a class="reference internal" href="#id18"><code class="docutils literal notranslate"><span class="pre">EdgePolarity.NEGEDGE</span></code></a></li>
+<li><a class="reference internal" href="#id19"><code class="docutils literal notranslate"><span class="pre">EdgePolarity.BOTH</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id20"><code class="docutils literal notranslate"><span class="pre">ResetStyle</span></code></a><ul>
+<li><a class="reference internal" href="#id21"><code class="docutils literal notranslate"><span class="pre">ResetStyle.SYNC</span></code></a></li>
+<li><a class="reference internal" href="#id22"><code class="docutils literal notranslate"><span class="pre">ResetStyle.ASYNC</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id23"><code class="docutils literal notranslate"><span class="pre">NetKind</span></code></a><ul>
+<li><a class="reference internal" href="#id24"><code class="docutils literal notranslate"><span class="pre">NetKind.WIRE</span></code></a></li>
+<li><a class="reference internal" href="#id25"><code class="docutils literal notranslate"><span class="pre">NetKind.TRI</span></code></a></li>
+<li><a class="reference internal" href="#id26"><code class="docutils literal notranslate"><span class="pre">NetKind.WAND</span></code></a></li>
+<li><a class="reference internal" href="#id27"><code class="docutils literal notranslate"><span class="pre">NetKind.WOR</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id28"><code class="docutils literal notranslate"><span class="pre">Shape</span></code></a><ul>
+<li><a class="reference internal" href="#id29"><code class="docutils literal notranslate"><span class="pre">Shape.width</span></code></a></li>
+<li><a class="reference internal" href="#id30"><code class="docutils literal notranslate"><span class="pre">Shape.signed</span></code></a></li>
+<li><a class="reference internal" href="#id31"><code class="docutils literal notranslate"><span class="pre">Shape.__post_init__()</span></code></a></li>
+<li><a class="reference internal" href="#id32"><code class="docutils literal notranslate"><span class="pre">Shape.max_value</span></code></a></li>
+<li><a class="reference internal" href="#id33"><code class="docutils literal notranslate"><span class="pre">Shape.min_value</span></code></a></li>
+<li><a class="reference internal" href="#id34"><code class="docutils literal notranslate"><span class="pre">Shape.__repr__()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir.FourState"><code class="docutils literal notranslate"><span class="pre">FourState</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.ir.FourState.shape"><code class="docutils literal notranslate"><span class="pre">FourState.shape</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.FourState.aval"><code class="docutils literal notranslate"><span class="pre">FourState.aval</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.FourState.bval"><code class="docutils literal notranslate"><span class="pre">FourState.bval</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.FourState.__post_init__"><code class="docutils literal notranslate"><span class="pre">FourState.__post_init__()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.FourState.has_unknown"><code class="docutils literal notranslate"><span class="pre">FourState.has_unknown</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.FourState.is_fully_defined"><code class="docutils literal notranslate"><span class="pre">FourState.is_fully_defined</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.FourState.to_int"><code class="docutils literal notranslate"><span class="pre">FourState.to_int</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.FourState.from_int"><code class="docutils literal notranslate"><span class="pre">FourState.from_int()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.FourState.x"><code class="docutils literal notranslate"><span class="pre">FourState.x()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.FourState.z"><code class="docutils literal notranslate"><span class="pre">FourState.z()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.ir.FourState.__repr__"><code class="docutils literal notranslate"><span class="pre">FourState.__repr__()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.ir._signed_int"><code class="docutils literal notranslate"><span class="pre">_signed_int()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../../_static/js/custom.js?v=956e5d78"></script>
+    </body>
+</html>

@@ -1,0 +1,642 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="test_ir" href="../../test_ir/index.html"><link rel="prev" title="dau_sim.runtime" href="../runtime/index.html">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>dau_sim.testbench - dau sim v0.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/custom.css?v=890fd012" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">dau sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.1.0</code></div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <span class="sidebar-brand-text">dau sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.1.0</code></span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html">dau_sim</a><input aria-label="Toggle navigation of dau_sim" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../adapters/index.html">dau_sim.adapters</a><input aria-label="Toggle navigation of dau_sim.adapters" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../adapters/selectors/index.html">dau_sim.adapters.selectors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../adapters/vcd/index.html">dau_sim.adapters.vcd</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../backends/index.html">dau_sim.backends</a><input aria-label="Toggle navigation of dau_sim.backends" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../backends/cocotb_backend/index.html">dau_sim.backends.cocotb_backend</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../compiler/index.html">dau_sim.compiler</a><input aria-label="Toggle navigation of dau_sim.compiler" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../compiler/compile/index.html">dau_sim.compiler.compile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../compiler/depanalysis/index.html">dau_sim.compiler.depanalysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../compiler/eval/index.html">dau_sim.compiler.eval</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../compiler/eval4/index.html">dau_sim.compiler.eval4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../compiler/flatten/index.html">dau_sim.compiler.flatten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../compiler/resolve/index.html">dau_sim.compiler.resolve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../compiler/rewrite/index.html">dau_sim.compiler.rewrite</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../frontends/index.html">dau_sim.frontends</a><input aria-label="Toggle navigation of dau_sim.frontends" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../frontends/amaranth_frontend/index.html">dau_sim.frontends.amaranth_frontend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../frontends/pyslang_frontend/index.html">dau_sim.frontends.pyslang_frontend</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ir/index.html">dau_sim.ir</a><input aria-label="Toggle navigation of dau_sim.ir" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ir/expr/index.html">dau_sim.ir.expr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ir/module/index.html">dau_sim.ir.module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ir/printer/index.html">dau_sim.ir.printer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ir/stmt/index.html">dau_sim.ir.stmt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ir/types/index.html">dau_sim.ir.types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ir/validate/index.html">dau_sim.ir.validate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../runtime/index.html">dau_sim.runtime</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">dau_sim.testbench</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_ir/index.html">test_ir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_vcd/index.html">test_vcd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_eval/index.html">test_eval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_sim_seq/index.html">test_sim_seq</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_sim_comb/index.html">test_sim_comb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_compiler/index.html">test_compiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_testbench/index.html">test_testbench</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_selectors/index.html">test_selectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_frontend_sv/index.html">test_frontend_sv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_cocotb_backend/index.html">test_cocotb_backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_cocotb_examples/index.html">test_cocotb_examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_nonsynthesizable/index.html">test_nonsynthesizable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_frontend_amaranth/index.html">test_frontend_amaranth</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../_sources/autoapi/dau_sim/testbench/index.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-dau_sim.testbench">
+<span id="dau-sim-testbench"></span><h1>dau_sim.testbench<a class="headerlink" href="#module-dau_sim.testbench" title="Link to this heading">¶</a></h1>
+<section id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.testbench.TestbenchTimeout" title="dau_sim.testbench.TestbenchTimeout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestbenchTimeout</span></code></a></p></td>
+<td><p>Raised when a testbench exceeds the maximum cycle count.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.testbench.TestbenchResult" title="dau_sim.testbench.TestbenchResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestbenchResult</span></code></a></p></td>
+<td><p>Result of a testbench execution.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.testbench.TestbenchContext" title="dau_sim.testbench.TestbenchContext"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestbenchContext</span></code></a></p></td>
+<td><p>Interactive simulation context for testbench functions.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.testbench.run_parallel_testbenches" title="dau_sim.testbench.run_parallel_testbenches"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_parallel_testbenches</span></code></a>(, clocks, ...)</p></td>
+<td><p>Run multiple testbench functions in parallel against a compiled module.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchTimeout">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.testbench.</span></span><span class="sig-name descname"><span class="pre">TestbenchTimeout</span></span><a class="reference internal" href="../../../_modules/dau_sim/testbench.html#TestbenchTimeout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.testbench.TestbenchTimeout" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when a testbench exceeds the maximum cycle count.</p>
+<p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchResult">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.testbench.</span></span><span class="sig-name descname"><span class="pre">TestbenchResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dau_sim.testbench.TestbenchContext" title="dau_sim.testbench.TestbenchContext"><span class="pre">TestbenchContext</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dau_sim/testbench.html#TestbenchResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.testbench.TestbenchResult" title="Link to this definition">¶</a></dt>
+<dd><p>Result of a testbench execution.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchResult.cycle">
+<span class="sig-name descname"><span class="pre">cycle</span></span><a class="headerlink" href="#dau_sim.testbench.TestbenchResult.cycle" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchResult.signals">
+<span class="sig-name descname"><span class="pre">signals</span></span><a class="headerlink" href="#dau_sim.testbench.TestbenchResult.signals" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchResult.history">
+<span class="sig-name descname"><span class="pre">history</span></span><a class="headerlink" href="#dau_sim.testbench.TestbenchResult.history" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchResult.passed">
+<span class="sig-name descname"><span class="pre">passed</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#dau_sim.testbench.TestbenchResult.passed" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchResult.error">
+<span class="sig-name descname"><span class="pre">error</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dau_sim.testbench.TestbenchResult.error" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchResult.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dau_sim/testbench.html#TestbenchResult.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.testbench.TestbenchResult.__repr__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.testbench.</span></span><span class="sig-name descname"><span class="pre">TestbenchContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compiled_module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clock_period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.timedelta</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">timedelta(microseconds=1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">datetime.timedelta</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_cycles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dau_sim/testbench.html#TestbenchContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.testbench.TestbenchContext" title="Link to this definition">¶</a></dt>
+<dd><p>Interactive simulation context for testbench functions.</p>
+<p>Tracks signal values across simulation steps, supports setting inputs,
+reading outputs, and making assertions about signal values.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext._cm">
+<span class="sig-name descname"><span class="pre">_cm</span></span><a class="headerlink" href="#dau_sim.testbench.TestbenchContext._cm" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext._clock_period">
+<span class="sig-name descname"><span class="pre">_clock_period</span></span><a class="headerlink" href="#dau_sim.testbench.TestbenchContext._clock_period" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext._clocks">
+<span class="sig-name descname"><span class="pre">_clocks</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dau_sim.testbench.TestbenchContext._clocks" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext._max_cycles">
+<span class="sig-name descname"><span class="pre">_max_cycles</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10000</span></em><a class="headerlink" href="#dau_sim.testbench.TestbenchContext._max_cycles" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext._cycle">
+<span class="sig-name descname"><span class="pre">_cycle</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#dau_sim.testbench.TestbenchContext._cycle" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext._signals">
+<span class="sig-name descname"><span class="pre">_signals</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.testbench.TestbenchContext._signals" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext._history">
+<span class="sig-name descname"><span class="pre">_history</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.testbench.TestbenchContext._history" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext._shapes">
+<span class="sig-name descname"><span class="pre">_shapes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../ir/types/index.html#dau_sim.ir.types.Shape" title="dau_sim.ir.types.Shape"><span class="pre">dau_sim.ir.types.Shape</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.testbench.TestbenchContext._shapes" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext._forced">
+<span class="sig-name descname"><span class="pre">_forced</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.testbench.TestbenchContext._forced" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext.cycle">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cycle</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dau_sim.testbench.TestbenchContext.cycle" title="Link to this definition">¶</a></dt>
+<dd><p>Current simulation cycle.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/dau_sim/testbench.html#TestbenchContext.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.testbench.TestbenchContext.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set an input signal value. Takes effect on the next <code class="docutils literal notranslate"><span class="pre">tick()</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../../_modules/dau_sim/testbench.html#TestbenchContext.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.testbench.TestbenchContext.get" title="Link to this definition">¶</a></dt>
+<dd><p>Get the current value of any signal.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext.force">
+<span class="sig-name descname"><span class="pre">force</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/dau_sim/testbench.html#TestbenchContext.force"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.testbench.TestbenchContext.force" title="Link to this definition">¶</a></dt>
+<dd><p>Force a signal to a constant value, overriding simulation output.</p>
+<p>The forced value is applied after each <code class="docutils literal notranslate"><span class="pre">tick()</span></code> and persists
+until <code class="docutils literal notranslate"><span class="pre">release()</span></code> is called.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext.release">
+<span class="sig-name descname"><span class="pre">release</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/dau_sim/testbench.html#TestbenchContext.release"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.testbench.TestbenchContext.release" title="Link to this definition">¶</a></dt>
+<dd><p>Release a previously forced signal, restoring simulation control.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext.is_forced">
+<span class="sig-name descname"><span class="pre">is_forced</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../_modules/dau_sim/testbench.html#TestbenchContext.is_forced"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.testbench.TestbenchContext.is_forced" title="Link to this definition">¶</a></dt>
+<dd><p>Return True if the signal is currently forced.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext.tick">
+<span class="sig-name descname"><span class="pre">tick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/dau_sim/testbench.html#TestbenchContext.tick"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.testbench.TestbenchContext.tick" title="Link to this definition">¶</a></dt>
+<dd><p>Advance simulation by <em>n</em> clock cycles.</p>
+<p>Runs the compiled module for <em>n</em> cycles using the current signal
+values as initial state.  After execution, all signal values are
+updated to reflect the final simulated state.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext.assert_eq">
+<span class="sig-name descname"><span class="pre">assert_eq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/dau_sim/testbench.html#TestbenchContext.assert_eq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.testbench.TestbenchContext.assert_eq" title="Link to this definition">¶</a></dt>
+<dd><p>Assert that <em>signal</em> currently equals <em>expected</em>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext.assert_neq">
+<span class="sig-name descname"><span class="pre">assert_neq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/dau_sim/testbench.html#TestbenchContext.assert_neq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.testbench.TestbenchContext.assert_neq" title="Link to this definition">¶</a></dt>
+<dd><p>Assert that <em>signal</em> does not equal <em>value</em>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext.assert_stable">
+<span class="sig-name descname"><span class="pre">assert_stable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/dau_sim/testbench.html#TestbenchContext.assert_stable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.testbench.TestbenchContext.assert_stable" title="Link to this definition">¶</a></dt>
+<dd><p>Assert that <em>signal</em> has been stable (unchanged).</p>
+<p>If <em>cycles</em> is given, checks that the last <em>cycles</em> recorded values
+are identical.  Otherwise checks all recorded history.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext.assert_changed">
+<span class="sig-name descname"><span class="pre">assert_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/dau_sim/testbench.html#TestbenchContext.assert_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.testbench.TestbenchContext.assert_changed" title="Link to this definition">¶</a></dt>
+<dd><p>Assert that <em>signal</em> changed at least once in recent history.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.testbench.TestbenchContext.history_of">
+<span class="sig-name descname"><span class="pre">history_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/dau_sim/testbench.html#TestbenchContext.history_of"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.testbench.TestbenchContext.history_of" title="Link to this definition">¶</a></dt>
+<dd><p>Return the full value history for a signal (one entry per cycle).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dau_sim.testbench.run_parallel_testbenches">
+<span class="sig-prename descclassname"><span class="pre">dau_sim.testbench.</span></span><span class="sig-name descname"><span class="pre">run_parallel_testbenches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compiled_module</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">fns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clock_period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.timedelta</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">timedelta(microseconds=1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">datetime.timedelta</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_cycles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#dau_sim.testbench.TestbenchResult" title="dau_sim.testbench.TestbenchResult"><span class="pre">TestbenchResult</span></a></span></span><a class="reference internal" href="../../../_modules/dau_sim/testbench.html#run_parallel_testbenches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.testbench.run_parallel_testbenches" title="Link to this definition">¶</a></dt>
+<dd><p>Run multiple testbench functions in parallel against a compiled module.</p>
+<p>Each function receives a <code class="xref py py-class docutils literal notranslate"><span class="pre">_ParallelView</span></code> that supports the same
+API as <a class="reference internal" href="#dau_sim.testbench.TestbenchContext" title="dau_sim.testbench.TestbenchContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestbenchContext</span></code></a>.  All threads synchronize at each
+<code class="docutils literal notranslate"><span class="pre">tick()</span></code> call so the simulation advances in lock-step.</p>
+<p>Returns a <a class="reference internal" href="#dau_sim.testbench.TestbenchResult" title="dau_sim.testbench.TestbenchResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestbenchResult</span></code></a> capturing the final state.</p>
+<p>Raises the first exception from any thread if a testbench fails.</p>
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../../test_ir/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">test_ir</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../runtime/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">dau_sim.runtime</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; the dau authors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">dau_sim.testbench</a><ul>
+<li><a class="reference internal" href="#exceptions">Exceptions</a></li>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchTimeout"><code class="docutils literal notranslate"><span class="pre">TestbenchTimeout</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchResult"><code class="docutils literal notranslate"><span class="pre">TestbenchResult</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchResult.cycle"><code class="docutils literal notranslate"><span class="pre">TestbenchResult.cycle</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchResult.signals"><code class="docutils literal notranslate"><span class="pre">TestbenchResult.signals</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchResult.history"><code class="docutils literal notranslate"><span class="pre">TestbenchResult.history</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchResult.passed"><code class="docutils literal notranslate"><span class="pre">TestbenchResult.passed</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchResult.error"><code class="docutils literal notranslate"><span class="pre">TestbenchResult.error</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchResult.__repr__"><code class="docutils literal notranslate"><span class="pre">TestbenchResult.__repr__()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext"><code class="docutils literal notranslate"><span class="pre">TestbenchContext</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext._cm"><code class="docutils literal notranslate"><span class="pre">TestbenchContext._cm</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext._clock_period"><code class="docutils literal notranslate"><span class="pre">TestbenchContext._clock_period</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext._clocks"><code class="docutils literal notranslate"><span class="pre">TestbenchContext._clocks</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext._max_cycles"><code class="docutils literal notranslate"><span class="pre">TestbenchContext._max_cycles</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext._cycle"><code class="docutils literal notranslate"><span class="pre">TestbenchContext._cycle</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext._signals"><code class="docutils literal notranslate"><span class="pre">TestbenchContext._signals</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext._history"><code class="docutils literal notranslate"><span class="pre">TestbenchContext._history</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext._shapes"><code class="docutils literal notranslate"><span class="pre">TestbenchContext._shapes</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext._forced"><code class="docutils literal notranslate"><span class="pre">TestbenchContext._forced</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext.cycle"><code class="docutils literal notranslate"><span class="pre">TestbenchContext.cycle</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext.set"><code class="docutils literal notranslate"><span class="pre">TestbenchContext.set()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext.get"><code class="docutils literal notranslate"><span class="pre">TestbenchContext.get()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext.force"><code class="docutils literal notranslate"><span class="pre">TestbenchContext.force()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext.release"><code class="docutils literal notranslate"><span class="pre">TestbenchContext.release()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext.is_forced"><code class="docutils literal notranslate"><span class="pre">TestbenchContext.is_forced()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext.tick"><code class="docutils literal notranslate"><span class="pre">TestbenchContext.tick()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext.assert_eq"><code class="docutils literal notranslate"><span class="pre">TestbenchContext.assert_eq()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext.assert_neq"><code class="docutils literal notranslate"><span class="pre">TestbenchContext.assert_neq()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext.assert_stable"><code class="docutils literal notranslate"><span class="pre">TestbenchContext.assert_stable()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext.assert_changed"><code class="docutils literal notranslate"><span class="pre">TestbenchContext.assert_changed()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.testbench.TestbenchContext.history_of"><code class="docutils literal notranslate"><span class="pre">TestbenchContext.history_of()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.testbench.run_parallel_testbenches"><code class="docutils literal notranslate"><span class="pre">run_parallel_testbenches()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../../_static/js/custom.js?v=956e5d78"></script>
+    </body>
+</html>

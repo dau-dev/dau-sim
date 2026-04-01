@@ -1,0 +1,192 @@
+test_vcd
+========
+
+.. py:module:: test_vcd
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   test_vcd.TestMakeId
+   test_vcd.TestParseTimescale
+   test_vcd.TestFormatValue
+   test_vcd.TestVCDStructure
+   test_vcd.TestVCDEndToEnd
+   test_vcd.TestVCDFileIO
+   test_vcd.TestAmaranthVCD
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   test_vcd._parse_vcd_signals
+   test_vcd._parse_vcd_changes
+   test_vcd._parse_vcd_dumpvars
+
+
+Module Contents
+---------------
+
+.. py:function:: _parse_vcd_signals(vcd: str) -> dict[str, dict]
+
+   Parse VCD variable declarations.
+
+   Returns: {name: {"id": str, "width": int, "type": str}}
+
+
+.. py:function:: _parse_vcd_changes(vcd: str) -> dict[int, dict[str, int]]
+
+   Parse VCD value changes into {tick: {id: value}}.
+
+   Skips the $dumpvars section.
+
+
+.. py:function:: _parse_vcd_dumpvars(vcd: str) -> dict[str, int]
+
+   Parse the $dumpvars section into {id: value}.
+
+
+.. py:class:: TestMakeId
+
+   .. py:method:: test_first_ids()
+
+
+   .. py:method:: test_deterministic()
+
+
+   .. py:method:: test_negative_raises()
+
+
+.. py:class:: TestParseTimescale
+
+   .. py:method:: test_1ns()
+
+
+   .. py:method:: test_10ns()
+
+
+   .. py:method:: test_1us()
+
+
+   .. py:method:: test_1ps()
+
+
+   .. py:method:: test_1ms()
+
+
+.. py:class:: TestFormatValue
+
+   .. py:method:: test_1bit_zero()
+
+
+   .. py:method:: test_1bit_one()
+
+
+   .. py:method:: test_8bit()
+
+
+   .. py:method:: test_8bit_zero()
+
+
+   .. py:method:: test_4bit()
+
+
+   .. py:method:: test_negative_signed()
+
+
+.. py:class:: TestVCDStructure
+
+   Test VCD header, signal declarations, and overall structure.
+
+
+   .. py:method:: _make_simple_module() -> dau_sim.ir.Module
+
+      A simple combinational module: y = a + b.
+
+
+
+   .. py:method:: test_header_sections()
+
+
+   .. py:method:: test_signal_declarations()
+
+
+   .. py:method:: test_custom_timescale()
+
+
+   .. py:method:: test_1bit_signals()
+
+      1-bit signals should be declared with width 1.
+
+
+
+.. py:class:: TestVCDEndToEnd
+
+   Simulate designs and verify VCD waveform content.
+
+
+   .. py:method:: test_combinational_adder()
+
+      Comb adder: a=10, b=20 → y=30 for all time.
+
+
+
+   .. py:method:: test_sequential_counter()
+
+      Counter: count goes 1, 2, 3, ...
+
+
+
+   .. py:method:: test_timestamp_spacing()
+
+      Consecutive timestamps should be evenly spaced.
+
+
+
+   .. py:method:: test_no_module_fallback()
+
+      Without module metadata, signals default to 1-bit wire.
+
+
+
+   .. py:method:: test_custom_scope()
+
+
+.. py:class:: TestVCDFileIO
+
+   Test writing VCD to files.
+
+
+   .. py:method:: test_write_vcd_file()
+
+      write_vcd should create a valid VCD file.
+
+
+
+   .. py:method:: test_standalone_write_vcd()
+
+      write_vcd standalone function should work.
+
+
+
+.. py:class:: TestAmaranthVCD
+
+   Full pipeline: Amaranth design → simulate → VCD.
+
+
+   .. py:method:: test_amaranth_counter_vcd()
+
+
+   .. py:method:: test_amaranth_adder_vcd()
+
+
+   .. py:method:: test_amaranth_counter_vcd_file()
+
+      Full pipeline to VCD file.
+
+
+

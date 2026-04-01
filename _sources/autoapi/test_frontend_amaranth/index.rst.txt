@@ -1,0 +1,414 @@
+test_frontend_amaranth
+======================
+
+.. py:module:: test_frontend_amaranth
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   test_frontend_amaranth.TestModuleExtraction
+   test_frontend_amaranth.TestExpressionLowering
+   test_frontend_amaranth.TestStatementLowering
+   test_frontend_amaranth.TestClockDomainMapping
+   test_frontend_amaranth.TestEndToEndCombinational
+   test_frontend_amaranth.TestEndToEndSequential
+   test_frontend_amaranth.TestErrorHandling
+   test_frontend_amaranth.TestMemoryLowering
+   test_frontend_amaranth.TestEndToEndMemory
+   test_frontend_amaranth.TestStdlibInterop
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   test_frontend_amaranth._port_names
+   test_frontend_amaranth._port_shape
+   test_frontend_amaranth._signal_names
+
+
+Module Contents
+---------------
+
+.. py:function:: _port_names(mod, direction=None)
+
+   Return port names from an IR module, optionally filtered by direction.
+
+
+.. py:function:: _port_shape(mod, name)
+
+   Return the shape for a named port.
+
+
+.. py:function:: _signal_names(mod)
+
+   Return internal signal names.
+
+
+.. py:class:: TestModuleExtraction
+
+   Test port/signal/domain extraction from Amaranth designs.
+
+
+   .. py:method:: test_component_ports()
+
+      Component ports should be extracted with correct direction.
+
+
+
+   .. py:method:: test_component_wide_ports()
+
+      Wide port shapes should be preserved.
+
+
+
+   .. py:method:: test_component_signed_port()
+
+      Signed shapes should be preserved.
+
+
+
+   .. py:method:: test_bare_elaboratable()
+
+      Bare Elaboratable produces a module with internal signals only.
+
+
+
+   .. py:method:: test_custom_name()
+
+      Custom module name overrides class name.
+
+
+
+   .. py:method:: test_signal_init_values()
+
+      Signal init values should be preserved.
+
+
+
+.. py:class:: TestExpressionLowering
+
+   Test lowering of Amaranth AST expressions to IR.
+
+
+   .. py:method:: _get_comb_assign(design)
+
+      Extract the first comb assign from a design.
+
+
+
+   .. py:method:: test_constant()
+
+
+   .. py:method:: test_add()
+
+
+   .. py:method:: test_sub()
+
+
+   .. py:method:: test_mul()
+
+
+   .. py:method:: test_bitwise_and()
+
+
+   .. py:method:: test_bitwise_or()
+
+
+   .. py:method:: test_bitwise_xor()
+
+
+   .. py:method:: test_shift_left()
+
+
+   .. py:method:: test_shift_right()
+
+
+   .. py:method:: test_eq_comparison()
+
+
+   .. py:method:: test_ne_comparison()
+
+
+   .. py:method:: test_lt_comparison()
+
+
+   .. py:method:: test_ge_comparison()
+
+
+   .. py:method:: test_bitwise_not()
+
+
+   .. py:method:: test_mux()
+
+
+   .. py:method:: test_slice()
+
+
+   .. py:method:: test_concat()
+
+      Cat(a, b) should produce Concat with reversed part order (MSB first).
+
+
+
+   .. py:method:: test_any_operator()
+
+      Signal.any() produces reduce-OR (r|) → mapped to RED_OR.
+
+
+
+.. py:class:: TestStatementLowering
+
+   Test lowering of Amaranth statements to IR.
+
+
+   .. py:method:: test_assign()
+
+
+   .. py:method:: test_if_else_becomes_switch()
+
+      m.If/m.Else is lowered to Switch in Amaranth AST.
+
+
+
+   .. py:method:: test_switch()
+
+      m.Switch with explicit Case values.
+
+
+
+   .. py:method:: test_sequential_assign()
+
+      Sequential domain assign produces SeqBlock.
+
+
+
+.. py:class:: TestClockDomainMapping
+
+   Test clock domain extraction and auto-creation.
+
+
+   .. py:method:: test_default_sync_domain()
+
+      Using m.d.sync should auto-create a 'sync' posedge domain.
+
+
+
+   .. py:method:: test_clk_rst_as_input_ports()
+
+      Auto-created clock/reset should appear as input ports.
+
+
+
+   .. py:method:: test_comb_only_no_clock_domain()
+
+      Purely combinational design should have no clock domains.
+
+
+
+   .. py:method:: test_explicit_domain()
+
+      Explicitly added clock domain should be extracted properly.
+
+
+
+.. py:class:: TestEndToEndCombinational
+
+   Combinational designs: Amaranth → compile → simulate.
+
+
+   .. py:method:: test_adder()
+
+
+   .. py:method:: test_adder_overflow()
+
+      8-bit add wraps at 256.
+
+
+
+   .. py:method:: test_mux()
+
+
+   .. py:method:: test_bitwise_ops()
+
+
+   .. py:method:: test_invert()
+
+
+   .. py:method:: test_slice()
+
+
+   .. py:method:: test_concat()
+
+
+   .. py:method:: test_if_else()
+
+
+   .. py:method:: test_switch_case()
+
+
+   .. py:method:: test_comparison_eq()
+
+
+   .. py:method:: test_shift_left()
+
+
+.. py:class:: TestEndToEndSequential
+
+   Sequential designs: Amaranth → compile → simulate.
+
+
+   .. py:method:: test_counter()
+
+      Simple incrementing counter.
+
+
+
+   .. py:method:: test_counter_wraps()
+
+      4-bit counter wraps at 16.
+
+
+
+   .. py:method:: test_dff()
+
+      D flip-flop: q captures d on each clock edge.
+
+
+
+   .. py:method:: test_shift_register()
+
+      4-bit serial-in shift register.
+
+
+
+   .. py:method:: test_counter_with_if_reset()
+
+      Counter with conditional reset using m.If.
+
+
+
+   .. py:method:: test_mixed_comb_seq()
+
+      Counter with combinational output decode.
+
+
+
+.. py:class:: TestErrorHandling
+
+   Test error paths.
+
+
+   .. py:method:: test_unsupported_part_raises()
+
+      Dynamic Part node should raise NotImplementedError.
+
+
+
+.. py:class:: TestMemoryLowering
+
+   Test Amaranth Memory → IR Memory lowering.
+
+
+   .. py:method:: test_memory_instance_detected()
+
+      MemoryInstance subfragment should produce IR Memory.
+
+
+
+   .. py:method:: test_memory_read_port_signals()
+
+      Memory read port should reference correct signal names.
+
+
+
+   .. py:method:: test_memory_write_port_domain()
+
+      Memory write port should reference the correct domain.
+
+
+
+   .. py:method:: test_memory_init_data()
+
+      Memory init data should be preserved through lowering.
+
+
+
+   .. py:method:: test_memory_sync_domain_created()
+
+      Memory with write port should ensure sync domain exists.
+
+
+
+.. py:class:: TestEndToEndMemory
+
+   End-to-end: Amaranth Memory → compile → simulate.
+
+
+   .. py:method:: test_memory_write_read()
+
+      Write to memory, then read back.
+
+
+
+   .. py:method:: test_memory_read_init()
+
+      Reading initialized memory should return init data.
+
+
+
+.. py:class:: TestStdlibInterop
+
+   End-to-end tests with Amaranth stdlib patterns.
+
+   Verifies that common Amaranth design patterns using lib.memory,
+   wiring.Component composition, and hierarchical submodules work
+   through the full from_amaranth → compile → simulate pipeline.
+
+
+   .. py:method:: test_memory_stdlib_write_read()
+
+      lib.memory.Memory: write then read in a single run.
+
+
+
+   .. py:method:: test_memory_stdlib_init_data()
+
+      lib.memory.Memory with init data readable via comb port.
+
+
+
+   .. py:method:: test_hierarchical_submodule()
+
+      Component containing another Component as a submodule.
+
+
+
+   .. py:method:: test_sequential_with_comb_submodule()
+
+      Sequential counter with combinational decode submodule.
+
+
+
+   .. py:method:: test_memory_write_at_multiple_addresses()
+
+      Write to address 0, then verify it's stored in same run.
+
+
+
+   .. py:method:: test_component_wiring_passthrough()
+
+      Component that passes through a signal unchanged.
+
+
+
+   .. py:method:: test_component_multi_output()
+
+      Component with multiple outputs derived from one input.
+
+
+

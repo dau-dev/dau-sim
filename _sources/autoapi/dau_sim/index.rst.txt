@@ -1,0 +1,36 @@
+dau_sim
+=======
+
+.. py:module:: dau_sim
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/dau_sim/adapters/index
+   /autoapi/dau_sim/backends/index
+   /autoapi/dau_sim/compiler/index
+   /autoapi/dau_sim/frontends/index
+   /autoapi/dau_sim/ir/index
+   /autoapi/dau_sim/runtime/index
+   /autoapi/dau_sim/testbench/index
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   dau_sim.__version__
+
+
+Package Contents
+----------------
+
+.. py:data:: __version__
+   :value: '0.1.0'
+
+

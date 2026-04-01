@@ -1,0 +1,81 @@
+dau_sim.compiler.eval4
+======================
+
+.. py:module:: dau_sim.compiler.eval4
+
+.. autoapi-nested-parse::
+
+   Four-state expression evaluator.
+
+   Evaluates IR expression trees with correct IEEE 1364/1800 four-state semantics.
+   Values are ``FourState`` objects carrying (aval, bval) bitmaps.
+
+   X/Z propagation rules (per IEEE 1800-2017):
+     - Bitwise ops: X/Z in any input bit → X in output bit
+     - Arithmetic: any X/Z bit in either operand → all-X result
+     - Comparisons: any X/Z → result is X (represented as X in 1-bit)
+     - Logical ops: partial X rules (e.g., 1 || X = 1)
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   dau_sim.compiler.eval4.eval_expr_4
+   dau_sim.compiler.eval4._refit
+   dau_sim.compiler.eval4._all_x
+   dau_sim.compiler.eval4._mux_x
+   dau_sim.compiler.eval4._eval_unary_4
+   dau_sim.compiler.eval4._unary_with_x
+   dau_sim.compiler.eval4._eval_binary_4
+   dau_sim.compiler.eval4._binary_defined
+   dau_sim.compiler.eval4._binary_with_x
+   dau_sim.compiler.eval4._to_signed
+
+
+Module Contents
+---------------
+
+.. py:function:: eval_expr_4(expr: dau_sim.ir.expr.Expr, signals: dict[str, dau_sim.ir.types.FourState]) -> dau_sim.ir.types.FourState
+
+   Evaluate an expression tree under four-state semantics.
+
+
+.. py:function:: _refit(v: dau_sim.ir.types.FourState, shape: dau_sim.ir.types.Shape) -> dau_sim.ir.types.FourState
+
+   Truncate or zero-extend a FourState to a new shape.
+
+
+.. py:function:: _all_x(shape: dau_sim.ir.types.Shape) -> dau_sim.ir.types.FourState
+
+.. py:function:: _mux_x(t: dau_sim.ir.types.FourState, f: dau_sim.ir.types.FourState, shape: dau_sim.ir.types.Shape) -> dau_sim.ir.types.FourState
+
+   When mux selector is X: bits that agree keep their value, others → X.
+
+
+.. py:function:: _eval_unary_4(op: dau_sim.ir.expr.UnaryOp, a: dau_sim.ir.types.FourState, out: dau_sim.ir.types.Shape) -> dau_sim.ir.types.FourState
+
+.. py:function:: _unary_with_x(op: dau_sim.ir.expr.UnaryOp, a: dau_sim.ir.types.FourState, out: dau_sim.ir.types.Shape) -> dau_sim.ir.types.FourState
+
+   Unary op when operand has X/Z bits.
+
+
+.. py:function:: _eval_binary_4(op: dau_sim.ir.expr.BinaryOp, left: dau_sim.ir.types.FourState, right: dau_sim.ir.types.FourState, out: dau_sim.ir.types.Shape) -> dau_sim.ir.types.FourState
+
+.. py:function:: _binary_defined(op: dau_sim.ir.expr.BinaryOp, left: dau_sim.ir.types.FourState, right: dau_sim.ir.types.FourState, out: dau_sim.ir.types.Shape) -> dau_sim.ir.types.FourState
+
+   Both operands are fully defined — use plain integer math.
+
+
+.. py:function:: _binary_with_x(op: dau_sim.ir.expr.BinaryOp, left: dau_sim.ir.types.FourState, right: dau_sim.ir.types.FourState, out: dau_sim.ir.types.Shape) -> dau_sim.ir.types.FourState
+
+   At least one operand has X/Z bits.
+
+
+.. py:function:: _to_signed(aval: int, shape: dau_sim.ir.types.Shape) -> int
+
+   Interpret unsigned bits as signed if shape says so.
+
+

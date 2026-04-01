@@ -1,0 +1,201 @@
+dau_sim.ir.stmt
+===============
+
+.. py:module:: dau_sim.ir.stmt
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   dau_sim.ir.stmt.Stmt
+   dau_sim.ir.stmt.Assign
+   dau_sim.ir.stmt.IfElse
+   dau_sim.ir.stmt.Switch
+   dau_sim.ir.stmt.Assert
+   dau_sim.ir.stmt.Print
+   dau_sim.ir.stmt.Delay
+   dau_sim.ir.stmt.Finish
+   dau_sim.ir.stmt.ReadMem
+
+
+Module Contents
+---------------
+
+.. py:class:: Stmt
+
+   Base class for all IR statements.
+
+
+.. py:class:: Assign
+
+   Bases: :py:obj:`Stmt`
+
+
+   Assign expression value to a signal.
+
+   target is the signal name (str), value is the expression to evaluate.
+
+
+   .. py:attribute:: target
+      :type:  str
+
+
+   .. py:attribute:: value
+      :type:  dau_sim.ir.expr.Expr
+
+
+.. py:class:: IfElse
+
+   Bases: :py:obj:`Stmt`
+
+
+   Conditional statement.
+
+   if cond: then_stmts else: else_stmts
+
+
+   .. py:attribute:: cond
+      :type:  dau_sim.ir.expr.Expr
+
+
+   .. py:attribute:: then_body
+      :type:  tuple[Stmt, Ellipsis]
+
+
+   .. py:attribute:: else_body
+      :type:  tuple[Stmt, Ellipsis]
+      :value: ()
+
+
+
+.. py:class:: Switch
+
+   Bases: :py:obj:`Stmt`
+
+
+   Multi-way branch (case/casez/casex).
+
+   test is the expression to match. cases is a tuple of (pattern, stmts) pairs.
+   Pattern is an int (matched by equality) or None for the default case.
+
+
+   .. py:attribute:: test
+      :type:  dau_sim.ir.expr.Expr
+
+
+   .. py:attribute:: cases
+      :type:  tuple[tuple[int | None, tuple[Stmt, Ellipsis]], Ellipsis]
+
+
+.. py:class:: Assert
+
+   Bases: :py:obj:`Stmt`
+
+
+   Assertion statement.
+
+   Checks condition at simulation time, reports message on failure.
+
+
+   .. py:attribute:: cond
+      :type:  dau_sim.ir.expr.Expr
+
+
+   .. py:attribute:: message
+      :type:  str
+      :value: ''
+
+
+
+.. py:class:: Print
+
+   Bases: :py:obj:`Stmt`
+
+
+   Print statement ($display equivalent).
+
+   format_str uses Python-style {} placeholders. args are expressions.
+
+
+   .. py:attribute:: format_str
+      :type:  str
+
+
+   .. py:attribute:: args
+      :type:  tuple[dau_sim.ir.expr.Expr, Ellipsis]
+      :value: ()
+
+
+
+.. py:class:: Delay
+
+   Bases: :py:obj:`Stmt`
+
+
+   Delay statement (#N equivalent).
+
+   Pauses execution for *ticks* simulation time units.
+   Only meaningful inside initial blocks or testbench procedures.
+
+
+   .. py:attribute:: ticks
+      :type:  int
+
+
+.. py:class:: Finish
+
+   Bases: :py:obj:`Stmt`
+
+
+   Halt simulation ($finish equivalent).
+
+   When executed, raises SimulationFinish to stop the simulation cleanly.
+
+
+   .. py:attribute:: exit_code
+      :type:  int
+      :value: 0
+
+
+
+.. py:class:: ReadMem
+
+   Bases: :py:obj:`Stmt`
+
+
+   Load memory contents from a file (``$readmemh``/``$readmemb``).
+
+   *path* is the file path (resolved relative to the caller).
+   *mem_name* is the name of the IR ``Memory`` to populate.
+   *is_hex* selects hex (True, ``$readmemh``) or binary (False, ``$readmemb``).
+   Optional *start_addr* / *end_addr* limit the address range filled.
+
+
+   .. py:attribute:: path
+      :type:  str
+
+
+   .. py:attribute:: mem_name
+      :type:  str
+
+
+   .. py:attribute:: is_hex
+      :type:  bool
+      :value: True
+
+
+
+   .. py:attribute:: start_addr
+      :type:  int | None
+      :value: None
+
+
+
+   .. py:attribute:: end_addr
+      :type:  int | None
+      :value: None
+
+
+

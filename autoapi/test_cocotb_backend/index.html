@@ -1,0 +1,985 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="test_cocotb_examples" href="../test_cocotb_examples/index.html"><link rel="prev" title="test_frontend_sv" href="../test_frontend_sv/index.html">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>test_cocotb_backend - dau sim v0.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/custom.css?v=890fd012" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">dau sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.1.0</code></div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <span class="sidebar-brand-text">dau sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.1.0</code></span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../dau_sim/index.html">dau_sim</a><input aria-label="Toggle navigation of dau_sim" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dau_sim/adapters/index.html">dau_sim.adapters</a><input aria-label="Toggle navigation of dau_sim.adapters" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/adapters/selectors/index.html">dau_sim.adapters.selectors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/adapters/vcd/index.html">dau_sim.adapters.vcd</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dau_sim/backends/index.html">dau_sim.backends</a><input aria-label="Toggle navigation of dau_sim.backends" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/backends/cocotb_backend/index.html">dau_sim.backends.cocotb_backend</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dau_sim/compiler/index.html">dau_sim.compiler</a><input aria-label="Toggle navigation of dau_sim.compiler" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/compiler/compile/index.html">dau_sim.compiler.compile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/compiler/depanalysis/index.html">dau_sim.compiler.depanalysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/compiler/eval/index.html">dau_sim.compiler.eval</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/compiler/eval4/index.html">dau_sim.compiler.eval4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/compiler/flatten/index.html">dau_sim.compiler.flatten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/compiler/resolve/index.html">dau_sim.compiler.resolve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/compiler/rewrite/index.html">dau_sim.compiler.rewrite</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dau_sim/frontends/index.html">dau_sim.frontends</a><input aria-label="Toggle navigation of dau_sim.frontends" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/frontends/amaranth_frontend/index.html">dau_sim.frontends.amaranth_frontend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/frontends/pyslang_frontend/index.html">dau_sim.frontends.pyslang_frontend</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dau_sim/ir/index.html">dau_sim.ir</a><input aria-label="Toggle navigation of dau_sim.ir" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/ir/expr/index.html">dau_sim.ir.expr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/ir/module/index.html">dau_sim.ir.module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/ir/printer/index.html">dau_sim.ir.printer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/ir/stmt/index.html">dau_sim.ir.stmt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/ir/types/index.html">dau_sim.ir.types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/ir/validate/index.html">dau_sim.ir.validate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../dau_sim/runtime/index.html">dau_sim.runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dau_sim/testbench/index.html">dau_sim.testbench</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../test_ir/index.html">test_ir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_vcd/index.html">test_vcd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_eval/index.html">test_eval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_sim_seq/index.html">test_sim_seq</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_sim_comb/index.html">test_sim_comb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_compiler/index.html">test_compiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_testbench/index.html">test_testbench</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_selectors/index.html">test_selectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_frontend_sv/index.html">test_frontend_sv</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">test_cocotb_backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_cocotb_examples/index.html">test_cocotb_examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_nonsynthesizable/index.html">test_nonsynthesizable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_frontend_amaranth/index.html">test_frontend_amaranth</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../_sources/autoapi/test_cocotb_backend/index.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-test_cocotb_backend">
+<span id="test-cocotb-backend"></span><h1>test_cocotb_backend<a class="headerlink" href="#module-test_cocotb_backend" title="Link to this heading">¶</a></h1>
+<p>Tests for the cocotb backend (pure-Python GPI replacement).</p>
+<p>Tests cover:
+- DauSimHandle (signal read/write, child discovery, type introspection)
+- DauSimCallback (allocation, deregistration)
+- SimulationEngine (init, callback queue, phase ordering, settling, VCH)
+- Full integration with cocotb scheduler</p>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle" title="test_cocotb_backend.TestDauSimHandle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestDauSimHandle</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#test_cocotb_backend.TestDauSimIterator" title="test_cocotb_backend.TestDauSimIterator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestDauSimIterator</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#test_cocotb_backend.TestDauSimCallback" title="test_cocotb_backend.TestDauSimCallback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestDauSimCallback</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#test_cocotb_backend.TestEngineInit" title="test_cocotb_backend.TestEngineInit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestEngineInit</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#test_cocotb_backend.TestEngineCallbacks" title="test_cocotb_backend.TestEngineCallbacks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestEngineCallbacks</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#test_cocotb_backend.TestEngineStepping" title="test_cocotb_backend.TestEngineStepping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestEngineStepping</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#test_cocotb_backend.TestEngineVCH" title="test_cocotb_backend.TestEngineVCH"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestEngineVCH</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#test_cocotb_backend.TestEngineFullStep" title="test_cocotb_backend.TestEngineFullStep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestEngineFullStep</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#test_cocotb_backend.TestHandleHierarchy" title="test_cocotb_backend.TestHandleHierarchy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestHandleHierarchy</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#test_cocotb_backend.TestSimulatorModule" title="test_cocotb_backend.TestSimulatorModule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestSimulatorModule</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#test_cocotb_backend.TestCocotbIntegration" title="test_cocotb_backend.TestCocotbIntegration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestCocotbIntegration</span></code></a></p></td>
+<td><p>Integration tests that exercise the cocotb scheduler with our engine.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#test_cocotb_backend._make_counter_module" title="test_cocotb_backend._make_counter_module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_make_counter_module</span></code></a>([width, name])</p></td>
+<td><p>4-bit counter with rst (sync domain, posedge).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#test_cocotb_backend._make_comb_module" title="test_cocotb_backend._make_comb_module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_make_comb_module</span></code></a>()</p></td>
+<td><p>Simple combinational: out = a &amp; b.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="test_cocotb_backend._make_counter_module">
+<span class="sig-prename descclassname"><span class="pre">test_cocotb_backend.</span></span><span class="sig-name descname"><span class="pre">_make_counter_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'counter'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend._make_counter_module" title="Link to this definition">¶</a></dt>
+<dd><p>4-bit counter with rst (sync domain, posedge).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="test_cocotb_backend._make_comb_module">
+<span class="sig-prename descclassname"><span class="pre">test_cocotb_backend.</span></span><span class="sig-name descname"><span class="pre">_make_comb_module</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend._make_comb_module" title="Link to this definition">¶</a></dt>
+<dd><p>Simple combinational: out = a &amp; b.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_cocotb_backend.</span></span><span class="sig-name descname"><span class="pre">TestDauSimHandle</span></span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle.test_scope_handle_type">
+<span class="sig-name descname"><span class="pre">test_scope_handle_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle.test_scope_handle_type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle.test_logic_handle_type">
+<span class="sig-name descname"><span class="pre">test_logic_handle_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle.test_logic_handle_type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle.test_logic_array_handle_type">
+<span class="sig-name descname"><span class="pre">test_logic_array_handle_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle.test_logic_array_handle_type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle.test_unknown_handle_type">
+<span class="sig-name descname"><span class="pre">test_unknown_handle_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle.test_unknown_handle_type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle.test_get_name_string">
+<span class="sig-name descname"><span class="pre">test_get_name_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle.test_get_name_string" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle.test_definition">
+<span class="sig-name descname"><span class="pre">test_definition</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle.test_definition" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle.test_const">
+<span class="sig-name descname"><span class="pre">test_const</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle.test_const" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle.test_indexable">
+<span class="sig-name descname"><span class="pre">test_indexable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle.test_indexable" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle.test_num_elems_signal">
+<span class="sig-name descname"><span class="pre">test_num_elems_signal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle.test_num_elems_signal" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle.test_num_elems_scope">
+<span class="sig-name descname"><span class="pre">test_num_elems_scope</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle.test_num_elems_scope" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle.test_range_multibit">
+<span class="sig-name descname"><span class="pre">test_range_multibit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle.test_range_multibit" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle.test_range_singlebit">
+<span class="sig-name descname"><span class="pre">test_range_singlebit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle.test_range_singlebit" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle.test_child_discovery">
+<span class="sig-name descname"><span class="pre">test_child_discovery</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle.test_child_discovery" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle.test_bit_index">
+<span class="sig-name descname"><span class="pre">test_bit_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle.test_bit_index" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle.test_iterate">
+<span class="sig-name descname"><span class="pre">test_iterate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle.test_iterate" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle.test_signal_read_write">
+<span class="sig-name descname"><span class="pre">test_signal_read_write</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle.test_signal_read_write" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle.test_signal_binstr">
+<span class="sig-name descname"><span class="pre">test_signal_binstr</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle.test_signal_binstr" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle.test_signal_real">
+<span class="sig-name descname"><span class="pre">test_signal_real</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle.test_signal_real" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle.test_bit_write">
+<span class="sig-name descname"><span class="pre">test_bit_write</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle.test_bit_write" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimHandle.test_hash_and_eq">
+<span class="sig-name descname"><span class="pre">test_hash_and_eq</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimHandle.test_hash_and_eq" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimIterator">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_cocotb_backend.</span></span><span class="sig-name descname"><span class="pre">TestDauSimIterator</span></span><a class="headerlink" href="#test_cocotb_backend.TestDauSimIterator" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimIterator.test_basic_iteration">
+<span class="sig-name descname"><span class="pre">test_basic_iteration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimIterator.test_basic_iteration" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimIterator.test_empty">
+<span class="sig-name descname"><span class="pre">test_empty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimIterator.test_empty" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimCallback">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_cocotb_backend.</span></span><span class="sig-name descname"><span class="pre">TestDauSimCallback</span></span><a class="headerlink" href="#test_cocotb_backend.TestDauSimCallback" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimCallback.test_alloc_and_deregister">
+<span class="sig-name descname"><span class="pre">test_alloc_and_deregister</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimCallback.test_alloc_and_deregister" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimCallback.test_double_deregister">
+<span class="sig-name descname"><span class="pre">test_double_deregister</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimCallback.test_double_deregister" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestDauSimCallback.test_deregister_removes_vch">
+<span class="sig-name descname"><span class="pre">test_deregister_removes_vch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestDauSimCallback.test_deregister_removes_vch" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineInit">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_cocotb_backend.</span></span><span class="sig-name descname"><span class="pre">TestEngineInit</span></span><a class="headerlink" href="#test_cocotb_backend.TestEngineInit" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineInit.test_counter_module_signals">
+<span class="sig-name descname"><span class="pre">test_counter_module_signals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineInit.test_counter_module_signals" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineInit.test_comb_module_signals">
+<span class="sig-name descname"><span class="pre">test_comb_module_signals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineInit.test_comb_module_signals" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineInit.test_domain_info_built">
+<span class="sig-name descname"><span class="pre">test_domain_info_built</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineInit.test_domain_info_built" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineInit.test_has_seq_flag">
+<span class="sig-name descname"><span class="pre">test_has_seq_flag</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineInit.test_has_seq_flag" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineInit.test_comb_initial_settle">
+<span class="sig-name descname"><span class="pre">test_comb_initial_settle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineInit.test_comb_initial_settle" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineCallbacks">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_cocotb_backend.</span></span><span class="sig-name descname"><span class="pre">TestEngineCallbacks</span></span><a class="headerlink" href="#test_cocotb_backend.TestEngineCallbacks" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineCallbacks.test_timed_callback">
+<span class="sig-name descname"><span class="pre">test_timed_callback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineCallbacks.test_timed_callback" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineCallbacks.test_readonly_callback">
+<span class="sig-name descname"><span class="pre">test_readonly_callback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineCallbacks.test_readonly_callback" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineCallbacks.test_rwsynch_callback">
+<span class="sig-name descname"><span class="pre">test_rwsynch_callback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineCallbacks.test_rwsynch_callback" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineCallbacks.test_nextstep_callback">
+<span class="sig-name descname"><span class="pre">test_nextstep_callback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineCallbacks.test_nextstep_callback" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineCallbacks.test_value_change_callback">
+<span class="sig-name descname"><span class="pre">test_value_change_callback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineCallbacks.test_value_change_callback" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineStepping">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_cocotb_backend.</span></span><span class="sig-name descname"><span class="pre">TestEngineStepping</span></span><a class="headerlink" href="#test_cocotb_backend.TestEngineStepping" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineStepping.test_step_advances_time">
+<span class="sig-name descname"><span class="pre">test_step_advances_time</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineStepping.test_step_advances_time" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineStepping.test_step_fires_timed_callback">
+<span class="sig-name descname"><span class="pre">test_step_fires_timed_callback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineStepping.test_step_fires_timed_callback" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineStepping.test_step_returns_false_when_empty">
+<span class="sig-name descname"><span class="pre">test_step_returns_false_when_empty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineStepping.test_step_returns_false_when_empty" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineStepping.test_callbacks_fire_in_phase_order">
+<span class="sig-name descname"><span class="pre">test_callbacks_fire_in_phase_order</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineStepping.test_callbacks_fire_in_phase_order" title="Link to this definition">¶</a></dt>
+<dd><p>At the same time step, Normal fires before ReadWrite before ReadOnly.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineStepping.test_deregistered_callback_not_fired">
+<span class="sig-name descname"><span class="pre">test_deregistered_callback_not_fired</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineStepping.test_deregistered_callback_not_fired" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineStepping.test_settle_detects_posedge">
+<span class="sig-name descname"><span class="pre">test_settle_detects_posedge</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineStepping.test_settle_detects_posedge" title="Link to this definition">¶</a></dt>
+<dd><p>When clk goes 0→1 via set_signal, _settle detects the edge and runs seq blocks.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineStepping.test_settle_no_edge_on_negedge_for_posedge_domain">
+<span class="sig-name descname"><span class="pre">test_settle_no_edge_on_negedge_for_posedge_domain</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineStepping.test_settle_no_edge_on_negedge_for_posedge_domain" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineStepping.test_comb_settle">
+<span class="sig-name descname"><span class="pre">test_comb_settle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineStepping.test_comb_settle" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineVCH">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_cocotb_backend.</span></span><span class="sig-name descname"><span class="pre">TestEngineVCH</span></span><a class="headerlink" href="#test_cocotb_backend.TestEngineVCH" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineVCH.test_rising_edge_fires">
+<span class="sig-name descname"><span class="pre">test_rising_edge_fires</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineVCH.test_rising_edge_fires" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineVCH.test_falling_edge_fires">
+<span class="sig-name descname"><span class="pre">test_falling_edge_fires</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineVCH.test_falling_edge_fires" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineVCH.test_value_change_fires">
+<span class="sig-name descname"><span class="pre">test_value_change_fires</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineVCH.test_value_change_fires" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineVCH.test_vch_one_shot">
+<span class="sig-name descname"><span class="pre">test_vch_one_shot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineVCH.test_vch_one_shot" title="Link to this definition">¶</a></dt>
+<dd><p>VCH callbacks fire once and are removed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineVCH.test_vch_no_fire_on_no_change">
+<span class="sig-name descname"><span class="pre">test_vch_no_fire_on_no_change</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineVCH.test_vch_no_fire_on_no_change" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineFullStep">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_cocotb_backend.</span></span><span class="sig-name descname"><span class="pre">TestEngineFullStep</span></span><a class="headerlink" href="#test_cocotb_backend.TestEngineFullStep" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineFullStep.test_timed_callback_then_readwrite">
+<span class="sig-name descname"><span class="pre">test_timed_callback_then_readwrite</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineFullStep.test_timed_callback_then_readwrite" title="Link to this definition">¶</a></dt>
+<dd><p>Simulates the cocotb flow: Timer → write scheduler → ReadWrite.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineFullStep.test_multiple_time_steps">
+<span class="sig-name descname"><span class="pre">test_multiple_time_steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineFullStep.test_multiple_time_steps" title="Link to this definition">¶</a></dt>
+<dd><p>Simulate multiple clock toggles.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestEngineFullStep.test_run_with_max_steps">
+<span class="sig-name descname"><span class="pre">test_run_with_max_steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestEngineFullStep.test_run_with_max_steps" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestHandleHierarchy">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_cocotb_backend.</span></span><span class="sig-name descname"><span class="pre">TestHandleHierarchy</span></span><a class="headerlink" href="#test_cocotb_backend.TestHandleHierarchy" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestHandleHierarchy.test_build_hierarchy">
+<span class="sig-name descname"><span class="pre">test_build_hierarchy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestHandleHierarchy.test_build_hierarchy" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestHandleHierarchy.test_children_accessible">
+<span class="sig-name descname"><span class="pre">test_children_accessible</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestHandleHierarchy.test_children_accessible" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestHandleHierarchy.test_iteration_over_children">
+<span class="sig-name descname"><span class="pre">test_iteration_over_children</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestHandleHierarchy.test_iteration_over_children" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestSimulatorModule">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_cocotb_backend.</span></span><span class="sig-name descname"><span class="pre">TestSimulatorModule</span></span><a class="headerlink" href="#test_cocotb_backend.TestSimulatorModule" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestSimulatorModule.test_constants">
+<span class="sig-name descname"><span class="pre">test_constants</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestSimulatorModule.test_constants" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestSimulatorModule.test_types">
+<span class="sig-name descname"><span class="pre">test_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestSimulatorModule.test_types" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestSimulatorModule.test_get_root_handle">
+<span class="sig-name descname"><span class="pre">test_get_root_handle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestSimulatorModule.test_get_root_handle" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestSimulatorModule.test_get_sim_time">
+<span class="sig-name descname"><span class="pre">test_get_sim_time</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestSimulatorModule.test_get_sim_time" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestSimulatorModule.test_get_precision">
+<span class="sig-name descname"><span class="pre">test_get_precision</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestSimulatorModule.test_get_precision" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestSimulatorModule.test_product_and_version">
+<span class="sig-name descname"><span class="pre">test_product_and_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestSimulatorModule.test_product_and_version" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestSimulatorModule.test_stop_simulator">
+<span class="sig-name descname"><span class="pre">test_stop_simulator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestSimulatorModule.test_stop_simulator" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestSimulatorModule.test_register_timed">
+<span class="sig-name descname"><span class="pre">test_register_timed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestSimulatorModule.test_register_timed" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestSimulatorModule.test_register_value_change">
+<span class="sig-name descname"><span class="pre">test_register_value_change</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestSimulatorModule.test_register_value_change" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestSimulatorModule.test_package_iterate_returns_none">
+<span class="sig-name descname"><span class="pre">test_package_iterate_returns_none</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestSimulatorModule.test_package_iterate_returns_none" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestCocotbIntegration">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_cocotb_backend.</span></span><span class="sig-name descname"><span class="pre">TestCocotbIntegration</span></span><a class="headerlink" href="#test_cocotb_backend.TestCocotbIntegration" title="Link to this definition">¶</a></dt>
+<dd><p>Integration tests that exercise the cocotb scheduler with our engine.</p>
+<p>These tests patch cocotb.simulator and run the scheduler directly,
+verifying that the Timer / RisingEdge / ReadWrite flow works.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestCocotbIntegration._setup_cocotb">
+<span class="sig-name descname"><span class="pre">_setup_cocotb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestCocotbIntegration._setup_cocotb" title="Link to this definition">¶</a></dt>
+<dd><p>Patch cocotb.simulator and return (engine, scheduler).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestCocotbIntegration._teardown_cocotb">
+<span class="sig-name descname"><span class="pre">_teardown_cocotb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestCocotbIntegration._teardown_cocotb" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestCocotbIntegration.test_timer_trigger">
+<span class="sig-name descname"><span class="pre">test_timer_trigger</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestCocotbIntegration.test_timer_trigger" title="Link to this definition">¶</a></dt>
+<dd><p>A Timer(100) trigger should fire after 100 sim time steps.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestCocotbIntegration.test_rising_edge_trigger">
+<span class="sig-name descname"><span class="pre">test_rising_edge_trigger</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestCocotbIntegration.test_rising_edge_trigger" title="Link to this definition">¶</a></dt>
+<dd><p>RisingEdge should fire when signal goes 0→1.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestCocotbIntegration.test_counter_via_cocotb_clock">
+<span class="sig-name descname"><span class="pre">test_counter_via_cocotb_clock</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestCocotbIntegration.test_counter_via_cocotb_clock" title="Link to this definition">¶</a></dt>
+<dd><p>Use cocotb.clock.Clock to drive the counter and verify count increments.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestCocotbIntegration.test_combinational_read">
+<span class="sig-name descname"><span class="pre">test_combinational_read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestCocotbIntegration.test_combinational_read" title="Link to this definition">¶</a></dt>
+<dd><p>Verify that combinational logic settles after signal writes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_cocotb_backend.TestCocotbIntegration.test_timer_and_edge_same_timestep">
+<span class="sig-name descname"><span class="pre">test_timer_and_edge_same_timestep</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_cocotb_backend.TestCocotbIntegration.test_timer_and_edge_same_timestep" title="Link to this definition">¶</a></dt>
+<dd><p>Timer+edge combination should complete when both happen together.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../test_cocotb_examples/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">test_cocotb_examples</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../test_frontend_sv/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">test_frontend_sv</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; the dau authors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">test_cocotb_backend</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#test_cocotb_backend._make_counter_module"><code class="docutils literal notranslate"><span class="pre">_make_counter_module()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend._make_comb_module"><code class="docutils literal notranslate"><span class="pre">_make_comb_module()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle</span></code></a><ul>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle.test_scope_handle_type"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle.test_scope_handle_type()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle.test_logic_handle_type"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle.test_logic_handle_type()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle.test_logic_array_handle_type"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle.test_logic_array_handle_type()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle.test_unknown_handle_type"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle.test_unknown_handle_type()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle.test_get_name_string"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle.test_get_name_string()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle.test_definition"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle.test_definition()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle.test_const"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle.test_const()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle.test_indexable"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle.test_indexable()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle.test_num_elems_signal"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle.test_num_elems_signal()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle.test_num_elems_scope"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle.test_num_elems_scope()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle.test_range_multibit"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle.test_range_multibit()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle.test_range_singlebit"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle.test_range_singlebit()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle.test_child_discovery"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle.test_child_discovery()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle.test_bit_index"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle.test_bit_index()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle.test_iterate"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle.test_iterate()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle.test_signal_read_write"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle.test_signal_read_write()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle.test_signal_binstr"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle.test_signal_binstr()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle.test_signal_real"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle.test_signal_real()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle.test_bit_write"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle.test_bit_write()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimHandle.test_hash_and_eq"><code class="docutils literal notranslate"><span class="pre">TestDauSimHandle.test_hash_and_eq()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimIterator"><code class="docutils literal notranslate"><span class="pre">TestDauSimIterator</span></code></a><ul>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimIterator.test_basic_iteration"><code class="docutils literal notranslate"><span class="pre">TestDauSimIterator.test_basic_iteration()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimIterator.test_empty"><code class="docutils literal notranslate"><span class="pre">TestDauSimIterator.test_empty()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimCallback"><code class="docutils literal notranslate"><span class="pre">TestDauSimCallback</span></code></a><ul>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimCallback.test_alloc_and_deregister"><code class="docutils literal notranslate"><span class="pre">TestDauSimCallback.test_alloc_and_deregister()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimCallback.test_double_deregister"><code class="docutils literal notranslate"><span class="pre">TestDauSimCallback.test_double_deregister()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestDauSimCallback.test_deregister_removes_vch"><code class="docutils literal notranslate"><span class="pre">TestDauSimCallback.test_deregister_removes_vch()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineInit"><code class="docutils literal notranslate"><span class="pre">TestEngineInit</span></code></a><ul>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineInit.test_counter_module_signals"><code class="docutils literal notranslate"><span class="pre">TestEngineInit.test_counter_module_signals()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineInit.test_comb_module_signals"><code class="docutils literal notranslate"><span class="pre">TestEngineInit.test_comb_module_signals()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineInit.test_domain_info_built"><code class="docutils literal notranslate"><span class="pre">TestEngineInit.test_domain_info_built()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineInit.test_has_seq_flag"><code class="docutils literal notranslate"><span class="pre">TestEngineInit.test_has_seq_flag()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineInit.test_comb_initial_settle"><code class="docutils literal notranslate"><span class="pre">TestEngineInit.test_comb_initial_settle()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineCallbacks"><code class="docutils literal notranslate"><span class="pre">TestEngineCallbacks</span></code></a><ul>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineCallbacks.test_timed_callback"><code class="docutils literal notranslate"><span class="pre">TestEngineCallbacks.test_timed_callback()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineCallbacks.test_readonly_callback"><code class="docutils literal notranslate"><span class="pre">TestEngineCallbacks.test_readonly_callback()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineCallbacks.test_rwsynch_callback"><code class="docutils literal notranslate"><span class="pre">TestEngineCallbacks.test_rwsynch_callback()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineCallbacks.test_nextstep_callback"><code class="docutils literal notranslate"><span class="pre">TestEngineCallbacks.test_nextstep_callback()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineCallbacks.test_value_change_callback"><code class="docutils literal notranslate"><span class="pre">TestEngineCallbacks.test_value_change_callback()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineStepping"><code class="docutils literal notranslate"><span class="pre">TestEngineStepping</span></code></a><ul>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineStepping.test_step_advances_time"><code class="docutils literal notranslate"><span class="pre">TestEngineStepping.test_step_advances_time()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineStepping.test_step_fires_timed_callback"><code class="docutils literal notranslate"><span class="pre">TestEngineStepping.test_step_fires_timed_callback()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineStepping.test_step_returns_false_when_empty"><code class="docutils literal notranslate"><span class="pre">TestEngineStepping.test_step_returns_false_when_empty()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineStepping.test_callbacks_fire_in_phase_order"><code class="docutils literal notranslate"><span class="pre">TestEngineStepping.test_callbacks_fire_in_phase_order()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineStepping.test_deregistered_callback_not_fired"><code class="docutils literal notranslate"><span class="pre">TestEngineStepping.test_deregistered_callback_not_fired()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineStepping.test_settle_detects_posedge"><code class="docutils literal notranslate"><span class="pre">TestEngineStepping.test_settle_detects_posedge()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineStepping.test_settle_no_edge_on_negedge_for_posedge_domain"><code class="docutils literal notranslate"><span class="pre">TestEngineStepping.test_settle_no_edge_on_negedge_for_posedge_domain()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineStepping.test_comb_settle"><code class="docutils literal notranslate"><span class="pre">TestEngineStepping.test_comb_settle()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineVCH"><code class="docutils literal notranslate"><span class="pre">TestEngineVCH</span></code></a><ul>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineVCH.test_rising_edge_fires"><code class="docutils literal notranslate"><span class="pre">TestEngineVCH.test_rising_edge_fires()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineVCH.test_falling_edge_fires"><code class="docutils literal notranslate"><span class="pre">TestEngineVCH.test_falling_edge_fires()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineVCH.test_value_change_fires"><code class="docutils literal notranslate"><span class="pre">TestEngineVCH.test_value_change_fires()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineVCH.test_vch_one_shot"><code class="docutils literal notranslate"><span class="pre">TestEngineVCH.test_vch_one_shot()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineVCH.test_vch_no_fire_on_no_change"><code class="docutils literal notranslate"><span class="pre">TestEngineVCH.test_vch_no_fire_on_no_change()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineFullStep"><code class="docutils literal notranslate"><span class="pre">TestEngineFullStep</span></code></a><ul>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineFullStep.test_timed_callback_then_readwrite"><code class="docutils literal notranslate"><span class="pre">TestEngineFullStep.test_timed_callback_then_readwrite()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineFullStep.test_multiple_time_steps"><code class="docutils literal notranslate"><span class="pre">TestEngineFullStep.test_multiple_time_steps()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestEngineFullStep.test_run_with_max_steps"><code class="docutils literal notranslate"><span class="pre">TestEngineFullStep.test_run_with_max_steps()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestHandleHierarchy"><code class="docutils literal notranslate"><span class="pre">TestHandleHierarchy</span></code></a><ul>
+<li><a class="reference internal" href="#test_cocotb_backend.TestHandleHierarchy.test_build_hierarchy"><code class="docutils literal notranslate"><span class="pre">TestHandleHierarchy.test_build_hierarchy()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestHandleHierarchy.test_children_accessible"><code class="docutils literal notranslate"><span class="pre">TestHandleHierarchy.test_children_accessible()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestHandleHierarchy.test_iteration_over_children"><code class="docutils literal notranslate"><span class="pre">TestHandleHierarchy.test_iteration_over_children()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestSimulatorModule"><code class="docutils literal notranslate"><span class="pre">TestSimulatorModule</span></code></a><ul>
+<li><a class="reference internal" href="#test_cocotb_backend.TestSimulatorModule.test_constants"><code class="docutils literal notranslate"><span class="pre">TestSimulatorModule.test_constants()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestSimulatorModule.test_types"><code class="docutils literal notranslate"><span class="pre">TestSimulatorModule.test_types()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestSimulatorModule.test_get_root_handle"><code class="docutils literal notranslate"><span class="pre">TestSimulatorModule.test_get_root_handle()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestSimulatorModule.test_get_sim_time"><code class="docutils literal notranslate"><span class="pre">TestSimulatorModule.test_get_sim_time()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestSimulatorModule.test_get_precision"><code class="docutils literal notranslate"><span class="pre">TestSimulatorModule.test_get_precision()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestSimulatorModule.test_product_and_version"><code class="docutils literal notranslate"><span class="pre">TestSimulatorModule.test_product_and_version()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestSimulatorModule.test_stop_simulator"><code class="docutils literal notranslate"><span class="pre">TestSimulatorModule.test_stop_simulator()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestSimulatorModule.test_register_timed"><code class="docutils literal notranslate"><span class="pre">TestSimulatorModule.test_register_timed()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestSimulatorModule.test_register_value_change"><code class="docutils literal notranslate"><span class="pre">TestSimulatorModule.test_register_value_change()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestSimulatorModule.test_package_iterate_returns_none"><code class="docutils literal notranslate"><span class="pre">TestSimulatorModule.test_package_iterate_returns_none()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestCocotbIntegration"><code class="docutils literal notranslate"><span class="pre">TestCocotbIntegration</span></code></a><ul>
+<li><a class="reference internal" href="#test_cocotb_backend.TestCocotbIntegration._setup_cocotb"><code class="docutils literal notranslate"><span class="pre">TestCocotbIntegration._setup_cocotb()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestCocotbIntegration._teardown_cocotb"><code class="docutils literal notranslate"><span class="pre">TestCocotbIntegration._teardown_cocotb()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestCocotbIntegration.test_timer_trigger"><code class="docutils literal notranslate"><span class="pre">TestCocotbIntegration.test_timer_trigger()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestCocotbIntegration.test_rising_edge_trigger"><code class="docutils literal notranslate"><span class="pre">TestCocotbIntegration.test_rising_edge_trigger()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestCocotbIntegration.test_counter_via_cocotb_clock"><code class="docutils literal notranslate"><span class="pre">TestCocotbIntegration.test_counter_via_cocotb_clock()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestCocotbIntegration.test_combinational_read"><code class="docutils literal notranslate"><span class="pre">TestCocotbIntegration.test_combinational_read()</span></code></a></li>
+<li><a class="reference internal" href="#test_cocotb_backend.TestCocotbIntegration.test_timer_and_edge_same_timestep"><code class="docutils literal notranslate"><span class="pre">TestCocotbIntegration.test_timer_and_edge_same_timestep()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../_static/js/custom.js?v=956e5d78"></script>
+    </body>
+</html>

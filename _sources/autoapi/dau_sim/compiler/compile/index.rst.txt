@@ -1,0 +1,297 @@
+dau_sim.compiler.compile
+========================
+
+.. py:module:: dau_sim.compiler.compile
+
+
+Exceptions
+----------
+
+.. autoapisummary::
+
+   dau_sim.compiler.compile.SimulationFinish
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   dau_sim.compiler.compile.CompiledModule
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   dau_sim.compiler.compile._exec_stmts
+   dau_sim.compiler.compile._exec_stmt
+   dau_sim.compiler.compile._exec_readmem
+   dau_sim.compiler.compile._exec_stmts_4
+   dau_sim.compiler.compile._exec_stmt_4
+   dau_sim.compiler.compile._build_domain_info
+   dau_sim.compiler.compile._collect_init_values
+   dau_sim.compiler.compile._timedelta_ns
+   dau_sim.compiler.compile._compute_half_period_ticks
+   dau_sim.compiler.compile._exec_mem_writes
+   dau_sim.compiler.compile._exec_mem_reads
+   dau_sim.compiler.compile._edge_fires
+   dau_sim.compiler.compile._sim_tick
+   dau_sim.compiler.compile._sim_tick_4
+   dau_sim.compiler.compile._sim_engine_seq
+   dau_sim.compiler.compile._sim_engine_seq_4
+   dau_sim.compiler.compile._extract_signal
+   dau_sim.compiler.compile._extract_signal_4
+   dau_sim.compiler.compile.compile_module
+
+
+Module Contents
+---------------
+
+.. py:exception:: SimulationFinish(exit_code: int = 0)
+
+   Bases: :py:obj:`Exception`
+
+
+   Raised when a $finish statement is executed.
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+   .. py:attribute:: exit_code
+      :value: 0
+
+
+
+.. py:function:: _exec_stmts(stmts: tuple[dau_sim.ir.stmt.Stmt, Ellipsis], signals: dict[str, int], shapes: dict[str, dau_sim.ir.types.Shape], mem_state: dict[str, list[int]] | None = None) -> None
+
+   Execute a list of statements, mutating signals in-place.
+
+
+.. py:function:: _exec_stmt(stmt: dau_sim.ir.stmt.Stmt, current: dict[str, int], shapes: dict[str, dau_sim.ir.types.Shape], mem_state: dict[str, list[int]] | None = None) -> None
+
+   Execute a single statement, mutating current signal values.
+
+
+.. py:function:: _exec_readmem(stmt: dau_sim.ir.stmt.ReadMem, mem_state: dict[str, list[int]]) -> None
+
+   Execute a $readmemh/$readmemb statement, loading data into memory.
+
+
+.. py:function:: _exec_stmts_4(stmts: tuple[dau_sim.ir.stmt.Stmt, Ellipsis], signals: dict[str, dau_sim.ir.types.FourState], shapes: dict[str, dau_sim.ir.types.Shape]) -> None
+
+   Execute statements under four-state semantics.
+
+
+.. py:function:: _exec_stmt_4(stmt: dau_sim.ir.stmt.Stmt, current: dict[str, dau_sim.ir.types.FourState], shapes: dict[str, dau_sim.ir.types.Shape]) -> None
+
+   Execute a single statement under four-state semantics.
+
+
+.. py:function:: _build_domain_info(module: dau_sim.ir.module.Module) -> dict[str, dict]
+
+   Precompute per-domain metadata for the sequential engine.
+
+   Returns a dict keyed by domain name with:
+       clk_signal: str           - signal name of the clock
+       edge: EdgePolarity        - which edge triggers sequential blocks
+       rst_signal: str | None    - signal name of reset (or None)
+       rst_style: ResetStyle     - sync or async
+       rst_active_high: bool
+       seq_blocks: list[SeqBlock]
+       written_signals: set[str] - signals written by this domain's seq blocks
+
+
+.. py:function:: _collect_init_values(module: dau_sim.ir.module.Module) -> dict[str, int]
+
+   Collect init values for all signals by name.
+
+
+.. py:function:: _timedelta_ns(td: datetime.timedelta) -> int
+
+   Convert timedelta to integer nanoseconds.
+
+
+.. py:function:: _compute_half_period_ticks(clock_period: datetime.timedelta, clocks: dict[str, datetime.timedelta] | None, domain_info: dict[str, dict]) -> int
+
+   Compute per-domain half_period_ticks and return the GCD tick count.
+
+   Each domain's half-period is expressed as an integer multiple of the
+   finest simulation tick.  Returns the number of ticks that correspond
+   to one GCD unit (always 1 — the GCD *is* the tick).
+
+
+.. py:function:: _exec_mem_writes(mem_state: dict[str, list[int]], memories: tuple, signals: dict[str, int], shapes: dict[str, dau_sim.ir.types.Shape], fired_domains: list[str]) -> None
+
+   Execute memory write ports for fired clock domains.
+
+
+.. py:function:: _exec_mem_reads(mem_state: dict[str, list[int]], memories: tuple, signals: dict[str, int], fired_domains: list[str] | None) -> None
+
+   Execute memory read ports.
+
+   For combinational reads (domain is None), always execute.
+   For synchronous reads, only execute on fired domains.
+   Transparent reads forward write data from same-cycle writes.
+
+
+.. py:function:: _edge_fires(edge: dau_sim.ir.types.EdgePolarity, old_clk: int, new_clk: int) -> bool
+
+   Check if a clock transition triggers the given edge polarity.
+
+
+.. py:function:: _sim_tick(tick: csp.ts[bool], init_signals: csp.ts[dict], comb_order: csp.ts[object], seq_blocks: csp.ts[object], shapes: csp.ts[object], memories: csp.ts[object], mem_init: csp.ts[object]) -> csp.ts[dict]
+
+   Combinational-only simulation node (no clock edge semantics).
+
+   Used for modules with no sequential blocks.  Every timer tick
+   evaluates all comb blocks and emits the signal dict.
+
+
+.. py:function:: _sim_tick_4(tick: csp.ts[bool], init_signals: csp.ts[dict], comb_order: csp.ts[object], seq_blocks: csp.ts[object], shapes: csp.ts[object], memories: csp.ts[object], mem_init: csp.ts[object]) -> csp.ts[dict]
+
+   Four-state combinational-only simulation node.
+
+
+.. py:function:: _sim_engine_seq(tick: csp.ts[bool], init_signals: csp.ts[dict], comb_order: csp.ts[object], domain_info: csp.ts[object], shapes: csp.ts[object], init_values: csp.ts[object], memories: csp.ts[object], mem_init: csp.ts[object]) -> csp.ts[dict]
+
+   Clock-aware simulation engine (two-state).
+
+   Tracks per-domain clock phase, detects active edges, handles
+   sync/async reset, and only fires seq blocks on the correct edge.
+   Emits output only when at least one domain had an active edge.
+
+
+.. py:function:: _sim_engine_seq_4(tick: csp.ts[bool], init_signals: csp.ts[dict], comb_order: csp.ts[object], domain_info: csp.ts[object], shapes: csp.ts[object], init_values: csp.ts[object], memories: csp.ts[object], mem_init: csp.ts[object]) -> csp.ts[dict]
+
+   Clock-aware simulation engine (four-state).
+
+
+.. py:function:: _extract_signal(all_signals: csp.ts[dict], name: csp.ts[str]) -> csp.ts[int]
+
+   Extract a single signal's value from the aggregate dict.
+
+
+.. py:function:: _extract_signal_4(all_signals: csp.ts[dict], name: csp.ts[str]) -> csp.ts[object]
+
+   Extract a single FourState signal value.
+
+
+.. py:class:: CompiledModule(module: dau_sim.ir.module.Module, comb_order: list[dau_sim.compiler.depanalysis.Assignment], four_state: bool = False)
+
+   A compiled CSP graph for a single IR module.
+
+
+   .. py:attribute:: module
+
+
+   .. py:attribute:: _comb_order
+
+
+   .. py:attribute:: _four_state
+      :value: False
+
+
+
+   .. py:attribute:: _shapes
+      :type:  dict[str, dau_sim.ir.types.Shape]
+
+
+   .. py:attribute:: _net_kinds
+      :type:  dict[str, dau_sim.ir.types.NetKind]
+
+
+   .. py:attribute:: _domain_info
+
+
+   .. py:attribute:: _init_values
+
+
+   .. py:attribute:: _has_seq
+
+
+   .. py:attribute:: _has_memories
+
+
+   .. py:attribute:: _mem_init
+      :type:  dict[str, list[int]]
+
+
+   .. py:attribute:: _mem_defs
+
+
+   .. py:method:: write_vcd(path: str, traces: dict[str, list[tuple[datetime.datetime, int]]], *, timescale: str = '1ns', signals: list[str] | None = None, exclude: list[str] | None = None) -> None
+
+      Write simulation traces to a VCD file.
+
+      Convenience wrapper around ``dau_sim.adapters.vcd.write_vcd``
+      that automatically provides the module metadata.
+
+      *signals* and *exclude* accept glob patterns for filtering.
+
+
+
+   .. py:method:: traces_to_vcd(traces: dict[str, list[tuple[datetime.datetime, int]]], *, timescale: str = '1ns', signals: list[str] | None = None, exclude: list[str] | None = None) -> str
+
+      Convert simulation traces to a VCD string.
+
+      *signals* and *exclude* accept glob patterns for filtering.
+
+
+
+   .. py:method:: run_testbench(fn, clock_period: datetime.timedelta = timedelta(microseconds=1), clocks: dict[str, datetime.timedelta] | None = None, max_cycles: int = 10000)
+
+      Run a testbench function against this compiled module.
+
+      The function receives a :class:`~dau_sim.testbench.TestbenchContext`
+      and can call ``ctx.set()``, ``ctx.get()``, ``ctx.tick()``, and
+      assertion methods to drive and verify the design.
+
+      Returns a :class:`~dau_sim.testbench.TestbenchResult`.
+
+
+
+   .. py:method:: run(cycles: int = 10, clock_period: datetime.timedelta = timedelta(microseconds=1), inputs: dict[str, int] | None = None, clocks: dict[str, datetime.timedelta] | None = None) -> dict[str, list[tuple[datetime.datetime, int]]]
+
+      Run simulation for N cycles and return signal traces.
+
+      For modules with sequential logic (clock domains + seq blocks),
+      ``cycles`` means full clock cycles.  The simulation timer runs at
+      half-period resolution so clock edges are modeled correctly.
+
+      For purely combinational modules, ``cycles`` means evaluation ticks
+      (backward compatible with Phase 0/1).
+
+      ``clocks`` optionally maps domain names to their clock period.  If
+      omitted, all domains use ``clock_period``.
+
+
+
+   .. py:method:: _run_combinational(cycles: int, clock_period: datetime.timedelta, init: dict, comb_order: list[dau_sim.compiler.depanalysis.Assignment], shapes: dict[str, dau_sim.ir.types.Shape], four_state: bool, all_names: list[str]) -> dict[str, list[tuple[datetime.datetime, int]]]
+
+      Phase 0/1 mode: one evaluation per timer tick, no edge semantics.
+
+
+
+   .. py:method:: _run_sequential(cycles: int, clock_period: datetime.timedelta, clocks: dict[str, datetime.timedelta] | None, init: dict, domain_info: dict[str, dict], init_values: dict[str, int], comb_order: list[dau_sim.compiler.depanalysis.Assignment], shapes: dict[str, dau_sim.ir.types.Shape], four_state: bool, all_names: list[str]) -> dict[str, list[tuple[datetime.datetime, int]]]
+
+      Phase 2 mode: clock-edge-driven sequential simulation.
+
+
+
+   .. py:method:: _collect_traces(raw: dict, all_names: list[str], four_state: bool) -> dict[str, list[tuple[datetime.datetime, int]]]
+      :staticmethod:
+
+
+
+.. py:function:: compile_module(module: dau_sim.ir.module.Module, four_state: bool = False) -> CompiledModule
+
+   Compile an IR module into a CSP-executable CompiledModule.
+
+   :param module: The IR module to compile.
+   :param four_state: If True, use four-state (X/Z) simulation semantics.
+
+   :raises CombLoopError: If combinational assignments form a cycle.
+
+

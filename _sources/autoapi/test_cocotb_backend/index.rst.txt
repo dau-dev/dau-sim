@@ -1,0 +1,331 @@
+test_cocotb_backend
+===================
+
+.. py:module:: test_cocotb_backend
+
+.. autoapi-nested-parse::
+
+   Tests for the cocotb backend (pure-Python GPI replacement).
+
+   Tests cover:
+   - DauSimHandle (signal read/write, child discovery, type introspection)
+   - DauSimCallback (allocation, deregistration)
+   - SimulationEngine (init, callback queue, phase ordering, settling, VCH)
+   - Full integration with cocotb scheduler
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   test_cocotb_backend.TestDauSimHandle
+   test_cocotb_backend.TestDauSimIterator
+   test_cocotb_backend.TestDauSimCallback
+   test_cocotb_backend.TestEngineInit
+   test_cocotb_backend.TestEngineCallbacks
+   test_cocotb_backend.TestEngineStepping
+   test_cocotb_backend.TestEngineVCH
+   test_cocotb_backend.TestEngineFullStep
+   test_cocotb_backend.TestHandleHierarchy
+   test_cocotb_backend.TestSimulatorModule
+   test_cocotb_backend.TestCocotbIntegration
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   test_cocotb_backend._make_counter_module
+   test_cocotb_backend._make_comb_module
+
+
+Module Contents
+---------------
+
+.. py:function:: _make_counter_module(width=4, name='counter')
+
+   4-bit counter with rst (sync domain, posedge).
+
+
+.. py:function:: _make_comb_module()
+
+   Simple combinational: out = a & b.
+
+
+.. py:class:: TestDauSimHandle
+
+   .. py:method:: test_scope_handle_type()
+
+
+   .. py:method:: test_logic_handle_type()
+
+
+   .. py:method:: test_logic_array_handle_type()
+
+
+   .. py:method:: test_unknown_handle_type()
+
+
+   .. py:method:: test_get_name_string()
+
+
+   .. py:method:: test_definition()
+
+
+   .. py:method:: test_const()
+
+
+   .. py:method:: test_indexable()
+
+
+   .. py:method:: test_num_elems_signal()
+
+
+   .. py:method:: test_num_elems_scope()
+
+
+   .. py:method:: test_range_multibit()
+
+
+   .. py:method:: test_range_singlebit()
+
+
+   .. py:method:: test_child_discovery()
+
+
+   .. py:method:: test_bit_index()
+
+
+   .. py:method:: test_iterate()
+
+
+   .. py:method:: test_signal_read_write()
+
+
+   .. py:method:: test_signal_binstr()
+
+
+   .. py:method:: test_signal_real()
+
+
+   .. py:method:: test_bit_write()
+
+
+   .. py:method:: test_hash_and_eq()
+
+
+.. py:class:: TestDauSimIterator
+
+   .. py:method:: test_basic_iteration()
+
+
+   .. py:method:: test_empty()
+
+
+.. py:class:: TestDauSimCallback
+
+   .. py:method:: test_alloc_and_deregister()
+
+
+   .. py:method:: test_double_deregister()
+
+
+   .. py:method:: test_deregister_removes_vch()
+
+
+.. py:class:: TestEngineInit
+
+   .. py:method:: test_counter_module_signals()
+
+
+   .. py:method:: test_comb_module_signals()
+
+
+   .. py:method:: test_domain_info_built()
+
+
+   .. py:method:: test_has_seq_flag()
+
+
+   .. py:method:: test_comb_initial_settle()
+
+
+.. py:class:: TestEngineCallbacks
+
+   .. py:method:: test_timed_callback()
+
+
+   .. py:method:: test_readonly_callback()
+
+
+   .. py:method:: test_rwsynch_callback()
+
+
+   .. py:method:: test_nextstep_callback()
+
+
+   .. py:method:: test_value_change_callback()
+
+
+.. py:class:: TestEngineStepping
+
+   .. py:method:: test_step_advances_time()
+
+
+   .. py:method:: test_step_fires_timed_callback()
+
+
+   .. py:method:: test_step_returns_false_when_empty()
+
+
+   .. py:method:: test_callbacks_fire_in_phase_order()
+
+      At the same time step, Normal fires before ReadWrite before ReadOnly.
+
+
+
+   .. py:method:: test_deregistered_callback_not_fired()
+
+
+   .. py:method:: test_settle_detects_posedge()
+
+      When clk goes 0→1 via set_signal, _settle detects the edge and runs seq blocks.
+
+
+
+   .. py:method:: test_settle_no_edge_on_negedge_for_posedge_domain()
+
+
+   .. py:method:: test_comb_settle()
+
+
+.. py:class:: TestEngineVCH
+
+   .. py:method:: test_rising_edge_fires()
+
+
+   .. py:method:: test_falling_edge_fires()
+
+
+   .. py:method:: test_value_change_fires()
+
+
+   .. py:method:: test_vch_one_shot()
+
+      VCH callbacks fire once and are removed.
+
+
+
+   .. py:method:: test_vch_no_fire_on_no_change()
+
+
+.. py:class:: TestEngineFullStep
+
+   .. py:method:: test_timed_callback_then_readwrite()
+
+      Simulates the cocotb flow: Timer → write scheduler → ReadWrite.
+
+
+
+   .. py:method:: test_multiple_time_steps()
+
+      Simulate multiple clock toggles.
+
+
+
+   .. py:method:: test_run_with_max_steps()
+
+
+.. py:class:: TestHandleHierarchy
+
+   .. py:method:: test_build_hierarchy()
+
+
+   .. py:method:: test_children_accessible()
+
+
+   .. py:method:: test_iteration_over_children()
+
+
+.. py:class:: TestSimulatorModule
+
+   .. py:method:: test_constants()
+
+
+   .. py:method:: test_types()
+
+
+   .. py:method:: test_get_root_handle()
+
+
+   .. py:method:: test_get_sim_time()
+
+
+   .. py:method:: test_get_precision()
+
+
+   .. py:method:: test_product_and_version()
+
+
+   .. py:method:: test_stop_simulator()
+
+
+   .. py:method:: test_register_timed()
+
+
+   .. py:method:: test_register_value_change()
+
+
+   .. py:method:: test_package_iterate_returns_none()
+
+
+.. py:class:: TestCocotbIntegration
+
+   Integration tests that exercise the cocotb scheduler with our engine.
+
+   These tests patch cocotb.simulator and run the scheduler directly,
+   verifying that the Timer / RisingEdge / ReadWrite flow works.
+
+
+   .. py:method:: _setup_cocotb(module)
+
+      Patch cocotb.simulator and return (engine, scheduler).
+
+
+
+   .. py:method:: _teardown_cocotb()
+
+
+   .. py:method:: test_timer_trigger()
+
+      A Timer(100) trigger should fire after 100 sim time steps.
+
+
+
+   .. py:method:: test_rising_edge_trigger()
+
+      RisingEdge should fire when signal goes 0→1.
+
+
+
+   .. py:method:: test_counter_via_cocotb_clock()
+
+      Use cocotb.clock.Clock to drive the counter and verify count increments.
+
+
+
+   .. py:method:: test_combinational_read()
+
+      Verify that combinational logic settles after signal writes.
+
+
+
+   .. py:method:: test_timer_and_edge_same_timestep()
+
+      Timer+edge combination should complete when both happen together.
+
+
+

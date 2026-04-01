@@ -1,0 +1,1166 @@
+dau_sim.ir
+==========
+
+.. py:module:: dau_sim.ir
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/dau_sim/ir/expr/index
+   /autoapi/dau_sim/ir/module/index
+   /autoapi/dau_sim/ir/printer/index
+   /autoapi/dau_sim/ir/stmt/index
+   /autoapi/dau_sim/ir/types/index
+   /autoapi/dau_sim/ir/validate/index
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   dau_sim.ir.Shape
+   dau_sim.ir.UnaryOp
+   dau_sim.ir.BinaryOp
+   dau_sim.ir.Expr
+   dau_sim.ir.Const
+   dau_sim.ir.SignalRef
+   dau_sim.ir.Unary
+   dau_sim.ir.Binary
+   dau_sim.ir.Mux
+   dau_sim.ir.Concat
+   dau_sim.ir.Slice
+   dau_sim.ir.SysRandom
+   dau_sim.ir.Expr
+   dau_sim.ir.Stmt
+   dau_sim.ir.EdgePolarity
+   dau_sim.ir.NetKind
+   dau_sim.ir.PortDirection
+   dau_sim.ir.ResetStyle
+   dau_sim.ir.Shape
+   dau_sim.ir.Signal
+   dau_sim.ir.Port
+   dau_sim.ir.ClockDomain
+   dau_sim.ir.CombBlock
+   dau_sim.ir.SeqBlock
+   dau_sim.ir.InitBlock
+   dau_sim.ir.PortBinding
+   dau_sim.ir.Instance
+   dau_sim.ir.ReadPort
+   dau_sim.ir.WritePort
+   dau_sim.ir.Memory
+   dau_sim.ir.Module
+   dau_sim.ir.Expr
+   dau_sim.ir.Stmt
+   dau_sim.ir.Assign
+   dau_sim.ir.IfElse
+   dau_sim.ir.Switch
+   dau_sim.ir.Assert
+   dau_sim.ir.Print
+   dau_sim.ir.Delay
+   dau_sim.ir.Finish
+   dau_sim.ir.ReadMem
+   dau_sim.ir.PortDirection
+   dau_sim.ir.EdgePolarity
+   dau_sim.ir.ResetStyle
+   dau_sim.ir.NetKind
+   dau_sim.ir.Shape
+   dau_sim.ir.FourState
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   dau_sim.ir._signed_int
+
+
+Package Contents
+----------------
+
+.. py:class:: Shape
+
+   Bit-width and signedness of a signal.
+
+   Canonical type representation shared across all frontends.
+
+
+   .. py:attribute:: width
+      :type:  int
+
+
+   .. py:attribute:: signed
+      :type:  bool
+      :value: False
+
+
+
+   .. py:method:: __post_init__()
+
+
+   .. py:property:: max_value
+      :type: int
+
+
+
+   .. py:property:: min_value
+      :type: int
+
+
+
+   .. py:method:: __repr__() -> str
+
+
+.. py:class:: UnaryOp(*args, **kwds)
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Unary operators.
+
+
+   .. py:attribute:: NOT
+
+
+   .. py:attribute:: NEG
+
+
+   .. py:attribute:: BOOL
+
+
+   .. py:attribute:: RED_AND
+
+
+   .. py:attribute:: RED_OR
+
+
+   .. py:attribute:: RED_XOR
+
+
+.. py:class:: BinaryOp(*args, **kwds)
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Binary operators.
+
+
+   .. py:attribute:: ADD
+
+
+   .. py:attribute:: SUB
+
+
+   .. py:attribute:: MUL
+
+
+   .. py:attribute:: DIV
+
+
+   .. py:attribute:: MOD
+
+
+   .. py:attribute:: AND
+
+
+   .. py:attribute:: OR
+
+
+   .. py:attribute:: XOR
+
+
+   .. py:attribute:: SHL
+
+
+   .. py:attribute:: SHR
+
+
+   .. py:attribute:: EQ
+
+
+   .. py:attribute:: NE
+
+
+   .. py:attribute:: LT
+
+
+   .. py:attribute:: LE
+
+
+   .. py:attribute:: GT
+
+
+   .. py:attribute:: GE
+
+
+   .. py:attribute:: LOGIC_AND
+
+
+   .. py:attribute:: LOGIC_OR
+
+
+.. py:class:: Expr
+
+   Base class for all IR expressions.
+
+
+   .. py:attribute:: shape
+      :type:  dau_sim.ir.types.Shape
+
+
+.. py:class:: Const
+
+   Bases: :py:obj:`Expr`
+
+
+   Constant integer value.
+
+   Value is stored as a Python int, truncated/sign-extended to the given shape
+   when evaluated.
+
+
+   .. py:attribute:: value
+      :type:  int
+
+
+   .. py:method:: __repr__() -> str
+
+
+.. py:class:: SignalRef
+
+   Bases: :py:obj:`Expr`
+
+
+   Reference to a named signal.
+
+   `name` is the signal's unique name within its containing module.
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:method:: __repr__() -> str
+
+
+.. py:class:: Unary
+
+   Bases: :py:obj:`Expr`
+
+
+   Unary operation.
+
+
+   .. py:attribute:: op
+      :type:  UnaryOp
+
+
+   .. py:attribute:: operand
+      :type:  Expr
+
+
+.. py:class:: Binary
+
+   Bases: :py:obj:`Expr`
+
+
+   Binary operation.
+
+
+   .. py:attribute:: op
+      :type:  BinaryOp
+
+
+   .. py:attribute:: left
+      :type:  Expr
+
+
+   .. py:attribute:: right
+      :type:  Expr
+
+
+.. py:class:: Mux
+
+   Bases: :py:obj:`Expr`
+
+
+   Two-input multiplexer (ternary operator).
+
+   sel ? if_true : if_false
+
+
+   .. py:attribute:: sel
+      :type:  Expr
+
+
+   .. py:attribute:: if_true
+      :type:  Expr
+
+
+   .. py:attribute:: if_false
+      :type:  Expr
+
+
+.. py:class:: Concat
+
+   Bases: :py:obj:`Expr`
+
+
+   Bit concatenation.
+
+   parts[0] is MSB, parts[-1] is LSB.
+
+
+   .. py:attribute:: parts
+      :type:  tuple[Expr, Ellipsis]
+
+
+.. py:class:: Slice
+
+   Bases: :py:obj:`Expr`
+
+
+   Bit slice extraction.
+
+   Extracts bits [low:high) from value (0-indexed, exclusive upper bound).
+
+
+   .. py:attribute:: value
+      :type:  Expr
+
+
+   .. py:attribute:: low
+      :type:  int
+
+
+   .. py:attribute:: high
+      :type:  int
+
+
+   .. py:method:: __post_init__()
+
+
+.. py:class:: SysRandom
+
+   Bases: :py:obj:`Expr`
+
+
+   ``$random`` system function.
+
+   Returns a pseudo-random 32-bit signed integer.  An optional *seed*
+   expression, when provided, seeds the PRNG on first call (matching
+   Verilog ``$random(seed)`` semantics).
+
+
+   .. py:attribute:: seed
+      :type:  Expr | None
+      :value: None
+
+
+
+.. py:class:: Expr
+
+   Base class for all IR expressions.
+
+
+   .. py:attribute:: shape
+      :type:  dau_sim.ir.types.Shape
+
+
+.. py:class:: Stmt
+
+   Base class for all IR statements.
+
+
+.. py:class:: EdgePolarity(*args, **kwds)
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Clock edge sensitivity.
+
+
+   .. py:attribute:: POSEDGE
+
+
+   .. py:attribute:: NEGEDGE
+
+
+   .. py:attribute:: BOTH
+
+
+.. py:class:: NetKind(*args, **kwds)
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Net resolution semantics for multi-driver signals.
+
+
+   .. py:attribute:: WIRE
+
+
+   .. py:attribute:: TRI
+
+
+   .. py:attribute:: WAND
+
+
+   .. py:attribute:: WOR
+
+
+.. py:class:: PortDirection(*args, **kwds)
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Direction of a module port.
+
+
+   .. py:attribute:: INPUT
+
+
+   .. py:attribute:: OUTPUT
+
+
+   .. py:attribute:: INOUT
+
+
+.. py:class:: ResetStyle(*args, **kwds)
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Reset behavior.
+
+
+   .. py:attribute:: SYNC
+
+
+   .. py:attribute:: ASYNC
+
+
+.. py:class:: Shape
+
+   Bit-width and signedness of a signal.
+
+   Canonical type representation shared across all frontends.
+
+
+   .. py:attribute:: width
+      :type:  int
+
+
+   .. py:attribute:: signed
+      :type:  bool
+      :value: False
+
+
+
+   .. py:method:: __post_init__()
+
+
+   .. py:property:: max_value
+      :type: int
+
+
+
+   .. py:property:: min_value
+      :type: int
+
+
+
+   .. py:method:: __repr__() -> str
+
+
+.. py:class:: Signal
+
+   A named net within a module.
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: shape
+      :type:  dau_sim.ir.types.Shape
+
+
+   .. py:attribute:: init
+      :type:  int
+      :value: 0
+
+
+
+   .. py:attribute:: net_kind
+      :type:  dau_sim.ir.types.NetKind
+
+
+.. py:class:: Port
+
+   A module port — a signal with direction.
+
+
+   .. py:attribute:: signal
+      :type:  Signal
+
+
+   .. py:attribute:: direction
+      :type:  dau_sim.ir.types.PortDirection
+
+
+   .. py:property:: name
+      :type: str
+
+
+
+   .. py:property:: shape
+      :type: dau_sim.ir.types.Shape
+
+
+
+.. py:class:: ClockDomain
+
+   A clock domain with clock signal, edge, and optional reset.
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: clk
+      :type:  str
+
+
+   .. py:attribute:: edge
+      :type:  dau_sim.ir.types.EdgePolarity
+
+
+   .. py:attribute:: rst
+      :type:  str | None
+      :value: None
+
+
+
+   .. py:attribute:: rst_style
+      :type:  dau_sim.ir.types.ResetStyle
+
+
+   .. py:attribute:: rst_active_high
+      :type:  bool
+      :value: True
+
+
+
+.. py:class:: CombBlock
+
+   Combinational logic block (always_comb / assign).
+
+   All statements execute whenever any referenced input signal changes.
+
+
+   .. py:attribute:: stmts
+      :type:  tuple[dau_sim.ir.stmt.Stmt, Ellipsis]
+
+
+.. py:class:: SeqBlock
+
+   Sequential logic block (always_ff).
+
+   Statements execute on the clock edge of the specified domain.
+
+
+   .. py:attribute:: domain
+      :type:  str
+
+
+   .. py:attribute:: stmts
+      :type:  tuple[dau_sim.ir.stmt.Stmt, Ellipsis]
+
+
+.. py:class:: InitBlock
+
+   Initial block (non-synthesizable).
+
+   Runs once at simulation start.
+
+
+   .. py:attribute:: stmts
+      :type:  tuple[dau_sim.ir.stmt.Stmt, Ellipsis]
+
+
+.. py:class:: PortBinding
+
+   Binds an instance port to a signal expression in the parent module.
+
+
+   .. py:attribute:: port_name
+      :type:  str
+
+
+   .. py:attribute:: expr
+      :type:  dau_sim.ir.expr.Expr
+
+
+.. py:class:: Instance
+
+   Hierarchical instantiation of another module.
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: module_name
+      :type:  str
+
+
+   .. py:attribute:: bindings
+      :type:  tuple[PortBinding, Ellipsis]
+
+
+   .. py:attribute:: parameters
+      :type:  dict[str, int]
+
+
+.. py:class:: ReadPort
+
+   Memory read port descriptor.
+
+
+   .. py:attribute:: addr
+      :type:  str
+
+
+   .. py:attribute:: data
+      :type:  str
+
+
+   .. py:attribute:: en
+      :type:  str | None
+      :value: None
+
+
+
+   .. py:attribute:: domain
+      :type:  str | None
+      :value: None
+
+
+
+   .. py:attribute:: transparent_for
+      :type:  tuple[int, Ellipsis]
+      :value: ()
+
+
+
+.. py:class:: WritePort
+
+   Memory write port descriptor.
+
+
+   .. py:attribute:: addr
+      :type:  str
+
+
+   .. py:attribute:: data
+      :type:  str
+
+
+   .. py:attribute:: en
+      :type:  str
+
+
+   .. py:attribute:: domain
+      :type:  str
+
+
+   .. py:attribute:: granularity
+      :type:  int
+      :value: 0
+
+
+
+.. py:class:: Memory
+
+   Memory array with read and write ports.
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: shape
+      :type:  dau_sim.ir.types.Shape
+
+
+   .. py:attribute:: depth
+      :type:  int
+
+
+   .. py:attribute:: read_ports
+      :type:  tuple[ReadPort, Ellipsis]
+
+
+   .. py:attribute:: write_ports
+      :type:  tuple[WritePort, Ellipsis]
+
+
+   .. py:attribute:: init
+      :type:  tuple[int, Ellipsis]
+      :value: ()
+
+
+
+.. py:class:: Module
+
+   Top-level module definition.
+
+   A named container with ports, internal signals, clock domains,
+   logic blocks, submodule instances, and memories.
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: ports
+      :type:  tuple[Port, Ellipsis]
+      :value: ()
+
+
+
+   .. py:attribute:: signals
+      :type:  tuple[Signal, Ellipsis]
+      :value: ()
+
+
+
+   .. py:attribute:: clock_domains
+      :type:  tuple[ClockDomain, Ellipsis]
+      :value: ()
+
+
+
+   .. py:attribute:: comb_blocks
+      :type:  tuple[CombBlock, Ellipsis]
+      :value: ()
+
+
+
+   .. py:attribute:: seq_blocks
+      :type:  tuple[SeqBlock, Ellipsis]
+      :value: ()
+
+
+
+   .. py:attribute:: init_blocks
+      :type:  tuple[InitBlock, Ellipsis]
+      :value: ()
+
+
+
+   .. py:attribute:: instances
+      :type:  tuple[Instance, Ellipsis]
+      :value: ()
+
+
+
+   .. py:attribute:: memories
+      :type:  tuple[Memory, Ellipsis]
+      :value: ()
+
+
+
+   .. py:attribute:: submodules
+      :type:  tuple[Module, Ellipsis]
+      :value: ()
+
+
+
+   .. py:method:: port_by_name(name: str) -> Port | None
+
+
+   .. py:method:: signal_by_name(name: str) -> Signal | None
+
+      Look up a signal by name, checking ports then internal signals.
+
+
+
+   .. py:property:: all_signal_names
+      :type: set[str]
+
+
+
+.. py:class:: Expr
+
+   Base class for all IR expressions.
+
+
+   .. py:attribute:: shape
+      :type:  dau_sim.ir.types.Shape
+
+
+.. py:class:: Stmt
+
+   Base class for all IR statements.
+
+
+.. py:class:: Assign
+
+   Bases: :py:obj:`Stmt`
+
+
+   Assign expression value to a signal.
+
+   target is the signal name (str), value is the expression to evaluate.
+
+
+   .. py:attribute:: target
+      :type:  str
+
+
+   .. py:attribute:: value
+      :type:  dau_sim.ir.expr.Expr
+
+
+.. py:class:: IfElse
+
+   Bases: :py:obj:`Stmt`
+
+
+   Conditional statement.
+
+   if cond: then_stmts else: else_stmts
+
+
+   .. py:attribute:: cond
+      :type:  dau_sim.ir.expr.Expr
+
+
+   .. py:attribute:: then_body
+      :type:  tuple[Stmt, Ellipsis]
+
+
+   .. py:attribute:: else_body
+      :type:  tuple[Stmt, Ellipsis]
+      :value: ()
+
+
+
+.. py:class:: Switch
+
+   Bases: :py:obj:`Stmt`
+
+
+   Multi-way branch (case/casez/casex).
+
+   test is the expression to match. cases is a tuple of (pattern, stmts) pairs.
+   Pattern is an int (matched by equality) or None for the default case.
+
+
+   .. py:attribute:: test
+      :type:  dau_sim.ir.expr.Expr
+
+
+   .. py:attribute:: cases
+      :type:  tuple[tuple[int | None, tuple[Stmt, Ellipsis]], Ellipsis]
+
+
+.. py:class:: Assert
+
+   Bases: :py:obj:`Stmt`
+
+
+   Assertion statement.
+
+   Checks condition at simulation time, reports message on failure.
+
+
+   .. py:attribute:: cond
+      :type:  dau_sim.ir.expr.Expr
+
+
+   .. py:attribute:: message
+      :type:  str
+      :value: ''
+
+
+
+.. py:class:: Print
+
+   Bases: :py:obj:`Stmt`
+
+
+   Print statement ($display equivalent).
+
+   format_str uses Python-style {} placeholders. args are expressions.
+
+
+   .. py:attribute:: format_str
+      :type:  str
+
+
+   .. py:attribute:: args
+      :type:  tuple[dau_sim.ir.expr.Expr, Ellipsis]
+      :value: ()
+
+
+
+.. py:class:: Delay
+
+   Bases: :py:obj:`Stmt`
+
+
+   Delay statement (#N equivalent).
+
+   Pauses execution for *ticks* simulation time units.
+   Only meaningful inside initial blocks or testbench procedures.
+
+
+   .. py:attribute:: ticks
+      :type:  int
+
+
+.. py:class:: Finish
+
+   Bases: :py:obj:`Stmt`
+
+
+   Halt simulation ($finish equivalent).
+
+   When executed, raises SimulationFinish to stop the simulation cleanly.
+
+
+   .. py:attribute:: exit_code
+      :type:  int
+      :value: 0
+
+
+
+.. py:class:: ReadMem
+
+   Bases: :py:obj:`Stmt`
+
+
+   Load memory contents from a file (``$readmemh``/``$readmemb``).
+
+   *path* is the file path (resolved relative to the caller).
+   *mem_name* is the name of the IR ``Memory`` to populate.
+   *is_hex* selects hex (True, ``$readmemh``) or binary (False, ``$readmemb``).
+   Optional *start_addr* / *end_addr* limit the address range filled.
+
+
+   .. py:attribute:: path
+      :type:  str
+
+
+   .. py:attribute:: mem_name
+      :type:  str
+
+
+   .. py:attribute:: is_hex
+      :type:  bool
+      :value: True
+
+
+
+   .. py:attribute:: start_addr
+      :type:  int | None
+      :value: None
+
+
+
+   .. py:attribute:: end_addr
+      :type:  int | None
+      :value: None
+
+
+
+.. py:class:: PortDirection(*args, **kwds)
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Direction of a module port.
+
+
+   .. py:attribute:: INPUT
+
+
+   .. py:attribute:: OUTPUT
+
+
+   .. py:attribute:: INOUT
+
+
+.. py:class:: EdgePolarity(*args, **kwds)
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Clock edge sensitivity.
+
+
+   .. py:attribute:: POSEDGE
+
+
+   .. py:attribute:: NEGEDGE
+
+
+   .. py:attribute:: BOTH
+
+
+.. py:class:: ResetStyle(*args, **kwds)
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Reset behavior.
+
+
+   .. py:attribute:: SYNC
+
+
+   .. py:attribute:: ASYNC
+
+
+.. py:class:: NetKind(*args, **kwds)
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Net resolution semantics for multi-driver signals.
+
+
+   .. py:attribute:: WIRE
+
+
+   .. py:attribute:: TRI
+
+
+   .. py:attribute:: WAND
+
+
+   .. py:attribute:: WOR
+
+
+.. py:class:: Shape
+
+   Bit-width and signedness of a signal.
+
+   Canonical type representation shared across all frontends.
+
+
+   .. py:attribute:: width
+      :type:  int
+
+
+   .. py:attribute:: signed
+      :type:  bool
+      :value: False
+
+
+
+   .. py:method:: __post_init__()
+
+
+   .. py:property:: max_value
+      :type: int
+
+
+
+   .. py:property:: min_value
+      :type: int
+
+
+
+   .. py:method:: __repr__() -> str
+
+
+.. py:class:: FourState
+
+   Four-state value using the VPI convention.
+
+   Two bitmaps of ``width`` bits:
+     aval=0, bval=0 → logic 0
+     aval=1, bval=0 → logic 1
+     aval=0, bval=1 → Z (high-impedance)
+     aval=1, bval=1 → X (unknown)
+
+   ``shape`` determines the width and signedness.
+
+
+   .. py:attribute:: shape
+      :type:  Shape
+
+
+   .. py:attribute:: aval
+      :type:  int
+
+
+   .. py:attribute:: bval
+      :type:  int
+
+
+   .. py:method:: __post_init__() -> None
+
+
+   .. py:property:: has_unknown
+      :type: bool
+
+
+      True if any bit is X or Z.
+
+
+   .. py:property:: is_fully_defined
+      :type: bool
+
+
+      True if all bits are 0 or 1 (no X/Z).
+
+
+   .. py:property:: to_int
+      :type: int | None
+
+
+      Convert to Python int.  Returns None if any bits are X/Z.
+
+
+   .. py:method:: from_int(value: int, shape: Shape) -> FourState
+      :classmethod:
+
+
+      Create a fully-defined FourState value from a Python int.
+
+
+
+   .. py:method:: x(shape: Shape) -> FourState
+      :classmethod:
+
+
+      Create an all-X value of the given shape.
+
+
+
+   .. py:method:: z(shape: Shape) -> FourState
+      :classmethod:
+
+
+      Create an all-Z value of the given shape.
+
+
+
+   .. py:method:: __repr__() -> str
+
+
+.. py:function:: _signed_int(raw: int, shape: Shape) -> int
+
+   Convert an unsigned bit-pattern to a signed int if shape.signed.
+
+

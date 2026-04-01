@@ -1,0 +1,196 @@
+test_cocotb_examples
+====================
+
+.. py:module:: test_cocotb_examples
+
+.. autoapi-nested-parse::
+
+   End-to-end tests based on cocotb's official examples.
+
+   Each test translates a cocotb example HDL design into dau-sim IR, sets up
+   the cocotb scheduler with a patched simulator module, and runs the same async
+   test patterns used in the upstream cocotb examples — verifying that dau-sim
+   drives the cocotb testbench correctly without any intermediary compilation step.
+
+   Covered examples:
+   - simple_dff: D flip-flop with clock-driven sequential test
+   - adder: Purely combinational adder with reference-model checks
+   - simple_counter: Counter with rst/ena/set/din, multi-coroutine tests
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   test_cocotb_examples.CocotbExampleTestBase
+   test_cocotb_examples.TestDFF
+   test_cocotb_examples.TestAdder
+   test_cocotb_examples.TestSimpleCounter
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   test_cocotb_examples._make_dff
+   test_cocotb_examples._make_adder
+   test_cocotb_examples._make_simple_counter
+   test_cocotb_examples.adder_model
+
+
+Module Contents
+---------------
+
+.. py:function:: _make_dff()
+
+   D flip-flop: on posedge clk, q <= d.
+
+   Equivalent to cocotb/examples/simple_dff/dff.sv.
+
+
+.. py:function:: _make_adder(width=4)
+
+   Combinational adder: X = A + B.
+
+   Equivalent to cocotb/examples/adder/hdl/adder.sv (DATA_WIDTH=4).
+
+
+.. py:function:: _make_simple_counter()
+
+   8-bit counter with rst, ena, set, din.
+
+   Equivalent to cocotb/examples/doc_examples/quickstart/simple_counter.sv::
+
+       always_ff @(posedge clk) begin
+           if (rst)          counter <= 0;
+           else if (set)     counter <= din;
+           else if (ena)     counter <= counter + 1;
+           else              counter <= counter;
+       end
+
+
+.. py:class:: CocotbExampleTestBase
+
+   Mix-in that sets up / tears down a cocotb simulation environment.
+
+
+   .. py:method:: _setup(module)
+
+      Build engine, patch cocotb.simulator, return engine.
+
+
+
+   .. py:method:: _teardown()
+
+
+   .. py:method:: _run_coroutine(coro, max_steps=10000000)
+
+      Schedule *coro*, start the write scheduler, and run the engine.
+
+
+
+.. py:class:: TestDFF
+
+   Bases: :py:obj:`CocotbExampleTestBase`
+
+
+   Port of cocotb/examples/simple_dff/test_dff.py::dff_simple_test.
+
+
+   .. py:method:: test_dff_d_propagates_to_q()
+
+      Test that d propagates to q on each rising clock edge.
+
+
+
+   .. py:method:: test_dff_holds_value_without_clock()
+
+      Verify q doesn't change when no clock edge occurs.
+
+
+
+.. py:function:: adder_model(a: int, b: int) -> int
+
+   Reference model, same as cocotb/examples/adder/model/adder_model.py.
+
+
+.. py:class:: TestAdder
+
+   Bases: :py:obj:`CocotbExampleTestBase`
+
+
+   Port of cocotb/examples/adder/tests/test_adder.py.
+
+
+   .. py:method:: test_adder_basic()
+
+      Test for 5 + 10 = 15.
+
+
+
+   .. py:method:: test_adder_randomised()
+
+      Test for adding 2 random numbers multiple times.
+
+
+
+   .. py:method:: test_adder_overflow()
+
+      Verify the 5-bit output captures the carry for max inputs.
+
+
+
+.. py:class:: TestSimpleCounter
+
+   Bases: :py:obj:`CocotbExampleTestBase`
+
+
+   Port of cocotb quickstart examples (simple_counter_testcases.py).
+
+
+   .. py:method:: test_quickstart_1()
+
+      Quickstart 1: sequential enable/disable counting.
+
+      Translated from cocotb quickstart_1:
+      - Reset the counter
+      - Enable for count_cycles rising edges
+      - Disable and verify counter holds
+
+
+
+   .. py:method:: test_quickstart_2_enable_counter()
+
+      Quickstart 2 simplified: concurrent reset + enable coroutines.
+
+      Demonstrates start_soon() and concurrent coroutines.
+
+
+
+   .. py:method:: test_counter_set_din()
+
+      Verify the 'set' input loads din into counter.
+
+
+
+   .. py:method:: test_counter_reset_during_count()
+
+      Verify rst resets counter even while ena is active.
+
+
+
+   .. py:method:: test_counter_start_soon()
+
+      Verify start_soon() works for concurrent clock + test coroutines.
+
+
+
+   .. py:method:: test_counter_holds_when_disabled()
+
+      Counter should hold its value when neither ena nor set is active.
+
+
+

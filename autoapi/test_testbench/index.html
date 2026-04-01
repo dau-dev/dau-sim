@@ -1,0 +1,1434 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="test_selectors" href="../test_selectors/index.html"><link rel="prev" title="test_compiler" href="../test_compiler/index.html">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>test_testbench - dau sim v0.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/custom.css?v=890fd012" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">dau sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.1.0</code></div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <span class="sidebar-brand-text">dau sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.1.0</code></span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../dau_sim/index.html">dau_sim</a><input aria-label="Toggle navigation of dau_sim" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dau_sim/adapters/index.html">dau_sim.adapters</a><input aria-label="Toggle navigation of dau_sim.adapters" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/adapters/selectors/index.html">dau_sim.adapters.selectors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/adapters/vcd/index.html">dau_sim.adapters.vcd</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dau_sim/backends/index.html">dau_sim.backends</a><input aria-label="Toggle navigation of dau_sim.backends" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/backends/cocotb_backend/index.html">dau_sim.backends.cocotb_backend</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dau_sim/compiler/index.html">dau_sim.compiler</a><input aria-label="Toggle navigation of dau_sim.compiler" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/compiler/compile/index.html">dau_sim.compiler.compile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/compiler/depanalysis/index.html">dau_sim.compiler.depanalysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/compiler/eval/index.html">dau_sim.compiler.eval</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/compiler/eval4/index.html">dau_sim.compiler.eval4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/compiler/flatten/index.html">dau_sim.compiler.flatten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/compiler/resolve/index.html">dau_sim.compiler.resolve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/compiler/rewrite/index.html">dau_sim.compiler.rewrite</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dau_sim/frontends/index.html">dau_sim.frontends</a><input aria-label="Toggle navigation of dau_sim.frontends" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/frontends/amaranth_frontend/index.html">dau_sim.frontends.amaranth_frontend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/frontends/pyslang_frontend/index.html">dau_sim.frontends.pyslang_frontend</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dau_sim/ir/index.html">dau_sim.ir</a><input aria-label="Toggle navigation of dau_sim.ir" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/ir/expr/index.html">dau_sim.ir.expr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/ir/module/index.html">dau_sim.ir.module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/ir/printer/index.html">dau_sim.ir.printer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/ir/stmt/index.html">dau_sim.ir.stmt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/ir/types/index.html">dau_sim.ir.types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/ir/validate/index.html">dau_sim.ir.validate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../dau_sim/runtime/index.html">dau_sim.runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dau_sim/testbench/index.html">dau_sim.testbench</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../test_ir/index.html">test_ir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_vcd/index.html">test_vcd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_eval/index.html">test_eval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_sim_seq/index.html">test_sim_seq</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_sim_comb/index.html">test_sim_comb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_compiler/index.html">test_compiler</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">test_testbench</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_selectors/index.html">test_selectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_frontend_sv/index.html">test_frontend_sv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_cocotb_backend/index.html">test_cocotb_backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_cocotb_examples/index.html">test_cocotb_examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_nonsynthesizable/index.html">test_nonsynthesizable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_frontend_amaranth/index.html">test_frontend_amaranth</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../_sources/autoapi/test_testbench/index.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-test_testbench">
+<span id="test-testbench"></span><h1>test_testbench<a class="headerlink" href="#module-test_testbench" title="Link to this heading">¶</a></h1>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#test_testbench.TestContextInit" title="test_testbench.TestContextInit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestContextInit</span></code></a></p></td>
+<td><p>A class whose instances are single test cases.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#test_testbench.TestSetGetTick" title="test_testbench.TestSetGetTick"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestSetGetTick</span></code></a></p></td>
+<td><p>A class whose instances are single test cases.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#test_testbench.TestSequentialCounter" title="test_testbench.TestSequentialCounter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestSequentialCounter</span></code></a></p></td>
+<td><p>A class whose instances are single test cases.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#test_testbench.TestCombTestbench" title="test_testbench.TestCombTestbench"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestCombTestbench</span></code></a></p></td>
+<td><p>A class whose instances are single test cases.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#test_testbench.TestAssertions" title="test_testbench.TestAssertions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestAssertions</span></code></a></p></td>
+<td><p>A class whose instances are single test cases.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#test_testbench.TestHistory" title="test_testbench.TestHistory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestHistory</span></code></a></p></td>
+<td><p>A class whose instances are single test cases.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#test_testbench.TestTimeout" title="test_testbench.TestTimeout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestTimeout</span></code></a></p></td>
+<td><p>A class whose instances are single test cases.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#test_testbench.TestRunTestbench" title="test_testbench.TestRunTestbench"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestRunTestbench</span></code></a></p></td>
+<td><p>A class whose instances are single test cases.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#test_testbench.TestUpDownCounter" title="test_testbench.TestUpDownCounter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestUpDownCounter</span></code></a></p></td>
+<td><p>A class whose instances are single test cases.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#test_testbench.Phase5Counter" title="test_testbench.Phase5Counter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Phase5Counter</span></code></a></p></td>
+<td><p>Base class for elaboratable interface objects.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#test_testbench.Phase5Mux" title="test_testbench.Phase5Mux"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Phase5Mux</span></code></a></p></td>
+<td><p>Base class for elaboratable interface objects.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#test_testbench.TestAmaranthTestbench" title="test_testbench.TestAmaranthTestbench"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestAmaranthTestbench</span></code></a></p></td>
+<td><p>A class whose instances are single test cases.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#test_testbench.TestForceRelease" title="test_testbench.TestForceRelease"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestForceRelease</span></code></a></p></td>
+<td><p>Tests for signal force/release functionality.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#test_testbench.TestParallelTestbenches" title="test_testbench.TestParallelTestbenches"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestParallelTestbenches</span></code></a></p></td>
+<td><p>Tests for run_parallel_testbenches.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#test_testbench._make_counter_module" title="test_testbench._make_counter_module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_make_counter_module</span></code></a>([width, name])</p></td>
+<td><p>8-bit counter with 'en' input, 'count' output, sync domain.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#test_testbench._make_adder_module" title="test_testbench._make_adder_module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_make_adder_module</span></code></a>()</p></td>
+<td><p>Combinational 8-bit adder: y = a + b.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#test_testbench._make_updown_counter" title="test_testbench._make_updown_counter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_make_updown_counter</span></code></a>()</p></td>
+<td><p>Counter with en, dir (0=up, 1=down), 8-bit count.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="test_testbench._make_counter_module">
+<span class="sig-prename descclassname"><span class="pre">test_testbench.</span></span><span class="sig-name descname"><span class="pre">_make_counter_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'counter'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench._make_counter_module" title="Link to this definition">¶</a></dt>
+<dd><p>8-bit counter with ‘en’ input, ‘count’ output, sync domain.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="test_testbench._make_adder_module">
+<span class="sig-prename descclassname"><span class="pre">test_testbench.</span></span><span class="sig-name descname"><span class="pre">_make_adder_module</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench._make_adder_module" title="Link to this definition">¶</a></dt>
+<dd><p>Combinational 8-bit adder: y = a + b.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="test_testbench._make_updown_counter">
+<span class="sig-prename descclassname"><span class="pre">test_testbench.</span></span><span class="sig-name descname"><span class="pre">_make_updown_counter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench._make_updown_counter" title="Link to this definition">¶</a></dt>
+<dd><p>Counter with en, dir (0=up, 1=down), 8-bit count.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_testbench.TestContextInit">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_testbench.</span></span><span class="sig-name descname"><span class="pre">TestContextInit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestContextInit" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
+<p>A class whose instances are single test cases.</p>
+<p>By default, the test code itself should be placed in a method named
+‘runTest’.</p>
+<p>If the fixture may be used for many test cases, create as
+many test methods as are needed. When instantiating such a TestCase
+subclass, specify in the constructor arguments the name of the test method
+that the instance is to execute.</p>
+<p>Test authors should subclass TestCase for their own tests. Construction
+and deconstruction of the test’s environment (‘fixture’) can be
+implemented by overriding the ‘setUp’ and ‘tearDown’ methods respectively.</p>
+<p>If it is necessary to override the __init__ method, the base class
+__init__ method must always be called. It is important that subclasses
+should not change the signature of their __init__ method, since instances
+of the classes are instantiated automatically by parts of the framework
+in order to be run.</p>
+<p>When subclassing TestCase, you can set these attributes:
+* failureException: determines which exception will be raised when</p>
+<blockquote>
+<div><p>the instance’s assertion methods fail; test methods raising this
+exception will be deemed to have ‘failed’ rather than ‘errored’.</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>longMessage: determines whether long messages (including repr of</dt><dd><p>objects used in assert methods) will be printed on failure in <em>addition</em>
+to any explicit message passed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>maxDiff: sets the maximum length of a diff in failure messages</dt><dd><p>by assert methods using difflib. It is looked up as an instance
+attribute so can be configured by individual tests if required.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestContextInit.test_initial_signals">
+<span class="sig-name descname"><span class="pre">test_initial_signals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestContextInit.test_initial_signals" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestContextInit.test_initial_cycle_zero">
+<span class="sig-name descname"><span class="pre">test_initial_cycle_zero</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestContextInit.test_initial_cycle_zero" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestContextInit.test_unknown_signal_get">
+<span class="sig-name descname"><span class="pre">test_unknown_signal_get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestContextInit.test_unknown_signal_get" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestContextInit.test_unknown_signal_set">
+<span class="sig-name descname"><span class="pre">test_unknown_signal_set</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestContextInit.test_unknown_signal_set" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestContextInit.test_history_has_initial">
+<span class="sig-name descname"><span class="pre">test_history_has_initial</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestContextInit.test_history_has_initial" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_testbench.TestSetGetTick">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_testbench.</span></span><span class="sig-name descname"><span class="pre">TestSetGetTick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestSetGetTick" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
+<p>A class whose instances are single test cases.</p>
+<p>By default, the test code itself should be placed in a method named
+‘runTest’.</p>
+<p>If the fixture may be used for many test cases, create as
+many test methods as are needed. When instantiating such a TestCase
+subclass, specify in the constructor arguments the name of the test method
+that the instance is to execute.</p>
+<p>Test authors should subclass TestCase for their own tests. Construction
+and deconstruction of the test’s environment (‘fixture’) can be
+implemented by overriding the ‘setUp’ and ‘tearDown’ methods respectively.</p>
+<p>If it is necessary to override the __init__ method, the base class
+__init__ method must always be called. It is important that subclasses
+should not change the signature of their __init__ method, since instances
+of the classes are instantiated automatically by parts of the framework
+in order to be run.</p>
+<p>When subclassing TestCase, you can set these attributes:
+* failureException: determines which exception will be raised when</p>
+<blockquote>
+<div><p>the instance’s assertion methods fail; test methods raising this
+exception will be deemed to have ‘failed’ rather than ‘errored’.</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>longMessage: determines whether long messages (including repr of</dt><dd><p>objects used in assert methods) will be printed on failure in <em>addition</em>
+to any explicit message passed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>maxDiff: sets the maximum length of a diff in failure messages</dt><dd><p>by assert methods using difflib. It is looked up as an instance
+attribute so can be configured by individual tests if required.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestSetGetTick.test_set_and_get">
+<span class="sig-name descname"><span class="pre">test_set_and_get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestSetGetTick.test_set_and_get" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestSetGetTick.test_tick_advances_cycle">
+<span class="sig-name descname"><span class="pre">test_tick_advances_cycle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestSetGetTick.test_tick_advances_cycle" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestSetGetTick.test_tick_n_advances_n">
+<span class="sig-name descname"><span class="pre">test_tick_n_advances_n</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestSetGetTick.test_tick_n_advances_n" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestSetGetTick.test_tick_zero_raises">
+<span class="sig-name descname"><span class="pre">test_tick_zero_raises</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestSetGetTick.test_tick_zero_raises" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestSetGetTick.test_tick_negative_raises">
+<span class="sig-name descname"><span class="pre">test_tick_negative_raises</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestSetGetTick.test_tick_negative_raises" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_testbench.TestSequentialCounter">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_testbench.</span></span><span class="sig-name descname"><span class="pre">TestSequentialCounter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestSequentialCounter" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
+<p>A class whose instances are single test cases.</p>
+<p>By default, the test code itself should be placed in a method named
+‘runTest’.</p>
+<p>If the fixture may be used for many test cases, create as
+many test methods as are needed. When instantiating such a TestCase
+subclass, specify in the constructor arguments the name of the test method
+that the instance is to execute.</p>
+<p>Test authors should subclass TestCase for their own tests. Construction
+and deconstruction of the test’s environment (‘fixture’) can be
+implemented by overriding the ‘setUp’ and ‘tearDown’ methods respectively.</p>
+<p>If it is necessary to override the __init__ method, the base class
+__init__ method must always be called. It is important that subclasses
+should not change the signature of their __init__ method, since instances
+of the classes are instantiated automatically by parts of the framework
+in order to be run.</p>
+<p>When subclassing TestCase, you can set these attributes:
+* failureException: determines which exception will be raised when</p>
+<blockquote>
+<div><p>the instance’s assertion methods fail; test methods raising this
+exception will be deemed to have ‘failed’ rather than ‘errored’.</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>longMessage: determines whether long messages (including repr of</dt><dd><p>objects used in assert methods) will be printed on failure in <em>addition</em>
+to any explicit message passed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>maxDiff: sets the maximum length of a diff in failure messages</dt><dd><p>by assert methods using difflib. It is looked up as an instance
+attribute so can be configured by individual tests if required.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestSequentialCounter.test_counter_counts_when_enabled">
+<span class="sig-name descname"><span class="pre">test_counter_counts_when_enabled</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestSequentialCounter.test_counter_counts_when_enabled" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestSequentialCounter.test_counter_holds_when_disabled">
+<span class="sig-name descname"><span class="pre">test_counter_holds_when_disabled</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestSequentialCounter.test_counter_holds_when_disabled" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestSequentialCounter.test_counter_resume">
+<span class="sig-name descname"><span class="pre">test_counter_resume</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestSequentialCounter.test_counter_resume" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestSequentialCounter.test_counter_single_step">
+<span class="sig-name descname"><span class="pre">test_counter_single_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestSequentialCounter.test_counter_single_step" title="Link to this definition">¶</a></dt>
+<dd><p>Tick one cycle at a time, verify each step.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestSequentialCounter.test_counter_batch_vs_single">
+<span class="sig-name descname"><span class="pre">test_counter_batch_vs_single</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestSequentialCounter.test_counter_batch_vs_single" title="Link to this definition">¶</a></dt>
+<dd><p>Batch tick(10) should give same result as 10 × tick(1).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_testbench.TestCombTestbench">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_testbench.</span></span><span class="sig-name descname"><span class="pre">TestCombTestbench</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestCombTestbench" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
+<p>A class whose instances are single test cases.</p>
+<p>By default, the test code itself should be placed in a method named
+‘runTest’.</p>
+<p>If the fixture may be used for many test cases, create as
+many test methods as are needed. When instantiating such a TestCase
+subclass, specify in the constructor arguments the name of the test method
+that the instance is to execute.</p>
+<p>Test authors should subclass TestCase for their own tests. Construction
+and deconstruction of the test’s environment (‘fixture’) can be
+implemented by overriding the ‘setUp’ and ‘tearDown’ methods respectively.</p>
+<p>If it is necessary to override the __init__ method, the base class
+__init__ method must always be called. It is important that subclasses
+should not change the signature of their __init__ method, since instances
+of the classes are instantiated automatically by parts of the framework
+in order to be run.</p>
+<p>When subclassing TestCase, you can set these attributes:
+* failureException: determines which exception will be raised when</p>
+<blockquote>
+<div><p>the instance’s assertion methods fail; test methods raising this
+exception will be deemed to have ‘failed’ rather than ‘errored’.</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>longMessage: determines whether long messages (including repr of</dt><dd><p>objects used in assert methods) will be printed on failure in <em>addition</em>
+to any explicit message passed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>maxDiff: sets the maximum length of a diff in failure messages</dt><dd><p>by assert methods using difflib. It is looked up as an instance
+attribute so can be configured by individual tests if required.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestCombTestbench.test_adder_basic">
+<span class="sig-name descname"><span class="pre">test_adder_basic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestCombTestbench.test_adder_basic" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestCombTestbench.test_adder_change_inputs">
+<span class="sig-name descname"><span class="pre">test_adder_change_inputs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestCombTestbench.test_adder_change_inputs" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_testbench.TestAssertions">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_testbench.</span></span><span class="sig-name descname"><span class="pre">TestAssertions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestAssertions" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
+<p>A class whose instances are single test cases.</p>
+<p>By default, the test code itself should be placed in a method named
+‘runTest’.</p>
+<p>If the fixture may be used for many test cases, create as
+many test methods as are needed. When instantiating such a TestCase
+subclass, specify in the constructor arguments the name of the test method
+that the instance is to execute.</p>
+<p>Test authors should subclass TestCase for their own tests. Construction
+and deconstruction of the test’s environment (‘fixture’) can be
+implemented by overriding the ‘setUp’ and ‘tearDown’ methods respectively.</p>
+<p>If it is necessary to override the __init__ method, the base class
+__init__ method must always be called. It is important that subclasses
+should not change the signature of their __init__ method, since instances
+of the classes are instantiated automatically by parts of the framework
+in order to be run.</p>
+<p>When subclassing TestCase, you can set these attributes:
+* failureException: determines which exception will be raised when</p>
+<blockquote>
+<div><p>the instance’s assertion methods fail; test methods raising this
+exception will be deemed to have ‘failed’ rather than ‘errored’.</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>longMessage: determines whether long messages (including repr of</dt><dd><p>objects used in assert methods) will be printed on failure in <em>addition</em>
+to any explicit message passed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>maxDiff: sets the maximum length of a diff in failure messages</dt><dd><p>by assert methods using difflib. It is looked up as an instance
+attribute so can be configured by individual tests if required.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestAssertions.test_assert_eq_pass">
+<span class="sig-name descname"><span class="pre">test_assert_eq_pass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestAssertions.test_assert_eq_pass" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestAssertions.test_assert_eq_fail">
+<span class="sig-name descname"><span class="pre">test_assert_eq_fail</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestAssertions.test_assert_eq_fail" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestAssertions.test_assert_eq_message">
+<span class="sig-name descname"><span class="pre">test_assert_eq_message</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestAssertions.test_assert_eq_message" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestAssertions.test_assert_neq_pass">
+<span class="sig-name descname"><span class="pre">test_assert_neq_pass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestAssertions.test_assert_neq_pass" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestAssertions.test_assert_neq_fail">
+<span class="sig-name descname"><span class="pre">test_assert_neq_fail</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestAssertions.test_assert_neq_fail" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestAssertions.test_assert_stable_pass">
+<span class="sig-name descname"><span class="pre">test_assert_stable_pass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestAssertions.test_assert_stable_pass" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestAssertions.test_assert_stable_fail">
+<span class="sig-name descname"><span class="pre">test_assert_stable_fail</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestAssertions.test_assert_stable_fail" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestAssertions.test_assert_stable_with_cycles">
+<span class="sig-name descname"><span class="pre">test_assert_stable_with_cycles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestAssertions.test_assert_stable_with_cycles" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestAssertions.test_assert_changed_pass">
+<span class="sig-name descname"><span class="pre">test_assert_changed_pass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestAssertions.test_assert_changed_pass" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestAssertions.test_assert_changed_fail">
+<span class="sig-name descname"><span class="pre">test_assert_changed_fail</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestAssertions.test_assert_changed_fail" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_testbench.TestHistory">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_testbench.</span></span><span class="sig-name descname"><span class="pre">TestHistory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestHistory" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
+<p>A class whose instances are single test cases.</p>
+<p>By default, the test code itself should be placed in a method named
+‘runTest’.</p>
+<p>If the fixture may be used for many test cases, create as
+many test methods as are needed. When instantiating such a TestCase
+subclass, specify in the constructor arguments the name of the test method
+that the instance is to execute.</p>
+<p>Test authors should subclass TestCase for their own tests. Construction
+and deconstruction of the test’s environment (‘fixture’) can be
+implemented by overriding the ‘setUp’ and ‘tearDown’ methods respectively.</p>
+<p>If it is necessary to override the __init__ method, the base class
+__init__ method must always be called. It is important that subclasses
+should not change the signature of their __init__ method, since instances
+of the classes are instantiated automatically by parts of the framework
+in order to be run.</p>
+<p>When subclassing TestCase, you can set these attributes:
+* failureException: determines which exception will be raised when</p>
+<blockquote>
+<div><p>the instance’s assertion methods fail; test methods raising this
+exception will be deemed to have ‘failed’ rather than ‘errored’.</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>longMessage: determines whether long messages (including repr of</dt><dd><p>objects used in assert methods) will be printed on failure in <em>addition</em>
+to any explicit message passed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>maxDiff: sets the maximum length of a diff in failure messages</dt><dd><p>by assert methods using difflib. It is looked up as an instance
+attribute so can be configured by individual tests if required.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestHistory.test_history_counter">
+<span class="sig-name descname"><span class="pre">test_history_counter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestHistory.test_history_counter" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestHistory.test_history_unknown_signal">
+<span class="sig-name descname"><span class="pre">test_history_unknown_signal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestHistory.test_history_unknown_signal" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_testbench.TestTimeout">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_testbench.</span></span><span class="sig-name descname"><span class="pre">TestTimeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestTimeout" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
+<p>A class whose instances are single test cases.</p>
+<p>By default, the test code itself should be placed in a method named
+‘runTest’.</p>
+<p>If the fixture may be used for many test cases, create as
+many test methods as are needed. When instantiating such a TestCase
+subclass, specify in the constructor arguments the name of the test method
+that the instance is to execute.</p>
+<p>Test authors should subclass TestCase for their own tests. Construction
+and deconstruction of the test’s environment (‘fixture’) can be
+implemented by overriding the ‘setUp’ and ‘tearDown’ methods respectively.</p>
+<p>If it is necessary to override the __init__ method, the base class
+__init__ method must always be called. It is important that subclasses
+should not change the signature of their __init__ method, since instances
+of the classes are instantiated automatically by parts of the framework
+in order to be run.</p>
+<p>When subclassing TestCase, you can set these attributes:
+* failureException: determines which exception will be raised when</p>
+<blockquote>
+<div><p>the instance’s assertion methods fail; test methods raising this
+exception will be deemed to have ‘failed’ rather than ‘errored’.</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>longMessage: determines whether long messages (including repr of</dt><dd><p>objects used in assert methods) will be printed on failure in <em>addition</em>
+to any explicit message passed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>maxDiff: sets the maximum length of a diff in failure messages</dt><dd><p>by assert methods using difflib. It is looked up as an instance
+attribute so can be configured by individual tests if required.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestTimeout.test_timeout_raises">
+<span class="sig-name descname"><span class="pre">test_timeout_raises</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestTimeout.test_timeout_raises" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestTimeout.test_timeout_at_boundary">
+<span class="sig-name descname"><span class="pre">test_timeout_at_boundary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestTimeout.test_timeout_at_boundary" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_testbench.TestRunTestbench">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_testbench.</span></span><span class="sig-name descname"><span class="pre">TestRunTestbench</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestRunTestbench" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
+<p>A class whose instances are single test cases.</p>
+<p>By default, the test code itself should be placed in a method named
+‘runTest’.</p>
+<p>If the fixture may be used for many test cases, create as
+many test methods as are needed. When instantiating such a TestCase
+subclass, specify in the constructor arguments the name of the test method
+that the instance is to execute.</p>
+<p>Test authors should subclass TestCase for their own tests. Construction
+and deconstruction of the test’s environment (‘fixture’) can be
+implemented by overriding the ‘setUp’ and ‘tearDown’ methods respectively.</p>
+<p>If it is necessary to override the __init__ method, the base class
+__init__ method must always be called. It is important that subclasses
+should not change the signature of their __init__ method, since instances
+of the classes are instantiated automatically by parts of the framework
+in order to be run.</p>
+<p>When subclassing TestCase, you can set these attributes:
+* failureException: determines which exception will be raised when</p>
+<blockquote>
+<div><p>the instance’s assertion methods fail; test methods raising this
+exception will be deemed to have ‘failed’ rather than ‘errored’.</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>longMessage: determines whether long messages (including repr of</dt><dd><p>objects used in assert methods) will be printed on failure in <em>addition</em>
+to any explicit message passed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>maxDiff: sets the maximum length of a diff in failure messages</dt><dd><p>by assert methods using difflib. It is looked up as an instance
+attribute so can be configured by individual tests if required.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestRunTestbench.test_run_testbench_pass">
+<span class="sig-name descname"><span class="pre">test_run_testbench_pass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestRunTestbench.test_run_testbench_pass" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestRunTestbench.test_run_testbench_fail">
+<span class="sig-name descname"><span class="pre">test_run_testbench_fail</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestRunTestbench.test_run_testbench_fail" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestRunTestbench.test_run_testbench_returns_history">
+<span class="sig-name descname"><span class="pre">test_run_testbench_returns_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestRunTestbench.test_run_testbench_returns_history" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_testbench.TestUpDownCounter">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_testbench.</span></span><span class="sig-name descname"><span class="pre">TestUpDownCounter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestUpDownCounter" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
+<p>A class whose instances are single test cases.</p>
+<p>By default, the test code itself should be placed in a method named
+‘runTest’.</p>
+<p>If the fixture may be used for many test cases, create as
+many test methods as are needed. When instantiating such a TestCase
+subclass, specify in the constructor arguments the name of the test method
+that the instance is to execute.</p>
+<p>Test authors should subclass TestCase for their own tests. Construction
+and deconstruction of the test’s environment (‘fixture’) can be
+implemented by overriding the ‘setUp’ and ‘tearDown’ methods respectively.</p>
+<p>If it is necessary to override the __init__ method, the base class
+__init__ method must always be called. It is important that subclasses
+should not change the signature of their __init__ method, since instances
+of the classes are instantiated automatically by parts of the framework
+in order to be run.</p>
+<p>When subclassing TestCase, you can set these attributes:
+* failureException: determines which exception will be raised when</p>
+<blockquote>
+<div><p>the instance’s assertion methods fail; test methods raising this
+exception will be deemed to have ‘failed’ rather than ‘errored’.</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>longMessage: determines whether long messages (including repr of</dt><dd><p>objects used in assert methods) will be printed on failure in <em>addition</em>
+to any explicit message passed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>maxDiff: sets the maximum length of a diff in failure messages</dt><dd><p>by assert methods using difflib. It is looked up as an instance
+attribute so can be configured by individual tests if required.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestUpDownCounter.test_count_up">
+<span class="sig-name descname"><span class="pre">test_count_up</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestUpDownCounter.test_count_up" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestUpDownCounter.test_count_down">
+<span class="sig-name descname"><span class="pre">test_count_down</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestUpDownCounter.test_count_down" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestUpDownCounter.test_direction_change">
+<span class="sig-name descname"><span class="pre">test_direction_change</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestUpDownCounter.test_direction_change" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_testbench.Phase5Counter">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_testbench.</span></span><span class="sig-name descname"><span class="pre">Phase5Counter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_loc_at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.Phase5Counter" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">amaranth.lib.wiring.Component</span></code></p>
+<p>Base class for elaboratable interface objects.</p>
+<p>A component is an <code class="xref py py-class docutils literal notranslate"><span class="pre">Elaboratable</span></code> whose interaction with other parts of the design is
+defined by its signature. Most if not all elaboratables in idiomatic Amaranth code should be
+components, as the signature clarifies the direction of data flow at their boundary. See
+the <span class="xref std std-ref">introduction to interfaces</span> section for a practical guide to defining
+and using components.</p>
+<p>There are two ways to define a component. If all instances of a component have the same
+signature, it can be defined using <span class="xref std std-term">variable annotations</span>:</p>
+<p>The variable annotations are collected by the constructor <code class="xref py py-meth docutils literal notranslate"><span class="pre">Component.__init__()</span></code>. Only
+public (not starting with <code class="docutils literal notranslate"><span class="pre">_</span></code>) annotations with <code class="xref py py-class docutils literal notranslate"><span class="pre">In</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">Out</span></code>
+objects are considered; all other annotations are ignored under the assumption that they are
+interpreted by some other tool.</p>
+<p>It is possible to use inheritance to extend a component: the component’s signature is composed
+from the variable annotations in the class that is being constructed as well as all of its
+base classes. It is an error to have more than one variable annotation for the same attribute.</p>
+<p>If different instances of a component may need to have different signatures, variable
+annotations cannot be used. In this case, the constructor should be overridden, and
+the computed signature members should be provided to the superclass constructor:</p>
+<p>It is also possible to pass a <code class="xref py py-class docutils literal notranslate"><span class="pre">Signature</span></code> instance to the superclass constructor.</p>
+<p>Aside from initializing the <code class="xref py py-attr docutils literal notranslate"><span class="pre">signature</span></code> attribute, the <code class="xref py py-meth docutils literal notranslate"><span class="pre">Component.__init__()</span></code>
+constructor creates attributes corresponding to all of the members defined in the signature.
+If an attribute with the same name as that of a member already exists, an error is raied.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TypeError</strong> – If the <a href="#id1"><span class="problematic" id="id2">:py:`signature`</span></a> object is neither a <code class="xref py py-class docutils literal notranslate"><span class="pre">Signature</span></code> nor a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>.
+If neither variable annotations nor the <a href="#id3"><span class="problematic" id="id4">:py:`signature`</span></a> argument are present, or if
+both are present.</p></li>
+<li><p><strong>NameError</strong> – If a name conflict is detected between two variable annotations, or between a member
+and an existing attribute.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="test_testbench.Phase5Counter.en">
+<span class="sig-name descname"><span class="pre">en</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">In</span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">)</span></span></em><a class="headerlink" href="#test_testbench.Phase5Counter.en" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="test_testbench.Phase5Counter.count">
+<span class="sig-name descname"><span class="pre">count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Out</span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">8</span></span><span class="p"><span class="pre">)</span></span></em><a class="headerlink" href="#test_testbench.Phase5Counter.count" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.Phase5Counter.elaborate">
+<span class="sig-name descname"><span class="pre">elaborate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">platform</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.Phase5Counter.elaborate" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_testbench.Phase5Mux">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_testbench.</span></span><span class="sig-name descname"><span class="pre">Phase5Mux</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_loc_at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.Phase5Mux" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">amaranth.lib.wiring.Component</span></code></p>
+<p>Base class for elaboratable interface objects.</p>
+<p>A component is an <code class="xref py py-class docutils literal notranslate"><span class="pre">Elaboratable</span></code> whose interaction with other parts of the design is
+defined by its signature. Most if not all elaboratables in idiomatic Amaranth code should be
+components, as the signature clarifies the direction of data flow at their boundary. See
+the <span class="xref std std-ref">introduction to interfaces</span> section for a practical guide to defining
+and using components.</p>
+<p>There are two ways to define a component. If all instances of a component have the same
+signature, it can be defined using <span class="xref std std-term">variable annotations</span>:</p>
+<p>The variable annotations are collected by the constructor <code class="xref py py-meth docutils literal notranslate"><span class="pre">Component.__init__()</span></code>. Only
+public (not starting with <code class="docutils literal notranslate"><span class="pre">_</span></code>) annotations with <code class="xref py py-class docutils literal notranslate"><span class="pre">In</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">Out</span></code>
+objects are considered; all other annotations are ignored under the assumption that they are
+interpreted by some other tool.</p>
+<p>It is possible to use inheritance to extend a component: the component’s signature is composed
+from the variable annotations in the class that is being constructed as well as all of its
+base classes. It is an error to have more than one variable annotation for the same attribute.</p>
+<p>If different instances of a component may need to have different signatures, variable
+annotations cannot be used. In this case, the constructor should be overridden, and
+the computed signature members should be provided to the superclass constructor:</p>
+<p>It is also possible to pass a <code class="xref py py-class docutils literal notranslate"><span class="pre">Signature</span></code> instance to the superclass constructor.</p>
+<p>Aside from initializing the <code class="xref py py-attr docutils literal notranslate"><span class="pre">signature</span></code> attribute, the <code class="xref py py-meth docutils literal notranslate"><span class="pre">Component.__init__()</span></code>
+constructor creates attributes corresponding to all of the members defined in the signature.
+If an attribute with the same name as that of a member already exists, an error is raied.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TypeError</strong> – If the <a href="#id5"><span class="problematic" id="id6">:py:`signature`</span></a> object is neither a <code class="xref py py-class docutils literal notranslate"><span class="pre">Signature</span></code> nor a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>.
+If neither variable annotations nor the <a href="#id7"><span class="problematic" id="id8">:py:`signature`</span></a> argument are present, or if
+both are present.</p></li>
+<li><p><strong>NameError</strong> – If a name conflict is detected between two variable annotations, or between a member
+and an existing attribute.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="test_testbench.Phase5Mux.sel">
+<span class="sig-name descname"><span class="pre">sel</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">In</span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">)</span></span></em><a class="headerlink" href="#test_testbench.Phase5Mux.sel" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="test_testbench.Phase5Mux.a">
+<span class="sig-name descname"><span class="pre">a</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">In</span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">8</span></span><span class="p"><span class="pre">)</span></span></em><a class="headerlink" href="#test_testbench.Phase5Mux.a" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="test_testbench.Phase5Mux.b">
+<span class="sig-name descname"><span class="pre">b</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">In</span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">8</span></span><span class="p"><span class="pre">)</span></span></em><a class="headerlink" href="#test_testbench.Phase5Mux.b" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="test_testbench.Phase5Mux.y">
+<span class="sig-name descname"><span class="pre">y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Out</span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">8</span></span><span class="p"><span class="pre">)</span></span></em><a class="headerlink" href="#test_testbench.Phase5Mux.y" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.Phase5Mux.elaborate">
+<span class="sig-name descname"><span class="pre">elaborate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">platform</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.Phase5Mux.elaborate" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_testbench.TestAmaranthTestbench">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_testbench.</span></span><span class="sig-name descname"><span class="pre">TestAmaranthTestbench</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestAmaranthTestbench" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
+<p>A class whose instances are single test cases.</p>
+<p>By default, the test code itself should be placed in a method named
+‘runTest’.</p>
+<p>If the fixture may be used for many test cases, create as
+many test methods as are needed. When instantiating such a TestCase
+subclass, specify in the constructor arguments the name of the test method
+that the instance is to execute.</p>
+<p>Test authors should subclass TestCase for their own tests. Construction
+and deconstruction of the test’s environment (‘fixture’) can be
+implemented by overriding the ‘setUp’ and ‘tearDown’ methods respectively.</p>
+<p>If it is necessary to override the __init__ method, the base class
+__init__ method must always be called. It is important that subclasses
+should not change the signature of their __init__ method, since instances
+of the classes are instantiated automatically by parts of the framework
+in order to be run.</p>
+<p>When subclassing TestCase, you can set these attributes:
+* failureException: determines which exception will be raised when</p>
+<blockquote>
+<div><p>the instance’s assertion methods fail; test methods raising this
+exception will be deemed to have ‘failed’ rather than ‘errored’.</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>longMessage: determines whether long messages (including repr of</dt><dd><p>objects used in assert methods) will be printed on failure in <em>addition</em>
+to any explicit message passed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>maxDiff: sets the maximum length of a diff in failure messages</dt><dd><p>by assert methods using difflib. It is looked up as an instance
+attribute so can be configured by individual tests if required.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestAmaranthTestbench.test_amaranth_counter">
+<span class="sig-name descname"><span class="pre">test_amaranth_counter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestAmaranthTestbench.test_amaranth_counter" title="Link to this definition">¶</a></dt>
+<dd><p>Full Amaranth → IR → compile → testbench pipeline.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestAmaranthTestbench.test_amaranth_mux">
+<span class="sig-name descname"><span class="pre">test_amaranth_mux</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestAmaranthTestbench.test_amaranth_mux" title="Link to this definition">¶</a></dt>
+<dd><p>Amaranth combinational design testbench.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_testbench.TestForceRelease">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_testbench.</span></span><span class="sig-name descname"><span class="pre">TestForceRelease</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestForceRelease" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
+<p>Tests for signal force/release functionality.</p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestForceRelease.test_force_overrides_signal">
+<span class="sig-name descname"><span class="pre">test_force_overrides_signal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestForceRelease.test_force_overrides_signal" title="Link to this definition">¶</a></dt>
+<dd><p>Forced signal should hold the forced value after tick.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestForceRelease.test_force_persists_across_ticks">
+<span class="sig-name descname"><span class="pre">test_force_persists_across_ticks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestForceRelease.test_force_persists_across_ticks" title="Link to this definition">¶</a></dt>
+<dd><p>Forced value should persist across multiple ticks.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestForceRelease.test_release_restores_simulation">
+<span class="sig-name descname"><span class="pre">test_release_restores_simulation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestForceRelease.test_release_restores_simulation" title="Link to this definition">¶</a></dt>
+<dd><p>After release, simulation should drive the signal again.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestForceRelease.test_is_forced">
+<span class="sig-name descname"><span class="pre">test_is_forced</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestForceRelease.test_is_forced" title="Link to this definition">¶</a></dt>
+<dd><p>is_forced should reflect force/release state.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestForceRelease.test_force_unknown_signal_raises">
+<span class="sig-name descname"><span class="pre">test_force_unknown_signal_raises</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestForceRelease.test_force_unknown_signal_raises" title="Link to this definition">¶</a></dt>
+<dd><p>Forcing an unknown signal should raise KeyError.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestForceRelease.test_release_unforced_signal_raises">
+<span class="sig-name descname"><span class="pre">test_release_unforced_signal_raises</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestForceRelease.test_release_unforced_signal_raises" title="Link to this definition">¶</a></dt>
+<dd><p>Releasing a non-forced signal should raise KeyError.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestForceRelease.test_force_immediate_get">
+<span class="sig-name descname"><span class="pre">test_force_immediate_get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestForceRelease.test_force_immediate_get" title="Link to this definition">¶</a></dt>
+<dd><p>Force should immediately update the signal value (before tick).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_testbench.TestParallelTestbenches">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_testbench.</span></span><span class="sig-name descname"><span class="pre">TestParallelTestbenches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestParallelTestbenches" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
+<p>Tests for run_parallel_testbenches.</p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestParallelTestbenches.test_two_readers_same_counter">
+<span class="sig-name descname"><span class="pre">test_two_readers_same_counter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestParallelTestbenches.test_two_readers_same_counter" title="Link to this definition">¶</a></dt>
+<dd><p>Two testbenches reading the same counter see the same values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestParallelTestbenches.test_parallel_synchronized_ticks">
+<span class="sig-name descname"><span class="pre">test_parallel_synchronized_ticks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestParallelTestbenches.test_parallel_synchronized_ticks" title="Link to this definition">¶</a></dt>
+<dd><p>All threads advance the same number of cycles.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestParallelTestbenches.test_parallel_error_propagates">
+<span class="sig-name descname"><span class="pre">test_parallel_error_propagates</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestParallelTestbenches.test_parallel_error_propagates" title="Link to this definition">¶</a></dt>
+<dd><p>An assertion failure in one thread propagates to the caller.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestParallelTestbenches.test_parallel_single_function">
+<span class="sig-name descname"><span class="pre">test_parallel_single_function</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestParallelTestbenches.test_parallel_single_function" title="Link to this definition">¶</a></dt>
+<dd><p>Running with a single function behaves like a normal testbench.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestParallelTestbenches.test_parallel_no_functions_raises">
+<span class="sig-name descname"><span class="pre">test_parallel_no_functions_raises</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestParallelTestbenches.test_parallel_no_functions_raises" title="Link to this definition">¶</a></dt>
+<dd><p>Must pass at least one testbench function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestParallelTestbenches.test_parallel_three_testbenches">
+<span class="sig-name descname"><span class="pre">test_parallel_three_testbenches</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestParallelTestbenches.test_parallel_three_testbenches" title="Link to this definition">¶</a></dt>
+<dd><p>Three threads driving and reading coordinated signals.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_testbench.TestParallelTestbenches.test_parallel_force_visible_to_all">
+<span class="sig-name descname"><span class="pre">test_parallel_force_visible_to_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_testbench.TestParallelTestbenches.test_parallel_force_visible_to_all" title="Link to this definition">¶</a></dt>
+<dd><p>A force in one thread should be visible to others after tick.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../test_selectors/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">test_selectors</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../test_compiler/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">test_compiler</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; the dau authors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">test_testbench</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#test_testbench._make_counter_module"><code class="docutils literal notranslate"><span class="pre">_make_counter_module()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench._make_adder_module"><code class="docutils literal notranslate"><span class="pre">_make_adder_module()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench._make_updown_counter"><code class="docutils literal notranslate"><span class="pre">_make_updown_counter()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestContextInit"><code class="docutils literal notranslate"><span class="pre">TestContextInit</span></code></a><ul>
+<li><a class="reference internal" href="#test_testbench.TestContextInit.test_initial_signals"><code class="docutils literal notranslate"><span class="pre">TestContextInit.test_initial_signals()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestContextInit.test_initial_cycle_zero"><code class="docutils literal notranslate"><span class="pre">TestContextInit.test_initial_cycle_zero()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestContextInit.test_unknown_signal_get"><code class="docutils literal notranslate"><span class="pre">TestContextInit.test_unknown_signal_get()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestContextInit.test_unknown_signal_set"><code class="docutils literal notranslate"><span class="pre">TestContextInit.test_unknown_signal_set()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestContextInit.test_history_has_initial"><code class="docutils literal notranslate"><span class="pre">TestContextInit.test_history_has_initial()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_testbench.TestSetGetTick"><code class="docutils literal notranslate"><span class="pre">TestSetGetTick</span></code></a><ul>
+<li><a class="reference internal" href="#test_testbench.TestSetGetTick.test_set_and_get"><code class="docutils literal notranslate"><span class="pre">TestSetGetTick.test_set_and_get()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestSetGetTick.test_tick_advances_cycle"><code class="docutils literal notranslate"><span class="pre">TestSetGetTick.test_tick_advances_cycle()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestSetGetTick.test_tick_n_advances_n"><code class="docutils literal notranslate"><span class="pre">TestSetGetTick.test_tick_n_advances_n()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestSetGetTick.test_tick_zero_raises"><code class="docutils literal notranslate"><span class="pre">TestSetGetTick.test_tick_zero_raises()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestSetGetTick.test_tick_negative_raises"><code class="docutils literal notranslate"><span class="pre">TestSetGetTick.test_tick_negative_raises()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_testbench.TestSequentialCounter"><code class="docutils literal notranslate"><span class="pre">TestSequentialCounter</span></code></a><ul>
+<li><a class="reference internal" href="#test_testbench.TestSequentialCounter.test_counter_counts_when_enabled"><code class="docutils literal notranslate"><span class="pre">TestSequentialCounter.test_counter_counts_when_enabled()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestSequentialCounter.test_counter_holds_when_disabled"><code class="docutils literal notranslate"><span class="pre">TestSequentialCounter.test_counter_holds_when_disabled()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestSequentialCounter.test_counter_resume"><code class="docutils literal notranslate"><span class="pre">TestSequentialCounter.test_counter_resume()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestSequentialCounter.test_counter_single_step"><code class="docutils literal notranslate"><span class="pre">TestSequentialCounter.test_counter_single_step()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestSequentialCounter.test_counter_batch_vs_single"><code class="docutils literal notranslate"><span class="pre">TestSequentialCounter.test_counter_batch_vs_single()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_testbench.TestCombTestbench"><code class="docutils literal notranslate"><span class="pre">TestCombTestbench</span></code></a><ul>
+<li><a class="reference internal" href="#test_testbench.TestCombTestbench.test_adder_basic"><code class="docutils literal notranslate"><span class="pre">TestCombTestbench.test_adder_basic()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestCombTestbench.test_adder_change_inputs"><code class="docutils literal notranslate"><span class="pre">TestCombTestbench.test_adder_change_inputs()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_testbench.TestAssertions"><code class="docutils literal notranslate"><span class="pre">TestAssertions</span></code></a><ul>
+<li><a class="reference internal" href="#test_testbench.TestAssertions.test_assert_eq_pass"><code class="docutils literal notranslate"><span class="pre">TestAssertions.test_assert_eq_pass()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestAssertions.test_assert_eq_fail"><code class="docutils literal notranslate"><span class="pre">TestAssertions.test_assert_eq_fail()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestAssertions.test_assert_eq_message"><code class="docutils literal notranslate"><span class="pre">TestAssertions.test_assert_eq_message()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestAssertions.test_assert_neq_pass"><code class="docutils literal notranslate"><span class="pre">TestAssertions.test_assert_neq_pass()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestAssertions.test_assert_neq_fail"><code class="docutils literal notranslate"><span class="pre">TestAssertions.test_assert_neq_fail()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestAssertions.test_assert_stable_pass"><code class="docutils literal notranslate"><span class="pre">TestAssertions.test_assert_stable_pass()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestAssertions.test_assert_stable_fail"><code class="docutils literal notranslate"><span class="pre">TestAssertions.test_assert_stable_fail()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestAssertions.test_assert_stable_with_cycles"><code class="docutils literal notranslate"><span class="pre">TestAssertions.test_assert_stable_with_cycles()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestAssertions.test_assert_changed_pass"><code class="docutils literal notranslate"><span class="pre">TestAssertions.test_assert_changed_pass()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestAssertions.test_assert_changed_fail"><code class="docutils literal notranslate"><span class="pre">TestAssertions.test_assert_changed_fail()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_testbench.TestHistory"><code class="docutils literal notranslate"><span class="pre">TestHistory</span></code></a><ul>
+<li><a class="reference internal" href="#test_testbench.TestHistory.test_history_counter"><code class="docutils literal notranslate"><span class="pre">TestHistory.test_history_counter()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestHistory.test_history_unknown_signal"><code class="docutils literal notranslate"><span class="pre">TestHistory.test_history_unknown_signal()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_testbench.TestTimeout"><code class="docutils literal notranslate"><span class="pre">TestTimeout</span></code></a><ul>
+<li><a class="reference internal" href="#test_testbench.TestTimeout.test_timeout_raises"><code class="docutils literal notranslate"><span class="pre">TestTimeout.test_timeout_raises()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestTimeout.test_timeout_at_boundary"><code class="docutils literal notranslate"><span class="pre">TestTimeout.test_timeout_at_boundary()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_testbench.TestRunTestbench"><code class="docutils literal notranslate"><span class="pre">TestRunTestbench</span></code></a><ul>
+<li><a class="reference internal" href="#test_testbench.TestRunTestbench.test_run_testbench_pass"><code class="docutils literal notranslate"><span class="pre">TestRunTestbench.test_run_testbench_pass()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestRunTestbench.test_run_testbench_fail"><code class="docutils literal notranslate"><span class="pre">TestRunTestbench.test_run_testbench_fail()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestRunTestbench.test_run_testbench_returns_history"><code class="docutils literal notranslate"><span class="pre">TestRunTestbench.test_run_testbench_returns_history()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_testbench.TestUpDownCounter"><code class="docutils literal notranslate"><span class="pre">TestUpDownCounter</span></code></a><ul>
+<li><a class="reference internal" href="#test_testbench.TestUpDownCounter.test_count_up"><code class="docutils literal notranslate"><span class="pre">TestUpDownCounter.test_count_up()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestUpDownCounter.test_count_down"><code class="docutils literal notranslate"><span class="pre">TestUpDownCounter.test_count_down()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestUpDownCounter.test_direction_change"><code class="docutils literal notranslate"><span class="pre">TestUpDownCounter.test_direction_change()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_testbench.Phase5Counter"><code class="docutils literal notranslate"><span class="pre">Phase5Counter</span></code></a><ul>
+<li><a class="reference internal" href="#test_testbench.Phase5Counter.en"><code class="docutils literal notranslate"><span class="pre">Phase5Counter.en</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.Phase5Counter.count"><code class="docutils literal notranslate"><span class="pre">Phase5Counter.count</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.Phase5Counter.elaborate"><code class="docutils literal notranslate"><span class="pre">Phase5Counter.elaborate()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_testbench.Phase5Mux"><code class="docutils literal notranslate"><span class="pre">Phase5Mux</span></code></a><ul>
+<li><a class="reference internal" href="#test_testbench.Phase5Mux.sel"><code class="docutils literal notranslate"><span class="pre">Phase5Mux.sel</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.Phase5Mux.a"><code class="docutils literal notranslate"><span class="pre">Phase5Mux.a</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.Phase5Mux.b"><code class="docutils literal notranslate"><span class="pre">Phase5Mux.b</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.Phase5Mux.y"><code class="docutils literal notranslate"><span class="pre">Phase5Mux.y</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.Phase5Mux.elaborate"><code class="docutils literal notranslate"><span class="pre">Phase5Mux.elaborate()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_testbench.TestAmaranthTestbench"><code class="docutils literal notranslate"><span class="pre">TestAmaranthTestbench</span></code></a><ul>
+<li><a class="reference internal" href="#test_testbench.TestAmaranthTestbench.test_amaranth_counter"><code class="docutils literal notranslate"><span class="pre">TestAmaranthTestbench.test_amaranth_counter()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestAmaranthTestbench.test_amaranth_mux"><code class="docutils literal notranslate"><span class="pre">TestAmaranthTestbench.test_amaranth_mux()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_testbench.TestForceRelease"><code class="docutils literal notranslate"><span class="pre">TestForceRelease</span></code></a><ul>
+<li><a class="reference internal" href="#test_testbench.TestForceRelease.test_force_overrides_signal"><code class="docutils literal notranslate"><span class="pre">TestForceRelease.test_force_overrides_signal()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestForceRelease.test_force_persists_across_ticks"><code class="docutils literal notranslate"><span class="pre">TestForceRelease.test_force_persists_across_ticks()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestForceRelease.test_release_restores_simulation"><code class="docutils literal notranslate"><span class="pre">TestForceRelease.test_release_restores_simulation()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestForceRelease.test_is_forced"><code class="docutils literal notranslate"><span class="pre">TestForceRelease.test_is_forced()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestForceRelease.test_force_unknown_signal_raises"><code class="docutils literal notranslate"><span class="pre">TestForceRelease.test_force_unknown_signal_raises()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestForceRelease.test_release_unforced_signal_raises"><code class="docutils literal notranslate"><span class="pre">TestForceRelease.test_release_unforced_signal_raises()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestForceRelease.test_force_immediate_get"><code class="docutils literal notranslate"><span class="pre">TestForceRelease.test_force_immediate_get()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test_testbench.TestParallelTestbenches"><code class="docutils literal notranslate"><span class="pre">TestParallelTestbenches</span></code></a><ul>
+<li><a class="reference internal" href="#test_testbench.TestParallelTestbenches.test_two_readers_same_counter"><code class="docutils literal notranslate"><span class="pre">TestParallelTestbenches.test_two_readers_same_counter()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestParallelTestbenches.test_parallel_synchronized_ticks"><code class="docutils literal notranslate"><span class="pre">TestParallelTestbenches.test_parallel_synchronized_ticks()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestParallelTestbenches.test_parallel_error_propagates"><code class="docutils literal notranslate"><span class="pre">TestParallelTestbenches.test_parallel_error_propagates()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestParallelTestbenches.test_parallel_single_function"><code class="docutils literal notranslate"><span class="pre">TestParallelTestbenches.test_parallel_single_function()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestParallelTestbenches.test_parallel_no_functions_raises"><code class="docutils literal notranslate"><span class="pre">TestParallelTestbenches.test_parallel_no_functions_raises()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestParallelTestbenches.test_parallel_three_testbenches"><code class="docutils literal notranslate"><span class="pre">TestParallelTestbenches.test_parallel_three_testbenches()</span></code></a></li>
+<li><a class="reference internal" href="#test_testbench.TestParallelTestbenches.test_parallel_force_visible_to_all"><code class="docutils literal notranslate"><span class="pre">TestParallelTestbenches.test_parallel_force_visible_to_all()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../_static/js/custom.js?v=956e5d78"></script>
+    </body>
+</html>

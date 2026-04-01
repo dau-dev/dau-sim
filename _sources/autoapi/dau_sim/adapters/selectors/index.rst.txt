@@ -1,0 +1,70 @@
+dau_sim.adapters.selectors
+==========================
+
+.. py:module:: dau_sim.adapters.selectors
+
+.. autoapi-nested-parse::
+
+   Signal selectors: glob/regex patterns for filtering simulation traces.
+
+   Use signal selectors to choose which signals to include in VCD output
+   or testbench observation, avoiding the overhead of tracing everything
+   in large designs.
+
+   Usage::
+
+       from dau_sim.adapters.selectors import select_signals
+
+       # Glob patterns
+       filtered = select_signals(traces, include=["count", "en"])
+       filtered = select_signals(traces, include=["*clk*"])
+       filtered = select_signals(traces, exclude=["rst", "*internal*"])
+
+       # Regex patterns
+       filtered = select_signals(traces, include=[r"data_\d+"], regex=True)
+
+       # With CompiledModule
+       traces = cm.run(cycles=100, inputs={"en": 1})
+       cm.write_vcd("out.vcd", traces, signals=["count", "en"])
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   dau_sim.adapters.selectors.match_signals
+   dau_sim.adapters.selectors.select_signals
+
+
+Module Contents
+---------------
+
+.. py:function:: match_signals(names: list[str] | set[str], *, include: list[str] | None = None, exclude: list[str] | None = None, regex: bool = False) -> list[str]
+
+   Return signal names matching the include/exclude filters.
+
+   :param names: All available signal names.
+   :param include: Patterns to include.  If ``None``, all names are included.
+   :param exclude: Patterns to exclude.  Applied after include filtering.
+   :param regex: If ``True``, patterns are Python regexes.
+                 If ``False`` (default), patterns are Unix glob patterns.
+
+   :returns: Matching signal names, in the order they appear in *names*.
+   :rtype: list[str]
+
+
+.. py:function:: select_signals(traces: dict[str, list], *, include: list[str] | None = None, exclude: list[str] | None = None, regex: bool = False) -> dict[str, list]
+
+   Filter a traces dict to only include matching signals.
+
+   :param traces: Signal name → trace list mapping (from ``CompiledModule.run()``).
+   :param include: Glob or regex patterns for signals to keep.
+   :param exclude: Glob or regex patterns for signals to remove.
+   :param regex: Interpret patterns as regex (default: glob).
+
+   :returns: Filtered traces dict.
+   :rtype: dict[str, list]
+
+

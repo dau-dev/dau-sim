@@ -1,0 +1,34 @@
+dau_sim.frontends.amaranth_frontend
+===================================
+
+.. py:module:: dau_sim.frontends.amaranth_frontend
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   dau_sim.frontends.amaranth_frontend.from_amaranth
+
+
+Module Contents
+---------------
+
+.. py:function:: from_amaranth(design: amaranth.hdl.Elaboratable, *, name: str | None = None, platform=None) -> dau_sim.ir.module.Module
+
+   Lower an Amaranth ``Elaboratable`` or ``Component`` to a dau-sim IR Module.
+
+   :param design: The Amaranth design to elaborate and lower.  Can be a bare
+                  ``Elaboratable`` or a ``Component`` (which provides port info
+                  via its signature).
+   :type design: Elaboratable
+   :param name: Module name. Defaults to the class name of *design*.
+   :type name: str | None
+   :param platform: Amaranth platform, passed to ``Fragment.get()``.
+   :type platform: object | None
+
+   :returns: The lowered dau-sim IR module.
+   :rtype: Module
+
+

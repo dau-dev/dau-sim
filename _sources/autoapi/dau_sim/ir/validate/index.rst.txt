@@ -1,0 +1,87 @@
+dau_sim.ir.validate
+===================
+
+.. py:module:: dau_sim.ir.validate
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   dau_sim.ir.validate.ValidationError
+   dau_sim.ir.validate.ValidationResult
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   dau_sim.ir.validate.validate_module
+   dau_sim.ir.validate._validate_block_stmts
+   dau_sim.ir.validate._validate_stmt
+   dau_sim.ir.validate._validate_expr
+
+
+Module Contents
+---------------
+
+.. py:class:: ValidationError
+
+   A single validation error.
+
+
+   .. py:attribute:: path
+      :type:  str
+
+
+   .. py:attribute:: message
+      :type:  str
+
+
+   .. py:method:: __str__() -> str
+
+
+.. py:class:: ValidationResult
+
+   Collected validation errors.
+
+
+   .. py:attribute:: errors
+      :type:  list[ValidationError]
+      :value: []
+
+
+
+   .. py:property:: ok
+      :type: bool
+
+
+
+   .. py:method:: add(path: str, message: str) -> None
+
+
+   .. py:method:: __str__() -> str
+
+
+.. py:function:: validate_module(module: dau_sim.ir.module.Module) -> ValidationResult
+
+   Validate a module for well-formedness.
+
+
+.. py:function:: _validate_block_stmts(stmts: tuple[dau_sim.ir.stmt.Stmt, Ellipsis], known_signals: set[str], path: str, result: ValidationResult) -> None
+
+   Validate statements within a block.
+
+
+.. py:function:: _validate_stmt(stmt: dau_sim.ir.stmt.Stmt, known_signals: set[str], path: str, result: ValidationResult) -> None
+
+   Validate a single statement.
+
+
+.. py:function:: _validate_expr(expr: dau_sim.ir.expr.Expr, known_signals: set[str], path: str, result: ValidationResult) -> None
+
+   Validate an expression tree — check signal references exist.
+
+

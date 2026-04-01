@@ -1,0 +1,222 @@
+test_selectors
+==============
+
+.. py:module:: test_selectors
+
+.. autoapi-nested-parse::
+
+   Tests for signal selectors (glob/regex filtering of traces).
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   test_selectors.SAMPLE_NAMES
+   test_selectors.SAMPLE_TRACES
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   test_selectors.TestMatchSignals
+   test_selectors.TestSelectSignals
+   test_selectors.TestIntegration
+
+
+Module Contents
+---------------
+
+.. py:data:: SAMPLE_NAMES
+   :value: ['clk', 'rst', 'en', 'count', 'data_0', 'data_1', 'data_2', 'internal_reg']
+
+
+.. py:data:: SAMPLE_TRACES
+
+.. py:class:: TestMatchSignals(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   A class whose instances are single test cases.
+
+   By default, the test code itself should be placed in a method named
+   'runTest'.
+
+   If the fixture may be used for many test cases, create as
+   many test methods as are needed. When instantiating such a TestCase
+   subclass, specify in the constructor arguments the name of the test method
+   that the instance is to execute.
+
+   Test authors should subclass TestCase for their own tests. Construction
+   and deconstruction of the test's environment ('fixture') can be
+   implemented by overriding the 'setUp' and 'tearDown' methods respectively.
+
+   If it is necessary to override the __init__ method, the base class
+   __init__ method must always be called. It is important that subclasses
+   should not change the signature of their __init__ method, since instances
+   of the classes are instantiated automatically by parts of the framework
+   in order to be run.
+
+   When subclassing TestCase, you can set these attributes:
+   * failureException: determines which exception will be raised when
+       the instance's assertion methods fail; test methods raising this
+       exception will be deemed to have 'failed' rather than 'errored'.
+   * longMessage: determines whether long messages (including repr of
+       objects used in assert methods) will be printed on failure in *addition*
+       to any explicit message passed.
+   * maxDiff: sets the maximum length of a diff in failure messages
+       by assert methods using difflib. It is looked up as an instance
+       attribute so can be configured by individual tests if required.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: test_no_filters()
+
+
+   .. py:method:: test_include_exact()
+
+
+   .. py:method:: test_include_glob_star()
+
+
+   .. py:method:: test_include_glob_question()
+
+
+   .. py:method:: test_exclude_exact()
+
+
+   .. py:method:: test_exclude_glob()
+
+
+   .. py:method:: test_include_and_exclude()
+
+
+   .. py:method:: test_regex_include()
+
+
+   .. py:method:: test_regex_exclude()
+
+
+   .. py:method:: test_no_match_returns_empty()
+
+
+   .. py:method:: test_preserves_order()
+
+
+   .. py:method:: test_empty_names()
+
+
+.. py:class:: TestSelectSignals(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   A class whose instances are single test cases.
+
+   By default, the test code itself should be placed in a method named
+   'runTest'.
+
+   If the fixture may be used for many test cases, create as
+   many test methods as are needed. When instantiating such a TestCase
+   subclass, specify in the constructor arguments the name of the test method
+   that the instance is to execute.
+
+   Test authors should subclass TestCase for their own tests. Construction
+   and deconstruction of the test's environment ('fixture') can be
+   implemented by overriding the 'setUp' and 'tearDown' methods respectively.
+
+   If it is necessary to override the __init__ method, the base class
+   __init__ method must always be called. It is important that subclasses
+   should not change the signature of their __init__ method, since instances
+   of the classes are instantiated automatically by parts of the framework
+   in order to be run.
+
+   When subclassing TestCase, you can set these attributes:
+   * failureException: determines which exception will be raised when
+       the instance's assertion methods fail; test methods raising this
+       exception will be deemed to have 'failed' rather than 'errored'.
+   * longMessage: determines whether long messages (including repr of
+       objects used in assert methods) will be printed on failure in *addition*
+       to any explicit message passed.
+   * maxDiff: sets the maximum length of a diff in failure messages
+       by assert methods using difflib. It is looked up as an instance
+       attribute so can be configured by individual tests if required.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: test_include_filters_traces()
+
+
+   .. py:method:: test_exclude_filters_traces()
+
+
+   .. py:method:: test_glob_wildcard()
+
+
+   .. py:method:: test_no_filter_returns_all()
+
+
+.. py:class:: TestIntegration(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   A class whose instances are single test cases.
+
+   By default, the test code itself should be placed in a method named
+   'runTest'.
+
+   If the fixture may be used for many test cases, create as
+   many test methods as are needed. When instantiating such a TestCase
+   subclass, specify in the constructor arguments the name of the test method
+   that the instance is to execute.
+
+   Test authors should subclass TestCase for their own tests. Construction
+   and deconstruction of the test's environment ('fixture') can be
+   implemented by overriding the 'setUp' and 'tearDown' methods respectively.
+
+   If it is necessary to override the __init__ method, the base class
+   __init__ method must always be called. It is important that subclasses
+   should not change the signature of their __init__ method, since instances
+   of the classes are instantiated automatically by parts of the framework
+   in order to be run.
+
+   When subclassing TestCase, you can set these attributes:
+   * failureException: determines which exception will be raised when
+       the instance's assertion methods fail; test methods raising this
+       exception will be deemed to have 'failed' rather than 'errored'.
+   * longMessage: determines whether long messages (including repr of
+       objects used in assert methods) will be printed on failure in *addition*
+       to any explicit message passed.
+   * maxDiff: sets the maximum length of a diff in failure messages
+       by assert methods using difflib. It is looked up as an instance
+       attribute so can be configured by individual tests if required.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: test_vcd_with_signal_filter()
+
+      Test that CompiledModule.traces_to_vcd supports signals param.
+
+
+
+   .. py:method:: test_vcd_with_exclude()
+
+      Test exclude parameter on traces_to_vcd.
+
+
+

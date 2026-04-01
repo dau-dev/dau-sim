@@ -1,0 +1,194 @@
+test_ir
+=======
+
+.. py:module:: test_ir
+
+.. autoapi-nested-parse::
+
+   Tests for IR data structures: types, expressions, module construction, validation, and printing.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   test_ir.TestIRNodes
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   test_ir.test_shape_basics
+   test_ir.test_shape_frozen
+   test_ir.test_const_expr
+   test_ir.test_signal_ref
+   test_ir.test_binary_expr
+   test_ir.test_mux_expr
+   test_ir.test_concat_expr
+   test_ir.test_slice_expr
+   test_ir._make_counter_module
+   test_ir.test_module_construction
+   test_ir.test_module_all_signal_names
+   test_ir.test_validate_valid_module
+   test_ir.test_validate_unknown_signal_in_stmt
+   test_ir.test_validate_unknown_clock_domain
+   test_ir.test_validate_duplicate_signal
+   test_ir.test_fmt_expr_const
+   test_ir.test_fmt_expr_binary
+   test_ir.test_fmt_module
+   test_ir.test_module_submodules
+   test_ir.test_module_submodules_default_empty
+   test_ir.test_readport_en_and_transparent
+   test_ir.test_readport_defaults
+   test_ir.test_writeport_granularity
+   test_ir.test_writeport_granularity_default
+   test_ir.test_instance_construction
+   test_ir.test_memory_construction
+
+
+Module Contents
+---------------
+
+.. py:function:: test_shape_basics()
+
+.. py:function:: test_shape_frozen()
+
+.. py:function:: test_const_expr()
+
+.. py:function:: test_signal_ref()
+
+.. py:function:: test_binary_expr()
+
+.. py:function:: test_mux_expr()
+
+.. py:function:: test_concat_expr()
+
+.. py:function:: test_slice_expr()
+
+.. py:class:: TestIRNodes(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   A class whose instances are single test cases.
+
+   By default, the test code itself should be placed in a method named
+   'runTest'.
+
+   If the fixture may be used for many test cases, create as
+   many test methods as are needed. When instantiating such a TestCase
+   subclass, specify in the constructor arguments the name of the test method
+   that the instance is to execute.
+
+   Test authors should subclass TestCase for their own tests. Construction
+   and deconstruction of the test's environment ('fixture') can be
+   implemented by overriding the 'setUp' and 'tearDown' methods respectively.
+
+   If it is necessary to override the __init__ method, the base class
+   __init__ method must always be called. It is important that subclasses
+   should not change the signature of their __init__ method, since instances
+   of the classes are instantiated automatically by parts of the framework
+   in order to be run.
+
+   When subclassing TestCase, you can set these attributes:
+   * failureException: determines which exception will be raised when
+       the instance's assertion methods fail; test methods raising this
+       exception will be deemed to have 'failed' rather than 'errored'.
+   * longMessage: determines whether long messages (including repr of
+       objects used in assert methods) will be printed on failure in *addition*
+       to any explicit message passed.
+   * maxDiff: sets the maximum length of a diff in failure messages
+       by assert methods using difflib. It is looked up as an instance
+       attribute so can be configured by individual tests if required.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: test_delay_frozen()
+
+
+   .. py:method:: test_finish_frozen()
+
+
+   .. py:method:: test_finish_default_exit_code()
+
+
+   .. py:method:: test_init_block_frozen()
+
+
+.. py:function:: _make_counter_module() -> dau_sim.ir.Module
+
+   Build a 4-bit counter with synchronous reset.
+
+   Equivalent to:
+       module counter(input clk, input rst, output reg [3:0] count);
+           always @(posedge clk)
+               if (rst) count <= 0;
+               else count <= count + 1;
+       endmodule
+
+
+.. py:function:: test_module_construction()
+
+.. py:function:: test_module_all_signal_names()
+
+.. py:function:: test_validate_valid_module()
+
+.. py:function:: test_validate_unknown_signal_in_stmt()
+
+.. py:function:: test_validate_unknown_clock_domain()
+
+.. py:function:: test_validate_duplicate_signal()
+
+.. py:function:: test_fmt_expr_const()
+
+.. py:function:: test_fmt_expr_binary()
+
+.. py:function:: test_fmt_module()
+
+.. py:function:: test_module_submodules()
+
+   Module can hold child module definitions.
+
+
+.. py:function:: test_module_submodules_default_empty()
+
+   Module.submodules defaults to empty tuple.
+
+
+.. py:function:: test_readport_en_and_transparent()
+
+   ReadPort supports en and transparent_for fields.
+
+
+.. py:function:: test_readport_defaults()
+
+   ReadPort defaults: en=None, transparent_for=().
+
+
+.. py:function:: test_writeport_granularity()
+
+   WritePort supports granularity field.
+
+
+.. py:function:: test_writeport_granularity_default()
+
+   WritePort granularity defaults to 0.
+
+
+.. py:function:: test_instance_construction()
+
+   Instance with port bindings and parameters.
+
+
+.. py:function:: test_memory_construction()
+
+   Memory with read/write ports and init.
+
+

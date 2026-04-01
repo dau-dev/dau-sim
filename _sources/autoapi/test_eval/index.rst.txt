@@ -1,0 +1,158 @@
+test_eval
+=========
+
+.. py:module:: test_eval
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   test_eval.TestFourState
+   test_eval.TestEval4
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   test_eval.test_eval_const
+   test_eval.test_eval_const_truncation
+   test_eval.test_eval_signal_ref
+   test_eval.test_eval_add
+   test_eval.test_eval_sub
+   test_eval.test_eval_bitwise
+   test_eval.test_eval_comparison
+   test_eval.test_eval_mux
+   test_eval.test_eval_concat
+   test_eval.test_eval_slice
+   test_eval.test_eval_unary_not
+   test_eval.test_eval_reduction
+   test_eval.test_mask_value
+
+
+Module Contents
+---------------
+
+.. py:function:: test_eval_const()
+
+.. py:function:: test_eval_const_truncation()
+
+.. py:function:: test_eval_signal_ref()
+
+.. py:function:: test_eval_add()
+
+.. py:function:: test_eval_sub()
+
+.. py:function:: test_eval_bitwise()
+
+.. py:function:: test_eval_comparison()
+
+.. py:function:: test_eval_mux()
+
+.. py:function:: test_eval_concat()
+
+.. py:function:: test_eval_slice()
+
+.. py:function:: test_eval_unary_not()
+
+.. py:function:: test_eval_reduction()
+
+.. py:function:: test_mask_value()
+
+.. py:class:: TestFourState
+
+   .. py:method:: test_from_int()
+
+
+   .. py:method:: test_x_value()
+
+
+   .. py:method:: test_z_value()
+
+
+   .. py:method:: test_width_normalization()
+
+
+   .. py:method:: test_repr_defined()
+
+
+   .. py:method:: test_repr_x()
+
+
+   .. py:method:: test_signed_to_int()
+
+
+.. py:class:: TestEval4
+
+   .. py:method:: test_const()
+
+
+   .. py:method:: test_signal_ref()
+
+
+   .. py:method:: test_add_defined()
+
+
+   .. py:method:: test_add_with_x()
+
+      Any X in arithmetic → all-X result.
+
+
+
+   .. py:method:: test_bitwise_and_x_propagation()
+
+      0 & X = 0 (known); 1 & X = X.
+
+
+
+   .. py:method:: test_bitwise_or_x_propagation()
+
+      1 | X = 1 (known); 0 | X = X.
+
+
+
+   .. py:method:: test_not_x()
+
+      ~X = X; ~defined = defined.
+
+
+
+   .. py:method:: test_comparison_with_x()
+
+      Comparing anything with X → result is X.
+
+
+
+   .. py:method:: test_mux_sel_x()
+
+      Mux with X selector: bits that agree keep value, others → X.
+
+
+
+   .. py:method:: test_mux_sel_x_divergent()
+
+      Mux with X selector and different arms → X where they differ.
+
+
+
+   .. py:method:: test_concat_4()
+
+
+   .. py:method:: test_slice_4()
+
+
+   .. py:method:: test_logic_or_with_x()
+
+      1 || X = 1 (known nonzero).
+
+
+
+   .. py:method:: test_logic_and_with_zero()
+
+      0 && X = 0 (known zero).
+
+
+

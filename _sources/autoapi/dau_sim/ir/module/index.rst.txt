@@ -1,0 +1,347 @@
+dau_sim.ir.module
+=================
+
+.. py:module:: dau_sim.ir.module
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   dau_sim.ir.module.Signal
+   dau_sim.ir.module.Port
+   dau_sim.ir.module.ClockDomain
+   dau_sim.ir.module.CombBlock
+   dau_sim.ir.module.SeqBlock
+   dau_sim.ir.module.InitBlock
+   dau_sim.ir.module.PortBinding
+   dau_sim.ir.module.Instance
+   dau_sim.ir.module.ReadPort
+   dau_sim.ir.module.WritePort
+   dau_sim.ir.module.Memory
+   dau_sim.ir.module.Module
+
+
+Module Contents
+---------------
+
+.. py:class:: Signal
+
+   A named net within a module.
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: shape
+      :type:  dau_sim.ir.types.Shape
+
+
+   .. py:attribute:: init
+      :type:  int
+      :value: 0
+
+
+
+   .. py:attribute:: net_kind
+      :type:  dau_sim.ir.types.NetKind
+
+
+.. py:class:: Port
+
+   A module port — a signal with direction.
+
+
+   .. py:attribute:: signal
+      :type:  Signal
+
+
+   .. py:attribute:: direction
+      :type:  dau_sim.ir.types.PortDirection
+
+
+   .. py:property:: name
+      :type: str
+
+
+
+   .. py:property:: shape
+      :type: dau_sim.ir.types.Shape
+
+
+
+.. py:class:: ClockDomain
+
+   A clock domain with clock signal, edge, and optional reset.
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: clk
+      :type:  str
+
+
+   .. py:attribute:: edge
+      :type:  dau_sim.ir.types.EdgePolarity
+
+
+   .. py:attribute:: rst
+      :type:  str | None
+      :value: None
+
+
+
+   .. py:attribute:: rst_style
+      :type:  dau_sim.ir.types.ResetStyle
+
+
+   .. py:attribute:: rst_active_high
+      :type:  bool
+      :value: True
+
+
+
+.. py:class:: CombBlock
+
+   Combinational logic block (always_comb / assign).
+
+   All statements execute whenever any referenced input signal changes.
+
+
+   .. py:attribute:: stmts
+      :type:  tuple[dau_sim.ir.stmt.Stmt, Ellipsis]
+
+
+.. py:class:: SeqBlock
+
+   Sequential logic block (always_ff).
+
+   Statements execute on the clock edge of the specified domain.
+
+
+   .. py:attribute:: domain
+      :type:  str
+
+
+   .. py:attribute:: stmts
+      :type:  tuple[dau_sim.ir.stmt.Stmt, Ellipsis]
+
+
+.. py:class:: InitBlock
+
+   Initial block (non-synthesizable).
+
+   Runs once at simulation start.
+
+
+   .. py:attribute:: stmts
+      :type:  tuple[dau_sim.ir.stmt.Stmt, Ellipsis]
+
+
+.. py:class:: PortBinding
+
+   Binds an instance port to a signal expression in the parent module.
+
+
+   .. py:attribute:: port_name
+      :type:  str
+
+
+   .. py:attribute:: expr
+      :type:  dau_sim.ir.expr.Expr
+
+
+.. py:class:: Instance
+
+   Hierarchical instantiation of another module.
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: module_name
+      :type:  str
+
+
+   .. py:attribute:: bindings
+      :type:  tuple[PortBinding, Ellipsis]
+
+
+   .. py:attribute:: parameters
+      :type:  dict[str, int]
+
+
+.. py:class:: ReadPort
+
+   Memory read port descriptor.
+
+
+   .. py:attribute:: addr
+      :type:  str
+
+
+   .. py:attribute:: data
+      :type:  str
+
+
+   .. py:attribute:: en
+      :type:  str | None
+      :value: None
+
+
+
+   .. py:attribute:: domain
+      :type:  str | None
+      :value: None
+
+
+
+   .. py:attribute:: transparent_for
+      :type:  tuple[int, Ellipsis]
+      :value: ()
+
+
+
+.. py:class:: WritePort
+
+   Memory write port descriptor.
+
+
+   .. py:attribute:: addr
+      :type:  str
+
+
+   .. py:attribute:: data
+      :type:  str
+
+
+   .. py:attribute:: en
+      :type:  str
+
+
+   .. py:attribute:: domain
+      :type:  str
+
+
+   .. py:attribute:: granularity
+      :type:  int
+      :value: 0
+
+
+
+.. py:class:: Memory
+
+   Memory array with read and write ports.
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: shape
+      :type:  dau_sim.ir.types.Shape
+
+
+   .. py:attribute:: depth
+      :type:  int
+
+
+   .. py:attribute:: read_ports
+      :type:  tuple[ReadPort, Ellipsis]
+
+
+   .. py:attribute:: write_ports
+      :type:  tuple[WritePort, Ellipsis]
+
+
+   .. py:attribute:: init
+      :type:  tuple[int, Ellipsis]
+      :value: ()
+
+
+
+.. py:class:: Module
+
+   Top-level module definition.
+
+   A named container with ports, internal signals, clock domains,
+   logic blocks, submodule instances, and memories.
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: ports
+      :type:  tuple[Port, Ellipsis]
+      :value: ()
+
+
+
+   .. py:attribute:: signals
+      :type:  tuple[Signal, Ellipsis]
+      :value: ()
+
+
+
+   .. py:attribute:: clock_domains
+      :type:  tuple[ClockDomain, Ellipsis]
+      :value: ()
+
+
+
+   .. py:attribute:: comb_blocks
+      :type:  tuple[CombBlock, Ellipsis]
+      :value: ()
+
+
+
+   .. py:attribute:: seq_blocks
+      :type:  tuple[SeqBlock, Ellipsis]
+      :value: ()
+
+
+
+   .. py:attribute:: init_blocks
+      :type:  tuple[InitBlock, Ellipsis]
+      :value: ()
+
+
+
+   .. py:attribute:: instances
+      :type:  tuple[Instance, Ellipsis]
+      :value: ()
+
+
+
+   .. py:attribute:: memories
+      :type:  tuple[Memory, Ellipsis]
+      :value: ()
+
+
+
+   .. py:attribute:: submodules
+      :type:  tuple[Module, Ellipsis]
+      :value: ()
+
+
+
+   .. py:method:: port_by_name(name: str) -> Port | None
+
+
+   .. py:method:: signal_by_name(name: str) -> Signal | None
+
+      Look up a signal by name, checking ports then internal signals.
+
+
+
+   .. py:property:: all_signal_names
+      :type: set[str]
+
+
+

@@ -1,0 +1,99 @@
+dau_sim.frontends
+=================
+
+.. py:module:: dau_sim.frontends
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/dau_sim/frontends/amaranth_frontend/index
+   /autoapi/dau_sim/frontends/pyslang_frontend/index
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   dau_sim.frontends.from_amaranth
+   dau_sim.frontends.from_dau_build
+   dau_sim.frontends.parse_sv
+   dau_sim.frontends.parse_sv_file
+
+
+Package Contents
+----------------
+
+.. py:function:: from_amaranth(design: amaranth.hdl.Elaboratable, *, name: str | None = None, platform=None) -> dau_sim.ir.module.Module
+
+   Lower an Amaranth ``Elaboratable`` or ``Component`` to a dau-sim IR Module.
+
+   :param design: The Amaranth design to elaborate and lower.  Can be a bare
+                  ``Elaboratable`` or a ``Component`` (which provides port info
+                  via its signature).
+   :type design: Elaboratable
+   :param name: Module name. Defaults to the class name of *design*.
+   :type name: str | None
+   :param platform: Amaranth platform, passed to ``Fragment.get()``.
+   :type platform: object | None
+
+   :returns: The lowered dau-sim IR module.
+   :rtype: Module
+
+
+.. py:function:: from_dau_build(mod, *, top: str | None = None) -> dau_sim.ir.module.Module
+
+   Bridge: lower a ``dau_build.Module`` to a dau-sim IR :class:`Module`.
+
+   ``dau_build`` performs *syntactic* extraction (ports, wires, hierarchy as
+   metadata with string expressions).  ``dau-sim`` needs *semantic* lowering
+   (typed expression/statement IR for simulation).  This bridge re-compiles the
+   underlying source via pyslang's Compilation API to produce a simulatable IR.
+
+   :param mod: A module previously obtained via ``dau_build.Module.from_file()`` or
+               ``dau_build.Module.from_str()``.  Must have a ``source_path`` pointing
+               to the original ``.sv`` file, or a ``node`` from which source text can
+               be recovered.
+   :type mod: dau_build.Module
+   :param top: Name of the top-level module to extract.  Defaults to the name stored
+               in *mod*.
+   :type top: str | None
+
+   :returns: The lowered dau-sim IR module.
+   :rtype: Module
+
+
+.. py:function:: parse_sv(source: str, *, top: str | None = None) -> dau_sim.ir.module.Module
+
+   Parse SystemVerilog/Verilog source text and return a dau-sim IR Module.
+
+   :param source: SystemVerilog or Verilog source code.
+   :type source: str
+   :param top: Name of the top-level module to extract. If *None*, uses the first
+               top instance from elaboration.
+   :type top: str | None
+
+   :returns: The lowered dau-sim IR module.
+   :rtype: Module
+
+   :raises ValueError: If the source has compilation errors or the requested top module
+       is not found.
+
+
+.. py:function:: parse_sv_file(path: str, *, top: str | None = None) -> dau_sim.ir.module.Module
+
+   Parse a SystemVerilog/Verilog file and return a dau-sim IR Module.
+
+   :param path: Path to the .sv or .v file.
+   :type path: str
+   :param top: Name of the top-level module. If *None*, uses the first top instance.
+   :type top: str | None
+
+   :returns: The lowered dau-sim IR module.
+   :rtype: Module
+
+

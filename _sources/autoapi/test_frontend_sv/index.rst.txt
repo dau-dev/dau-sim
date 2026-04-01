@@ -1,0 +1,279 @@
+test_frontend_sv
+================
+
+.. py:module:: test_frontend_sv
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   test_frontend_sv._dau_build_available
+   test_frontend_sv._dau_build_available
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   test_frontend_sv.TestModuleExtraction
+   test_frontend_sv.TestExpressionLowering
+   test_frontend_sv.TestStatementLowering
+   test_frontend_sv.TestClockDomainInference
+   test_frontend_sv.TestEndToEndSimulation
+   test_frontend_sv.TestErrorHandling
+   test_frontend_sv.TestDauBuildBridge
+
+
+Module Contents
+---------------
+
+.. py:class:: TestModuleExtraction
+
+   Test port/signal/domain extraction from SV source.
+
+
+   .. py:method:: test_basic_ports()
+
+
+   .. py:method:: test_wide_ports()
+
+
+   .. py:method:: test_signed_ports()
+
+
+   .. py:method:: test_multiple_ports()
+
+
+   .. py:method:: test_top_module_selection()
+
+
+   .. py:method:: test_top_module_not_found()
+
+
+.. py:class:: TestExpressionLowering
+
+   Test that SV expressions lower to correct IR expression trees.
+
+
+   .. py:method:: test_constant_assign()
+
+
+   .. py:method:: test_binary_add()
+
+
+   .. py:method:: test_bitwise_ops()
+
+
+   .. py:method:: test_unary_not()
+
+
+   .. py:method:: test_ternary_mux()
+
+
+   .. py:method:: test_concatenation()
+
+
+   .. py:method:: test_bit_slice()
+
+
+   .. py:method:: test_single_bit_select()
+
+
+   .. py:method:: test_comparison_ops()
+
+
+   .. py:method:: test_shift_ops()
+
+
+.. py:class:: TestStatementLowering
+
+   Test SV always blocks lower to correct IR blocks.
+
+
+   .. py:method:: test_always_comb_single()
+
+
+   .. py:method:: test_always_comb_block()
+
+
+   .. py:method:: test_always_ff_posedge()
+
+
+   .. py:method:: test_always_ff_negedge()
+
+
+   .. py:method:: test_if_else()
+
+
+.. py:class:: TestClockDomainInference
+
+   Test clock domain extraction from always blocks.
+
+
+   .. py:method:: test_single_clock_posedge()
+
+
+   .. py:method:: test_async_reset_negedge()
+
+
+   .. py:method:: test_async_reset_posedge()
+
+
+   .. py:method:: test_no_duplicate_domains()
+
+
+.. py:class:: TestEndToEndSimulation
+
+   Parse SV source, compile to CSP, simulate, and verify traces.
+
+
+   .. py:method:: test_combinational_adder()
+
+      4-bit ripple adder via continuous assign.
+
+
+
+   .. py:method:: test_combinational_mux()
+
+      2:1 mux via ternary.
+
+
+
+   .. py:method:: test_combinational_bitwise()
+
+      Bitwise AND, OR, XOR.
+
+
+
+   .. py:method:: test_combinational_invert()
+
+      Bitwise NOT.
+
+
+
+   .. py:method:: test_combinational_concat()
+
+      Concatenation {a, b}.
+
+
+
+   .. py:method:: test_combinational_slice()
+
+      Bit slice a[7:4].
+
+
+
+   .. py:method:: test_sequential_counter()
+
+      4-bit counter via always @(posedge clk).
+
+
+
+   .. py:method:: test_sequential_counter_with_reset()
+
+      Counter held in reset: should stay at 0.
+
+
+
+   .. py:method:: test_sequential_dff()
+
+      D flip-flop: q follows d on posedge clk.
+
+
+
+   .. py:method:: test_sequential_async_reset()
+
+      always_ff with async reset (negedge rst_n).
+
+
+
+   .. py:method:: test_sequential_shift_register()
+
+      4-bit shift register: shifts left on each posedge, bottom bit = serial_in.
+
+
+
+   .. py:method:: test_sequential_counter_100_cycles()
+
+      Graduation test: 8-bit counter over 100 cycles.
+
+
+
+   .. py:method:: test_combined_comb_and_seq()
+
+      Module with both combinational and sequential logic.
+
+
+
+   .. py:method:: test_always_comb_simulation()
+
+      always_comb block in simulation.
+
+
+
+   .. py:method:: test_negedge_counter()
+
+      Counter on negedge clock.
+
+
+
+.. py:class:: TestErrorHandling
+
+   Test that errors are reported properly.
+
+
+   .. py:method:: test_syntax_error()
+
+
+   .. py:method:: test_no_top_instances()
+
+
+   .. py:method:: test_wrong_top_name()
+
+
+.. py:data:: _dau_build_available
+   :value: False
+
+
+.. py:data:: _dau_build_available
+   :value: True
+
+
+.. py:class:: TestDauBuildBridge
+
+   Test the from_dau_build bridge between dau-build and dau-sim.
+
+
+   .. py:method:: test_bridge_from_str()
+
+      Round-trip: dau_build.Module.from_str → from_dau_build → IR Module.
+
+
+
+   .. py:method:: test_bridge_from_file(tmp_path)
+
+      Bridge with source_path set via from_file.
+
+
+
+   .. py:method:: test_bridge_simulation()
+
+      Full pipeline: dau_build.Module → dau-sim IR → compile → run.
+
+
+
+   .. py:method:: test_bridge_no_source_raises()
+
+      Bridge raises if Module has no source_path and no node.
+
+
+
+   .. py:method:: test_bridge_port_consistency()
+
+      Ports from dau-build and dau-sim should agree on structure.
+
+
+
