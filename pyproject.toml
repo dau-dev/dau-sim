@@ -32,6 +32,8 @@ classifiers = [
 
 dependencies = [
     "csp",
+    "typer",
+    "rich",
 ]
 
 [project.optional-dependencies]
@@ -60,6 +62,7 @@ develop = [
 ]
 
 [project.scripts]
+dau-sim = "dau_sim.cli:main"
 
 [project.urls]
 Repository = "https://github.com/dau-dev/dau-sim"

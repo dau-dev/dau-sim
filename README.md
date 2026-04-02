@@ -33,6 +33,19 @@ cd dau-sim
 pip install -e ".[develop]"
 ```
 
+## Command Line Interface
+
+Use the Typer-based CLI for quick simulation and performance checks:
+
+```bash
+dau-sim run-sv design.sv --top top_module --cycles 1000 --vcd out.vcd
+dau-sim perf-sv design.sv --top top_module --cycles 30000 --repeats 3
+```
+
+`run-sv` executes a design and shows latest signal values. `perf-sv` reports
+compile/run timing and node-separation diagnostics to guide non-C++
+optimization work.
+
 ## Quick Start
 
 ### Amaranth Design → Simulate → VCD
@@ -251,6 +264,19 @@ Amaranth / SystemVerilog / Hand-built IR
 ```
 
 ## API Reference
+
+### High-Level Interactive API
+
+```python
+from dau_sim import Simulator
+
+sim = Simulator.from_sv_file("design.sv", top="top_module")
+result = sim.run(cycles=1000, inputs={"en": 1})
+
+print(result.latest("count"))
+rows = result.to_rows(signals=["count"])
+sim.write_vcd("out.vcd", result)
+```
 
 ### Frontends
 
