@@ -1,0 +1,25 @@
+test_perf
+=========
+
+.. py:module:: test_perf
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   test_perf._make_two_cluster_module
+   test_perf.test_analyze_node_separation_reports_components
+   test_perf.test_benchmark_module_returns_positive_metrics
+
+
+Module Contents
+---------------
+
+.. py:function:: _make_two_cluster_module() -> dau_sim.ir.module.Module
+
+.. py:function:: test_analyze_node_separation_reports_components() -> None
+
+.. py:function:: test_benchmark_module_returns_positive_metrics() -> None
+

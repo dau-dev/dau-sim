@@ -202,10 +202,12 @@
 <li class="toctree-l4"><a class="reference internal" href="autoapi/dau_sim/adapters/vcd/index.html">dau_sim.adapters.vcd</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/dau_sim/api/index.html">dau_sim.api</a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/dau_sim/backends/index.html">dau_sim.backends</a><input aria-label="Toggle navigation of dau_sim.backends" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/dau_sim/backends/cocotb_backend/index.html">dau_sim.backends.cocotb_backend</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/dau_sim/cli/index.html">dau_sim.cli</a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/dau_sim/compiler/index.html">dau_sim.compiler</a><input aria-label="Toggle navigation of dau_sim.compiler" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/dau_sim/compiler/compile/index.html">dau_sim.compiler.compile</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/dau_sim/compiler/depanalysis/index.html">dau_sim.compiler.depanalysis</a></li>
@@ -230,13 +232,17 @@
 <li class="toctree-l4"><a class="reference internal" href="autoapi/dau_sim/ir/validate/index.html">dau_sim.ir.validate</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/dau_sim/perf/index.html">dau_sim.perf</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/dau_sim/runtime/index.html">dau_sim.runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/dau_sim/testbench/index.html">dau_sim.testbench</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_ir/index.html">test_ir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_api/index.html">test_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_vcd/index.html">test_vcd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_cli/index.html">test_cli</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_eval/index.html">test_eval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_perf/index.html">test_perf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_sim_seq/index.html">test_sim_seq</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_sim_comb/index.html">test_sim_comb</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_compiler/index.html">test_compiler</a></li>
@@ -362,6 +368,12 @@
 </li>
         <li><a href="autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile.CompiledModule._comb_order">_comb_order (dau_sim.compiler.compile.CompiledModule attribute)</a>
 </li>
+        <li><a href="autoapi/dau_sim/api/index.html#dau_sim.api.Simulator._compiled">_compiled (dau_sim.api.Simulator attribute)</a>
+
+        <ul>
+          <li><a href="autoapi/dau_sim/index.html#dau_sim.Simulator._compiled">(dau_sim.Simulator attribute)</a>
+</li>
+        </ul></li>
         <li><a href="autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile._compute_half_period_ticks">_compute_half_period_ticks() (in module dau_sim.compiler.compile)</a>
 </li>
         <li><a href="autoapi/dau_sim/testbench/index.html#dau_sim.testbench.TestbenchContext._cycle">_cycle (dau_sim.testbench.TestbenchContext attribute)</a>
@@ -418,12 +430,16 @@
 </li>
         <li><a href="autoapi/test_cocotb_examples/index.html#test_cocotb_examples._make_adder">_make_adder() (in module test_cocotb_examples)</a>
 </li>
-        <li><a href="autoapi/test_testbench/index.html#test_testbench._make_adder_module">_make_adder_module() (in module test_testbench)</a>
+        <li><a href="autoapi/test_api/index.html#test_api._make_adder_module">_make_adder_module() (in module test_api)</a>
+
+        <ul>
+          <li><a href="autoapi/test_testbench/index.html#test_testbench._make_adder_module">(in module test_testbench)</a>
 </li>
-        <li><a href="autoapi/test_sim_comb/index.html#test_sim_comb._make_alu">_make_alu() (in module test_sim_comb)</a>
-</li>
+        </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/test_sim_comb/index.html#test_sim_comb._make_alu">_make_alu() (in module test_sim_comb)</a>
+</li>
         <li><a href="autoapi/test_cocotb_backend/index.html#test_cocotb_backend._make_comb_module">_make_comb_module() (in module test_cocotb_backend)</a>
 </li>
         <li><a href="autoapi/test_sim_seq/index.html#test_sim_seq._make_counter_async_reset">_make_counter_async_reset() (in module test_sim_seq)</a>
@@ -476,6 +492,8 @@
 </li>
         <li><a href="autoapi/test_vcd/index.html#test_vcd.TestVCDStructure._make_simple_module">_make_simple_module() (test_vcd.TestVCDStructure method)</a>
 </li>
+        <li><a href="autoapi/test_perf/index.html#test_perf._make_two_cluster_module">_make_two_cluster_module() (in module test_perf)</a>
+</li>
         <li><a href="autoapi/test_testbench/index.html#test_testbench._make_updown_counter">_make_updown_counter() (in module test_testbench)</a>
 </li>
         <li><a href="autoapi/dau_sim/testbench/index.html#dau_sim.testbench.TestbenchContext._max_cycles">_max_cycles (dau_sim.testbench.TestbenchContext attribute)</a>
@@ -487,6 +505,8 @@
         <li><a href="autoapi/dau_sim/compiler/eval4/index.html#dau_sim.compiler.eval4._mux_x">_mux_x() (in module dau_sim.compiler.eval4)</a>
 </li>
         <li><a href="autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile.CompiledModule._net_kinds">_net_kinds (dau_sim.compiler.compile.CompiledModule attribute)</a>
+</li>
+        <li><a href="autoapi/dau_sim/cli/index.html#dau_sim.cli._parse_kv_pairs">_parse_kv_pairs() (in module dau_sim.cli)</a>
 </li>
         <li><a href="autoapi/test_vcd/index.html#test_vcd._parse_vcd_changes">_parse_vcd_changes() (in module test_vcd)</a>
 </li>
@@ -596,20 +616,24 @@
           <li><a href="autoapi/dau_sim/ir/module/index.html#dau_sim.ir.module.Module.all_signal_names">(dau_sim.ir.module.Module property)</a>
 </li>
         </ul></li>
+        <li><a href="autoapi/dau_sim/perf/index.html#dau_sim.perf.analyze_node_separation">analyze_node_separation() (in module dau_sim.perf)</a>
+</li>
         <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.BinaryOp.AND">AND (dau_sim.ir.BinaryOp attribute)</a>
 
         <ul>
           <li><a href="autoapi/dau_sim/ir/expr/index.html#dau_sim.ir.expr.BinaryOp.AND">(dau_sim.ir.expr.BinaryOp attribute)</a>
 </li>
         </ul></li>
+        <li><a href="autoapi/dau_sim/cli/index.html#dau_sim.cli.app">app (in module dau_sim.cli)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.Print.args">args (dau_sim.ir.Print attribute)</a>
 
         <ul>
           <li><a href="autoapi/dau_sim/ir/stmt/index.html#dau_sim.ir.stmt.Print.args">(dau_sim.ir.stmt.Print attribute)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.Assert">Assert (class in dau_sim.ir)</a>
 
         <ul>
@@ -653,6 +677,10 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/test_testbench/index.html#test_testbench.Phase5Mux.b">b (test_testbench.Phase5Mux attribute)</a>
+</li>
+        <li><a href="autoapi/dau_sim/perf/index.html#dau_sim.perf.benchmark_module">benchmark_module() (in module dau_sim.perf)</a>
+</li>
+        <li><a href="autoapi/dau_sim/perf/index.html#dau_sim.perf.BenchmarkResult">BenchmarkResult (class in dau_sim.perf)</a>
 </li>
         <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.Binary">Binary (class in dau_sim.ir)</a>
 
@@ -739,6 +767,8 @@
         <ul>
           <li><a href="autoapi/dau_sim/ir/module/index.html#dau_sim.ir.module.Module.comb_blocks">(dau_sim.ir.module.Module attribute)</a>
 </li>
+          <li><a href="autoapi/dau_sim/perf/index.html#dau_sim.perf.NodeSeparationStats.comb_blocks">(dau_sim.perf.NodeSeparationStats attribute)</a>
+</li>
         </ul></li>
         <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.CombBlock">CombBlock (class in dau_sim.ir)</a>
 
@@ -746,14 +776,22 @@
           <li><a href="autoapi/dau_sim/ir/module/index.html#dau_sim.ir.module.CombBlock">(class in dau_sim.ir.module)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/dau_sim/compiler/depanalysis/index.html#dau_sim.compiler.depanalysis.CombLoopError">CombLoopError</a>, <a href="autoapi/dau_sim/compiler/index.html#dau_sim.compiler.CombLoopError">[1]</a>
 </li>
         <li><a href="autoapi/dau_sim/compiler/index.html#dau_sim.compiler.compile_module">compile_module() (in module dau_sim.compiler)</a>
 
         <ul>
           <li><a href="autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile.compile_module">(in module dau_sim.compiler.compile)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/dau_sim/perf/index.html#dau_sim.perf.BenchmarkResult.compile_seconds_median">compile_seconds_median (dau_sim.perf.BenchmarkResult attribute)</a>
+</li>
+        <li><a href="autoapi/dau_sim/api/index.html#dau_sim.api.Simulator.compiled">compiled (dau_sim.api.Simulator property)</a>
+
+        <ul>
+          <li><a href="autoapi/dau_sim/index.html#dau_sim.Simulator.compiled">(dau_sim.Simulator property)</a>
 </li>
         </ul></li>
         <li><a href="autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile.CompiledModule">CompiledModule (class in dau_sim.compiler.compile)</a>
@@ -774,6 +812,10 @@
           <li><a href="autoapi/dau_sim/ir/stmt/index.html#dau_sim.ir.stmt.IfElse.cond">(dau_sim.ir.stmt.IfElse attribute)</a>
 </li>
         </ul></li>
+        <li><a href="autoapi/dau_sim/perf/index.html#dau_sim.perf.NodeSeparationStats.connected_components">connected_components (dau_sim.perf.NodeSeparationStats attribute)</a>
+</li>
+        <li><a href="autoapi/dau_sim/cli/index.html#dau_sim.cli.console">console (in module dau_sim.cli)</a>
+</li>
         <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.Const">Const (class in dau_sim.ir)</a>
 
         <ul>
@@ -792,6 +834,8 @@
           <li><a href="autoapi/dau_sim/testbench/index.html#dau_sim.testbench.TestbenchResult.cycle">(dau_sim.testbench.TestbenchResult attribute)</a>
 </li>
         </ul></li>
+        <li><a href="autoapi/dau_sim/perf/index.html#dau_sim.perf.BenchmarkResult.cycles_per_second">cycles_per_second (dau_sim.perf.BenchmarkResult attribute)</a>
+</li>
     </ul></td>
   </tr></table>
 </section>
@@ -810,6 +854,8 @@
           <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.WritePort.data">(dau_sim.ir.WritePort attribute)</a>
 </li>
         </ul></li>
+        <li><a href="autoapi/dau_sim/perf/index.html#dau_sim.perf.PerformanceDelta.dau_cycles_per_second">dau_cycles_per_second (dau_sim.perf.PerformanceDelta attribute)</a>
+</li>
         <li>
     dau_sim
 
@@ -839,6 +885,13 @@
 </li>
         </ul></li>
         <li>
+    dau_sim.api
+
+        <ul>
+          <li><a href="autoapi/dau_sim/api/index.html#module-dau_sim.api">module</a>
+</li>
+        </ul></li>
+        <li>
     dau_sim.backends
 
         <ul>
@@ -850,6 +903,13 @@
 
         <ul>
           <li><a href="autoapi/dau_sim/backends/cocotb_backend/index.html#module-dau_sim.backends.cocotb_backend">module</a>
+</li>
+        </ul></li>
+        <li>
+    dau_sim.cli
+
+        <ul>
+          <li><a href="autoapi/dau_sim/cli/index.html#module-dau_sim.cli">module</a>
 </li>
         </ul></li>
         <li>
@@ -915,6 +975,8 @@
           <li><a href="autoapi/dau_sim/frontends/index.html#module-dau_sim.frontends">module</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     dau_sim.frontends.amaranth_frontend
 
@@ -922,8 +984,6 @@
           <li><a href="autoapi/dau_sim/frontends/amaranth_frontend/index.html#module-dau_sim.frontends.amaranth_frontend">module</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     dau_sim.frontends.pyslang_frontend
 
@@ -981,6 +1041,13 @@
 </li>
         </ul></li>
         <li>
+    dau_sim.perf
+
+        <ul>
+          <li><a href="autoapi/dau_sim/perf/index.html#module-dau_sim.perf">module</a>
+</li>
+        </ul></li>
+        <li>
     dau_sim.runtime
 
         <ul>
@@ -1000,6 +1067,8 @@
           <li><a href="autoapi/dau_sim/ir/stmt/index.html#dau_sim.ir.stmt.Delay">(class in dau_sim.ir.stmt)</a>
 </li>
         </ul></li>
+        <li><a href="autoapi/dau_sim/perf/index.html#dau_sim.perf.NodeSeparationStats.dependency_edges">dependency_edges (dau_sim.perf.NodeSeparationStats attribute)</a>
+</li>
         <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.Memory.depth">depth (dau_sim.ir.Memory attribute)</a>
 
         <ul>
@@ -1098,6 +1167,8 @@
 </li>
         <li><a href="autoapi/dau_sim/compiler/eval4/index.html#dau_sim.compiler.eval4.eval_expr_4">eval_expr_4() (in module dau_sim.compiler.eval4)</a>
 </li>
+        <li><a href="autoapi/dau_sim/perf/index.html#dau_sim.perf.evaluate_delta">evaluate_delta() (in module dau_sim.perf)</a>
+</li>
         <li><a href="autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile.SimulationFinish.exit_code">exit_code (dau_sim.compiler.compile.SimulationFinish attribute)</a>
 
         <ul>
@@ -1146,8 +1217,6 @@
 </li>
         <li><a href="autoapi/dau_sim/testbench/index.html#dau_sim.testbench.TestbenchContext.force">force() (dau_sim.testbench.TestbenchContext method)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.Print.format_str">format_str (dau_sim.ir.Print attribute)</a>
 
         <ul>
@@ -1160,9 +1229,15 @@
           <li><a href="autoapi/dau_sim/ir/types/index.html#dau_sim.ir.types.FourState">(class in dau_sim.ir.types)</a>
 </li>
         </ul></li>
-        <li><a href="autoapi/dau_sim/frontends/index.html#dau_sim.frontends.from_amaranth">from_amaranth() (in module dau_sim.frontends)</a>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/dau_sim/api/index.html#dau_sim.api.Simulator.from_amaranth">from_amaranth() (dau_sim.api.Simulator class method)</a>
 
         <ul>
+          <li><a href="autoapi/dau_sim/index.html#dau_sim.Simulator.from_amaranth">(dau_sim.Simulator class method)</a>
+</li>
+          <li><a href="autoapi/dau_sim/frontends/index.html#dau_sim.frontends.from_amaranth">(in module dau_sim.frontends)</a>
+</li>
           <li><a href="autoapi/dau_sim/frontends/amaranth_frontend/index.html#dau_sim.frontends.amaranth_frontend.from_amaranth">(in module dau_sim.frontends.amaranth_frontend)</a>
 </li>
         </ul></li>
@@ -1176,6 +1251,24 @@
 
         <ul>
           <li><a href="autoapi/dau_sim/ir/types/index.html#dau_sim.ir.types.FourState.from_int">(dau_sim.ir.types.FourState class method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/dau_sim/api/index.html#dau_sim.api.Simulator.from_module">from_module() (dau_sim.api.Simulator class method)</a>
+
+        <ul>
+          <li><a href="autoapi/dau_sim/index.html#dau_sim.Simulator.from_module">(dau_sim.Simulator class method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/dau_sim/api/index.html#dau_sim.api.Simulator.from_sv">from_sv() (dau_sim.api.Simulator class method)</a>
+
+        <ul>
+          <li><a href="autoapi/dau_sim/index.html#dau_sim.Simulator.from_sv">(dau_sim.Simulator class method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/dau_sim/api/index.html#dau_sim.api.Simulator.from_sv_file">from_sv_file() (dau_sim.api.Simulator class method)</a>
+
+        <ul>
+          <li><a href="autoapi/dau_sim/index.html#dau_sim.Simulator.from_sv_file">(dau_sim.Simulator class method)</a>
 </li>
         </ul></li>
     </ul></td>
@@ -1332,6 +1425,14 @@
   <h2>L</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/dau_sim/perf/index.html#dau_sim.perf.NodeSeparationStats.largest_component">largest_component (dau_sim.perf.NodeSeparationStats attribute)</a>
+</li>
+        <li><a href="autoapi/dau_sim/api/index.html#dau_sim.api.SimulationResult.latest">latest() (dau_sim.api.SimulationResult method)</a>
+
+        <ul>
+          <li><a href="autoapi/dau_sim/index.html#dau_sim.SimulationResult.latest">(dau_sim.SimulationResult method)</a>
+</li>
+        </ul></li>
         <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.BinaryOp.LE">LE (dau_sim.ir.BinaryOp attribute)</a>
 
         <ul>
@@ -1344,14 +1445,14 @@
           <li><a href="autoapi/dau_sim/ir/expr/index.html#dau_sim.ir.expr.Binary.left">(dau_sim.ir.expr.Binary attribute)</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.BinaryOp.LOGIC_AND">LOGIC_AND (dau_sim.ir.BinaryOp attribute)</a>
 
         <ul>
           <li><a href="autoapi/dau_sim/ir/expr/index.html#dau_sim.ir.expr.BinaryOp.LOGIC_AND">(dau_sim.ir.expr.BinaryOp attribute)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.BinaryOp.LOGIC_OR">LOGIC_OR (dau_sim.ir.BinaryOp attribute)</a>
 
         <ul>
@@ -1378,6 +1479,8 @@
   <h2>M</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/dau_sim/cli/index.html#dau_sim.cli.main">main() (in module dau_sim.cli)</a>
+</li>
         <li><a href="autoapi/dau_sim/compiler/eval/index.html#dau_sim.compiler.eval.mask_value">mask_value() (in module dau_sim.compiler.eval)</a>
 </li>
         <li><a href="autoapi/dau_sim/adapters/index.html#dau_sim.adapters.match_signals">match_signals() (in module dau_sim.adapters)</a>
@@ -1442,9 +1545,13 @@
 </li>
           <li><a href="autoapi/dau_sim/adapters/vcd/index.html#module-dau_sim.adapters.vcd">dau_sim.adapters.vcd</a>
 </li>
+          <li><a href="autoapi/dau_sim/api/index.html#module-dau_sim.api">dau_sim.api</a>
+</li>
           <li><a href="autoapi/dau_sim/backends/index.html#module-dau_sim.backends">dau_sim.backends</a>
 </li>
           <li><a href="autoapi/dau_sim/backends/cocotb_backend/index.html#module-dau_sim.backends.cocotb_backend">dau_sim.backends.cocotb_backend</a>
+</li>
+          <li><a href="autoapi/dau_sim/cli/index.html#module-dau_sim.cli">dau_sim.cli</a>
 </li>
           <li><a href="autoapi/dau_sim/compiler/index.html#module-dau_sim.compiler">dau_sim.compiler</a>
 </li>
@@ -1482,9 +1589,15 @@
 </li>
           <li><a href="autoapi/dau_sim/ir/validate/index.html#module-dau_sim.ir.validate">dau_sim.ir.validate</a>
 </li>
+          <li><a href="autoapi/dau_sim/perf/index.html#module-dau_sim.perf">dau_sim.perf</a>
+</li>
           <li><a href="autoapi/dau_sim/runtime/index.html#module-dau_sim.runtime">dau_sim.runtime</a>
 </li>
           <li><a href="autoapi/dau_sim/testbench/index.html#module-dau_sim.testbench">dau_sim.testbench</a>
+</li>
+          <li><a href="autoapi/test_api/index.html#module-test_api">test_api</a>
+</li>
+          <li><a href="autoapi/test_cli/index.html#module-test_cli">test_cli</a>
 </li>
           <li><a href="autoapi/test_cocotb_backend/index.html#module-test_cocotb_backend">test_cocotb_backend</a>
 </li>
@@ -1501,6 +1614,8 @@
           <li><a href="autoapi/test_ir/index.html#module-test_ir">test_ir</a>
 </li>
           <li><a href="autoapi/test_nonsynthesizable/index.html#module-test_nonsynthesizable">test_nonsynthesizable</a>
+</li>
+          <li><a href="autoapi/test_perf/index.html#module-test_perf">test_perf</a>
 </li>
           <li><a href="autoapi/test_selectors/index.html#module-test_selectors">test_selectors</a>
 </li>
@@ -1521,12 +1636,22 @@
           <li><a href="autoapi/dau_sim/ir/module/index.html#dau_sim.ir.module.Module">(class in dau_sim.ir.module)</a>
 </li>
         </ul></li>
-        <li><a href="autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile.CompiledModule.module">module (dau_sim.compiler.compile.CompiledModule attribute)</a>
-</li>
-        <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.Instance.module_name">module_name (dau_sim.ir.Instance attribute)</a>
+        <li><a href="autoapi/dau_sim/api/index.html#dau_sim.api.Simulator.module">module (dau_sim.api.Simulator property)</a>
 
         <ul>
+          <li><a href="autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile.CompiledModule.module">(dau_sim.compiler.compile.CompiledModule attribute)</a>
+</li>
+          <li><a href="autoapi/dau_sim/index.html#dau_sim.Simulator.module">(dau_sim.Simulator property)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/dau_sim/api/index.html#dau_sim.api.SimulationResult.module_name">module_name (dau_sim.api.SimulationResult attribute)</a>
+
+        <ul>
+          <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.Instance.module_name">(dau_sim.ir.Instance attribute)</a>
+</li>
           <li><a href="autoapi/dau_sim/ir/module/index.html#dau_sim.ir.module.Instance.module_name">(dau_sim.ir.module.Instance attribute)</a>
+</li>
+          <li><a href="autoapi/dau_sim/index.html#dau_sim.SimulationResult.module_name">(dau_sim.SimulationResult attribute)</a>
 </li>
         </ul></li>
         <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.BinaryOp.MUL">MUL (dau_sim.ir.BinaryOp attribute)</a>
@@ -1535,6 +1660,8 @@
           <li><a href="autoapi/dau_sim/ir/expr/index.html#dau_sim.ir.expr.BinaryOp.MUL">(dau_sim.ir.expr.BinaryOp attribute)</a>
 </li>
         </ul></li>
+        <li><a href="autoapi/dau_sim/perf/index.html#dau_sim.perf.PerformanceDelta.multiplier_to_10x_current">multiplier_to_10x_current (dau_sim.perf.PerformanceDelta attribute)</a>
+</li>
         <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.Mux">Mux (class in dau_sim.ir)</a>
 
         <ul>
@@ -1611,6 +1738,8 @@
           <li><a href="autoapi/dau_sim/ir/types/index.html#dau_sim.ir.types.NetKind">(class in dau_sim.ir.types)</a>
 </li>
         </ul></li>
+        <li><a href="autoapi/dau_sim/perf/index.html#dau_sim.perf.NodeSeparationStats">NodeSeparationStats (class in dau_sim.perf)</a>
+</li>
         <li><a href="autoapi/dau_sim/ir/expr/index.html#dau_sim.ir.expr.UnaryOp.NOT">NOT (dau_sim.ir.expr.UnaryOp attribute)</a>
 
         <ul>
@@ -1699,6 +1828,10 @@
           <li><a href="autoapi/dau_sim/ir/validate/index.html#dau_sim.ir.validate.ValidationError.path">(dau_sim.ir.validate.ValidationError attribute)</a>
 </li>
         </ul></li>
+        <li><a href="autoapi/dau_sim/cli/index.html#dau_sim.cli.perf_sv">perf_sv() (in module dau_sim.cli)</a>
+</li>
+        <li><a href="autoapi/dau_sim/perf/index.html#dau_sim.perf.PerformanceDelta">PerformanceDelta (class in dau_sim.perf)</a>
+</li>
         <li><a href="autoapi/test_testbench/index.html#test_testbench.Phase5Counter">Phase5Counter (class in test_testbench)</a>
 </li>
         <li><a href="autoapi/test_testbench/index.html#test_testbench.Phase5Mux">Phase5Mux (class in test_testbench)</a>
@@ -1807,14 +1940,14 @@
         </ul></li>
         <li><a href="autoapi/dau_sim/testbench/index.html#dau_sim.testbench.TestbenchContext.release">release() (dau_sim.testbench.TestbenchContext method)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.ResetStyle">ResetStyle (class in dau_sim.ir)</a>, <a href="autoapi/dau_sim/ir/index.html#id20">[1]</a>
 
         <ul>
           <li><a href="autoapi/dau_sim/ir/types/index.html#dau_sim.ir.types.ResetStyle">(class in dau_sim.ir.types)</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/dau_sim/compiler/resolve/index.html#dau_sim.compiler.resolve.resolve_drivers">resolve_drivers() (in module dau_sim.compiler.resolve)</a>
 </li>
         <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.Binary.right">right (dau_sim.ir.Binary attribute)</a>
@@ -1841,11 +1974,21 @@
           <li><a href="autoapi/dau_sim/ir/module/index.html#dau_sim.ir.module.ClockDomain.rst_style">(dau_sim.ir.module.ClockDomain attribute)</a>
 </li>
         </ul></li>
-        <li><a href="autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile.CompiledModule.run">run() (dau_sim.compiler.compile.CompiledModule method)</a>
+        <li><a href="autoapi/dau_sim/api/index.html#dau_sim.api.Simulator.run">run() (dau_sim.api.Simulator method)</a>
+
+        <ul>
+          <li><a href="autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile.CompiledModule.run">(dau_sim.compiler.compile.CompiledModule method)</a>
 </li>
+          <li><a href="autoapi/dau_sim/index.html#dau_sim.Simulator.run">(dau_sim.Simulator method)</a>
+</li>
+        </ul></li>
         <li><a href="autoapi/dau_sim/backends/cocotb_backend/index.html#dau_sim.backends.cocotb_backend.run_cocotb">run_cocotb() (in module dau_sim.backends.cocotb_backend)</a>
 </li>
         <li><a href="autoapi/dau_sim/testbench/index.html#dau_sim.testbench.run_parallel_testbenches">run_parallel_testbenches() (in module dau_sim.testbench)</a>
+</li>
+        <li><a href="autoapi/dau_sim/perf/index.html#dau_sim.perf.BenchmarkResult.run_seconds_median">run_seconds_median (dau_sim.perf.BenchmarkResult attribute)</a>
+</li>
+        <li><a href="autoapi/dau_sim/cli/index.html#dau_sim.cli.run_sv">run_sv() (in module dau_sim.cli)</a>
 </li>
         <li><a href="autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile.CompiledModule.run_testbench">run_testbench() (dau_sim.compiler.compile.CompiledModule method)</a>
 </li>
@@ -1947,14 +2090,14 @@
           <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.Port.signal">(dau_sim.ir.Port attribute)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.Module.signal_by_name">signal_by_name() (dau_sim.ir.Module method)</a>
 
         <ul>
           <li><a href="autoapi/dau_sim/ir/module/index.html#dau_sim.ir.module.Module.signal_by_name">(dau_sim.ir.module.Module method)</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.SignalRef">SignalRef (class in dau_sim.ir)</a>
 
         <ul>
@@ -1976,6 +2119,20 @@
 </li>
         </ul></li>
         <li><a href="autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile.SimulationFinish">SimulationFinish</a>
+</li>
+        <li><a href="autoapi/dau_sim/index.html#dau_sim.SimulationResult">SimulationResult (class in dau_sim)</a>
+
+        <ul>
+          <li><a href="autoapi/dau_sim/api/index.html#dau_sim.api.SimulationResult">(class in dau_sim.api)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/dau_sim/index.html#dau_sim.Simulator">Simulator (class in dau_sim)</a>
+
+        <ul>
+          <li><a href="autoapi/dau_sim/api/index.html#dau_sim.api.Simulator">(class in dau_sim.api)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/dau_sim/perf/index.html#dau_sim.perf.NodeSeparationStats.singleton_components">singleton_components (dau_sim.perf.NodeSeparationStats attribute)</a>
 </li>
         <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.Slice">Slice (class in dau_sim.ir)</a>
 
@@ -2141,10 +2298,19 @@
 </li>
         <li><a href="autoapi/test_testbench/index.html#test_testbench.TestAmaranthTestbench.test_amaranth_mux">test_amaranth_mux() (test_testbench.TestAmaranthTestbench method)</a>
 </li>
+        <li><a href="autoapi/test_perf/index.html#test_perf.test_analyze_node_separation_reports_components">test_analyze_node_separation_reports_components() (in module test_perf)</a>
+</li>
         <li><a href="autoapi/test_sim_comb/index.html#test_sim_comb.TestALU.test_and">test_and() (test_sim_comb.TestALU method)</a>
 </li>
         <li><a href="autoapi/test_frontend_amaranth/index.html#test_frontend_amaranth.TestExpressionLowering.test_any_operator">test_any_operator() (test_frontend_amaranth.TestExpressionLowering method)</a>
 </li>
+        <li>
+    test_api
+
+        <ul>
+          <li><a href="autoapi/test_api/index.html#module-test_api">module</a>
+</li>
+        </ul></li>
         <li><a href="autoapi/test_testbench/index.html#test_testbench.TestAssertions.test_assert_changed_fail">test_assert_changed_fail() (test_testbench.TestAssertions method)</a>
 </li>
         <li><a href="autoapi/test_testbench/index.html#test_testbench.TestAssertions.test_assert_changed_pass">test_assert_changed_pass() (test_testbench.TestAssertions method)</a>
@@ -2186,6 +2352,8 @@
         <li><a href="autoapi/test_cocotb_backend/index.html#test_cocotb_backend.TestDauSimIterator.test_basic_iteration">test_basic_iteration() (test_cocotb_backend.TestDauSimIterator method)</a>
 </li>
         <li><a href="autoapi/test_frontend_sv/index.html#test_frontend_sv.TestModuleExtraction.test_basic_ports">test_basic_ports() (test_frontend_sv.TestModuleExtraction method)</a>
+</li>
+        <li><a href="autoapi/test_perf/index.html#test_perf.test_benchmark_module_returns_positive_metrics">test_benchmark_module_returns_positive_metrics() (in module test_perf)</a>
 </li>
         <li><a href="autoapi/test_frontend_sv/index.html#test_frontend_sv.TestExpressionLowering.test_binary_add">test_binary_add() (test_frontend_sv.TestExpressionLowering method)</a>
 </li>
@@ -2234,6 +2402,15 @@
         <li><a href="autoapi/test_cocotb_backend/index.html#test_cocotb_backend.TestDauSimHandle.test_child_discovery">test_child_discovery() (test_cocotb_backend.TestDauSimHandle method)</a>
 </li>
         <li><a href="autoapi/test_cocotb_backend/index.html#test_cocotb_backend.TestHandleHierarchy.test_children_accessible">test_children_accessible() (test_cocotb_backend.TestHandleHierarchy method)</a>
+</li>
+        <li>
+    test_cli
+
+        <ul>
+          <li><a href="autoapi/test_cli/index.html#module-test_cli">module</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/test_cli/index.html#test_cli.test_cli_help_smoke">test_cli_help_smoke() (in module test_cli)</a>
 </li>
         <li><a href="autoapi/test_frontend_amaranth/index.html#test_frontend_amaranth.TestClockDomainMapping.test_clk_rst_as_input_ports">test_clk_rst_as_input_ports() (test_frontend_amaranth.TestClockDomainMapping method)</a>
 </li>
@@ -2692,8 +2869,6 @@
 </li>
         <li><a href="autoapi/test_frontend_sv/index.html#test_frontend_sv.TestModuleExtraction.test_multiple_ports">test_multiple_ports() (test_frontend_sv.TestModuleExtraction method)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/test_cocotb_backend/index.html#test_cocotb_backend.TestEngineFullStep.test_multiple_time_steps">test_multiple_time_steps() (test_cocotb_backend.TestEngineFullStep method)</a>
 </li>
         <li><a href="autoapi/test_frontend_amaranth/index.html#test_frontend_amaranth.TestEndToEndCombinational.test_mux">test_mux() (test_frontend_amaranth.TestEndToEndCombinational method)</a>
@@ -2702,6 +2877,8 @@
           <li><a href="autoapi/test_frontend_amaranth/index.html#test_frontend_amaranth.TestExpressionLowering.test_mux">(test_frontend_amaranth.TestExpressionLowering method)</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/test_ir/index.html#test_ir.test_mux_expr">test_mux_expr() (in module test_ir)</a>
 </li>
         <li><a href="autoapi/test_eval/index.html#test_eval.TestEval4.test_mux_sel_x">test_mux_sel_x() (test_eval.TestEval4 method)</a>
@@ -2766,6 +2943,19 @@
         <li><a href="autoapi/test_testbench/index.html#test_testbench.TestParallelTestbenches.test_parallel_synchronized_ticks">test_parallel_synchronized_ticks() (test_testbench.TestParallelTestbenches method)</a>
 </li>
         <li><a href="autoapi/test_testbench/index.html#test_testbench.TestParallelTestbenches.test_parallel_three_testbenches">test_parallel_three_testbenches() (test_testbench.TestParallelTestbenches method)</a>
+</li>
+        <li><a href="autoapi/test_cli/index.html#test_cli.test_parse_kv_pairs_rejects_bad_items">test_parse_kv_pairs_rejects_bad_items() (in module test_cli)</a>
+</li>
+        <li><a href="autoapi/test_cli/index.html#test_cli.test_parse_kv_pairs_supports_base_prefixes">test_parse_kv_pairs_supports_base_prefixes() (in module test_cli)</a>
+</li>
+        <li>
+    test_perf
+
+        <ul>
+          <li><a href="autoapi/test_perf/index.html#module-test_perf">module</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/test_cli/index.html#test_cli.test_perf_sv_command">test_perf_sv_command() (in module test_cli)</a>
 </li>
         <li><a href="autoapi/test_sim_seq/index.html#test_sim_seq.TestMixedClockEdges.test_posedge_and_negedge_domains_progress_equally">test_posedge_and_negedge_domains_progress_equally() (test_sim_seq.TestMixedClockEdges method)</a>
 </li>
@@ -2852,6 +3042,8 @@
         <li><a href="autoapi/test_cocotb_backend/index.html#test_cocotb_backend.TestEngineVCH.test_rising_edge_fires">test_rising_edge_fires() (test_cocotb_backend.TestEngineVCH method)</a>
 </li>
         <li><a href="autoapi/test_cocotb_backend/index.html#test_cocotb_backend.TestCocotbIntegration.test_rising_edge_trigger">test_rising_edge_trigger() (test_cocotb_backend.TestCocotbIntegration method)</a>
+</li>
+        <li><a href="autoapi/test_cli/index.html#test_cli.test_run_sv_command">test_run_sv_command() (in module test_cli)</a>
 </li>
         <li><a href="autoapi/test_testbench/index.html#test_testbench.TestRunTestbench.test_run_testbench_fail">test_run_testbench_fail() (test_testbench.TestRunTestbench method)</a>
 </li>
@@ -2965,6 +3157,10 @@
 </li>
         </ul></li>
         <li><a href="autoapi/test_nonsynthesizable/index.html#test_nonsynthesizable.TestFinishStmt.test_simulation_finish_exception">test_simulation_finish_exception() (test_nonsynthesizable.TestFinishStmt method)</a>
+</li>
+        <li><a href="autoapi/test_api/index.html#test_api.test_simulation_result_to_rows">test_simulation_result_to_rows() (in module test_api)</a>
+</li>
+        <li><a href="autoapi/test_api/index.html#test_api.test_simulator_from_module_run_and_latest">test_simulator_from_module_run_and_latest() (in module test_api)</a>
 </li>
         <li><a href="autoapi/test_sim_comb/index.html#test_sim_comb.TestPriorityEncoder.test_single_bit">test_single_bit() (test_sim_comb.TestPriorityEncoder method)</a>
 </li>
@@ -3320,10 +3516,22 @@
           <li><a href="autoapi/dau_sim/ir/types/index.html#dau_sim.ir.types.FourState.to_int">(dau_sim.ir.types.FourState property)</a>
 </li>
         </ul></li>
+        <li><a href="autoapi/dau_sim/api/index.html#dau_sim.api.SimulationResult.to_rows">to_rows() (dau_sim.api.SimulationResult method)</a>
+
+        <ul>
+          <li><a href="autoapi/dau_sim/index.html#dau_sim.SimulationResult.to_rows">(dau_sim.SimulationResult method)</a>
+</li>
+        </ul></li>
         <li><a href="autoapi/dau_sim/compiler/index.html#dau_sim.compiler.topological_sort">topological_sort() (in module dau_sim.compiler)</a>
 
         <ul>
           <li><a href="autoapi/dau_sim/compiler/depanalysis/index.html#dau_sim.compiler.depanalysis.topological_sort">(in module dau_sim.compiler.depanalysis)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/dau_sim/api/index.html#dau_sim.api.SimulationResult.traces">traces (dau_sim.api.SimulationResult attribute)</a>
+
+        <ul>
+          <li><a href="autoapi/dau_sim/index.html#dau_sim.SimulationResult.traces">(dau_sim.SimulationResult attribute)</a>
 </li>
         </ul></li>
         <li><a href="autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile.CompiledModule.traces_to_vcd">traces_to_vcd() (dau_sim.compiler.compile.CompiledModule method)</a>
@@ -3397,6 +3605,12 @@
 </li>
         </ul></li>
     </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/dau_sim/perf/index.html#dau_sim.perf.PerformanceDelta.vs_amaranth_ratio">vs_amaranth_ratio (dau_sim.perf.PerformanceDelta attribute)</a>
+</li>
+        <li><a href="autoapi/dau_sim/perf/index.html#dau_sim.perf.PerformanceDelta.vs_verilator_ratio">vs_verilator_ratio (dau_sim.perf.PerformanceDelta attribute)</a>
+</li>
+    </ul></td>
   </tr></table>
 </section>
 
@@ -3428,17 +3642,21 @@
           <li><a href="autoapi/dau_sim/ir/types/index.html#dau_sim.ir.types.NetKind.WOR">(dau_sim.ir.types.NetKind attribute)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="autoapi/dau_sim/ir/index.html#dau_sim.ir.Memory.write_ports">write_ports (dau_sim.ir.Memory attribute)</a>
 
         <ul>
           <li><a href="autoapi/dau_sim/ir/module/index.html#dau_sim.ir.module.Memory.write_ports">(dau_sim.ir.module.Memory attribute)</a>
 </li>
         </ul></li>
-        <li><a href="autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile.CompiledModule.write_vcd">write_vcd() (dau_sim.compiler.compile.CompiledModule method)</a>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/dau_sim/api/index.html#dau_sim.api.Simulator.write_vcd">write_vcd() (dau_sim.api.Simulator method)</a>
 
         <ul>
+          <li><a href="autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile.CompiledModule.write_vcd">(dau_sim.compiler.compile.CompiledModule method)</a>
+</li>
+          <li><a href="autoapi/dau_sim/index.html#dau_sim.Simulator.write_vcd">(dau_sim.Simulator method)</a>
+</li>
           <li><a href="autoapi/dau_sim/adapters/index.html#dau_sim.adapters.write_vcd">(in module dau_sim.adapters)</a>
 </li>
           <li><a href="autoapi/dau_sim/adapters/vcd/index.html#dau_sim.adapters.vcd.write_vcd">(in module dau_sim.adapters.vcd)</a>

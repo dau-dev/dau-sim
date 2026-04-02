@@ -204,10 +204,12 @@
 <li class="toctree-l4"><a class="reference internal" href="autoapi/dau_sim/adapters/vcd/index.html">dau_sim.adapters.vcd</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/dau_sim/api/index.html">dau_sim.api</a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/dau_sim/backends/index.html">dau_sim.backends</a><input aria-label="Toggle navigation of dau_sim.backends" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/dau_sim/backends/cocotb_backend/index.html">dau_sim.backends.cocotb_backend</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/dau_sim/cli/index.html">dau_sim.cli</a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/dau_sim/compiler/index.html">dau_sim.compiler</a><input aria-label="Toggle navigation of dau_sim.compiler" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/dau_sim/compiler/compile/index.html">dau_sim.compiler.compile</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/dau_sim/compiler/depanalysis/index.html">dau_sim.compiler.depanalysis</a></li>
@@ -232,13 +234,17 @@
 <li class="toctree-l4"><a class="reference internal" href="autoapi/dau_sim/ir/validate/index.html">dau_sim.ir.validate</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/dau_sim/perf/index.html">dau_sim.perf</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/dau_sim/runtime/index.html">dau_sim.runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/dau_sim/testbench/index.html">dau_sim.testbench</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_ir/index.html">test_ir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_api/index.html">test_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_vcd/index.html">test_vcd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_cli/index.html">test_cli</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_eval/index.html">test_eval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_perf/index.html">test_perf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_sim_seq/index.html">test_sim_seq</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_sim_comb/index.html">test_sim_comb</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_compiler/index.html">test_compiler</a></li>
@@ -320,6 +326,17 @@
 pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[develop]&quot;</span>
 </pre></div>
 </div>
+</section>
+<section id="command-line-interface">
+<h2>Command Line Interface<a class="headerlink" href="#command-line-interface" title="Link to this heading">¶</a></h2>
+<p>Use the Typer-based CLI for quick simulation and performance checks:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dau-sim<span class="w"> </span>run-sv<span class="w"> </span>design.sv<span class="w"> </span>--top<span class="w"> </span>top_module<span class="w"> </span>--cycles<span class="w"> </span><span class="m">1000</span><span class="w"> </span>--vcd<span class="w"> </span>out.vcd
+dau-sim<span class="w"> </span>perf-sv<span class="w"> </span>design.sv<span class="w"> </span>--top<span class="w"> </span>top_module<span class="w"> </span>--cycles<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--repeats<span class="w"> </span><span class="m">3</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">run-sv</span></code> executes a design and shows latest signal values. <code class="docutils literal notranslate"><span class="pre">perf-sv</span></code> reports
+compile/run timing and node-separation diagnostics to guide non-C++
+optimization work.</p>
 </section>
 <section id="quick-start">
 <h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">¶</a></h2>
@@ -537,6 +554,19 @@ matching real HDL simulator behavior.</p>
 </section>
 <section id="api-reference">
 <h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading">¶</a></h2>
+<section id="high-level-interactive-api">
+<h3>High-Level Interactive API<a class="headerlink" href="#high-level-interactive-api" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simulator</span>
+
+<span class="n">sim</span> <span class="o">=</span> <span class="n">Simulator</span><span class="o">.</span><span class="n">from_sv_file</span><span class="p">(</span><span class="s2">&quot;design.sv&quot;</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="s2">&quot;top_module&quot;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cycles</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">latest</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">))</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_rows</span><span class="p">(</span><span class="n">signals</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">])</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">write_vcd</span><span class="p">(</span><span class="s2">&quot;out.vcd&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 <section id="frontends">
 <h3>Frontends<a class="headerlink" href="#frontends" title="Link to this heading">¶</a></h3>
 <div class="table-wrapper colwidths-auto docutils container">

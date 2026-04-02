@@ -204,10 +204,12 @@
 <li class="toctree-l4"><a class="reference internal" href="adapters/vcd/index.html">dau_sim.adapters.vcd</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="api/index.html">dau_sim.api</a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="backends/index.html">dau_sim.backends</a><input aria-label="Toggle navigation of dau_sim.backends" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="backends/cocotb_backend/index.html">dau_sim.backends.cocotb_backend</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="cli/index.html">dau_sim.cli</a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="compiler/index.html">dau_sim.compiler</a><input aria-label="Toggle navigation of dau_sim.compiler" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="compiler/compile/index.html">dau_sim.compiler.compile</a></li>
 <li class="toctree-l4"><a class="reference internal" href="compiler/depanalysis/index.html">dau_sim.compiler.depanalysis</a></li>
@@ -232,13 +234,17 @@
 <li class="toctree-l4"><a class="reference internal" href="ir/validate/index.html">dau_sim.ir.validate</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="perf/index.html">dau_sim.perf</a></li>
 <li class="toctree-l3"><a class="reference internal" href="runtime/index.html">dau_sim.runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="testbench/index.html">dau_sim.testbench</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../test_ir/index.html">test_ir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_api/index.html">test_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../test_vcd/index.html">test_vcd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_cli/index.html">test_cli</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../test_eval/index.html">test_eval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_perf/index.html">test_perf</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../test_sim_seq/index.html">test_sim_seq</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../test_sim_comb/index.html">test_sim_comb</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../test_compiler/index.html">test_compiler</a></li>
@@ -296,10 +302,13 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="adapters/index.html">dau_sim.adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">dau_sim.api</a></li>
 <li class="toctree-l1"><a class="reference internal" href="backends/index.html">dau_sim.backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli/index.html">dau_sim.cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compiler/index.html">dau_sim.compiler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="frontends/index.html">dau_sim.frontends</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ir/index.html">dau_sim.ir</a></li>
+<li class="toctree-l1"><a class="reference internal" href="perf/index.html">dau_sim.perf</a></li>
 <li class="toctree-l1"><a class="reference internal" href="runtime/index.html">dau_sim.runtime</a></li>
 <li class="toctree-l1"><a class="reference internal" href="testbench/index.html">dau_sim.testbench</a></li>
 </ul>
@@ -317,12 +326,106 @@
 </table>
 </div>
 </section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.SimulationResult" title="dau_sim.SimulationResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SimulationResult</span></code></a></p></td>
+<td><p>Container for simulation output with interactive helpers.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.Simulator" title="dau_sim.Simulator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Simulator</span></code></a></p></td>
+<td><p>High-level interactive API for compiling and running designs.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 <section id="package-contents">
 <h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading">¶</a></h2>
 <dl class="py data">
 <dt class="sig sig-object py" id="dau_sim.__version__">
 <span class="sig-prename descclassname"><span class="pre">dau_sim.</span></span><span class="sig-name descname"><span class="pre">__version__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0.1.0'</span></em><a class="headerlink" href="#dau_sim.__version__" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.SimulationResult">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.</span></span><span class="sig-name descname"><span class="pre">SimulationResult</span></span><a class="reference internal" href="../../_modules/dau_sim/api.html#SimulationResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.SimulationResult" title="Link to this definition">¶</a></dt>
+<dd><p>Container for simulation output with interactive helpers.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.SimulationResult.module_name">
+<span class="sig-name descname"><span class="pre">module_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dau_sim.SimulationResult.module_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.SimulationResult.traces">
+<span class="sig-name descname"><span class="pre">traces</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.SimulationResult.traces" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.SimulationResult.latest">
+<span class="sig-name descname"><span class="pre">latest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/dau_sim/api.html#SimulationResult.latest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.SimulationResult.latest" title="Link to this definition">¶</a></dt>
+<dd><p>Return the most recent value for a signal, if available.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.SimulationResult.to_rows">
+<span class="sig-name descname"><span class="pre">to_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">signals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">object</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/dau_sim/api.html#SimulationResult.to_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.SimulationResult.to_rows" title="Link to this definition">¶</a></dt>
+<dd><p>Return trace points as row dictionaries for notebooks/data tools.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.Simulator">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.</span></span><span class="sig-name descname"><span class="pre">Simulator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compiled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="compiler/compile/index.html#dau_sim.compiler.compile.CompiledModule" title="dau_sim.compiler.compile.CompiledModule"><span class="pre">dau_sim.compiler.compile.CompiledModule</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dau_sim/api.html#Simulator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.Simulator" title="Link to this definition">¶</a></dt>
+<dd><p>High-level interactive API for compiling and running designs.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.Simulator._compiled">
+<span class="sig-name descname"><span class="pre">_compiled</span></span><a class="headerlink" href="#dau_sim.Simulator._compiled" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dau_sim.Simulator.module">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">module</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="ir/module/index.html#dau_sim.ir.module.Module" title="dau_sim.ir.module.Module"><span class="pre">dau_sim.ir.module.Module</span></a></em><a class="headerlink" href="#dau_sim.Simulator.module" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dau_sim.Simulator.compiled">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compiled</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="compiler/compile/index.html#dau_sim.compiler.compile.CompiledModule" title="dau_sim.compiler.compile.CompiledModule"><span class="pre">dau_sim.compiler.compile.CompiledModule</span></a></em><a class="headerlink" href="#dau_sim.Simulator.compiled" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.Simulator.from_module">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ir/module/index.html#dau_sim.ir.module.Module" title="dau_sim.ir.module.Module"><span class="pre">dau_sim.ir.module.Module</span></a></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">four_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#dau_sim.Simulator" title="dau_sim.Simulator"><span class="pre">Simulator</span></a></span></span><a class="reference internal" href="../../_modules/dau_sim/api.html#Simulator.from_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.Simulator.from_module" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.Simulator.from_sv">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_sv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">four_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#dau_sim.Simulator" title="dau_sim.Simulator"><span class="pre">Simulator</span></a></span></span><a class="reference internal" href="../../_modules/dau_sim/api.html#Simulator.from_sv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.Simulator.from_sv" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.Simulator.from_sv_file">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_sv_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">four_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#dau_sim.Simulator" title="dau_sim.Simulator"><span class="pre">Simulator</span></a></span></span><a class="reference internal" href="../../_modules/dau_sim/api.html#Simulator.from_sv_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.Simulator.from_sv_file" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.Simulator.from_amaranth">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_amaranth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">design</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">four_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#dau_sim.Simulator" title="dau_sim.Simulator"><span class="pre">Simulator</span></a></span></span><a class="reference internal" href="../../_modules/dau_sim/api.html#Simulator.from_amaranth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.Simulator.from_amaranth" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.Simulator.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clock_period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.timedelta</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">timedelta(microseconds=1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">datetime.timedelta</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#dau_sim.SimulationResult" title="dau_sim.SimulationResult"><span class="pre">SimulationResult</span></a></span></span><a class="reference internal" href="../../_modules/dau_sim/api.html#Simulator.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.Simulator.run" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.Simulator.write_vcd">
+<span class="sig-name descname"><span class="pre">write_vcd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dau_sim.SimulationResult" title="dau_sim.SimulationResult"><span class="pre">SimulationResult</span></a></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">timescale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'1ns'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/dau_sim/api.html#Simulator.write_vcd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.Simulator.write_vcd" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
 
 </section>
 </section>
@@ -385,8 +488,28 @@
 <li><a class="reference internal" href="#">dau_sim</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#attributes">Attributes</a></li>
+<li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#package-contents">Package Contents</a><ul>
 <li><a class="reference internal" href="#dau_sim.__version__"><code class="docutils literal notranslate"><span class="pre">__version__</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.SimulationResult"><code class="docutils literal notranslate"><span class="pre">SimulationResult</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.SimulationResult.module_name"><code class="docutils literal notranslate"><span class="pre">SimulationResult.module_name</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.SimulationResult.traces"><code class="docutils literal notranslate"><span class="pre">SimulationResult.traces</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.SimulationResult.latest"><code class="docutils literal notranslate"><span class="pre">SimulationResult.latest()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.SimulationResult.to_rows"><code class="docutils literal notranslate"><span class="pre">SimulationResult.to_rows()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dau_sim.Simulator"><code class="docutils literal notranslate"><span class="pre">Simulator</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.Simulator._compiled"><code class="docutils literal notranslate"><span class="pre">Simulator._compiled</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.Simulator.module"><code class="docutils literal notranslate"><span class="pre">Simulator.module</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.Simulator.compiled"><code class="docutils literal notranslate"><span class="pre">Simulator.compiled</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.Simulator.from_module"><code class="docutils literal notranslate"><span class="pre">Simulator.from_module()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.Simulator.from_sv"><code class="docutils literal notranslate"><span class="pre">Simulator.from_sv()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.Simulator.from_sv_file"><code class="docutils literal notranslate"><span class="pre">Simulator.from_sv_file()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.Simulator.from_amaranth"><code class="docutils literal notranslate"><span class="pre">Simulator.from_amaranth()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.Simulator.run"><code class="docutils literal notranslate"><span class="pre">Simulator.run()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.Simulator.write_vcd"><code class="docutils literal notranslate"><span class="pre">Simulator.write_vcd()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

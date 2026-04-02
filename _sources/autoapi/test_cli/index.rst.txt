@@ -1,0 +1,31 @@
+test_cli
+========
+
+.. py:module:: test_cli
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   test_cli.test_parse_kv_pairs_supports_base_prefixes
+   test_cli.test_parse_kv_pairs_rejects_bad_items
+   test_cli.test_cli_help_smoke
+   test_cli.test_run_sv_command
+   test_cli.test_perf_sv_command
+
+
+Module Contents
+---------------
+
+.. py:function:: test_parse_kv_pairs_supports_base_prefixes() -> None
+
+.. py:function:: test_parse_kv_pairs_rejects_bad_items() -> None
+
+.. py:function:: test_cli_help_smoke() -> None
+
+.. py:function:: test_run_sv_command(tmp_path: pathlib.Path) -> None
+
+.. py:function:: test_perf_sv_command(tmp_path: pathlib.Path) -> None
+
