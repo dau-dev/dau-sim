@@ -2,9 +2,12 @@ import pytest
 
 from dau_sim.compiler import CombLoopError, compile_module
 from dau_sim.compiler.depanalysis import (
+    affected_component_ids,
     build_assignments,
+    build_component_signal_index,
     collect_reads,
     collect_stmt_writes,
+    partition_assignments,
     topological_sort,
 )
 from dau_sim.compiler.resolve import resolve_drivers
@@ -128,6 +131,79 @@ class TestDependencyAnalysis:
         names = [list(a.writes)[0] for a in ordered]
         assert names.index("b") < names.index("d")
         assert names.index("c") < names.index("d")
+
+    def test_partition_assignments_parallel_components(self):
+        """Independent combinational blocks should land in separate components."""
+        stmts = [
+            (0, (Assign(target="x", value=SignalRef(shape=Shape(8), name="a")),)),
+            (1, (Assign(target="y", value=SignalRef(shape=Shape(8), name="b")),)),
+        ]
+        assignments = build_assignments(stmts)
+        ordered = topological_sort(assignments)
+
+        components = partition_assignments(ordered)
+
+        assert len(components) == 2
+        assert {frozenset(component.writes) for component in components} == {frozenset({"x"}), frozenset({"y"})}
+
+    def test_partition_assignments_connected_chain(self):
+        """A dependency chain should remain a single component."""
+        stmts = [
+            (0, (Assign(target="c", value=SignalRef(shape=Shape(8), name="b")),)),
+            (1, (Assign(target="b", value=SignalRef(shape=Shape(8), name="a")),)),
+        ]
+        assignments = build_assignments(stmts)
+        ordered = topological_sort(assignments)
+
+        components = partition_assignments(ordered)
+
+        assert len(components) == 1
+        assert components[0].writes == frozenset({"b", "c"})
+
+    def test_partition_assignments_shared_write_signal(self):
+        """Assignments that write the same signal must stay in one component."""
+        stmts = [
+            (0, (Assign(target="y", value=SignalRef(shape=Shape(8), name="a")),)),
+            (1, (Assign(target="y", value=SignalRef(shape=Shape(8), name="b")),)),
+        ]
+        assignments = build_assignments(stmts)
+        ordered = topological_sort(assignments)
+
+        components = partition_assignments(ordered)
+
+        assert len(components) == 1
+        assert components[0].writes == frozenset({"y"})
+
+    def test_build_component_signal_index_maps_signal_to_component_ids(self):
+        """Each signal should map to the component ids that reference it."""
+        stmts = [
+            (0, (Assign(target="x", value=SignalRef(shape=Shape(8), name="a")),)),
+            (1, (Assign(target="y", value=SignalRef(shape=Shape(8), name="b")),)),
+            (2, (Assign(target="z", value=SignalRef(shape=Shape(8), name="x")),)),
+        ]
+        assignments = build_assignments(stmts)
+        ordered = topological_sort(assignments)
+        components = partition_assignments(ordered)
+
+        index = build_component_signal_index(components)
+
+        assert index["a"] == (0,)
+        assert index["x"] == (0,)
+        assert index["b"] == (1,)
+        assert index["y"] == (1,)
+        assert index["z"] == (0,)
+
+    def test_affected_component_ids_deduplicates_and_sorts(self):
+        """Changed signals should resolve to unique component ids in component order."""
+        signal_index = {
+            "a": (2, 0),
+            "b": (1,),
+            "c": (2,),
+        }
+
+        affected = affected_component_ids(signal_index, {"a", "b", "c"})
+
+        assert affected == (0, 1, 2)
 
 
 class TestWireResolution:

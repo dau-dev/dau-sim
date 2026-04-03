@@ -1,0 +1,195 @@
+{
+    "machine_info": {
+        "node": "mbp-m1",
+        "processor": "arm",
+        "machine": "arm64",
+        "python_compiler": "Clang 17.0.0 (clang-1700.6.3.2)",
+        "python_implementation": "CPython",
+        "python_implementation_version": "3.12.12",
+        "python_version": "3.12.12",
+        "python_build": [
+            "main",
+            "Oct  9 2025 11:07:00"
+        ],
+        "release": "25.4.0",
+        "system": "Darwin",
+        "cpu": {
+            "python_version": "3.12.12.final.0 (64 bit)",
+            "cpuinfo_version": [
+                9,
+                0,
+                0
+            ],
+            "cpuinfo_version_string": "9.0.0",
+            "arch": "ARM_8",
+            "bits": 64,
+            "count": 10,
+            "arch_string_raw": "arm64",
+            "brand_raw": "Apple M1 Pro"
+        }
+    },
+    "commit_info": {
+        "id": "51fb4ce5f2f9aa22febc1d3d3335fb980b6b1f5e",
+        "time": "2026-04-02T20:20:18-04:00",
+        "author_time": "2026-04-02T20:20:18-04:00",
+        "dirty": true,
+        "project": "dau-sim",
+        "branch": "tkp/cli"
+    },
+    "benchmarks": [
+        {
+            "group": null,
+            "name": "cross_simulators.dau-sim",
+            "fullname": "dau_sim/benchmarks/bench_cross_simulators.py::test_benchmark_cross_simulators[dau-sim-_run_dau_sim]",
+            "params": {
+                "backend": "dau-sim",
+                "runner": "UNSERIALIZABLE[<function _run_dau_sim at 0x10b87c220>]"
+            },
+            "param": "dau-sim-_run_dau_sim",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 3,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.4158451670082286,
+                "max": 2.642661375008174,
+                "mean": 2.4916352776732915,
+                "stddev": 0.1307927303809527,
+                "rounds": 3,
+                "median": 2.416399291003472,
+                "iqr": 0.1701121559999592,
+                "q1": 2.4159836980070395,
+                "q3": 2.5860958540069987,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 2.4158451670082286,
+                "hd15iqr": 2.642661375008174,
+                "ops": 0.40134284859452135,
+                "total": 7.474905833019875,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "cross_simulators.amaranth-sim",
+            "fullname": "dau_sim/benchmarks/bench_cross_simulators.py::test_benchmark_cross_simulators[amaranth-sim-_run_amaranth_sim]",
+            "params": {
+                "backend": "amaranth-sim",
+                "runner": "UNSERIALIZABLE[<function _run_amaranth_sim at 0x10b87c2c0>]"
+            },
+            "param": "amaranth-sim-_run_amaranth_sim",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 3,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 7.975877832999686,
+                "max": 8.180118999996921,
+                "mean": 8.081079694330887,
+                "stddev": 0.1022599452050647,
+                "rounds": 3,
+                "median": 8.087242249996052,
+                "iqr": 0.15318087524792645,
+                "q1": 8.003718937248777,
+                "q3": 8.156899812496704,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 7.975877832999686,
+                "hd15iqr": 8.180118999996921,
+                "ops": 0.12374584063334126,
+                "total": 24.24323908299266,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "cross_simulators.verilator-compile-run",
+            "fullname": "dau_sim/benchmarks/bench_cross_simulators.py::test_benchmark_cross_simulators[verilator-compile-run-_run_verilator]",
+            "params": {
+                "backend": "verilator-compile-run",
+                "runner": "UNSERIALIZABLE[<function _run_verilator at 0x10e867ec0>]"
+            },
+            "param": "verilator-compile-run-_run_verilator",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 3,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 4.751216499993461,
+                "max": 5.017071541005862,
+                "mean": 4.850330582999352,
+                "stddev": 0.14525760350043027,
+                "rounds": 3,
+                "median": 4.782703707998735,
+                "iqr": 0.19939128075930057,
+                "q1": 4.75908830199478,
+                "q3": 4.95847958275408,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 4.751216499993461,
+                "hd15iqr": 5.017071541005862,
+                "ops": 0.20617151406237116,
+                "total": 14.550991748998058,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "cross_simulators.verilator-runtime",
+            "fullname": "dau_sim/benchmarks/bench_cross_simulators.py::test_benchmark_cross_simulators[verilator-runtime-_run_verilator_runtime]",
+            "params": {
+                "backend": "verilator-runtime",
+                "runner": "UNSERIALIZABLE[<function _run_verilator_runtime at 0x10e867f60>]"
+            },
+            "param": "verilator-runtime-_run_verilator_runtime",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 3,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.09133362499414943,
+                "max": 0.09577366700978018,
+                "mean": 0.0929246477277378,
+                "stddev": 0.001491811905904667,
+                "rounds": 11,
+                "median": 0.09270979100256227,
+                "iqr": 0.002462926993757719,
+                "q1": 0.09152869800163899,
+                "q3": 0.0939916249953967,
+                "iqr_outliers": 0,
+                "stddev_outliers": 4,
+                "outliers": "4;0",
+                "ld15iqr": 0.09133362499414943,
+                "hd15iqr": 0.09577366700978018,
+                "ops": 10.761407489323226,
+                "total": 1.0221711250051158,
+                "iterations": 1
+            }
+        }
+    ],
+    "datetime": "2026-04-03T00:27:27.369278+00:00",
+    "version": "5.2.3"
+}
