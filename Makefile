@@ -45,8 +45,8 @@ lint-js:  ## run js linter
 	cd js; pnpm lint
 
 lint-docs:  ## lint docs with mdformat and codespell
-	python -m mdformat --check README.md 
-	python -m codespell_lib README.md 
+	python -m mdformat --check README.md
+	python -m codespell_lib README.md
 
 lint: lint-js lint-py lint-docs  ## run project linters
 
@@ -62,8 +62,8 @@ fix-js:  ## fix js formatting
 	cd js; pnpm fix
 
 fix-docs:  ## autoformat docs with mdformat and codespell
-	python -m mdformat README.md 
-	python -m codespell_lib --write README.md 
+	python -m mdformat README.md
+	python -m codespell_lib --write README.md
 
 fix: fix-js fix-py fix-docs  ## run project autoformatters
 
@@ -114,6 +114,39 @@ coverage: coverage-py coverage-js  ## run all tests and collect test coverage
 
 # alias
 tests: test
+
+##############
+# BENCHMARKS #
+##############
+.PHONY: benchmark benchmark-local benchmark-local-quick benchmark-cross-quick benchmark-cross-runtime benchmark-steady-state benchmark-compare
+
+BENCHMARK_DIR := dau_sim/benchmarks
+BENCHMARK_RESULTS_DIR := $(BENCHMARK_DIR)/results
+BENCHMARK_FILES := $(BENCHMARK_DIR)/bench_*.py
+
+benchmark: benchmark-local  ## run full local pytest-benchmark suite
+
+benchmark-local:  ## run local pytest-benchmark suite
+	mkdir -p $(BENCHMARK_RESULTS_DIR)
+	python -m pytest $(BENCHMARK_FILES) -v --benchmark-only --benchmark-columns=mean,stddev,median,iqr,rounds --benchmark-save=local --benchmark-storage=file://$(BENCHMARK_RESULTS_DIR) --benchmark-json=$(BENCHMARK_RESULTS_DIR)/local.json
+
+benchmark-local-quick:  ## run quick local pytest-benchmark suite
+	mkdir -p $(BENCHMARK_RESULTS_DIR)
+	python -m pytest $(BENCHMARK_FILES) -v --benchmark-only --benchmark-min-rounds=1 --benchmark-max-time=0.02 --benchmark-columns=mean,stddev,median,rounds --benchmark-save=local-quick --benchmark-storage=file://$(BENCHMARK_RESULTS_DIR) --benchmark-json=$(BENCHMARK_RESULTS_DIR)/local-quick.json
+
+benchmark-cross-quick:  ## run quick cross-simulator benchmarks only
+	mkdir -p $(BENCHMARK_RESULTS_DIR)
+	python -m pytest $(BENCHMARK_DIR)/bench_cross_simulators.py -v --benchmark-only --benchmark-min-rounds=1 --benchmark-max-time=0.02 --benchmark-columns=mean,stddev,median,rounds --benchmark-save=cross-quick --benchmark-storage=file://$(BENCHMARK_RESULTS_DIR) --benchmark-json=$(BENCHMARK_RESULTS_DIR)/cross-quick.json
+
+benchmark-cross-runtime:  ## run cross-simulator benchmarks with larger cycle count for runtime-dominant comparisons
+	mkdir -p $(BENCHMARK_RESULTS_DIR)
+	DAU_BENCH_CYCLES=500000 python -m pytest $(BENCHMARK_DIR)/bench_cross_simulators.py -v --benchmark-only --benchmark-min-rounds=3 --benchmark-columns=mean,stddev,median,rounds --benchmark-save=cross-runtime-500k --benchmark-storage=file://$(BENCHMARK_RESULTS_DIR) --benchmark-json=$(BENCHMARK_RESULTS_DIR)/cross-runtime-500k.json
+
+benchmark-steady-state:  ## run compile-once steady-state runtime comparison harness
+	python .benchmarks/steady_state_perf_compare.py --cycles 100000 --warmup 1 --repeats 5
+
+benchmark-compare:  ## compare latest benchmark run against previous saved run
+	python -m pytest $(BENCHMARK_FILES) -v --benchmark-only --benchmark-compare --benchmark-storage=file://$(BENCHMARK_RESULTS_DIR)
 
 ###########
 # VERSION #

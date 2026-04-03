@@ -8,8 +8,12 @@ from csp import ts
 
 from dau_sim.compiler.depanalysis import (
     Assignment,
+    AssignmentComponent,
+    affected_component_ids,
     build_assignments,
+    build_component_signal_index,
     collect_stmt_writes,
+    partition_assignments,
     topological_sort,
 )
 from dau_sim.compiler.eval import eval_expr, mask_value
@@ -32,10 +36,11 @@ def _exec_stmts(
     signals: dict[str, int],
     shapes: dict[str, Shape],
     mem_state: dict[str, list[int]] | None = None,
+    changed_signals: set[str] | None = None,
 ) -> None:
     """Execute a list of statements, mutating signals in-place."""
     for stmt in stmts:
-        _exec_stmt(stmt, signals, shapes, mem_state)
+        _exec_stmt(stmt, signals, shapes, mem_state, changed_signals)
 
 
 def _exec_stmt(
@@ -43,18 +48,21 @@ def _exec_stmt(
     current: dict[str, int],
     shapes: dict[str, Shape],
     mem_state: dict[str, list[int]] | None = None,
+    changed_signals: set[str] | None = None,
 ) -> None:
     """Execute a single statement, mutating current signal values."""
     if isinstance(stmt, Assign):
         val = eval_expr(stmt.value, current)
         val = mask_value(val, shapes[stmt.target])
+        if current.get(stmt.target) != val and changed_signals is not None:
+            changed_signals.add(stmt.target)
         current[stmt.target] = val
 
     elif isinstance(stmt, IfElse):
         cond = eval_expr(stmt.cond, current)
         body = stmt.then_body if cond else stmt.else_body
         for s in body:
-            _exec_stmt(s, current, shapes, mem_state)
+            _exec_stmt(s, current, shapes, mem_state, changed_signals)
 
     elif isinstance(stmt, Switch):
         test = eval_expr(stmt.test, current)
@@ -66,11 +74,11 @@ def _exec_stmt(
             elif pattern == test:
                 matched = True
                 for s in stmts:
-                    _exec_stmt(s, current, shapes, mem_state)
+                    _exec_stmt(s, current, shapes, mem_state, changed_signals)
                 break
         if not matched and default_stmts:
             for s in default_stmts:
-                _exec_stmt(s, current, shapes, mem_state)
+                _exec_stmt(s, current, shapes, mem_state, changed_signals)
 
     elif isinstance(stmt, Assert):
         cond = eval_expr(stmt.cond, current)
@@ -129,34 +137,39 @@ def _exec_stmts_4(
     stmts: tuple[Stmt, ...],
     signals: dict[str, FourState],
     shapes: dict[str, Shape],
+    changed_signals: set[str] | None = None,
 ) -> None:
     """Execute statements under four-state semantics."""
     for stmt in stmts:
-        _exec_stmt_4(stmt, signals, shapes)
+        _exec_stmt_4(stmt, signals, shapes, changed_signals)
 
 
 def _exec_stmt_4(
     stmt: Stmt,
     current: dict[str, FourState],
     shapes: dict[str, Shape],
+    changed_signals: set[str] | None = None,
 ) -> None:
     """Execute a single statement under four-state semantics."""
     if isinstance(stmt, Assign):
         val = eval_expr_4(stmt.value, current)
-        current[stmt.target] = FourState(shape=shapes[stmt.target], aval=val.aval, bval=val.bval)
+        new_value = FourState(shape=shapes[stmt.target], aval=val.aval, bval=val.bval)
+        if current.get(stmt.target) != new_value and changed_signals is not None:
+            changed_signals.add(stmt.target)
+        current[stmt.target] = new_value
 
     elif isinstance(stmt, IfElse):
         cond = eval_expr_4(stmt.cond, current)
         if cond.has_unknown:
             # X condition: execute both branches (conservative)
             for s in stmt.then_body:
-                _exec_stmt_4(s, current, shapes)
+                _exec_stmt_4(s, current, shapes, changed_signals)
             for s in stmt.else_body:
-                _exec_stmt_4(s, current, shapes)
+                _exec_stmt_4(s, current, shapes, changed_signals)
         else:
             body = stmt.then_body if cond.aval else stmt.else_body
             for s in body:
-                _exec_stmt_4(s, current, shapes)
+                _exec_stmt_4(s, current, shapes, changed_signals)
 
     elif isinstance(stmt, Switch):
         cond = eval_expr_4(stmt.test, current)
@@ -164,7 +177,7 @@ def _exec_stmt_4(
             # X test: execute all cases (conservative)
             for _, stmts in stmt.cases:
                 for s in stmts:
-                    _exec_stmt_4(s, current, shapes)
+                    _exec_stmt_4(s, current, shapes, changed_signals)
         else:
             test = cond.aval
             default_stmts: tuple[Stmt, ...] = ()
@@ -175,11 +188,11 @@ def _exec_stmt_4(
                 elif pattern == test:
                     matched = True
                     for s in stmts:
-                        _exec_stmt_4(s, current, shapes)
+                        _exec_stmt_4(s, current, shapes, changed_signals)
                     break
             if not matched and default_stmts:
                 for s in default_stmts:
-                    _exec_stmt_4(s, current, shapes)
+                    _exec_stmt_4(s, current, shapes, changed_signals)
 
     elif isinstance(stmt, Assert):
         cond = eval_expr_4(stmt.cond, current)
@@ -323,6 +336,7 @@ def _exec_mem_reads(
     memories: tuple,
     signals: dict[str, int],
     fired_domains: list[str] | None,
+    changed_signals: set[str] | None = None,
 ) -> None:
     """Execute memory read ports.
 
@@ -338,7 +352,10 @@ def _exec_mem_reads(
                     continue
                 addr = signals.get(rp.addr, 0)
                 if 0 <= addr < mem.depth:
-                    signals[rp.data] = mem_state[mem.name][addr]
+                    val = mem_state[mem.name][addr]
+                    if signals.get(rp.data) != val and changed_signals is not None:
+                        changed_signals.add(rp.data)
+                    signals[rp.data] = val
             else:
                 # Synchronous read: only on clock edge
                 if fired_domains is not None and rp.domain in fired_domains:
@@ -355,7 +372,43 @@ def _exec_mem_reads(
                             if wp_en and wp_addr == addr:
                                 val = signals.get(wp.data, 0)
                                 break
+                        if signals.get(rp.data) != val and changed_signals is not None:
+                            changed_signals.add(rp.data)
                         signals[rp.data] = val
+
+
+def _exec_comb_components(
+    components: tuple[AssignmentComponent, ...],
+    component_index: dict[str, tuple[int, ...]],
+    signals: dict[str, int],
+    shapes: dict[str, Shape],
+    changed_signals: set[str],
+) -> None:
+    """Execute only combinational components affected by the current changes."""
+    if not changed_signals:
+        return
+
+    for component_id in affected_component_ids(component_index, changed_signals):
+        component = components[component_id]
+        for assignment in component.assignments:
+            _exec_stmts(assignment.stmts, signals, shapes)
+
+
+def _exec_comb_components_4(
+    components: tuple[AssignmentComponent, ...],
+    component_index: dict[str, tuple[int, ...]],
+    signals: dict[str, FourState],
+    shapes: dict[str, Shape],
+    changed_signals: set[str],
+) -> None:
+    """Execute only four-state combinational components affected by the current changes."""
+    if not changed_signals:
+        return
+
+    for component_id in affected_component_ids(component_index, changed_signals):
+        component = components[component_id]
+        for assignment in component.assignments:
+            _exec_stmts_4(assignment.stmts, signals, shapes)
 
 
 def _edge_fires(edge: EdgePolarity, old_clk: int, new_clk: int) -> bool:
@@ -481,7 +534,8 @@ def _sim_tick_4(
 def _sim_engine_seq(
     tick: ts[bool],
     init_signals: ts[dict],
-    comb_order: ts[object],
+    comb_components: ts[object],
+    comb_component_index: ts[object],
     domain_info: ts[object],
     shapes: ts[object],
     init_values: ts[object],
@@ -496,7 +550,8 @@ def _sim_engine_seq(
     """
     with csp.state():
         s_signals: dict = {}
-        s_comb_order: list = []
+        s_comb_components: tuple = ()
+        s_comb_component_index: dict = {}
         s_domain_info: dict = {}
         s_shapes: dict = {}
         s_init_values: dict = {}
@@ -511,8 +566,10 @@ def _sim_engine_seq(
     if csp.ticked(init_signals):
         s_signals = dict(init_signals)
         s_initialized = True
-    if csp.ticked(comb_order):
-        s_comb_order = comb_order
+    if csp.ticked(comb_components):
+        s_comb_components = comb_components
+    if csp.ticked(comb_component_index):
+        s_comb_component_index = comb_component_index
     if csp.ticked(domain_info):
         s_domain_info = domain_info
         for dname, dinfo in s_domain_info.items():
@@ -528,7 +585,16 @@ def _sim_engine_seq(
         s_mem_state = {k: list(v) for k, v in mem_init.items()}
 
     if csp.ticked(tick) and s_initialized and not s_finished:
+        # Seed combinationally-driven signals (including memory port controls)
+        # before the first clock edge is processed.
+        if s_tick_count == 0:
+            init_changed = set(s_signals.keys())
+            _exec_comb_components(s_comb_components, s_comb_component_index, s_signals, s_shapes, init_changed)
+            if s_memories:
+                _exec_mem_reads(s_mem_state, s_memories, s_signals, [])
+
         s_tick_count += 1
+        changed_signals: set[str] = set()
 
         # Toggle clocks and detect edges
         fired_domains: list[str] = []
@@ -539,6 +605,8 @@ def _sim_engine_seq(
                 new_clk = 1 - old_clk
                 s_clock_states[dname] = new_clk
                 # Update clock signal in state
+                if s_signals.get(dinfo["clk_signal"]) != new_clk:
+                    changed_signals.add(dinfo["clk_signal"])
                 s_signals[dinfo["clk_signal"]] = new_clk
 
                 if _edge_fires(dinfo["edge"], old_clk, new_clk):
@@ -553,7 +621,10 @@ def _sim_engine_seq(
             rst_active = rst_val if dinfo["rst_active_high"] else (not rst_val)
             if rst_active:
                 for sig_name in dinfo["written_signals"]:
-                    s_signals[sig_name] = mask_value(s_init_values.get(sig_name, 0), s_shapes[sig_name])
+                    reset_val = mask_value(s_init_values.get(sig_name, 0), s_shapes[sig_name])
+                    if s_signals.get(sig_name) != reset_val:
+                        changed_signals.add(sig_name)
+                    s_signals[sig_name] = reset_val
                 # Remove from fired list — reset overrides normal execution
                 if dname in fired_domains:
                     fired_domains.remove(dname)
@@ -570,12 +641,15 @@ def _sim_engine_seq(
                     rst_active = rst_val if dinfo["rst_active_high"] else (not rst_val)
                     if rst_active:
                         for sig_name in dinfo["written_signals"]:
-                            s_signals[sig_name] = mask_value(s_init_values.get(sig_name, 0), s_shapes[sig_name])
+                            reset_val = mask_value(s_init_values.get(sig_name, 0), s_shapes[sig_name])
+                            if s_signals.get(sig_name) != reset_val:
+                                changed_signals.add(sig_name)
+                            s_signals[sig_name] = reset_val
                         continue
 
                 # Normal execution
                 for sb in dinfo["seq_blocks"]:
-                    _exec_stmts(sb.stmts, s_signals, s_shapes)
+                    _exec_stmts(sb.stmts, s_signals, s_shapes, changed_signals=changed_signals)
 
             # Memory writes (after seq blocks, before comb settle)
             if s_memories and fired_domains:
@@ -583,12 +657,11 @@ def _sim_engine_seq(
 
             # Memory reads (synchronous reads on fired domains, combinational reads always)
             if s_memories:
-                _exec_mem_reads(s_mem_state, s_memories, s_signals, fired_domains)
+                _exec_mem_reads(s_mem_state, s_memories, s_signals, fired_domains, changed_signals)
 
             # Settle combinational logic
             if fired_domains:
-                for assignment in s_comb_order:
-                    _exec_stmts(assignment.stmts, s_signals, s_shapes)
+                _exec_comb_components(s_comb_components, s_comb_component_index, s_signals, s_shapes, changed_signals)
         except SimulationFinish:
             s_finished = True
 
@@ -600,7 +673,8 @@ def _sim_engine_seq(
 def _sim_engine_seq_4(
     tick: ts[bool],
     init_signals: ts[dict],
-    comb_order: ts[object],
+    comb_components: ts[object],
+    comb_component_index: ts[object],
     domain_info: ts[object],
     shapes: ts[object],
     init_values: ts[object],
@@ -610,7 +684,8 @@ def _sim_engine_seq_4(
     """Clock-aware simulation engine (four-state)."""
     with csp.state():
         s_signals: dict = {}
-        s_comb_order: list = []
+        s_comb_components: tuple = ()
+        s_comb_component_index: dict = {}
         s_domain_info: dict = {}
         s_shapes: dict = {}
         s_init_values: dict = {}
@@ -625,8 +700,10 @@ def _sim_engine_seq_4(
     if csp.ticked(init_signals):
         s_signals = dict(init_signals)
         s_initialized = True
-    if csp.ticked(comb_order):
-        s_comb_order = comb_order
+    if csp.ticked(comb_components):
+        s_comb_components = comb_components
+    if csp.ticked(comb_component_index):
+        s_comb_component_index = comb_component_index
     if csp.ticked(domain_info):
         s_domain_info = domain_info
         for dname, dinfo in s_domain_info.items():
@@ -642,7 +719,16 @@ def _sim_engine_seq_4(
         s_mem_state = {k: list(v) for k, v in mem_init.items()}
 
     if csp.ticked(tick) and s_initialized and not s_finished:
+        # Seed combinationally-driven signals (including memory port controls)
+        # before the first clock edge is processed.
+        if s_tick_count == 0:
+            init_changed = set(s_signals.keys())
+            _exec_comb_components_4(s_comb_components, s_comb_component_index, s_signals, s_shapes, init_changed)
+            if s_memories:
+                _exec_mem_reads(s_mem_state, s_memories, s_signals, [])
+
         s_tick_count += 1
+        changed_signals: set[str] = set()
 
         fired_domains: list[str] = []
         for dname, dinfo in s_domain_info.items():
@@ -651,7 +737,10 @@ def _sim_engine_seq_4(
                 old_clk = s_clock_states[dname]
                 new_clk = 1 - old_clk
                 s_clock_states[dname] = new_clk
-                s_signals[dinfo["clk_signal"]] = FourState.from_int(new_clk, Shape(1))
+                new_clk_value = FourState.from_int(new_clk, Shape(1))
+                if s_signals.get(dinfo["clk_signal"]) != new_clk_value:
+                    changed_signals.add(dinfo["clk_signal"])
+                s_signals[dinfo["clk_signal"]] = new_clk_value
                 if _edge_fires(dinfo["edge"], old_clk, new_clk):
                     fired_domains.append(dname)
 
@@ -667,7 +756,10 @@ def _sim_engine_seq_4(
                 rst_active = False
             if rst_active:
                 for sig_name in dinfo["written_signals"]:
-                    s_signals[sig_name] = FourState.from_int(s_init_values.get(sig_name, 0), s_shapes[sig_name])
+                    reset_val = FourState.from_int(s_init_values.get(sig_name, 0), s_shapes[sig_name])
+                    if s_signals.get(sig_name) != reset_val:
+                        changed_signals.add(sig_name)
+                    s_signals[sig_name] = reset_val
                 if dname in fired_domains:
                     fired_domains.remove(dname)
 
@@ -684,10 +776,13 @@ def _sim_engine_seq_4(
                         rst_active = False
                     if rst_active:
                         for sig_name in dinfo["written_signals"]:
-                            s_signals[sig_name] = FourState.from_int(s_init_values.get(sig_name, 0), s_shapes[sig_name])
+                            reset_val = FourState.from_int(s_init_values.get(sig_name, 0), s_shapes[sig_name])
+                            if s_signals.get(sig_name) != reset_val:
+                                changed_signals.add(sig_name)
+                            s_signals[sig_name] = reset_val
                         continue
                 for sb in dinfo["seq_blocks"]:
-                    _exec_stmts_4(sb.stmts, s_signals, s_shapes)
+                    _exec_stmts_4(sb.stmts, s_signals, s_shapes, changed_signals)
 
             # Memory writes (after seq blocks, before comb settle)
             if s_memories and fired_domains:
@@ -695,12 +790,11 @@ def _sim_engine_seq_4(
 
             # Memory reads (synchronous reads on fired domains, combinational reads always)
             if s_memories:
-                _exec_mem_reads(s_mem_state, s_memories, s_signals, fired_domains)
+                _exec_mem_reads(s_mem_state, s_memories, s_signals, fired_domains, changed_signals)
 
             # Settle comb
             if fired_domains:
-                for assignment in s_comb_order:
-                    _exec_stmts_4(assignment.stmts, s_signals, s_shapes)
+                _exec_comb_components_4(s_comb_components, s_comb_component_index, s_signals, s_shapes, changed_signals)
         except SimulationFinish:
             s_finished = True
 
@@ -736,6 +830,13 @@ def _extract_signal_4(all_signals: ts[dict], name: ts[str]) -> ts[object]:
             return all_signals[s_name]
 
 
+@csp.node
+def _trace_sink(x: ts[object]) -> ts[bool]:
+    """Emit a lightweight tick to keep upstream graph execution alive."""
+    if csp.ticked(x):
+        return True
+
+
 class CompiledModule:
     """A compiled CSP graph for a single IR module."""
 
@@ -743,10 +844,14 @@ class CompiledModule:
         self,
         module: Module,
         comb_order: list[Assignment],
+        comb_components: tuple[AssignmentComponent, ...],
+        comb_component_index: dict[str, tuple[int, ...]],
         four_state: bool = False,
     ):
         self.module = module
         self._comb_order = comb_order
+        self._comb_components = comb_components
+        self._comb_component_index = comb_component_index
         self._four_state = four_state
         self._shapes: dict[str, Shape] = {}
         self._net_kinds: dict[str, NetKind] = {}
@@ -875,6 +980,9 @@ class CompiledModule:
         clock_period: timedelta = timedelta(microseconds=1),
         inputs: dict[str, int] | None = None,
         clocks: dict[str, timedelta] | None = None,
+        trace_signals: list[str] | None = None,
+        return_traces: bool = True,
+        output_numpy: bool = False,
     ) -> dict[str, list[tuple[datetime, int]]]:
         """Run simulation for N cycles and return signal traces.
 
@@ -887,6 +995,15 @@ class CompiledModule:
 
         ``clocks`` optionally maps domain names to their clock period.  If
         omitted, all domains use ``clock_period``.
+
+        ``trace_signals`` optionally restricts which signals are traced and
+        returned. When omitted, all signals are traced (backward compatible).
+
+        ``return_traces`` disables graph outputs when ``False`` so the engine
+        runs without materializing per-signal traces.
+
+        ``output_numpy`` passes through to ``csp.run`` and returns numpy
+        output buffers when traces are enabled.
         """
         module = self.module
         shapes = self._shapes
@@ -936,6 +1053,11 @@ class CompiledModule:
                             init[sname] = 0
 
         all_names = list(shapes.keys())
+        if trace_signals is None:
+            out_names = all_names
+        else:
+            wanted = set(trace_signals)
+            out_names = [name for name in all_names if name in wanted]
 
         # Set up memory state for init blocks ($readmemh/$readmemb)
         init_mem_state = {k: list(v) for k, v in self._mem_init.items()} if self._mem_init else None
@@ -945,8 +1067,10 @@ class CompiledModule:
                 _exec_stmts(ib.stmts, init, shapes, mem_state=init_mem_state)
             except SimulationFinish:
                 # $finish in init block → return single-point traces
+                if not return_traces:
+                    return {}
                 starttime = datetime(2000, 1, 1)
-                return {name: [(starttime, init.get(name, 0))] for name in all_names}
+                return {name: [(starttime, init.get(name, 0))] for name in out_names}
 
         # Persist any $readmemh/$readmemb changes back to mem_init
         if init_mem_state:
@@ -960,10 +1084,11 @@ class CompiledModule:
                 init,
                 domain_info,
                 init_values,
-                comb_order,
                 shapes,
                 four_state,
-                all_names,
+                out_names,
+                return_traces,
+                output_numpy,
             )
         else:
             return self._run_combinational(
@@ -973,7 +1098,9 @@ class CompiledModule:
                 comb_order,
                 shapes,
                 four_state,
-                all_names,
+                out_names,
+                return_traces,
+                output_numpy,
             )
 
     def _run_combinational(
@@ -985,6 +1112,8 @@ class CompiledModule:
         shapes: dict[str, Shape],
         four_state: bool,
         all_names: list[str],
+        return_traces: bool,
+        output_numpy: bool,
     ) -> dict[str, list[tuple[datetime, int]]]:
         """Phase 0/1 mode: one evaluation per timer tick, no edge semantics."""
         seq_blocks = self.module.seq_blocks
@@ -1001,20 +1130,28 @@ class CompiledModule:
 
             if four_state:
                 all_signals = _sim_tick_4(tick, init_edge, comb_edge, seq_edge, shapes_edge, mem_edge, mem_init_edge)
-                for name in all_names:
-                    sig_out = _extract_signal_4(all_signals, csp.const(name))
-                    csp.add_graph_output(name, sig_out)
+                if return_traces:
+                    for name in all_names:
+                        sig_out = _extract_signal_4(all_signals, csp.const(name))
+                        csp.add_graph_output(name, sig_out)
+                else:
+                    csp.add_graph_output("__sink__", _trace_sink(all_signals))
             else:
                 all_signals = _sim_tick(tick, init_edge, comb_edge, seq_edge, shapes_edge, mem_edge, mem_init_edge)
-                for name in all_names:
-                    sig_out = _extract_signal(all_signals, csp.const(name))
-                    csp.add_graph_output(name, sig_out)
+                if return_traces:
+                    for name in all_names:
+                        sig_out = _extract_signal(all_signals, csp.const(name))
+                        csp.add_graph_output(name, sig_out)
+                else:
+                    csp.add_graph_output("__sink__", _trace_sink(all_signals))
 
         starttime = datetime(2000, 1, 1)
         endtime = starttime + clock_period * cycles
 
-        raw = csp.run(sim_graph, starttime=starttime, endtime=endtime)
-        return self._collect_traces(raw, all_names, four_state)
+        raw = csp.run(sim_graph, starttime=starttime, endtime=endtime, output_numpy=output_numpy)
+        if not return_traces:
+            return {}
+        return self._collect_traces(raw, all_names, four_state, output_numpy)
 
     def _run_sequential(
         self,
@@ -1024,10 +1161,11 @@ class CompiledModule:
         init: dict,
         domain_info: dict[str, dict],
         init_values: dict[str, int],
-        comb_order: list[Assignment],
         shapes: dict[str, Shape],
         four_state: bool,
         all_names: list[str],
+        return_traces: bool,
+        output_numpy: bool,
     ) -> dict[str, list[tuple[datetime, int]]]:
         """Phase 2 mode: clock-edge-driven sequential simulation."""
         # Compute per-domain half-period in ticks (mutates domain_info dicts)
@@ -1046,7 +1184,8 @@ class CompiledModule:
         def sim_graph():
             tick = csp.timer(tick_period, True)
             init_edge = csp.const(init)
-            comb_edge = csp.const(comb_order)
+            comb_edge = csp.const(self._comb_components)
+            comb_index_edge = csp.const(self._comb_component_index)
             domain_edge = csp.const(domain_info)
             shapes_edge = csp.const(shapes)
             init_vals_edge = csp.const(init_values)
@@ -1054,31 +1193,66 @@ class CompiledModule:
             mem_init_edge = csp.const(self._mem_init)
 
             if four_state:
-                all_signals = _sim_engine_seq_4(tick, init_edge, comb_edge, domain_edge, shapes_edge, init_vals_edge, mem_edge, mem_init_edge)
-                for name in all_names:
-                    sig_out = _extract_signal_4(all_signals, csp.const(name))
-                    csp.add_graph_output(name, sig_out)
+                all_signals = _sim_engine_seq_4(
+                    tick,
+                    init_edge,
+                    comb_edge,
+                    comb_index_edge,
+                    domain_edge,
+                    shapes_edge,
+                    init_vals_edge,
+                    mem_edge,
+                    mem_init_edge,
+                )
+                if return_traces:
+                    for name in all_names:
+                        sig_out = _extract_signal_4(all_signals, csp.const(name))
+                        csp.add_graph_output(name, sig_out)
+                else:
+                    csp.add_graph_output("__sink__", _trace_sink(all_signals))
             else:
-                all_signals = _sim_engine_seq(tick, init_edge, comb_edge, domain_edge, shapes_edge, init_vals_edge, mem_edge, mem_init_edge)
-                for name in all_names:
-                    sig_out = _extract_signal(all_signals, csp.const(name))
-                    csp.add_graph_output(name, sig_out)
+                all_signals = _sim_engine_seq(
+                    tick,
+                    init_edge,
+                    comb_edge,
+                    comb_index_edge,
+                    domain_edge,
+                    shapes_edge,
+                    init_vals_edge,
+                    mem_edge,
+                    mem_init_edge,
+                )
+                if return_traces:
+                    for name in all_names:
+                        sig_out = _extract_signal(all_signals, csp.const(name))
+                        csp.add_graph_output(name, sig_out)
+                else:
+                    csp.add_graph_output("__sink__", _trace_sink(all_signals))
 
         starttime = datetime(2000, 1, 1)
         endtime = starttime + tick_period * total_ticks
 
-        raw = csp.run(sim_graph, starttime=starttime, endtime=endtime)
-        return self._collect_traces(raw, all_names, four_state)
+        raw = csp.run(sim_graph, starttime=starttime, endtime=endtime, output_numpy=output_numpy)
+        if not return_traces:
+            return {}
+        return self._collect_traces(raw, all_names, four_state, output_numpy)
 
     @staticmethod
     def _collect_traces(
         raw: dict,
         all_names: list[str],
         four_state: bool,
+        output_numpy: bool,
     ) -> dict[str, list[tuple[datetime, int]]]:
         result: dict[str, list[tuple[datetime, int]]] = {}
         for name in all_names:
             if name in raw:
+                if output_numpy:
+                    times, values = raw[name]
+                    if four_state:
+                        values = [v.to_int for v in values]
+                    result[name] = (times, values)  # type: ignore[assignment]
+                    continue
                 if four_state:
                     result[name] = [(t, v.to_int) for t, v in raw[name]]
                 else:
@@ -1108,5 +1282,7 @@ def compile_module(module: Module, four_state: bool = False) -> CompiledModule:
     stmts_list = [(i, cb.stmts) for i, cb in enumerate(module.comb_blocks)]
     assignments = build_assignments(stmts_list)
     comb_order = topological_sort(assignments)
+    comb_components = tuple(partition_assignments(comb_order))
+    comb_component_index = build_component_signal_index(comb_components)
 
-    return CompiledModule(module, comb_order, four_state)
+    return CompiledModule(module, comb_order, comb_components, comb_component_index, four_state)

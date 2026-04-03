@@ -8,6 +8,7 @@ Given a set of combinational assignments, determine:
 
 from __future__ import annotations
 
+from collections import deque
 from dataclasses import dataclass
 
 from dau_sim.ir.expr import Binary, Concat, Const, Expr, Mux, SignalRef, Slice, Unary
@@ -97,6 +98,20 @@ class Assignment:
         return self.index == other.index
 
 
+@dataclass(frozen=True)
+class AssignmentComponent:
+    """A connected set of combinational assignments.
+
+    Components are disconnected from each other in the assignment dependency
+    graph, so they can be analyzed or scheduled independently.
+    """
+
+    assignments: tuple[Assignment, ...]
+    reads: frozenset[str]
+    writes: frozenset[str]
+    signals: frozenset[str]
+
+
 @dataclass
 class CombLoopError(Exception):
     """Raised when combinational assignments form a cycle."""
@@ -157,11 +172,11 @@ def topological_sort(assignments: list[Assignment]) -> list[Assignment]:
             in_degree[i] += 1
 
     # Kahn's algorithm
-    queue: list[int] = [i for i in range(n) if in_degree[i] == 0]
+    queue = deque(i for i in range(n) if in_degree[i] == 0)
     order: list[int] = []
 
     while queue:
-        node = queue.pop(0)
+        node = queue.popleft()
         order.append(node)
         for neighbor in adj[node]:
             in_degree[neighbor] -= 1
@@ -174,6 +189,90 @@ def topological_sort(assignments: list[Assignment]) -> list[Assignment]:
         raise CombLoopError(cycle=cycle)
 
     return [assignments[i] for i in order]
+
+
+def partition_assignments(assignments: list[Assignment]) -> list[AssignmentComponent]:
+    """Partition assignments into disconnected dependency components.
+
+    The input is typically already topologically sorted. Each returned
+    component preserves that ordering within the component.
+    """
+    if not assignments:
+        return []
+
+    producer_for_signal: dict[str, list[int]] = {}
+    for idx, assignment in enumerate(assignments):
+        for written in assignment.writes:
+            producer_for_signal.setdefault(written, []).append(idx)
+
+    adjacency: list[set[int]] = [set() for _ in range(len(assignments))]
+    for idx, assignment in enumerate(assignments):
+        deps: set[int] = set()
+        for read in assignment.reads:
+            for prod in producer_for_signal.get(read, []):
+                if prod != idx:
+                    deps.add(prod)
+        for written in assignment.writes:
+            for peer in producer_for_signal.get(written, []):
+                if peer != idx:
+                    deps.add(peer)
+        for dep in deps:
+            adjacency[idx].add(dep)
+            adjacency[dep].add(idx)
+
+    visited = [False] * len(assignments)
+    components: list[AssignmentComponent] = []
+    for start in range(len(assignments)):
+        if visited[start]:
+            continue
+
+        stack = [start]
+        visited[start] = True
+        component_indices: set[int] = set()
+        while stack:
+            cur = stack.pop()
+            component_indices.add(cur)
+            for nxt in adjacency[cur]:
+                if not visited[nxt]:
+                    visited[nxt] = True
+                    stack.append(nxt)
+
+        component_assignments = tuple(assignment for idx, assignment in enumerate(assignments) if idx in component_indices)
+        reads = frozenset().union(*(assignment.reads for assignment in component_assignments))
+        writes = frozenset().union(*(assignment.writes for assignment in component_assignments))
+        components.append(
+            AssignmentComponent(
+                assignments=component_assignments,
+                reads=reads,
+                writes=writes,
+                signals=reads | writes,
+            )
+        )
+
+    return components
+
+
+def build_component_signal_index(components: list[AssignmentComponent] | tuple[AssignmentComponent, ...]) -> dict[str, tuple[int, ...]]:
+    """Map each signal to the component ids that depend on it."""
+    signal_to_components: dict[str, list[int]] = {}
+    for component_id, component in enumerate(components):
+        for signal in component.signals:
+            signal_to_components.setdefault(signal, []).append(component_id)
+    return {signal: tuple(component_ids) for signal, component_ids in signal_to_components.items()}
+
+
+def affected_component_ids(
+    signal_to_components: dict[str, tuple[int, ...]],
+    changed_signals: set[str],
+) -> tuple[int, ...]:
+    """Return sorted component ids affected by the changed signals."""
+    if not changed_signals:
+        return ()
+
+    affected: set[int] = set()
+    for signal in changed_signals:
+        affected.update(signal_to_components.get(signal, ()))
+    return tuple(sorted(affected))
 
 
 def _find_cycle(

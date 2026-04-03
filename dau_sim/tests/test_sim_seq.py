@@ -11,6 +11,8 @@ Circuits tested:
 - Four-state sequential simulation
 """
 
+import io
+from contextlib import redirect_stdout
 from datetime import timedelta
 
 from dau_sim.compiler import compile_module
@@ -27,6 +29,7 @@ from dau_sim.ir import (
     Module,
     Port,
     PortDirection,
+    Print,
     ResetStyle,
     SeqBlock,
     Shape,
@@ -245,6 +248,65 @@ class TestCounterSyncReset:
         traces = cm.run(cycles=3, inputs={"rst": 1})
         vals = [v for _, v in traces["count"]]
         assert vals == [0, 0, 0]
+
+
+def _make_partitioned_seq_module() -> Module:
+    return Module(
+        name="partitioned_seq",
+        ports=(
+            Port(Signal("clk", Shape(1)), PortDirection.INPUT),
+            Port(Signal("stable", Shape(8), init=7), PortDirection.INPUT),
+            Port(Signal("count", Shape(8), init=0), PortDirection.OUTPUT),
+            Port(Signal("y", Shape(8), init=0), PortDirection.OUTPUT),
+        ),
+        clock_domains=(ClockDomain("sync", clk="clk", edge=EdgePolarity.POSEDGE),),
+        seq_blocks=(
+            SeqBlock(
+                "sync",
+                stmts=(
+                    Assign(
+                        "count",
+                        Binary(
+                            Shape(8),
+                            BinaryOp.ADD,
+                            SignalRef(Shape(8), "count"),
+                            Const(Shape(8), 1),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+        comb_blocks=(
+            CombBlock(
+                stmts=(
+                    Assign(
+                        "y",
+                        Binary(
+                            Shape(8),
+                            BinaryOp.ADD,
+                            SignalRef(Shape(8), "count"),
+                            Const(Shape(8), 1),
+                        ),
+                    ),
+                ),
+            ),
+            CombBlock(
+                stmts=(Print("stable={}", (SignalRef(Shape(8), "stable"),)),),
+            ),
+        ),
+    )
+
+
+def test_sequential_settle_skips_unrelated_comb_components():
+    """Unrelated comb components should not rerun on every sequential edge."""
+    cm = compile_module(_make_partitioned_seq_module())
+    buf = io.StringIO()
+
+    with redirect_stdout(buf):
+        traces = cm.run(cycles=3, inputs={"stable": 7})
+
+    assert [v for _, v in traces["y"]] == [2, 3, 4]
+    assert buf.getvalue() == ""
 
 
 def _make_counter_async_reset() -> Module:

@@ -1,3 +1,5 @@
+from dau_sim.benchmarks.compile_partitioning import compile_partitioned_module
+from dau_sim.benchmarks.selective_settle import run_partitioned_seq
 from dau_sim.ir.expr import Binary, BinaryOp, SignalRef
 from dau_sim.ir.module import CombBlock, Module, Port, Signal
 from dau_sim.ir.stmt import Assign
@@ -88,3 +90,11 @@ def test_benchmark_module_returns_positive_metrics() -> None:
     assert result.compile_seconds_median >= 0
     assert result.run_seconds_median >= 0
     assert result.cycles_per_second > 0
+
+
+def test_benchmark_compile_partitioning_smoke() -> None:
+    compile_partitioned_module(16)
+
+
+def test_benchmark_selective_settle_smoke() -> None:
+    run_partitioned_seq(16, 8, cycles=20)
