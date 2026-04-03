@@ -13,6 +13,7 @@ Submodules
    /autoapi/dau_sim/adapters/index
    /autoapi/dau_sim/api/index
    /autoapi/dau_sim/backends/index
+   /autoapi/dau_sim/benchmarks/index
    /autoapi/dau_sim/cli/index
    /autoapi/dau_sim/compiler/index
    /autoapi/dau_sim/frontends/index

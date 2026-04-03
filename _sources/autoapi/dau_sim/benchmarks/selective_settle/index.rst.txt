@@ -1,0 +1,25 @@
+dau_sim.benchmarks.selective_settle
+===================================
+
+.. py:module:: dau_sim.benchmarks.selective_settle
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   dau_sim.benchmarks.selective_settle._make_partitioned_seq_module
+   dau_sim.benchmarks.selective_settle.run_partitioned_seq
+
+
+Module Contents
+---------------
+
+.. py:function:: _make_partitioned_seq_module(n: int, stmts_per_component: int) -> dau_sim.ir.module.Module
+
+.. py:function:: run_partitioned_seq(n: int, stmts_per_component: int, cycles: int = 200) -> None
+
+   Compile then run a partitionable sequential design.
+
+

@@ -47,6 +47,8 @@ Functions
    test_sim_seq._make_dff
    test_sim_seq._make_shift_register
    test_sim_seq._make_counter_sync_reset
+   test_sim_seq._make_partitioned_seq_module
+   test_sim_seq.test_sequential_settle_skips_unrelated_comb_components
    test_sim_seq._make_counter_async_reset
    test_sim_seq._make_negedge_counter
    test_sim_seq._make_counter_with_decode
@@ -127,6 +129,13 @@ Module Contents
 
       Sync reset only takes effect on the active clock edge.
 
+
+
+.. py:function:: _make_partitioned_seq_module() -> dau_sim.ir.Module
+
+.. py:function:: test_sequential_settle_skips_unrelated_comb_components()
+
+   Unrelated comb components should not rerun on every sequential edge.
 
 
 .. py:function:: _make_counter_async_reset() -> dau_sim.ir.Module

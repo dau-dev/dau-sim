@@ -209,8 +209,16 @@
 <li class="toctree-l4"><a class="reference internal" href="../../backends/cocotb_backend/index.html">dau_sim.backends.cocotb_backend</a></li>
 </ul>
 </li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../benchmarks/index.html">dau_sim.benchmarks</a><input aria-label="Toggle navigation of dau_sim.benchmarks" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../benchmarks/bench_compile_partitioning/index.html">dau_sim.benchmarks.bench_compile_partitioning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../benchmarks/bench_cross_simulators/index.html">dau_sim.benchmarks.bench_cross_simulators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../benchmarks/bench_selective_settle/index.html">dau_sim.benchmarks.bench_selective_settle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../benchmarks/compile_partitioning/index.html">dau_sim.benchmarks.compile_partitioning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../benchmarks/selective_settle/index.html">dau_sim.benchmarks.selective_settle</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../cli/index.html">dau_sim.cli</a></li>
-<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html">dau_sim.compiler</a><input aria-label="Toggle navigation of dau_sim.compiler" checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html">dau_sim.compiler</a><input aria-label="Toggle navigation of dau_sim.compiler" checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../compile/index.html">dau_sim.compiler.compile</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../depanalysis/index.html">dau_sim.compiler.depanalysis</a></li>
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#">dau_sim.compiler.eval</a></li>
@@ -220,12 +228,12 @@
 <li class="toctree-l4"><a class="reference internal" href="../rewrite/index.html">dau_sim.compiler.rewrite</a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../frontends/index.html">dau_sim.frontends</a><input aria-label="Toggle navigation of dau_sim.frontends" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../frontends/index.html">dau_sim.frontends</a><input aria-label="Toggle navigation of dau_sim.frontends" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../frontends/amaranth_frontend/index.html">dau_sim.frontends.amaranth_frontend</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../frontends/pyslang_frontend/index.html">dau_sim.frontends.pyslang_frontend</a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../ir/index.html">dau_sim.ir</a><input aria-label="Toggle navigation of dau_sim.ir" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../ir/index.html">dau_sim.ir</a><input aria-label="Toggle navigation of dau_sim.ir" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../ir/expr/index.html">dau_sim.ir.expr</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../ir/module/index.html">dau_sim.ir.module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../ir/printer/index.html">dau_sim.ir.printer</a></li>
@@ -308,6 +316,9 @@ Values are Python ints, masked/truncated to the signal’s width.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.compiler.eval._sys_random_rng" title="dau_sim.compiler.eval._sys_random_rng"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_sys_random_rng</span></code></a></p></td>
 <td><p></p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.compiler.eval._WIDTH_MASKS" title="dau_sim.compiler.eval._WIDTH_MASKS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_WIDTH_MASKS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -317,16 +328,19 @@ Values are Python ints, masked/truncated to the signal’s width.</p>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.compiler.eval.mask_value" title="dau_sim.compiler.eval.mask_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mask_value</span></code></a>(→ int)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.compiler.eval._width_mask" title="dau_sim.compiler.eval._width_mask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_width_mask</span></code></a>(→ int)</p></td>
+<td><p>Return a cached (1 &lt;&lt; width) - 1 bitmask for non-negative widths.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.compiler.eval.mask_value" title="dau_sim.compiler.eval.mask_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mask_value</span></code></a>(→ int)</p></td>
 <td><p>Truncate/sign-extend value to fit in shape.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.compiler.eval.eval_expr" title="dau_sim.compiler.eval.eval_expr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_expr</span></code></a>(→ int)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.compiler.eval.eval_expr" title="dau_sim.compiler.eval.eval_expr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_expr</span></code></a>(→ int)</p></td>
 <td><p>Evaluate an expression tree given current signal values.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.compiler.eval._eval_unary" title="dau_sim.compiler.eval._eval_unary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_eval_unary</span></code></a>(→ int)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.compiler.eval._eval_unary" title="dau_sim.compiler.eval._eval_unary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_eval_unary</span></code></a>(→ int)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.compiler.eval._eval_binary" title="dau_sim.compiler.eval._eval_binary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_eval_binary</span></code></a>(→ int)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.compiler.eval._eval_binary" title="dau_sim.compiler.eval._eval_binary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_eval_binary</span></code></a>(→ int)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -339,6 +353,17 @@ Values are Python ints, masked/truncated to the signal’s width.</p>
 <dt class="sig sig-object py" id="dau_sim.compiler.eval._sys_random_rng">
 <span class="sig-prename descclassname"><span class="pre">dau_sim.compiler.eval.</span></span><span class="sig-name descname"><span class="pre">_sys_random_rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">random.Random</span></em><a class="headerlink" href="#dau_sim.compiler.eval._sys_random_rng" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="dau_sim.compiler.eval._WIDTH_MASKS">
+<span class="sig-prename descclassname"><span class="pre">dau_sim.compiler.eval.</span></span><span class="sig-name descname"><span class="pre">_WIDTH_MASKS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.compiler.eval._WIDTH_MASKS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dau_sim.compiler.eval._width_mask">
+<span class="sig-prename descclassname"><span class="pre">dau_sim.compiler.eval.</span></span><span class="sig-name descname"><span class="pre">_width_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../../../_modules/dau_sim/compiler/eval.html#_width_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.compiler.eval._width_mask" title="Link to this definition">¶</a></dt>
+<dd><p>Return a cached (1 &lt;&lt; width) - 1 bitmask for non-negative widths.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dau_sim.compiler.eval.mask_value">
@@ -426,6 +451,8 @@ Values are Python ints, masked/truncated to the signal’s width.</p>
 <li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#dau_sim.compiler.eval._sys_random_rng"><code class="docutils literal notranslate"><span class="pre">_sys_random_rng</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.compiler.eval._WIDTH_MASKS"><code class="docutils literal notranslate"><span class="pre">_WIDTH_MASKS</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.compiler.eval._width_mask"><code class="docutils literal notranslate"><span class="pre">_width_mask()</span></code></a></li>
 <li><a class="reference internal" href="#dau_sim.compiler.eval.mask_value"><code class="docutils literal notranslate"><span class="pre">mask_value()</span></code></a></li>
 <li><a class="reference internal" href="#dau_sim.compiler.eval.eval_expr"><code class="docutils literal notranslate"><span class="pre">eval_expr()</span></code></a></li>
 <li><a class="reference internal" href="#dau_sim.compiler.eval._eval_unary"><code class="docutils literal notranslate"><span class="pre">_eval_unary()</span></code></a></li>

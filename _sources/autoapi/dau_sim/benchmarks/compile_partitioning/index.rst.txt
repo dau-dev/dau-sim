@@ -1,0 +1,25 @@
+dau_sim.benchmarks.compile_partitioning
+=======================================
+
+.. py:module:: dau_sim.benchmarks.compile_partitioning
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   dau_sim.benchmarks.compile_partitioning._make_partitioned_comb_module
+   dau_sim.benchmarks.compile_partitioning.compile_partitioned_module
+
+
+Module Contents
+---------------
+
+.. py:function:: _make_partitioned_comb_module(n: int) -> dau_sim.ir.module.Module
+
+.. py:function:: compile_partitioned_module(n: int) -> None
+
+   Compile a synthetic module with many disconnected comb blocks.
+
+

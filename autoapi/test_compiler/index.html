@@ -209,8 +209,16 @@
 <li class="toctree-l4"><a class="reference internal" href="../dau_sim/backends/cocotb_backend/index.html">dau_sim.backends.cocotb_backend</a></li>
 </ul>
 </li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dau_sim/benchmarks/index.html">dau_sim.benchmarks</a><input aria-label="Toggle navigation of dau_sim.benchmarks" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/benchmarks/bench_compile_partitioning/index.html">dau_sim.benchmarks.bench_compile_partitioning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/benchmarks/bench_cross_simulators/index.html">dau_sim.benchmarks.bench_cross_simulators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/benchmarks/bench_selective_settle/index.html">dau_sim.benchmarks.bench_selective_settle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/benchmarks/compile_partitioning/index.html">dau_sim.benchmarks.compile_partitioning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dau_sim/benchmarks/selective_settle/index.html">dau_sim.benchmarks.selective_settle</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../dau_sim/cli/index.html">dau_sim.cli</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../dau_sim/compiler/index.html">dau_sim.compiler</a><input aria-label="Toggle navigation of dau_sim.compiler" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dau_sim/compiler/index.html">dau_sim.compiler</a><input aria-label="Toggle navigation of dau_sim.compiler" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../dau_sim/compiler/compile/index.html">dau_sim.compiler.compile</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../dau_sim/compiler/depanalysis/index.html">dau_sim.compiler.depanalysis</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../dau_sim/compiler/eval/index.html">dau_sim.compiler.eval</a></li>
@@ -220,12 +228,12 @@
 <li class="toctree-l4"><a class="reference internal" href="../dau_sim/compiler/rewrite/index.html">dau_sim.compiler.rewrite</a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../dau_sim/frontends/index.html">dau_sim.frontends</a><input aria-label="Toggle navigation of dau_sim.frontends" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dau_sim/frontends/index.html">dau_sim.frontends</a><input aria-label="Toggle navigation of dau_sim.frontends" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../dau_sim/frontends/amaranth_frontend/index.html">dau_sim.frontends.amaranth_frontend</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../dau_sim/frontends/pyslang_frontend/index.html">dau_sim.frontends.pyslang_frontend</a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../dau_sim/ir/index.html">dau_sim.ir</a><input aria-label="Toggle navigation of dau_sim.ir" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../dau_sim/ir/index.html">dau_sim.ir</a><input aria-label="Toggle navigation of dau_sim.ir" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../dau_sim/ir/expr/index.html">dau_sim.ir.expr</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../dau_sim/ir/module/index.html">dau_sim.ir.module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../dau_sim/ir/printer/index.html">dau_sim.ir.printer</a></li>
@@ -372,6 +380,36 @@
 <dt class="sig sig-object py" id="test_compiler.TestDependencyAnalysis.test_diamond_dependency">
 <span class="sig-name descname"><span class="pre">test_diamond_dependency</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_compiler.TestDependencyAnalysis.test_diamond_dependency" title="Link to this definition">¶</a></dt>
 <dd><p>a → b, a → c, b+c → d.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_compiler.TestDependencyAnalysis.test_partition_assignments_parallel_components">
+<span class="sig-name descname"><span class="pre">test_partition_assignments_parallel_components</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_compiler.TestDependencyAnalysis.test_partition_assignments_parallel_components" title="Link to this definition">¶</a></dt>
+<dd><p>Independent combinational blocks should land in separate components.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_compiler.TestDependencyAnalysis.test_partition_assignments_connected_chain">
+<span class="sig-name descname"><span class="pre">test_partition_assignments_connected_chain</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_compiler.TestDependencyAnalysis.test_partition_assignments_connected_chain" title="Link to this definition">¶</a></dt>
+<dd><p>A dependency chain should remain a single component.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_compiler.TestDependencyAnalysis.test_partition_assignments_shared_write_signal">
+<span class="sig-name descname"><span class="pre">test_partition_assignments_shared_write_signal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_compiler.TestDependencyAnalysis.test_partition_assignments_shared_write_signal" title="Link to this definition">¶</a></dt>
+<dd><p>Assignments that write the same signal must stay in one component.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_compiler.TestDependencyAnalysis.test_build_component_signal_index_maps_signal_to_component_ids">
+<span class="sig-name descname"><span class="pre">test_build_component_signal_index_maps_signal_to_component_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_compiler.TestDependencyAnalysis.test_build_component_signal_index_maps_signal_to_component_ids" title="Link to this definition">¶</a></dt>
+<dd><p>Each signal should map to the component ids that reference it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_compiler.TestDependencyAnalysis.test_affected_component_ids_deduplicates_and_sorts">
+<span class="sig-name descname"><span class="pre">test_affected_component_ids_deduplicates_and_sorts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_compiler.TestDependencyAnalysis.test_affected_component_ids_deduplicates_and_sorts" title="Link to this definition">¶</a></dt>
+<dd><p>Changed signals should resolve to unique component ids in component order.</p>
 </dd></dl>
 
 </dd></dl>
@@ -641,6 +679,11 @@ Write domain = ‘sync’, read domain = None (comb) or ‘sync’.</p>
 <li><a class="reference internal" href="#test_compiler.TestDependencyAnalysis.test_combinational_loop_detected"><code class="docutils literal notranslate"><span class="pre">TestDependencyAnalysis.test_combinational_loop_detected()</span></code></a></li>
 <li><a class="reference internal" href="#test_compiler.TestDependencyAnalysis.test_self_reference_not_loop"><code class="docutils literal notranslate"><span class="pre">TestDependencyAnalysis.test_self_reference_not_loop()</span></code></a></li>
 <li><a class="reference internal" href="#test_compiler.TestDependencyAnalysis.test_diamond_dependency"><code class="docutils literal notranslate"><span class="pre">TestDependencyAnalysis.test_diamond_dependency()</span></code></a></li>
+<li><a class="reference internal" href="#test_compiler.TestDependencyAnalysis.test_partition_assignments_parallel_components"><code class="docutils literal notranslate"><span class="pre">TestDependencyAnalysis.test_partition_assignments_parallel_components()</span></code></a></li>
+<li><a class="reference internal" href="#test_compiler.TestDependencyAnalysis.test_partition_assignments_connected_chain"><code class="docutils literal notranslate"><span class="pre">TestDependencyAnalysis.test_partition_assignments_connected_chain()</span></code></a></li>
+<li><a class="reference internal" href="#test_compiler.TestDependencyAnalysis.test_partition_assignments_shared_write_signal"><code class="docutils literal notranslate"><span class="pre">TestDependencyAnalysis.test_partition_assignments_shared_write_signal()</span></code></a></li>
+<li><a class="reference internal" href="#test_compiler.TestDependencyAnalysis.test_build_component_signal_index_maps_signal_to_component_ids"><code class="docutils literal notranslate"><span class="pre">TestDependencyAnalysis.test_build_component_signal_index_maps_signal_to_component_ids()</span></code></a></li>
+<li><a class="reference internal" href="#test_compiler.TestDependencyAnalysis.test_affected_component_ids_deduplicates_and_sorts"><code class="docutils literal notranslate"><span class="pre">TestDependencyAnalysis.test_affected_component_ids_deduplicates_and_sorts()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#test_compiler.TestWireResolution"><code class="docutils literal notranslate"><span class="pre">TestWireResolution</span></code></a><ul>

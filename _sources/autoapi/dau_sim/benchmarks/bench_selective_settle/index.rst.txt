@@ -1,0 +1,19 @@
+dau_sim.benchmarks.bench_selective_settle
+=========================================
+
+.. py:module:: dau_sim.benchmarks.bench_selective_settle
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   dau_sim.benchmarks.bench_selective_settle.test_benchmark_selective_settle
+
+
+Module Contents
+---------------
+
+.. py:function:: test_benchmark_selective_settle(benchmark, n: int, stmts_per_component: int) -> None
+

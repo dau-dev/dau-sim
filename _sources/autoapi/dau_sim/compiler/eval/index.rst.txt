@@ -18,6 +18,7 @@ Attributes
 .. autoapisummary::
 
    dau_sim.compiler.eval._sys_random_rng
+   dau_sim.compiler.eval._WIDTH_MASKS
 
 
 Functions
@@ -25,6 +26,7 @@ Functions
 
 .. autoapisummary::
 
+   dau_sim.compiler.eval._width_mask
    dau_sim.compiler.eval.mask_value
    dau_sim.compiler.eval.eval_expr
    dau_sim.compiler.eval._eval_unary
@@ -36,6 +38,14 @@ Module Contents
 
 .. py:data:: _sys_random_rng
    :type:  random.Random
+
+.. py:data:: _WIDTH_MASKS
+   :type:  dict[int, int]
+
+.. py:function:: _width_mask(width: int) -> int
+
+   Return a cached (1 << width) - 1 bitmask for non-negative widths.
+
 
 .. py:function:: mask_value(value: int, shape: dau_sim.ir.types.Shape) -> int
 

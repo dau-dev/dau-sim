@@ -28,6 +28,7 @@ Classes
 .. autoapisummary::
 
    dau_sim.compiler.depanalysis.Assignment
+   dau_sim.compiler.depanalysis.AssignmentComponent
 
 
 Functions
@@ -40,6 +41,9 @@ Functions
    dau_sim.compiler.depanalysis.collect_stmt_writes
    dau_sim.compiler.depanalysis.build_assignments
    dau_sim.compiler.depanalysis.topological_sort
+   dau_sim.compiler.depanalysis.partition_assignments
+   dau_sim.compiler.depanalysis.build_component_signal_index
+   dau_sim.compiler.depanalysis.affected_component_ids
    dau_sim.compiler.depanalysis._find_cycle
 
 
@@ -90,6 +94,30 @@ Module Contents
    .. py:method:: __eq__(other: object) -> bool
 
 
+.. py:class:: AssignmentComponent
+
+   A connected set of combinational assignments.
+
+   Components are disconnected from each other in the assignment dependency
+   graph, so they can be analyzed or scheduled independently.
+
+
+   .. py:attribute:: assignments
+      :type:  tuple[Assignment, Ellipsis]
+
+
+   .. py:attribute:: reads
+      :type:  frozenset[str]
+
+
+   .. py:attribute:: writes
+      :type:  frozenset[str]
+
+
+   .. py:attribute:: signals
+      :type:  frozenset[str]
+
+
 .. py:exception:: CombLoopError
 
    Bases: :py:obj:`Exception`
@@ -124,6 +152,24 @@ Module Contents
 
    Raises CombLoopError if a cycle is detected.
    Returns the sorted list.
+
+
+.. py:function:: partition_assignments(assignments: list[Assignment]) -> list[AssignmentComponent]
+
+   Partition assignments into disconnected dependency components.
+
+   The input is typically already topologically sorted. Each returned
+   component preserves that ordering within the component.
+
+
+.. py:function:: build_component_signal_index(components: list[AssignmentComponent] | tuple[AssignmentComponent, Ellipsis]) -> dict[str, tuple[int, Ellipsis]]
+
+   Map each signal to the component ids that depend on it.
+
+
+.. py:function:: affected_component_ids(signal_to_components: dict[str, tuple[int, Ellipsis]], changed_signals: set[str]) -> tuple[int, Ellipsis]
+
+   Return sorted component ids affected by the changed signals.
 
 
 .. py:function:: _find_cycle(assignments: list[Assignment], sig_to_producer: dict[str, list[int]]) -> list[str]

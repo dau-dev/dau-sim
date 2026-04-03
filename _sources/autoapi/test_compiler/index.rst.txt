@@ -61,6 +61,36 @@ Module Contents
 
 
 
+   .. py:method:: test_partition_assignments_parallel_components()
+
+      Independent combinational blocks should land in separate components.
+
+
+
+   .. py:method:: test_partition_assignments_connected_chain()
+
+      A dependency chain should remain a single component.
+
+
+
+   .. py:method:: test_partition_assignments_shared_write_signal()
+
+      Assignments that write the same signal must stay in one component.
+
+
+
+   .. py:method:: test_build_component_signal_index_maps_signal_to_component_ids()
+
+      Each signal should map to the component ids that reference it.
+
+
+
+   .. py:method:: test_affected_component_ids_deduplicates_and_sorts()
+
+      Changed signals should resolve to unique component ids in component order.
+
+
+
 .. py:class:: TestWireResolution
 
    .. py:method:: test_single_driver()

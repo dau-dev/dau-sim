@@ -209,8 +209,16 @@
 <li class="toctree-l4"><a class="reference internal" href="../../backends/cocotb_backend/index.html">dau_sim.backends.cocotb_backend</a></li>
 </ul>
 </li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../benchmarks/index.html">dau_sim.benchmarks</a><input aria-label="Toggle navigation of dau_sim.benchmarks" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../benchmarks/bench_compile_partitioning/index.html">dau_sim.benchmarks.bench_compile_partitioning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../benchmarks/bench_cross_simulators/index.html">dau_sim.benchmarks.bench_cross_simulators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../benchmarks/bench_selective_settle/index.html">dau_sim.benchmarks.bench_selective_settle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../benchmarks/compile_partitioning/index.html">dau_sim.benchmarks.compile_partitioning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../benchmarks/selective_settle/index.html">dau_sim.benchmarks.selective_settle</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../cli/index.html">dau_sim.cli</a></li>
-<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html">dau_sim.compiler</a><input aria-label="Toggle navigation of dau_sim.compiler" checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html">dau_sim.compiler</a><input aria-label="Toggle navigation of dau_sim.compiler" checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../compile/index.html">dau_sim.compiler.compile</a></li>
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#">dau_sim.compiler.depanalysis</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../eval/index.html">dau_sim.compiler.eval</a></li>
@@ -220,12 +228,12 @@
 <li class="toctree-l4"><a class="reference internal" href="../rewrite/index.html">dau_sim.compiler.rewrite</a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../frontends/index.html">dau_sim.frontends</a><input aria-label="Toggle navigation of dau_sim.frontends" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../frontends/index.html">dau_sim.frontends</a><input aria-label="Toggle navigation of dau_sim.frontends" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../frontends/amaranth_frontend/index.html">dau_sim.frontends.amaranth_frontend</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../frontends/pyslang_frontend/index.html">dau_sim.frontends.pyslang_frontend</a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../ir/index.html">dau_sim.ir</a><input aria-label="Toggle navigation of dau_sim.ir" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../ir/index.html">dau_sim.ir</a><input aria-label="Toggle navigation of dau_sim.ir" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../ir/expr/index.html">dau_sim.ir.expr</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../ir/module/index.html">dau_sim.ir.module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../ir/printer/index.html">dau_sim.ir.printer</a></li>
@@ -322,6 +330,9 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.compiler.depanalysis.Assignment" title="dau_sim.compiler.depanalysis.Assignment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Assignment</span></code></a></p></td>
 <td><p>A single combinational assignment with its dependency info.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.compiler.depanalysis.AssignmentComponent" title="dau_sim.compiler.depanalysis.AssignmentComponent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AssignmentComponent</span></code></a></p></td>
+<td><p>A connected set of combinational assignments.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -346,7 +357,16 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.compiler.depanalysis.topological_sort" title="dau_sim.compiler.depanalysis.topological_sort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">topological_sort</span></code></a>(→ list[Assignment])</p></td>
 <td><p>Sort assignments in dependency order (consumers after producers).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.compiler.depanalysis._find_cycle" title="dau_sim.compiler.depanalysis._find_cycle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_find_cycle</span></code></a>(→ list[str])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.compiler.depanalysis.partition_assignments" title="dau_sim.compiler.depanalysis.partition_assignments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partition_assignments</span></code></a>(→ list[AssignmentComponent])</p></td>
+<td><p>Partition assignments into disconnected dependency components.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.compiler.depanalysis.build_component_signal_index" title="dau_sim.compiler.depanalysis.build_component_signal_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_component_signal_index</span></code></a>(→ dict[str, tuple[int, ...)</p></td>
+<td><p>Map each signal to the component ids that depend on it.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.compiler.depanalysis.affected_component_ids" title="dau_sim.compiler.depanalysis.affected_component_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">affected_component_ids</span></code></a>(→ tuple[int, Ellipsis])</p></td>
+<td><p>Return sorted component ids affected by the changed signals.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.compiler.depanalysis._find_cycle" title="dau_sim.compiler.depanalysis._find_cycle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_find_cycle</span></code></a>(→ list[str])</p></td>
 <td><p>Find a signal-level cycle for error reporting.</p></td>
 </tr>
 </tbody>
@@ -410,6 +430,34 @@
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="dau_sim.compiler.depanalysis.AssignmentComponent">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.compiler.depanalysis.</span></span><span class="sig-name descname"><span class="pre">AssignmentComponent</span></span><a class="reference internal" href="../../../../_modules/dau_sim/compiler/depanalysis.html#AssignmentComponent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.compiler.depanalysis.AssignmentComponent" title="Link to this definition">¶</a></dt>
+<dd><p>A connected set of combinational assignments.</p>
+<p>Components are disconnected from each other in the assignment dependency
+graph, so they can be analyzed or scheduled independently.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.compiler.depanalysis.AssignmentComponent.assignments">
+<span class="sig-name descname"><span class="pre">assignments</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dau_sim.compiler.depanalysis.Assignment" title="dau_sim.compiler.depanalysis.Assignment"><span class="pre">Assignment</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.compiler.depanalysis.AssignmentComponent.assignments" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.compiler.depanalysis.AssignmentComponent.reads">
+<span class="sig-name descname"><span class="pre">reads</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.compiler.depanalysis.AssignmentComponent.reads" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.compiler.depanalysis.AssignmentComponent.writes">
+<span class="sig-name descname"><span class="pre">writes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.compiler.depanalysis.AssignmentComponent.writes" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.compiler.depanalysis.AssignmentComponent.signals">
+<span class="sig-name descname"><span class="pre">signals</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dau_sim.compiler.depanalysis.AssignmentComponent.signals" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="py exception">
 <dt class="sig sig-object py" id="dau_sim.compiler.depanalysis.CombLoopError">
 <em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dau_sim.compiler.depanalysis.</span></span><span class="sig-name descname"><span class="pre">CombLoopError</span></span><a class="reference internal" href="../../../../_modules/dau_sim/compiler/depanalysis.html#CombLoopError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.compiler.depanalysis.CombLoopError" title="Link to this definition">¶</a></dt>
@@ -443,6 +491,26 @@ from a single CombBlock.</p>
 <dd><p>Sort assignments in dependency order (consumers after producers).</p>
 <p>Raises CombLoopError if a cycle is detected.
 Returns the sorted list.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dau_sim.compiler.depanalysis.partition_assignments">
+<span class="sig-prename descclassname"><span class="pre">dau_sim.compiler.depanalysis.</span></span><span class="sig-name descname"><span class="pre">partition_assignments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assignments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dau_sim.compiler.depanalysis.Assignment" title="dau_sim.compiler.depanalysis.Assignment"><span class="pre">Assignment</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dau_sim.compiler.depanalysis.AssignmentComponent" title="dau_sim.compiler.depanalysis.AssignmentComponent"><span class="pre">AssignmentComponent</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/dau_sim/compiler/depanalysis.html#partition_assignments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.compiler.depanalysis.partition_assignments" title="Link to this definition">¶</a></dt>
+<dd><p>Partition assignments into disconnected dependency components.</p>
+<p>The input is typically already topologically sorted. Each returned
+component preserves that ordering within the component.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dau_sim.compiler.depanalysis.build_component_signal_index">
+<span class="sig-prename descclassname"><span class="pre">dau_sim.compiler.depanalysis.</span></span><span class="sig-name descname"><span class="pre">build_component_signal_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dau_sim.compiler.depanalysis.AssignmentComponent" title="dau_sim.compiler.depanalysis.AssignmentComponent"><span class="pre">AssignmentComponent</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dau_sim.compiler.depanalysis.AssignmentComponent" title="dau_sim.compiler.depanalysis.AssignmentComponent"><span class="pre">AssignmentComponent</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/dau_sim/compiler/depanalysis.html#build_component_signal_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.compiler.depanalysis.build_component_signal_index" title="Link to this definition">¶</a></dt>
+<dd><p>Map each signal to the component ids that depend on it.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dau_sim.compiler.depanalysis.affected_component_ids">
+<span class="sig-prename descclassname"><span class="pre">dau_sim.compiler.depanalysis.</span></span><span class="sig-name descname"><span class="pre">affected_component_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal_to_components</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">changed_signals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/dau_sim/compiler/depanalysis.html#affected_component_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.compiler.depanalysis.affected_component_ids" title="Link to this definition">¶</a></dt>
+<dd><p>Return sorted component ids affected by the changed signals.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -526,6 +594,13 @@ Returns the sorted list.</p>
 <li><a class="reference internal" href="#dau_sim.compiler.depanalysis.Assignment.__eq__"><code class="docutils literal notranslate"><span class="pre">Assignment.__eq__()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#dau_sim.compiler.depanalysis.AssignmentComponent"><code class="docutils literal notranslate"><span class="pre">AssignmentComponent</span></code></a><ul>
+<li><a class="reference internal" href="#dau_sim.compiler.depanalysis.AssignmentComponent.assignments"><code class="docutils literal notranslate"><span class="pre">AssignmentComponent.assignments</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.compiler.depanalysis.AssignmentComponent.reads"><code class="docutils literal notranslate"><span class="pre">AssignmentComponent.reads</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.compiler.depanalysis.AssignmentComponent.writes"><code class="docutils literal notranslate"><span class="pre">AssignmentComponent.writes</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.compiler.depanalysis.AssignmentComponent.signals"><code class="docutils literal notranslate"><span class="pre">AssignmentComponent.signals</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#dau_sim.compiler.depanalysis.CombLoopError"><code class="docutils literal notranslate"><span class="pre">CombLoopError</span></code></a><ul>
 <li><a class="reference internal" href="#dau_sim.compiler.depanalysis.CombLoopError.cycle"><code class="docutils literal notranslate"><span class="pre">CombLoopError.cycle</span></code></a></li>
 <li><a class="reference internal" href="#dau_sim.compiler.depanalysis.CombLoopError.__str__"><code class="docutils literal notranslate"><span class="pre">CombLoopError.__str__()</span></code></a></li>
@@ -533,6 +608,9 @@ Returns the sorted list.</p>
 </li>
 <li><a class="reference internal" href="#dau_sim.compiler.depanalysis.build_assignments"><code class="docutils literal notranslate"><span class="pre">build_assignments()</span></code></a></li>
 <li><a class="reference internal" href="#dau_sim.compiler.depanalysis.topological_sort"><code class="docutils literal notranslate"><span class="pre">topological_sort()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.compiler.depanalysis.partition_assignments"><code class="docutils literal notranslate"><span class="pre">partition_assignments()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.compiler.depanalysis.build_component_signal_index"><code class="docutils literal notranslate"><span class="pre">build_component_signal_index()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.compiler.depanalysis.affected_component_ids"><code class="docutils literal notranslate"><span class="pre">affected_component_ids()</span></code></a></li>
 <li><a class="reference internal" href="#dau_sim.compiler.depanalysis._find_cycle"><code class="docutils literal notranslate"><span class="pre">_find_cycle()</span></code></a></li>
 </ul>
 </li>

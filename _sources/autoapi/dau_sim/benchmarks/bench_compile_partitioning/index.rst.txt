@@ -1,0 +1,19 @@
+dau_sim.benchmarks.bench_compile_partitioning
+=============================================
+
+.. py:module:: dau_sim.benchmarks.bench_compile_partitioning
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   dau_sim.benchmarks.bench_compile_partitioning.test_benchmark_compile_partitioning
+
+
+Module Contents
+---------------
+
+.. py:function:: test_benchmark_compile_partitioning(benchmark, n: int) -> None
+
