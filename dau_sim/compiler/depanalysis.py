@@ -252,27 +252,40 @@ def partition_assignments(assignments: list[Assignment]) -> list[AssignmentCompo
     return components
 
 
-def build_component_signal_index(components: list[AssignmentComponent] | tuple[AssignmentComponent, ...]) -> dict[str, tuple[int, ...]]:
-    """Map each signal to the component ids that depend on it."""
-    signal_to_components: dict[str, list[int]] = {}
+def build_component_signal_index(components: list[AssignmentComponent] | tuple[AssignmentComponent, ...]) -> dict[str, int]:
+    """Map each signal to a bitmask of dependent component ids.
+
+    Component id ``k`` is represented by bit ``(1 << k)``.
+    """
+    signal_to_components: dict[str, int] = {}
     for component_id, component in enumerate(components):
+        component_bit = 1 << component_id
         for signal in component.signals:
-            signal_to_components.setdefault(signal, []).append(component_id)
-    return {signal: tuple(component_ids) for signal, component_ids in signal_to_components.items()}
+            signal_to_components[signal] = signal_to_components.get(signal, 0) | component_bit
+    return signal_to_components
 
 
 def affected_component_ids(
-    signal_to_components: dict[str, tuple[int, ...]],
+    signal_to_components: dict[str, int],
     changed_signals: set[str],
 ) -> tuple[int, ...]:
     """Return sorted component ids affected by the changed signals."""
     if not changed_signals:
         return ()
 
-    affected: set[int] = set()
+    combined_mask = 0
     for signal in changed_signals:
-        affected.update(signal_to_components.get(signal, ()))
-    return tuple(sorted(affected))
+        combined_mask |= signal_to_components.get(signal, 0)
+
+    if combined_mask == 0:
+        return ()
+
+    component_ids: list[int] = []
+    while combined_mask:
+        lsb = combined_mask & -combined_mask
+        component_ids.append(lsb.bit_length() - 1)
+        combined_mask ^= lsb
+    return tuple(component_ids)
 
 
 def _find_cycle(
