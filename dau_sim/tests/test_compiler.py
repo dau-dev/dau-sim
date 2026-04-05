@@ -187,18 +187,18 @@ class TestDependencyAnalysis:
 
         index = build_component_signal_index(components)
 
-        assert index["a"] == (0,)
-        assert index["x"] == (0,)
-        assert index["b"] == (1,)
-        assert index["y"] == (1,)
-        assert index["z"] == (0,)
+        assert index["a"] == 0b01
+        assert index["x"] == 0b01
+        assert index["b"] == 0b10
+        assert index["y"] == 0b10
+        assert index["z"] == 0b01
 
     def test_affected_component_ids_deduplicates_and_sorts(self):
         """Changed signals should resolve to unique component ids in component order."""
         signal_index = {
-            "a": (2, 0),
-            "b": (1,),
-            "c": (2,),
+            "a": (1 << 2) | (1 << 0),
+            "b": (1 << 1),
+            "c": (1 << 2),
         }
 
         affected = affected_component_ids(signal_index, {"a", "b", "c"})

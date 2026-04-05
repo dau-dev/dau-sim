@@ -39,8 +39,9 @@ def _exec_stmts(
     changed_signals: set[str] | None = None,
 ) -> None:
     """Execute a list of statements, mutating signals in-place."""
+    exec_stmt = _exec_stmt
     for stmt in stmts:
-        _exec_stmt(stmt, signals, shapes, mem_state, changed_signals)
+        exec_stmt(stmt, signals, shapes, mem_state, changed_signals)
 
 
 def _exec_stmt(
@@ -51,55 +52,59 @@ def _exec_stmt(
     changed_signals: set[str] | None = None,
 ) -> None:
     """Execute a single statement, mutating current signal values."""
-    if isinstance(stmt, Assign):
-        val = eval_expr(stmt.value, current)
-        val = mask_value(val, shapes[stmt.target])
-        if current.get(stmt.target) != val and changed_signals is not None:
-            changed_signals.add(stmt.target)
-        current[stmt.target] = val
+    stmt_type = type(stmt)
 
-    elif isinstance(stmt, IfElse):
+    if stmt_type is Assign:
+        target = stmt.target
+        val = mask_value(eval_expr(stmt.value, current), shapes[target])
+        old_val = current.get(target)
+        if changed_signals is not None and old_val != val:
+            changed_signals.add(target)
+        current[target] = val
+        return
+
+    if stmt_type is IfElse:
         cond = eval_expr(stmt.cond, current)
         body = stmt.then_body if cond else stmt.else_body
-        for s in body:
-            _exec_stmt(s, current, shapes, mem_state, changed_signals)
+        _exec_stmts(body, current, shapes, mem_state, changed_signals)
+        return
 
-    elif isinstance(stmt, Switch):
+    if stmt_type is Switch:
         test = eval_expr(stmt.test, current)
         default_stmts: tuple[Stmt, ...] = ()
-        matched = False
         for pattern, stmts in stmt.cases:
             if pattern is None:
                 default_stmts = stmts
             elif pattern == test:
-                matched = True
-                for s in stmts:
-                    _exec_stmt(s, current, shapes, mem_state, changed_signals)
-                break
-        if not matched and default_stmts:
-            for s in default_stmts:
-                _exec_stmt(s, current, shapes, mem_state, changed_signals)
+                _exec_stmts(stmts, current, shapes, mem_state, changed_signals)
+                return
+        if default_stmts:
+            _exec_stmts(default_stmts, current, shapes, mem_state, changed_signals)
+        return
 
-    elif isinstance(stmt, Assert):
+    if stmt_type is Assert:
         cond = eval_expr(stmt.cond, current)
         if not cond:
             msg = stmt.message or "assertion failed"
             raise AssertionError(msg)
+        return
 
-    elif isinstance(stmt, Print):
+    if stmt_type is Print:
         args = [eval_expr(a, current) for a in stmt.args]
         print(stmt.format_str.format(*args))
+        return
 
-    elif isinstance(stmt, Finish):
+    if stmt_type is Finish:
         raise SimulationFinish(stmt.exit_code)
 
-    elif isinstance(stmt, Delay):
-        pass  # Delay is a no-op in synchronous execution; handled by InitBlock runner
+    if stmt_type is Delay:
+        return  # Delay is a no-op in synchronous execution; handled by InitBlock runner
 
-    elif isinstance(stmt, ReadMem):
+    if stmt_type is ReadMem:
         if mem_state is None:
             raise RuntimeError("$readmemh/$readmemb requires mem_state (use in initial block)")
         _exec_readmem(stmt, mem_state)
+        return
 
 
 def _exec_readmem(stmt: ReadMem, mem_state: dict[str, list[int]]) -> None:
@@ -379,7 +384,7 @@ def _exec_mem_reads(
 
 def _exec_comb_components(
     components: tuple[AssignmentComponent, ...],
-    component_index: dict[str, tuple[int, ...]],
+    component_index: dict[str, int],
     signals: dict[str, int],
     shapes: dict[str, Shape],
     changed_signals: set[str],
@@ -396,7 +401,7 @@ def _exec_comb_components(
 
 def _exec_comb_components_4(
     components: tuple[AssignmentComponent, ...],
-    component_index: dict[str, tuple[int, ...]],
+    component_index: dict[str, int],
     signals: dict[str, FourState],
     shapes: dict[str, Shape],
     changed_signals: set[str],
@@ -475,7 +480,6 @@ def _sim_tick(
                 _exec_stmts(assignment.stmts, s_signals, s_shapes)
         except SimulationFinish:
             s_finished = True
-
         return dict(s_signals)
 
 
@@ -803,31 +807,17 @@ def _sim_engine_seq_4(
 
 
 @csp.node
-def _extract_signal(all_signals: ts[dict], name: ts[str]) -> ts[int]:
+def _extract_signal(all_signals: ts[dict], name: str) -> ts[int]:
     """Extract a single signal's value from the aggregate dict."""
-    with csp.state():
-        s_name: str = ""
-
-    if csp.ticked(name):
-        s_name = name
-
-    if csp.ticked(all_signals) and s_name:
-        if s_name in all_signals:
-            return all_signals[s_name]
+    if csp.ticked(all_signals) and name in all_signals:
+        return all_signals[name]
 
 
 @csp.node
-def _extract_signal_4(all_signals: ts[dict], name: ts[str]) -> ts[object]:
+def _extract_signal_4(all_signals: ts[dict], name: str) -> ts[object]:
     """Extract a single FourState signal value."""
-    with csp.state():
-        s_name: str = ""
-
-    if csp.ticked(name):
-        s_name = name
-
-    if csp.ticked(all_signals) and s_name:
-        if s_name in all_signals:
-            return all_signals[s_name]
+    if csp.ticked(all_signals) and name in all_signals:
+        return all_signals[name]
 
 
 @csp.node
@@ -845,7 +835,7 @@ class CompiledModule:
         module: Module,
         comb_order: list[Assignment],
         comb_components: tuple[AssignmentComponent, ...],
-        comb_component_index: dict[str, tuple[int, ...]],
+        comb_component_index: dict[str, int],
         four_state: bool = False,
     ):
         self.module = module
@@ -1132,7 +1122,7 @@ class CompiledModule:
                 all_signals = _sim_tick_4(tick, init_edge, comb_edge, seq_edge, shapes_edge, mem_edge, mem_init_edge)
                 if return_traces:
                     for name in all_names:
-                        sig_out = _extract_signal_4(all_signals, csp.const(name))
+                        sig_out = _extract_signal_4(all_signals, name)
                         csp.add_graph_output(name, sig_out)
                 else:
                     csp.add_graph_output("__sink__", _trace_sink(all_signals))
@@ -1140,7 +1130,7 @@ class CompiledModule:
                 all_signals = _sim_tick(tick, init_edge, comb_edge, seq_edge, shapes_edge, mem_edge, mem_init_edge)
                 if return_traces:
                     for name in all_names:
-                        sig_out = _extract_signal(all_signals, csp.const(name))
+                        sig_out = _extract_signal(all_signals, name)
                         csp.add_graph_output(name, sig_out)
                 else:
                     csp.add_graph_output("__sink__", _trace_sink(all_signals))
@@ -1206,7 +1196,7 @@ class CompiledModule:
                 )
                 if return_traces:
                     for name in all_names:
-                        sig_out = _extract_signal_4(all_signals, csp.const(name))
+                        sig_out = _extract_signal_4(all_signals, name)
                         csp.add_graph_output(name, sig_out)
                 else:
                     csp.add_graph_output("__sink__", _trace_sink(all_signals))
@@ -1224,7 +1214,7 @@ class CompiledModule:
                 )
                 if return_traces:
                     for name in all_names:
-                        sig_out = _extract_signal(all_signals, csp.const(name))
+                        sig_out = _extract_signal(all_signals, name)
                         csp.add_graph_output(name, sig_out)
                 else:
                     csp.add_graph_output("__sink__", _trace_sink(all_signals))
