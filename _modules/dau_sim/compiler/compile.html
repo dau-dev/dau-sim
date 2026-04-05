@@ -343,8 +343,9 @@
     <span class="n">changed_signals</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Execute a list of statements, mutating signals in-place.&quot;&quot;&quot;</span>
+    <span class="n">exec_stmt</span> <span class="o">=</span> <span class="n">_exec_stmt</span>
     <span class="k">for</span> <span class="n">stmt</span> <span class="ow">in</span> <span class="n">stmts</span><span class="p">:</span>
-        <span class="n">_exec_stmt</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">signals</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span> <span class="n">mem_state</span><span class="p">,</span> <span class="n">changed_signals</span><span class="p">)</span></div>
+        <span class="n">exec_stmt</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">signals</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span> <span class="n">mem_state</span><span class="p">,</span> <span class="n">changed_signals</span><span class="p">)</span></div>
 
 
 
@@ -358,55 +359,59 @@
     <span class="n">changed_signals</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Execute a single statement, mutating current signal values.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">Assign</span><span class="p">):</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="n">eval_expr</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">current</span><span class="p">)</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="n">mask_value</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">shapes</span><span class="p">[</span><span class="n">stmt</span><span class="o">.</span><span class="n">target</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">current</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">target</span><span class="p">)</span> <span class="o">!=</span> <span class="n">val</span> <span class="ow">and</span> <span class="n">changed_signals</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">changed_signals</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
-        <span class="n">current</span><span class="p">[</span><span class="n">stmt</span><span class="o">.</span><span class="n">target</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+    <span class="n">stmt_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
 
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">IfElse</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">stmt_type</span> <span class="ow">is</span> <span class="n">Assign</span><span class="p">:</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">stmt</span><span class="o">.</span><span class="n">target</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">mask_value</span><span class="p">(</span><span class="n">eval_expr</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">current</span><span class="p">),</span> <span class="n">shapes</span><span class="p">[</span><span class="n">target</span><span class="p">])</span>
+        <span class="n">old_val</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">changed_signals</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">old_val</span> <span class="o">!=</span> <span class="n">val</span><span class="p">:</span>
+            <span class="n">changed_signals</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="n">current</span><span class="p">[</span><span class="n">target</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="n">stmt_type</span> <span class="ow">is</span> <span class="n">IfElse</span><span class="p">:</span>
         <span class="n">cond</span> <span class="o">=</span> <span class="n">eval_expr</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">cond</span><span class="p">,</span> <span class="n">current</span><span class="p">)</span>
         <span class="n">body</span> <span class="o">=</span> <span class="n">stmt</span><span class="o">.</span><span class="n">then_body</span> <span class="k">if</span> <span class="n">cond</span> <span class="k">else</span> <span class="n">stmt</span><span class="o">.</span><span class="n">else_body</span>
-        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">body</span><span class="p">:</span>
-            <span class="n">_exec_stmt</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span> <span class="n">mem_state</span><span class="p">,</span> <span class="n">changed_signals</span><span class="p">)</span>
+        <span class="n">_exec_stmts</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span> <span class="n">mem_state</span><span class="p">,</span> <span class="n">changed_signals</span><span class="p">)</span>
+        <span class="k">return</span>
 
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">Switch</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">stmt_type</span> <span class="ow">is</span> <span class="n">Switch</span><span class="p">:</span>
         <span class="n">test</span> <span class="o">=</span> <span class="n">eval_expr</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">test</span><span class="p">,</span> <span class="n">current</span><span class="p">)</span>
         <span class="n">default_stmts</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Stmt</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
-        <span class="n">matched</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">for</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">stmts</span> <span class="ow">in</span> <span class="n">stmt</span><span class="o">.</span><span class="n">cases</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">pattern</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">default_stmts</span> <span class="o">=</span> <span class="n">stmts</span>
             <span class="k">elif</span> <span class="n">pattern</span> <span class="o">==</span> <span class="n">test</span><span class="p">:</span>
-                <span class="n">matched</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">stmts</span><span class="p">:</span>
-                    <span class="n">_exec_stmt</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span> <span class="n">mem_state</span><span class="p">,</span> <span class="n">changed_signals</span><span class="p">)</span>
-                <span class="k">break</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">matched</span> <span class="ow">and</span> <span class="n">default_stmts</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">default_stmts</span><span class="p">:</span>
-                <span class="n">_exec_stmt</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span> <span class="n">mem_state</span><span class="p">,</span> <span class="n">changed_signals</span><span class="p">)</span>
+                <span class="n">_exec_stmts</span><span class="p">(</span><span class="n">stmts</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span> <span class="n">mem_state</span><span class="p">,</span> <span class="n">changed_signals</span><span class="p">)</span>
+                <span class="k">return</span>
+        <span class="k">if</span> <span class="n">default_stmts</span><span class="p">:</span>
+            <span class="n">_exec_stmts</span><span class="p">(</span><span class="n">default_stmts</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span> <span class="n">mem_state</span><span class="p">,</span> <span class="n">changed_signals</span><span class="p">)</span>
+        <span class="k">return</span>
 
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">Assert</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">stmt_type</span> <span class="ow">is</span> <span class="n">Assert</span><span class="p">:</span>
         <span class="n">cond</span> <span class="o">=</span> <span class="n">eval_expr</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">cond</span><span class="p">,</span> <span class="n">current</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">cond</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="n">stmt</span><span class="o">.</span><span class="n">message</span> <span class="ow">or</span> <span class="s2">&quot;assertion failed&quot;</span>
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">return</span>
 
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">Print</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">stmt_type</span> <span class="ow">is</span> <span class="n">Print</span><span class="p">:</span>
         <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">eval_expr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">current</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">stmt</span><span class="o">.</span><span class="n">args</span><span class="p">]</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">format_str</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">))</span>
+        <span class="k">return</span>
 
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">Finish</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">stmt_type</span> <span class="ow">is</span> <span class="n">Finish</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">SimulationFinish</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">exit_code</span><span class="p">)</span>
 
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">Delay</span><span class="p">):</span>
-        <span class="k">pass</span>  <span class="c1"># Delay is a no-op in synchronous execution; handled by InitBlock runner</span>
+    <span class="k">if</span> <span class="n">stmt_type</span> <span class="ow">is</span> <span class="n">Delay</span><span class="p">:</span>
+        <span class="k">return</span>  <span class="c1"># Delay is a no-op in synchronous execution; handled by InitBlock runner</span>
 
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">ReadMem</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">stmt_type</span> <span class="ow">is</span> <span class="n">ReadMem</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">mem_state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;$readmemh/$readmemb requires mem_state (use in initial block)&quot;</span><span class="p">)</span>
-        <span class="n">_exec_readmem</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">mem_state</span><span class="p">)</span></div>
+        <span class="n">_exec_readmem</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">mem_state</span><span class="p">)</span>
+        <span class="k">return</span></div>
 
 
 
@@ -716,7 +721,7 @@
 <a class="viewcode-back" href="../../../autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile._exec_comb_components">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">_exec_comb_components</span><span class="p">(</span>
     <span class="n">components</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">AssignmentComponent</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
-    <span class="n">component_index</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]],</span>
+    <span class="n">component_index</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
     <span class="n">signals</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
     <span class="n">shapes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Shape</span><span class="p">],</span>
     <span class="n">changed_signals</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -736,7 +741,7 @@
 <a class="viewcode-back" href="../../../autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile._exec_comb_components_4">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">_exec_comb_components_4</span><span class="p">(</span>
     <span class="n">components</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">AssignmentComponent</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
-    <span class="n">component_index</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]],</span>
+    <span class="n">component_index</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
     <span class="n">signals</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">FourState</span><span class="p">],</span>
     <span class="n">shapes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Shape</span><span class="p">],</span>
     <span class="n">changed_signals</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -821,7 +826,6 @@
                 <span class="n">_exec_stmts</span><span class="p">(</span><span class="n">assignment</span><span class="o">.</span><span class="n">stmts</span><span class="p">,</span> <span class="n">s_signals</span><span class="p">,</span> <span class="n">s_shapes</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">SimulationFinish</span><span class="p">:</span>
             <span class="n">s_finished</span> <span class="o">=</span> <span class="kc">True</span>
-
         <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">s_signals</span><span class="p">)</span></div>
 
 
@@ -1161,34 +1165,20 @@
 <div class="viewcode-block" id="_extract_signal">
 <a class="viewcode-back" href="../../../autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile._extract_signal">[docs]</a>
 <span class="nd">@csp</span><span class="o">.</span><span class="n">node</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">_extract_signal</span><span class="p">(</span><span class="n">all_signals</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ts</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_extract_signal</span><span class="p">(</span><span class="n">all_signals</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ts</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract a single signal&#39;s value from the aggregate dict.&quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="n">csp</span><span class="o">.</span><span class="n">state</span><span class="p">():</span>
-        <span class="n">s_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-
-    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">ticked</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-        <span class="n">s_name</span> <span class="o">=</span> <span class="n">name</span>
-
-    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">ticked</span><span class="p">(</span><span class="n">all_signals</span><span class="p">)</span> <span class="ow">and</span> <span class="n">s_name</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">s_name</span> <span class="ow">in</span> <span class="n">all_signals</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">all_signals</span><span class="p">[</span><span class="n">s_name</span><span class="p">]</span></div>
+    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">ticked</span><span class="p">(</span><span class="n">all_signals</span><span class="p">)</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">all_signals</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">all_signals</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
 
 
 
 <div class="viewcode-block" id="_extract_signal_4">
 <a class="viewcode-back" href="../../../autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile._extract_signal_4">[docs]</a>
 <span class="nd">@csp</span><span class="o">.</span><span class="n">node</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">_extract_signal_4</span><span class="p">(</span><span class="n">all_signals</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ts</span><span class="p">[</span><span class="nb">object</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_extract_signal_4</span><span class="p">(</span><span class="n">all_signals</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ts</span><span class="p">[</span><span class="nb">object</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract a single FourState signal value.&quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="n">csp</span><span class="o">.</span><span class="n">state</span><span class="p">():</span>
-        <span class="n">s_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-
-    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">ticked</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-        <span class="n">s_name</span> <span class="o">=</span> <span class="n">name</span>
-
-    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">ticked</span><span class="p">(</span><span class="n">all_signals</span><span class="p">)</span> <span class="ow">and</span> <span class="n">s_name</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">s_name</span> <span class="ow">in</span> <span class="n">all_signals</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">all_signals</span><span class="p">[</span><span class="n">s_name</span><span class="p">]</span></div>
+    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">ticked</span><span class="p">(</span><span class="n">all_signals</span><span class="p">)</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">all_signals</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">all_signals</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
 
 
 
@@ -1212,7 +1202,7 @@
         <span class="n">module</span><span class="p">:</span> <span class="n">Module</span><span class="p">,</span>
         <span class="n">comb_order</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Assignment</span><span class="p">],</span>
         <span class="n">comb_components</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">AssignmentComponent</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
-        <span class="n">comb_component_index</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]],</span>
+        <span class="n">comb_component_index</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
         <span class="n">four_state</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">module</span>
@@ -1513,7 +1503,7 @@
                 <span class="n">all_signals</span> <span class="o">=</span> <span class="n">_sim_tick_4</span><span class="p">(</span><span class="n">tick</span><span class="p">,</span> <span class="n">init_edge</span><span class="p">,</span> <span class="n">comb_edge</span><span class="p">,</span> <span class="n">seq_edge</span><span class="p">,</span> <span class="n">shapes_edge</span><span class="p">,</span> <span class="n">mem_edge</span><span class="p">,</span> <span class="n">mem_init_edge</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">return_traces</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">all_names</span><span class="p">:</span>
-                        <span class="n">sig_out</span> <span class="o">=</span> <span class="n">_extract_signal_4</span><span class="p">(</span><span class="n">all_signals</span><span class="p">,</span> <span class="n">csp</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+                        <span class="n">sig_out</span> <span class="o">=</span> <span class="n">_extract_signal_4</span><span class="p">(</span><span class="n">all_signals</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
                         <span class="n">csp</span><span class="o">.</span><span class="n">add_graph_output</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">sig_out</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">csp</span><span class="o">.</span><span class="n">add_graph_output</span><span class="p">(</span><span class="s2">&quot;__sink__&quot;</span><span class="p">,</span> <span class="n">_trace_sink</span><span class="p">(</span><span class="n">all_signals</span><span class="p">))</span>
@@ -1521,7 +1511,7 @@
                 <span class="n">all_signals</span> <span class="o">=</span> <span class="n">_sim_tick</span><span class="p">(</span><span class="n">tick</span><span class="p">,</span> <span class="n">init_edge</span><span class="p">,</span> <span class="n">comb_edge</span><span class="p">,</span> <span class="n">seq_edge</span><span class="p">,</span> <span class="n">shapes_edge</span><span class="p">,</span> <span class="n">mem_edge</span><span class="p">,</span> <span class="n">mem_init_edge</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">return_traces</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">all_names</span><span class="p">:</span>
-                        <span class="n">sig_out</span> <span class="o">=</span> <span class="n">_extract_signal</span><span class="p">(</span><span class="n">all_signals</span><span class="p">,</span> <span class="n">csp</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+                        <span class="n">sig_out</span> <span class="o">=</span> <span class="n">_extract_signal</span><span class="p">(</span><span class="n">all_signals</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
                         <span class="n">csp</span><span class="o">.</span><span class="n">add_graph_output</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">sig_out</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">csp</span><span class="o">.</span><span class="n">add_graph_output</span><span class="p">(</span><span class="s2">&quot;__sink__&quot;</span><span class="p">,</span> <span class="n">_trace_sink</span><span class="p">(</span><span class="n">all_signals</span><span class="p">))</span>
@@ -1590,7 +1580,7 @@
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="n">return_traces</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">all_names</span><span class="p">:</span>
-                        <span class="n">sig_out</span> <span class="o">=</span> <span class="n">_extract_signal_4</span><span class="p">(</span><span class="n">all_signals</span><span class="p">,</span> <span class="n">csp</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+                        <span class="n">sig_out</span> <span class="o">=</span> <span class="n">_extract_signal_4</span><span class="p">(</span><span class="n">all_signals</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
                         <span class="n">csp</span><span class="o">.</span><span class="n">add_graph_output</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">sig_out</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">csp</span><span class="o">.</span><span class="n">add_graph_output</span><span class="p">(</span><span class="s2">&quot;__sink__&quot;</span><span class="p">,</span> <span class="n">_trace_sink</span><span class="p">(</span><span class="n">all_signals</span><span class="p">))</span>
@@ -1608,7 +1598,7 @@
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="n">return_traces</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">all_names</span><span class="p">:</span>
-                        <span class="n">sig_out</span> <span class="o">=</span> <span class="n">_extract_signal</span><span class="p">(</span><span class="n">all_signals</span><span class="p">,</span> <span class="n">csp</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+                        <span class="n">sig_out</span> <span class="o">=</span> <span class="n">_extract_signal</span><span class="p">(</span><span class="n">all_signals</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
                         <span class="n">csp</span><span class="o">.</span><span class="n">add_graph_output</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">sig_out</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">csp</span><span class="o">.</span><span class="n">add_graph_output</span><span class="p">(</span><span class="s2">&quot;__sink__&quot;</span><span class="p">,</span> <span class="n">_trace_sink</span><span class="p">(</span><span class="n">all_signals</span><span class="p">))</span>

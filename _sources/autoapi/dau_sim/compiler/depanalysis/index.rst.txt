@@ -162,12 +162,14 @@ Module Contents
    component preserves that ordering within the component.
 
 
-.. py:function:: build_component_signal_index(components: list[AssignmentComponent] | tuple[AssignmentComponent, Ellipsis]) -> dict[str, tuple[int, Ellipsis]]
+.. py:function:: build_component_signal_index(components: list[AssignmentComponent] | tuple[AssignmentComponent, Ellipsis]) -> dict[str, int]
 
-   Map each signal to the component ids that depend on it.
+   Map each signal to a bitmask of dependent component ids.
+
+   Component id ``k`` is represented by bit ``(1 << k)``.
 
 
-.. py:function:: affected_component_ids(signal_to_components: dict[str, tuple[int, Ellipsis]], changed_signals: set[str]) -> tuple[int, Ellipsis]
+.. py:function:: affected_component_ids(signal_to_components: dict[str, int], changed_signals: set[str]) -> tuple[int, Ellipsis]
 
    Return sorted component ids affected by the changed signals.
 

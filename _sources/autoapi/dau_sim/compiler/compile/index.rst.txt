@@ -139,12 +139,12 @@ Module Contents
    Transparent reads forward write data from same-cycle writes.
 
 
-.. py:function:: _exec_comb_components(components: tuple[dau_sim.compiler.depanalysis.AssignmentComponent, Ellipsis], component_index: dict[str, tuple[int, Ellipsis]], signals: dict[str, int], shapes: dict[str, dau_sim.ir.types.Shape], changed_signals: set[str]) -> None
+.. py:function:: _exec_comb_components(components: tuple[dau_sim.compiler.depanalysis.AssignmentComponent, Ellipsis], component_index: dict[str, int], signals: dict[str, int], shapes: dict[str, dau_sim.ir.types.Shape], changed_signals: set[str]) -> None
 
    Execute only combinational components affected by the current changes.
 
 
-.. py:function:: _exec_comb_components_4(components: tuple[dau_sim.compiler.depanalysis.AssignmentComponent, Ellipsis], component_index: dict[str, tuple[int, Ellipsis]], signals: dict[str, dau_sim.ir.types.FourState], shapes: dict[str, dau_sim.ir.types.Shape], changed_signals: set[str]) -> None
+.. py:function:: _exec_comb_components_4(components: tuple[dau_sim.compiler.depanalysis.AssignmentComponent, Ellipsis], component_index: dict[str, int], signals: dict[str, dau_sim.ir.types.FourState], shapes: dict[str, dau_sim.ir.types.Shape], changed_signals: set[str]) -> None
 
    Execute only four-state combinational components affected by the current changes.
 
@@ -181,12 +181,12 @@ Module Contents
    Clock-aware simulation engine (four-state).
 
 
-.. py:function:: _extract_signal(all_signals: csp.ts[dict], name: csp.ts[str]) -> csp.ts[int]
+.. py:function:: _extract_signal(all_signals: csp.ts[dict], name: str) -> csp.ts[int]
 
    Extract a single signal's value from the aggregate dict.
 
 
-.. py:function:: _extract_signal_4(all_signals: csp.ts[dict], name: csp.ts[str]) -> csp.ts[object]
+.. py:function:: _extract_signal_4(all_signals: csp.ts[dict], name: str) -> csp.ts[object]
 
    Extract a single FourState signal value.
 
@@ -196,7 +196,7 @@ Module Contents
    Emit a lightweight tick to keep upstream graph execution alive.
 
 
-.. py:class:: CompiledModule(module: dau_sim.ir.module.Module, comb_order: list[dau_sim.compiler.depanalysis.Assignment], comb_components: tuple[dau_sim.compiler.depanalysis.AssignmentComponent, Ellipsis], comb_component_index: dict[str, tuple[int, Ellipsis]], four_state: bool = False)
+.. py:class:: CompiledModule(module: dau_sim.ir.module.Module, comb_order: list[dau_sim.compiler.depanalysis.Assignment], comb_components: tuple[dau_sim.compiler.depanalysis.AssignmentComponent, Ellipsis], comb_component_index: dict[str, int], four_state: bool = False)
 
    A compiled CSP graph for a single IR module.
 
