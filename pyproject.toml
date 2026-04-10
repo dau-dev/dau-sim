@@ -196,4 +196,4 @@ pages = [
     "docs/src/verilog.md",
     "docs/src/cocotb.md",
 ]
-use-autoapi = true
+use-autoapi = false
