@@ -188,5 +188,12 @@ section-order = [
 [tool.yardang]
 title = "dau sim"
 root = "README.md"
-pages = []
+pages = [
+    "docs/src/architecture.md",
+    "docs/src/cli.md",
+    "docs/src/api.md",
+    "docs/src/amaranth.md",
+    "docs/src/verilog.md",
+    "docs/src/cocotb.md",
+]
 use-autoapi = true

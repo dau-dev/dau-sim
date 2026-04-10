@@ -110,11 +110,6 @@ def _make_comb_module():
     )
 
 
-# ===================================================================
-# DauSimHandle tests
-# ===================================================================
-
-
 class TestDauSimHandle:
     def test_scope_handle_type(self):
         engine = SimulationEngine(_make_comb_module())
@@ -254,11 +249,6 @@ class TestDauSimHandle:
         assert hash(h1) != hash(h2)
 
 
-# ===================================================================
-# DauSimIterator tests
-# ===================================================================
-
-
 class TestDauSimIterator:
     def test_basic_iteration(self):
         engine = SimulationEngine(_make_comb_module())
@@ -270,11 +260,6 @@ class TestDauSimIterator:
     def test_empty(self):
         it = DauSimIterator([])
         assert list(it) == []
-
-
-# ===================================================================
-# DauSimCallback tests
-# ===================================================================
 
 
 class TestDauSimCallback:
@@ -300,11 +285,6 @@ class TestDauSimCallback:
         assert "s" in engine._vch_callbacks
         cb.deregister()
         assert "s" not in engine._vch_callbacks
-
-
-# ===================================================================
-# SimulationEngine — initialization
-# ===================================================================
 
 
 class TestEngineInit:
@@ -342,11 +322,6 @@ class TestEngineInit:
         assert engine._signals["out"] == 0
 
 
-# ===================================================================
-# SimulationEngine — callback registration & queue
-# ===================================================================
-
-
 class TestEngineCallbacks:
     def test_timed_callback(self):
         engine = SimulationEngine(_make_comb_module())
@@ -382,11 +357,6 @@ class TestEngineCallbacks:
         engine.register_value_change_callback(h, lambda *a: None, RISING)
         assert "a" in engine._vch_callbacks
         assert len(engine._vch_callbacks["a"]) == 1
-
-
-# ===================================================================
-# SimulationEngine — stepping & settling
-# ===================================================================
 
 
 class TestEngineStepping:
@@ -468,11 +438,6 @@ class TestEngineStepping:
         assert engine._signals["out"] == 0
 
 
-# ===================================================================
-# SimulationEngine — value-change callbacks
-# ===================================================================
-
-
 class TestEngineVCH:
     def test_rising_edge_fires(self):
         m = _make_counter_module()
@@ -537,11 +502,6 @@ class TestEngineVCH:
         assert fired == []
 
 
-# ===================================================================
-# SimulationEngine — full step() with cocotb-like flow
-# ===================================================================
-
-
 class TestEngineFullStep:
     def test_timed_callback_then_readwrite(self):
         """Simulates the cocotb flow: Timer → write scheduler → ReadWrite."""
@@ -593,11 +553,6 @@ class TestEngineFullStep:
         assert engine._sim_time == 1
 
 
-# ===================================================================
-# Handle hierarchy
-# ===================================================================
-
-
 class TestHandleHierarchy:
     def test_build_hierarchy(self):
         m = _make_counter_module()
@@ -626,11 +581,6 @@ class TestHandleHierarchy:
         assert "clk" in names
         assert "rst" in names
         assert "count" in names
-
-
-# ===================================================================
-# Simulator module
-# ===================================================================
 
 
 class TestSimulatorModule:
@@ -702,11 +652,6 @@ class TestSimulatorModule:
         engine = SimulationEngine(_make_comb_module())
         mod = _create_simulator_module(engine)
         assert mod.package_iterate() is None
-
-
-# ===================================================================
-# Full cocotb integration — using actual cocotb scheduler
-# ===================================================================
 
 
 class TestCocotbIntegration:
