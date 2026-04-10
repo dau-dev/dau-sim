@@ -33,33 +33,17 @@ cd dau-sim
 pip install -e ".[develop]"
 ```
 
-## Command Line Interface
-
-Use the Typer-based CLI for quick simulation and performance checks:
-
-```bash
-dau-sim run-sv design.sv --top top_module --cycles 1000 --vcd out.vcd
-dau-sim perf-sv design.sv --top top_module --cycles 30000 --repeats 3
-```
-
-`run-sv` executes a design and shows latest signal values. `perf-sv` reports
-compile/run timing and node-separation diagnostics to guide non-C++
-optimization work.
-
 ## Quick Start
 
-### Amaranth Design → Simulate → VCD
-
 ```python
-from amaranth.hdl import Module
 from amaranth.lib import wiring
 from amaranth.lib.wiring import In, Out
+from amaranth.hdl import Module
 
 from dau_sim.frontends import from_amaranth
 from dau_sim.compiler import compile_module
 
 
-# Define a simple counter in Amaranth
 class Counter(wiring.Component):
     en: In(1)
     count: Out(8)
@@ -71,250 +55,22 @@ class Counter(wiring.Component):
         return m
 
 
-# Lower to IR, compile, and simulate
-ir_module = from_amaranth(Counter())
-cm = compile_module(ir_module)
+cm = compile_module(from_amaranth(Counter()))
 traces = cm.run(cycles=20, inputs={"en": 1})
-
-# Write VCD waveform file
 cm.write_vcd("counter.vcd", traces)
-
-# Or get the VCD as a string
-vcd_str = cm.traces_to_vcd(traces)
 ```
 
-### SystemVerilog → Simulate
+## Documentation
 
-```python
-from dau_sim.frontends import parse_sv
-from dau_sim.compiler import compile_module
-
-ir_module = parse_sv("""
-    module adder(
-        input  logic [7:0] a, b,
-        output logic [7:0] y
-    );
-        assign y = a + b;
-    endmodule
-""", top_module="adder")
-
-cm = compile_module(ir_module)
-traces = cm.run(cycles=1, inputs={"a": 100, "b": 55})
-
-# traces["y"] contains [(timestamp, 155)]
-```
-
-### Hand-Constructed IR
-
-```python
-from dau_sim.ir import *
-from dau_sim.compiler import compile_module
-
-# Build a 4-bit AND gate from IR primitives
-a = Signal("a", Shape(4))
-b = Signal("b", Shape(4))
-y = Signal("y", Shape(4))
-
-mod = Module(
-    name="and_gate",
-    ports=(
-        Port(a, PortDirection.INPUT),
-        Port(b, PortDirection.INPUT),
-        Port(y, PortDirection.OUTPUT),
-    ),
-    signals=(),
-    clock_domains=(),
-    comb_blocks=(
-        CombBlock(stmts=(
-            Assign("y", Binary(Shape(4), BinaryOp.AND, SignalRef(Shape(4), "a"), SignalRef(Shape(4), "b"))),
-        )),
-    ),
-    seq_blocks=(),
-)
-
-cm = compile_module(mod)
-traces = cm.run(cycles=1, inputs={"a": 0b1100, "b": 0b1010})
-# traces["y"] -> [(timestamp, 0b1000)]
-```
-
-### Sequential Design with Clock Domains
-
-```python
-from amaranth.hdl import Cat, Module, Signal
-from amaranth.lib import wiring
-from amaranth.lib.wiring import In, Out
-from datetime import timedelta
-
-from dau_sim.frontends import from_amaranth
-from dau_sim.compiler import compile_module
-
-
-class ShiftRegister(wiring.Component):
-    d_in: In(1)
-    d_out: Out(1)
-
-    def elaborate(self, platform):
-        m = Module()
-        reg = Signal(4)
-        m.d.sync += reg.eq(Cat(self.d_in, reg[:-1]))
-        m.d.comb += self.d_out.eq(reg[-1])
-        return m
-
-
-ir = from_amaranth(ShiftRegister())
-cm = compile_module(ir)
-
-# Run with custom clock period
-traces = cm.run(
-    cycles=10,
-    clock_period=timedelta(microseconds=1),
-    inputs={"d_in": 1},
-)
-
-cm.write_vcd("shift_reg.vcd", traces, timescale="1ns")
-```
-
-### cocotb Integration
-
-dau-sim includes a pure-Python [cocotb](https://www.cocotb.org/) backend that lets
-you run existing cocotb testbenches directly on dau-sim — no Verilog compilation or
-external simulator required. The backend implements Verilog-style non-blocking
-assignment (NBA) semantics so that `RisingEdge` callbacks see pre-NBA values,
-matching real HDL simulator behavior.
-
-```python
-from dau_sim.frontends import from_amaranth
-from dau_sim.backends.cocotb_backend import run_cocotb
-
-from amaranth.hdl import Module
-from amaranth.lib import wiring
-from amaranth.lib.wiring import In, Out
-
-
-class Counter(wiring.Component):
-    en: In(1)
-    count: Out(8)
-
-    def elaborate(self, platform):
-        m = Module()
-        with m.If(self.en):
-            m.d.sync += self.count.eq(self.count + 1)
-        return m
-
-
-# Run cocotb testbench against the Amaranth design
-run_cocotb(Counter(), test_module="test_counter")
-```
-
-Then write your cocotb test as usual in `test_counter.py`:
-
-```python
-import cocotb
-from cocotb.clock import Clock
-from cocotb._gpi_triggers import RisingEdge
-
-
-@cocotb.test()
-async def test_counting(dut):
-    clock = Clock(dut.clk, 10, unit="ns")
-    clock.start()
-
-    dut.en.value = 0
-    await RisingEdge(dut.clk)
-
-    dut.en.value = 1
-    for expected in range(10):
-        await RisingEdge(dut.clk)
-        # NBA semantics: value visible one cycle after the edge
-        await RisingEdge(dut.clk)
-        assert int(dut.count.value) == expected + 1
-```
-
-You can also pass an IR `Module` directly instead of an Amaranth design.
-
-## Architecture
-
-```
-Amaranth / SystemVerilog / Hand-built IR
-                │
-                ▼
-        ┌───────────────┐
-        │   Frontends   │  from_amaranth() / parse_sv()
-        └───────┬───────┘
-                │
-                ▼
-        ┌───────────────┐
-        │      IR       │  Module, Signal, Expr, Stmt
-        └───────┬───────┘
-                │
-                ▼
-        ┌───────────────┐
-        │   Compiler    │  compile_module() → CompiledModule
-        └───────┬───────┘
-                │
-                ▼
-        ┌───────────────┐
-        │  CSP Engine   │  cm.run() → traces
-        └───────┬───────┘
-                │
-                ▼
-        ┌───────────────┐
-        │   Adapters    │  write_vcd() / traces_to_vcd()
-        └───────────────┘
-```
-
-## API Reference
-
-### High-Level Interactive API
-
-```python
-from dau_sim import Simulator
-
-sim = Simulator.from_sv_file("design.sv", top="top_module")
-result = sim.run(cycles=1000, inputs={"en": 1})
-
-print(result.latest("count"))
-rows = result.to_rows(signals=["count"])
-sim.write_vcd("out.vcd", result)
-```
-
-### Frontends
-
-| Function                               | Description                                           |
-| -------------------------------------- | ----------------------------------------------------- |
-| `from_amaranth(elaboratable)`          | Lower an Amaranth `Elaboratable` or `Component` to IR |
-| `parse_sv(source, top_module=None)`    | Parse SystemVerilog source string to IR               |
-| `parse_sv_file(path, top_module=None)` | Parse SystemVerilog file to IR                        |
-| `from_dau_build(mod)`                  | Bridge from a `dau_build.Module` to IR                |
-
-### Compiler
-
-| Function / Method                              | Description                            |
-| ---------------------------------------------- | -------------------------------------- |
-| `compile_module(module, four_state=False)`     | Compile IR `Module` → `CompiledModule` |
-| `cm.run(cycles, clock_period, inputs, clocks)` | Simulate and return traces             |
-| `cm.write_vcd(path, traces, timescale="1ns")`  | Write traces to VCD file               |
-| `cm.traces_to_vcd(traces, timescale="1ns")`    | Convert traces to VCD string           |
-
-### Backends
-
-| Function / Class                       | Description                                                 |
-| -------------------------------------- | ----------------------------------------------------------- |
-| `run_cocotb(design, test_module, ...)` | Run cocotb testbench against Amaranth design or IR `Module` |
-| `SimulationEngine(module)`             | Low-level engine with NBA-correct event scheduling          |
-
-### IR Types
-
-| Type                                                              | Description                                                    |
-| ----------------------------------------------------------------- | -------------------------------------------------------------- |
-| `Module`                                                          | Top-level container with ports, signals, clock domains, blocks |
-| `Signal`                                                          | Named bit-vector with shape and initial value                  |
-| `Port`                                                            | Signal with direction (`INPUT`/`OUTPUT`/`INOUT`)               |
-| `Shape(width, signed)`                                            | Bit-width and signedness                                       |
-| `ClockDomain`                                                     | Clock signal, edge polarity, optional reset                    |
-| `CombBlock` / `SeqBlock`                                          | Combinational / sequential logic blocks                        |
-| `Assign`, `IfElse`, `Switch`                                      | Statement types                                                |
-| `Const`, `SignalRef`, `Binary`, `Unary`, `Mux`, `Concat`, `Slice` | Expression types                                               |
+| Topic                                          | Description                                |
+| ---------------------------------------------- | ------------------------------------------ |
+| [Amaranth](docs/src/amaranth.md)               | Simulating Amaranth HDL designs            |
+| [Verilog / SystemVerilog](docs/src/verilog.md) | Simulating SV/V designs and hand-built IR  |
+| [cocotb](docs/src/cocotb.md)                   | Running cocotb testbenches against dau-sim |
+| [CLI](docs/src/cli.md)                         | Command-line interface reference           |
+| [Architecture](docs/src/architecture.md)       | Pipeline and internal design               |
+| [API Reference](docs/src/api.md)               | Full API tables                            |
+| [Benchmarks](docs/src/benchmarks.md)           | Performance numbers and execution modes    |
 
 ## License
 
