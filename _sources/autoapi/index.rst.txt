@@ -9,15 +9,15 @@ This page contains auto-generated API reference documentation [#f1]_.
    /autoapi/dau_sim/index
    /autoapi/test_ir/index
    /autoapi/test_api/index
-   /autoapi/test_vcd/index
    /autoapi/test_cli/index
-   /autoapi/test_eval/index
+   /autoapi/test_vcd/index
    /autoapi/test_perf/index
+   /autoapi/test_eval/index
    /autoapi/test_sim_seq/index
-   /autoapi/test_sim_comb/index
    /autoapi/test_compiler/index
-   /autoapi/test_testbench/index
+   /autoapi/test_sim_comb/index
    /autoapi/test_selectors/index
+   /autoapi/test_testbench/index
    /autoapi/test_frontend_sv/index
    /autoapi/test_cocotb_backend/index
    /autoapi/test_cocotb_examples/index

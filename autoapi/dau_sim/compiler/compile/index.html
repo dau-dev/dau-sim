@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html"><link rel="next" title="dau_sim.compiler.depanalysis" href="../depanalysis/index.html"><link rel="prev" title="dau_sim.compiler" href="../index.html">
+<link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html"><link rel="next" title="dau_sim.compiler.depanalysis" href="../depanalysis/index.html"><link rel="prev" title="dau_sim.compiler.codegen" href="../codegen/index.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
         <title>dau_sim.compiler.compile - dau sim v0.1.0</title>
@@ -197,6 +197,12 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/src/architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/src/cli.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/src/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/src/amaranth.html">Amaranth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/src/verilog.html">Verilog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docs/src/cocotb.html">cocotb</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../../../index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html">dau_sim</a><input aria-label="Toggle navigation of dau_sim" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../adapters/index.html">dau_sim.adapters</a><input aria-label="Toggle navigation of dau_sim.adapters" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -219,6 +225,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../cli/index.html">dau_sim.cli</a></li>
 <li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html">dau_sim.compiler</a><input aria-label="Toggle navigation of dau_sim.compiler" checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../codegen/index.html">dau_sim.compiler.codegen</a></li>
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#">dau_sim.compiler.compile</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../depanalysis/index.html">dau_sim.compiler.depanalysis</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../eval/index.html">dau_sim.compiler.eval</a></li>
@@ -249,15 +256,15 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_ir/index.html">test_ir</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_api/index.html">test_api</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../test_vcd/index.html">test_vcd</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_cli/index.html">test_cli</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../test_eval/index.html">test_eval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_vcd/index.html">test_vcd</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_perf/index.html">test_perf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_eval/index.html">test_eval</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_sim_seq/index.html">test_sim_seq</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../test_sim_comb/index.html">test_sim_comb</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_compiler/index.html">test_compiler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../test_testbench/index.html">test_testbench</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_sim_comb/index.html">test_sim_comb</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_selectors/index.html">test_selectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_testbench/index.html">test_testbench</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_frontend_sv/index.html">test_frontend_sv</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_cocotb_backend/index.html">test_cocotb_backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../test_cocotb_examples/index.html">test_cocotb_examples</a></li>
@@ -387,6 +394,12 @@
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.compiler.compile._sim_engine_seq_4" title="dau_sim.compiler.compile._sim_engine_seq_4"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_sim_engine_seq_4</span></code></a>(→ csp.ts[dict])</p></td>
 <td><p>Clock-aware simulation engine (four-state).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.compiler.compile._affected_component_ids_arr" title="dau_sim.compiler.compile._affected_component_ids_arr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_affected_component_ids_arr</span></code></a>(→ list[int])</p></td>
+<td><p>Like affected_component_ids but operates on integer signal indices.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dau_sim.compiler.compile._sim_engine_compiled" title="dau_sim.compiler.compile._sim_engine_compiled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_sim_engine_compiled</span></code></a>(→ csp.ts[dict])</p></td>
+<td><p>Clock-aware compiled simulation engine (two-state).</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dau_sim.compiler.compile._extract_signal" title="dau_sim.compiler.compile._extract_signal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_extract_signal</span></code></a>(→ csp.ts[int])</p></td>
 <td><p>Extract a single signal's value from the aggregate dict.</p></td>
@@ -549,6 +562,21 @@ Emits output only when at least one domain had an active edge.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="dau_sim.compiler.compile._affected_component_ids_arr">
+<span class="sig-prename descclassname"><span class="pre">dau_sim.compiler.compile.</span></span><span class="sig-name descname"><span class="pre">_affected_component_ids_arr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">changed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">set</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/dau_sim/compiler/compile.html#_affected_component_ids_arr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.compiler.compile._affected_component_ids_arr" title="Link to this definition">¶</a></dt>
+<dd><p>Like affected_component_ids but operates on integer signal indices.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dau_sim.compiler.compile._sim_engine_compiled">
+<span class="sig-prename descclassname"><span class="pre">dau_sim.compiler.compile.</span></span><span class="sig-name descname"><span class="pre">_sim_engine_compiled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_signals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shapes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">memories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mem_init</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compiled_meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_traces</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/dau_sim/compiler/compile.html#_sim_engine_compiled"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.compiler.compile._sim_engine_compiled" title="Link to this definition">¶</a></dt>
+<dd><p>Clock-aware compiled simulation engine (two-state).</p>
+<p>Uses codegen-compiled functions and array-based signal storage
+instead of tree-walking evaluation.  Domain info is pre-extracted
+into flat lists during init to avoid per-tick dict operations.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="dau_sim.compiler.compile._extract_signal">
 <span class="sig-prename descclassname"><span class="pre">dau_sim.compiler.compile.</span></span><span class="sig-name descname"><span class="pre">_extract_signal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_signals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/dau_sim/compiler/compile.html#_extract_signal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.compiler.compile._extract_signal" title="Link to this definition">¶</a></dt>
 <dd><p>Extract a single signal’s value from the aggregate dict.</p>
@@ -635,6 +663,11 @@ Emits output only when at least one domain had an active edge.</p>
 <span class="sig-name descname"><span class="pre">_mem_defs</span></span><a class="headerlink" href="#dau_sim.compiler.compile.CompiledModule._mem_defs" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dau_sim.compiler.compile.CompiledModule._compiled_meta">
+<span class="sig-name descname"><span class="pre">_compiled_meta</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dau_sim.compiler.compile.CompiledModule._compiled_meta" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dau_sim.compiler.compile.CompiledModule.write_vcd">
 <span class="sig-name descname"><span class="pre">write_vcd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traces</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime.datetime</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">timescale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'1ns'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../_modules/dau_sim/compiler/compile.html#CompiledModule.write_vcd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.compiler.compile.CompiledModule.write_vcd" title="Link to this definition">¶</a></dt>
@@ -649,6 +682,12 @@ that automatically provides the module metadata.</p>
 <span class="sig-name descname"><span class="pre">traces_to_vcd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traces</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime.datetime</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">timescale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'1ns'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../../_modules/dau_sim/compiler/compile.html#CompiledModule.traces_to_vcd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.compiler.compile.CompiledModule.traces_to_vcd" title="Link to this definition">¶</a></dt>
 <dd><p>Convert simulation traces to a VCD string.</p>
 <p><em>signals</em> and <em>exclude</em> accept glob patterns for filtering.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dau_sim.compiler.compile.CompiledModule._build_compiled_meta">
+<span class="sig-name descname"><span class="pre">_build_compiled_meta</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../../../_modules/dau_sim/compiler/compile.html#CompiledModule._build_compiled_meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dau_sim.compiler.compile.CompiledModule._build_compiled_meta" title="Link to this definition">¶</a></dt>
+<dd><p>Compile IR blocks into Python functions for the compiled engine.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -733,14 +772,14 @@ output buffers when traces are enabled.</p>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../index.html">
+          <a class="prev-page" href="../codegen/index.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">dau_sim.compiler</div>
+                <div class="title">dau_sim.compiler.codegen</div>
                 
               </div>
             </a>
@@ -801,6 +840,8 @@ output buffers when traces are enabled.</p>
 <li><a class="reference internal" href="#dau_sim.compiler.compile._sim_tick_4"><code class="docutils literal notranslate"><span class="pre">_sim_tick_4()</span></code></a></li>
 <li><a class="reference internal" href="#dau_sim.compiler.compile._sim_engine_seq"><code class="docutils literal notranslate"><span class="pre">_sim_engine_seq()</span></code></a></li>
 <li><a class="reference internal" href="#dau_sim.compiler.compile._sim_engine_seq_4"><code class="docutils literal notranslate"><span class="pre">_sim_engine_seq_4()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.compiler.compile._affected_component_ids_arr"><code class="docutils literal notranslate"><span class="pre">_affected_component_ids_arr()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.compiler.compile._sim_engine_compiled"><code class="docutils literal notranslate"><span class="pre">_sim_engine_compiled()</span></code></a></li>
 <li><a class="reference internal" href="#dau_sim.compiler.compile._extract_signal"><code class="docutils literal notranslate"><span class="pre">_extract_signal()</span></code></a></li>
 <li><a class="reference internal" href="#dau_sim.compiler.compile._extract_signal_4"><code class="docutils literal notranslate"><span class="pre">_extract_signal_4()</span></code></a></li>
 <li><a class="reference internal" href="#dau_sim.compiler.compile._trace_sink"><code class="docutils literal notranslate"><span class="pre">_trace_sink()</span></code></a></li>
@@ -818,8 +859,10 @@ output buffers when traces are enabled.</p>
 <li><a class="reference internal" href="#dau_sim.compiler.compile.CompiledModule._has_memories"><code class="docutils literal notranslate"><span class="pre">CompiledModule._has_memories</span></code></a></li>
 <li><a class="reference internal" href="#dau_sim.compiler.compile.CompiledModule._mem_init"><code class="docutils literal notranslate"><span class="pre">CompiledModule._mem_init</span></code></a></li>
 <li><a class="reference internal" href="#dau_sim.compiler.compile.CompiledModule._mem_defs"><code class="docutils literal notranslate"><span class="pre">CompiledModule._mem_defs</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.compiler.compile.CompiledModule._compiled_meta"><code class="docutils literal notranslate"><span class="pre">CompiledModule._compiled_meta</span></code></a></li>
 <li><a class="reference internal" href="#dau_sim.compiler.compile.CompiledModule.write_vcd"><code class="docutils literal notranslate"><span class="pre">CompiledModule.write_vcd()</span></code></a></li>
 <li><a class="reference internal" href="#dau_sim.compiler.compile.CompiledModule.traces_to_vcd"><code class="docutils literal notranslate"><span class="pre">CompiledModule.traces_to_vcd()</span></code></a></li>
+<li><a class="reference internal" href="#dau_sim.compiler.compile.CompiledModule._build_compiled_meta"><code class="docutils literal notranslate"><span class="pre">CompiledModule._build_compiled_meta()</span></code></a></li>
 <li><a class="reference internal" href="#dau_sim.compiler.compile.CompiledModule.run_testbench"><code class="docutils literal notranslate"><span class="pre">CompiledModule.run_testbench()</span></code></a></li>
 <li><a class="reference internal" href="#dau_sim.compiler.compile.CompiledModule.run"><code class="docutils literal notranslate"><span class="pre">CompiledModule.run()</span></code></a></li>
 <li><a class="reference internal" href="#dau_sim.compiler.compile.CompiledModule._run_combinational"><code class="docutils literal notranslate"><span class="pre">CompiledModule._run_combinational()</span></code></a></li>

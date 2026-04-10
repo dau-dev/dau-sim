@@ -196,6 +196,12 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/src/architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/src/cli.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/src/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/src/amaranth.html">Amaranth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/src/verilog.html">Verilog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docs/src/cocotb.html">cocotb</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../autoapi/dau_sim/index.html">dau_sim</a><input aria-label="Toggle navigation of dau_sim" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/dau_sim/adapters/index.html">dau_sim.adapters</a><input aria-label="Toggle navigation of dau_sim.adapters" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -218,6 +224,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../autoapi/dau_sim/cli/index.html">dau_sim.cli</a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/dau_sim/compiler/index.html">dau_sim.compiler</a><input aria-label="Toggle navigation of dau_sim.compiler" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/dau_sim/compiler/codegen/index.html">dau_sim.compiler.codegen</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/dau_sim/compiler/compile/index.html">dau_sim.compiler.compile</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/dau_sim/compiler/depanalysis/index.html">dau_sim.compiler.depanalysis</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/dau_sim/compiler/eval/index.html">dau_sim.compiler.eval</a></li>
@@ -248,15 +255,15 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_ir/index.html">test_ir</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_api/index.html">test_api</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_vcd/index.html">test_vcd</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_cli/index.html">test_cli</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_eval/index.html">test_eval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_vcd/index.html">test_vcd</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_perf/index.html">test_perf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_eval/index.html">test_eval</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_sim_seq/index.html">test_sim_seq</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_sim_comb/index.html">test_sim_comb</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_compiler/index.html">test_compiler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_testbench/index.html">test_testbench</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_sim_comb/index.html">test_sim_comb</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_selectors/index.html">test_selectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_testbench/index.html">test_testbench</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_frontend_sv/index.html">test_frontend_sv</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_cocotb_backend/index.html">test_cocotb_backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../autoapi/test_cocotb_examples/index.html">test_cocotb_examples</a></li>
@@ -305,6 +312,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">csp</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">csp</span><span class="w"> </span><span class="kn">import</span> <span class="n">ts</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.compiler.codegen</span><span class="w"> </span><span class="kn">import</span> <span class="n">CodeGen</span><span class="p">,</span> <span class="n">collect_reads_writes</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.compiler.depanalysis</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">Assignment</span><span class="p">,</span>
     <span class="n">AssignmentComponent</span><span class="p">,</span>
@@ -1162,6 +1170,277 @@
 
 
 
+<div class="viewcode-block" id="_affected_component_ids_arr">
+<a class="viewcode-back" href="../../../autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile._affected_component_ids_arr">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_affected_component_ids_arr</span><span class="p">(</span>
+    <span class="n">component_index</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="n">changed</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Like affected_component_ids but operates on integer signal indices.&quot;&quot;&quot;</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">changed</span><span class="p">:</span>
+        <span class="n">bits</span> <span class="o">=</span> <span class="n">component_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">bits</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">|=</span> <span class="n">bits</span>
+    <span class="n">result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="n">mask</span><span class="p">:</span>
+        <span class="n">bit</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">&amp;</span> <span class="o">-</span><span class="n">mask</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bit</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">^=</span> <span class="n">bit</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="_sim_engine_compiled">
+<a class="viewcode-back" href="../../../autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile._sim_engine_compiled">[docs]</a>
+<span class="nd">@csp</span><span class="o">.</span><span class="n">node</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_sim_engine_compiled</span><span class="p">(</span>
+    <span class="n">tick</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span>
+    <span class="n">init_signals</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
+    <span class="n">domain_info</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="nb">object</span><span class="p">],</span>
+    <span class="n">shapes</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="nb">object</span><span class="p">],</span>
+    <span class="n">init_values</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="nb">object</span><span class="p">],</span>
+    <span class="n">memories</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="nb">object</span><span class="p">],</span>
+    <span class="n">mem_init</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="nb">object</span><span class="p">],</span>
+    <span class="n">compiled_meta</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="nb">object</span><span class="p">],</span>
+    <span class="n">return_traces</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ts</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Clock-aware compiled simulation engine (two-state).</span>
+
+<span class="sd">    Uses codegen-compiled functions and array-based signal storage</span>
+<span class="sd">    instead of tree-walking evaluation.  Domain info is pre-extracted</span>
+<span class="sd">    into flat lists during init to avoid per-tick dict operations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">csp</span><span class="o">.</span><span class="n">state</span><span class="p">():</span>
+        <span class="n">s_S</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># signal array (list[int])</span>
+        <span class="n">s_sig_names</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># index -&gt; signal name</span>
+        <span class="n">s_sig_index</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># signal name -&gt; index</span>
+        <span class="n">s_shapes</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">s_init_values</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">s_initialized</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">s_finished</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">s_tick_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">s_memories</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">()</span>
+        <span class="n">s_mem_state</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Compiled artifacts</span>
+        <span class="n">s_seq_fns</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># domain name -&gt; compiled callable</span>
+        <span class="n">s_comb_fns</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">s_comb_idx</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">s_n_signals</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">s_has_comb</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">s_has_memories</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">s_fast_tick_fn</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># compiled fast-tick function (or None)</span>
+        <span class="c1"># Pre-extracted domain data (flat lists indexed by domain order)</span>
+        <span class="n">s_n_domains</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">s_domain_names</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">s_domain_hpts</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># half_period_ticks per domain</span>
+        <span class="n">s_domain_clk_idx</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># clk signal array index (-1 if missing)</span>
+        <span class="n">s_domain_fire_target</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># 1=posedge, 0=negedge, -1=both</span>
+        <span class="n">s_domain_rst_idx</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># rst signal array index (-1 if none)</span>
+        <span class="n">s_domain_rst_style</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">s_domain_rst_active_high</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">s_domain_written_indices</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># list[list[int]] per domain</span>
+        <span class="n">s_domain_seq_fn</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># compiled seq function per domain (or None)</span>
+        <span class="n">s_clock_arr</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># clock state per domain (0 or 1)</span>
+        <span class="n">s_has_any_reset</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># any domain has a reset signal</span>
+        <span class="c1"># Persistent per-tick scratch objects (reused to avoid allocation)</span>
+        <span class="n">s_changed</span><span class="p">:</span> <span class="nb">set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">s_fired</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">ticked</span><span class="p">(</span><span class="n">compiled_meta</span><span class="p">):</span>
+        <span class="n">meta</span> <span class="o">=</span> <span class="n">compiled_meta</span>
+        <span class="n">s_sig_names</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;sig_names&quot;</span><span class="p">]</span>
+        <span class="n">s_sig_index</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;sig_index&quot;</span><span class="p">]</span>
+        <span class="n">s_n_signals</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;n_signals&quot;</span><span class="p">]</span>
+        <span class="n">s_seq_fns</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;seq_fns&quot;</span><span class="p">]</span>
+        <span class="n">s_comb_fns</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;comb_fns&quot;</span><span class="p">]</span>
+        <span class="n">s_comb_idx</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;comb_idx&quot;</span><span class="p">]</span>
+        <span class="n">s_has_comb</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s_comb_fns</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="n">s_fast_tick_fn</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fast_tick_fn&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">ticked</span><span class="p">(</span><span class="n">init_signals</span><span class="p">):</span>
+        <span class="n">s_S</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">s_n_signals</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">init_signals</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">s_sig_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">idx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">s_S</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="n">s_initialized</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">ticked</span><span class="p">(</span><span class="n">domain_info</span><span class="p">):</span>
+        <span class="n">s_domain_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">s_domain_hpts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">s_domain_clk_idx</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">s_domain_fire_target</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">s_domain_rst_idx</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">s_domain_rst_style</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">s_domain_rst_active_high</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">s_domain_written_indices</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">s_domain_seq_fn</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">s_clock_arr</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">dname</span><span class="p">,</span> <span class="n">dinfo</span> <span class="ow">in</span> <span class="n">domain_info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">s_domain_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dname</span><span class="p">)</span>
+            <span class="n">s_domain_hpts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dinfo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;half_period_ticks&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">s_domain_clk_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s_sig_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">dinfo</span><span class="p">[</span><span class="s2">&quot;clk_signal&quot;</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">edge</span> <span class="o">=</span> <span class="n">dinfo</span><span class="p">[</span><span class="s2">&quot;edge&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">edge</span> <span class="o">==</span> <span class="n">EdgePolarity</span><span class="o">.</span><span class="n">POSEDGE</span><span class="p">:</span>
+                <span class="n">s_domain_fire_target</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">edge</span> <span class="o">==</span> <span class="n">EdgePolarity</span><span class="o">.</span><span class="n">NEGEDGE</span><span class="p">:</span>
+                <span class="n">s_domain_fire_target</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">s_domain_fire_target</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">rst_signal</span> <span class="o">=</span> <span class="n">dinfo</span><span class="p">[</span><span class="s2">&quot;rst_signal&quot;</span><span class="p">]</span>
+            <span class="n">s_domain_rst_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s_sig_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">rst_signal</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">rst_signal</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">s_domain_rst_style</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dinfo</span><span class="p">[</span><span class="s2">&quot;rst_style&quot;</span><span class="p">])</span>
+            <span class="n">s_domain_rst_active_high</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dinfo</span><span class="p">[</span><span class="s2">&quot;rst_active_high&quot;</span><span class="p">])</span>
+            <span class="n">written_idx</span> <span class="o">=</span> <span class="p">[</span><span class="n">s_sig_index</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">dinfo</span><span class="p">[</span><span class="s2">&quot;written_signals&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">s_sig_index</span><span class="p">]</span>
+            <span class="n">s_domain_written_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">written_idx</span><span class="p">)</span>
+            <span class="n">s_domain_seq_fn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s_seq_fns</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">dname</span><span class="p">))</span>
+            <span class="n">s_clock_arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rst_signal</span><span class="p">:</span>
+                <span class="n">s_has_any_reset</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">s_n_domains</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s_domain_names</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">ticked</span><span class="p">(</span><span class="n">shapes</span><span class="p">):</span>
+        <span class="n">s_shapes</span> <span class="o">=</span> <span class="n">shapes</span>
+    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">ticked</span><span class="p">(</span><span class="n">init_values</span><span class="p">):</span>
+        <span class="n">s_init_values</span> <span class="o">=</span> <span class="n">init_values</span>
+    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">ticked</span><span class="p">(</span><span class="n">memories</span><span class="p">):</span>
+        <span class="n">s_memories</span> <span class="o">=</span> <span class="n">memories</span>
+        <span class="n">s_has_memories</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">memories</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">ticked</span><span class="p">(</span><span class="n">mem_init</span><span class="p">):</span>
+        <span class="n">s_mem_state</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mem_init</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">ticked</span><span class="p">(</span><span class="n">tick</span><span class="p">)</span> <span class="ow">and</span> <span class="n">s_initialized</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">s_finished</span><span class="p">:</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">s_S</span>
+
+        <span class="k">if</span> <span class="n">s_fast_tick_fn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># ── Fast path: compiled tick (no comb, no memory, no reset) ──</span>
+            <span class="n">s_tick_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">s_fast_tick_fn</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">s_clock_arr</span><span class="p">,</span> <span class="n">s_tick_count</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">SimulationFinish</span><span class="p">:</span>
+                <span class="n">s_finished</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">return_traces</span><span class="p">:</span>
+                <span class="n">_any_fired</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">for</span> <span class="n">d_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">s_n_domains</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">s_tick_count</span> <span class="o">%</span> <span class="n">s_domain_hpts</span><span class="p">[</span><span class="n">d_i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">ft</span> <span class="o">=</span> <span class="n">s_domain_fire_target</span><span class="p">[</span><span class="n">d_i</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">ft</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">s_clock_arr</span><span class="p">[</span><span class="n">d_i</span><span class="p">]</span> <span class="o">==</span> <span class="n">ft</span><span class="p">:</span>
+                            <span class="n">_any_fired</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">_any_fired</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">{</span><span class="n">s_sig_names</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">s_n_signals</span><span class="p">)}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># ── Full path: handles comb, memory, resets ──</span>
+
+            <span class="c1"># Seed combinational logic before first edge</span>
+            <span class="k">if</span> <span class="n">s_tick_count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">s_has_comb</span><span class="p">:</span>
+                    <span class="n">init_changed</span><span class="p">:</span> <span class="nb">set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">s_n_signals</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">comp_id</span> <span class="ow">in</span> <span class="n">_affected_component_ids_arr</span><span class="p">(</span><span class="n">s_comb_idx</span><span class="p">,</span> <span class="n">init_changed</span><span class="p">):</span>
+                        <span class="n">s_comb_fns</span><span class="p">[</span><span class="n">comp_id</span><span class="p">](</span><span class="n">S</span><span class="p">,</span> <span class="n">init_changed</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">s_has_memories</span><span class="p">:</span>
+                    <span class="n">sig_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">s_sig_names</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">s_n_signals</span><span class="p">)}</span>
+                    <span class="n">_exec_mem_reads</span><span class="p">(</span><span class="n">s_mem_state</span><span class="p">,</span> <span class="n">s_memories</span><span class="p">,</span> <span class="n">sig_dict</span><span class="p">,</span> <span class="p">[])</span>
+                    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">s_sig_index</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="n">S</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">sig_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">S</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+
+            <span class="n">s_tick_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">tc</span> <span class="o">=</span> <span class="n">s_tick_count</span>
+            <span class="n">changed</span> <span class="o">=</span> <span class="n">s_changed</span>
+            <span class="n">changed</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+            <span class="c1"># Toggle clocks and detect edges</span>
+            <span class="n">fired</span> <span class="o">=</span> <span class="n">s_fired</span>
+            <span class="n">fired</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="n">n_domains</span> <span class="o">=</span> <span class="n">s_n_domains</span>
+            <span class="n">domain_hpts</span> <span class="o">=</span> <span class="n">s_domain_hpts</span>
+            <span class="n">domain_clk_idx</span> <span class="o">=</span> <span class="n">s_domain_clk_idx</span>
+            <span class="n">domain_fire_target</span> <span class="o">=</span> <span class="n">s_domain_fire_target</span>
+            <span class="n">clock_arr</span> <span class="o">=</span> <span class="n">s_clock_arr</span>
+            <span class="k">for</span> <span class="n">d_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_domains</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">tc</span> <span class="o">%</span> <span class="n">domain_hpts</span><span class="p">[</span><span class="n">d_i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">old_clk</span> <span class="o">=</span> <span class="n">clock_arr</span><span class="p">[</span><span class="n">d_i</span><span class="p">]</span>
+                    <span class="n">new_clk</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">old_clk</span>
+                    <span class="n">clock_arr</span><span class="p">[</span><span class="n">d_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_clk</span>
+                    <span class="n">clk_idx</span> <span class="o">=</span> <span class="n">domain_clk_idx</span><span class="p">[</span><span class="n">d_i</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">clk_idx</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">S</span><span class="p">[</span><span class="n">clk_idx</span><span class="p">]</span> <span class="o">!=</span> <span class="n">new_clk</span><span class="p">:</span>
+                        <span class="n">changed</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">clk_idx</span><span class="p">)</span>
+                        <span class="n">S</span><span class="p">[</span><span class="n">clk_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_clk</span>
+                    <span class="n">ft</span> <span class="o">=</span> <span class="n">domain_fire_target</span><span class="p">[</span><span class="n">d_i</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">ft</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">new_clk</span> <span class="o">==</span> <span class="n">ft</span><span class="p">:</span>
+                        <span class="n">fired</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d_i</span><span class="p">)</span>
+
+            <span class="c1"># Async reset (skipped when no domains have resets)</span>
+            <span class="k">if</span> <span class="n">s_has_any_reset</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">d_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_domains</span><span class="p">):</span>
+                    <span class="n">rst_idx</span> <span class="o">=</span> <span class="n">s_domain_rst_idx</span><span class="p">[</span><span class="n">d_i</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">rst_idx</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">s_domain_rst_style</span><span class="p">[</span><span class="n">d_i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">ResetStyle</span><span class="o">.</span><span class="n">ASYNC</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">rst_val</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">rst_idx</span><span class="p">]</span>
+                    <span class="n">rst_active</span> <span class="o">=</span> <span class="n">rst_val</span> <span class="k">if</span> <span class="n">s_domain_rst_active_high</span><span class="p">[</span><span class="n">d_i</span><span class="p">]</span> <span class="k">else</span> <span class="p">(</span><span class="ow">not</span> <span class="n">rst_val</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">rst_active</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">sidx</span> <span class="ow">in</span> <span class="n">s_domain_written_indices</span><span class="p">[</span><span class="n">d_i</span><span class="p">]:</span>
+                            <span class="n">sig_name</span> <span class="o">=</span> <span class="n">s_sig_names</span><span class="p">[</span><span class="n">sidx</span><span class="p">]</span>
+                            <span class="n">reset_val</span> <span class="o">=</span> <span class="n">mask_value</span><span class="p">(</span><span class="n">s_init_values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sig_name</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">s_shapes</span><span class="p">[</span><span class="n">sig_name</span><span class="p">])</span>
+                            <span class="k">if</span> <span class="n">S</span><span class="p">[</span><span class="n">sidx</span><span class="p">]</span> <span class="o">!=</span> <span class="n">reset_val</span><span class="p">:</span>
+                                <span class="n">changed</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sidx</span><span class="p">)</span>
+                            <span class="n">S</span><span class="p">[</span><span class="n">sidx</span><span class="p">]</span> <span class="o">=</span> <span class="n">reset_val</span>
+                        <span class="k">if</span> <span class="n">d_i</span> <span class="ow">in</span> <span class="n">fired</span><span class="p">:</span>
+                            <span class="n">fired</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">d_i</span><span class="p">)</span>
+
+            <span class="c1"># Sequential blocks — call compiled functions</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">d_i</span> <span class="ow">in</span> <span class="n">fired</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">s_has_any_reset</span><span class="p">:</span>
+                        <span class="n">rst_idx</span> <span class="o">=</span> <span class="n">s_domain_rst_idx</span><span class="p">[</span><span class="n">d_i</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">rst_idx</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">s_domain_rst_style</span><span class="p">[</span><span class="n">d_i</span><span class="p">]</span> <span class="o">==</span> <span class="n">ResetStyle</span><span class="o">.</span><span class="n">SYNC</span><span class="p">:</span>
+                            <span class="n">rst_val</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">rst_idx</span><span class="p">]</span>
+                            <span class="n">rst_active</span> <span class="o">=</span> <span class="n">rst_val</span> <span class="k">if</span> <span class="n">s_domain_rst_active_high</span><span class="p">[</span><span class="n">d_i</span><span class="p">]</span> <span class="k">else</span> <span class="p">(</span><span class="ow">not</span> <span class="n">rst_val</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">rst_active</span><span class="p">:</span>
+                                <span class="k">for</span> <span class="n">sidx</span> <span class="ow">in</span> <span class="n">s_domain_written_indices</span><span class="p">[</span><span class="n">d_i</span><span class="p">]:</span>
+                                    <span class="n">sig_name</span> <span class="o">=</span> <span class="n">s_sig_names</span><span class="p">[</span><span class="n">sidx</span><span class="p">]</span>
+                                    <span class="n">reset_val</span> <span class="o">=</span> <span class="n">mask_value</span><span class="p">(</span><span class="n">s_init_values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sig_name</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">s_shapes</span><span class="p">[</span><span class="n">sig_name</span><span class="p">])</span>
+                                    <span class="k">if</span> <span class="n">S</span><span class="p">[</span><span class="n">sidx</span><span class="p">]</span> <span class="o">!=</span> <span class="n">reset_val</span><span class="p">:</span>
+                                        <span class="n">changed</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sidx</span><span class="p">)</span>
+                                    <span class="n">S</span><span class="p">[</span><span class="n">sidx</span><span class="p">]</span> <span class="o">=</span> <span class="n">reset_val</span>
+                                <span class="k">continue</span>
+
+                    <span class="n">seq_fn</span> <span class="o">=</span> <span class="n">s_domain_seq_fn</span><span class="p">[</span><span class="n">d_i</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">seq_fn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">seq_fn</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">changed</span><span class="p">)</span>
+
+                <span class="c1"># Memory operations</span>
+                <span class="k">if</span> <span class="n">s_has_memories</span> <span class="ow">and</span> <span class="n">fired</span><span class="p">:</span>
+                    <span class="n">sig_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">s_sig_names</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">s_n_signals</span><span class="p">)}</span>
+                    <span class="n">fired_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">s_domain_names</span><span class="p">[</span><span class="n">d_i</span><span class="p">]</span> <span class="k">for</span> <span class="n">d_i</span> <span class="ow">in</span> <span class="n">fired</span><span class="p">]</span>
+                    <span class="n">_exec_mem_writes</span><span class="p">(</span><span class="n">s_mem_state</span><span class="p">,</span> <span class="n">s_memories</span><span class="p">,</span> <span class="n">sig_dict</span><span class="p">,</span> <span class="n">s_shapes</span><span class="p">,</span> <span class="n">fired_names</span><span class="p">)</span>
+                    <span class="n">_exec_mem_reads</span><span class="p">(</span><span class="n">s_mem_state</span><span class="p">,</span> <span class="n">s_memories</span><span class="p">,</span> <span class="n">sig_dict</span><span class="p">,</span> <span class="n">fired_names</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">s_sig_index</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="n">new_val</span> <span class="o">=</span> <span class="n">sig_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">S</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+                        <span class="k">if</span> <span class="n">S</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">!=</span> <span class="n">new_val</span><span class="p">:</span>
+                            <span class="n">changed</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+                            <span class="n">S</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_val</span>
+                <span class="k">elif</span> <span class="n">s_has_memories</span><span class="p">:</span>
+                    <span class="n">sig_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">s_sig_names</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">s_n_signals</span><span class="p">)}</span>
+                    <span class="n">_exec_mem_reads</span><span class="p">(</span><span class="n">s_mem_state</span><span class="p">,</span> <span class="n">s_memories</span><span class="p">,</span> <span class="n">sig_dict</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">s_sig_index</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="n">new_val</span> <span class="o">=</span> <span class="n">sig_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">S</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+                        <span class="k">if</span> <span class="n">S</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">!=</span> <span class="n">new_val</span><span class="p">:</span>
+                            <span class="n">changed</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+                            <span class="n">S</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_val</span>
+
+                <span class="c1"># Settle combinational logic</span>
+                <span class="k">if</span> <span class="n">s_has_comb</span> <span class="ow">and</span> <span class="n">fired</span> <span class="ow">and</span> <span class="n">changed</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">comp_id</span> <span class="ow">in</span> <span class="n">_affected_component_ids_arr</span><span class="p">(</span><span class="n">s_comb_idx</span><span class="p">,</span> <span class="n">changed</span><span class="p">):</span>
+                        <span class="n">s_comb_fns</span><span class="p">[</span><span class="n">comp_id</span><span class="p">](</span><span class="n">S</span><span class="p">,</span> <span class="n">changed</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">SimulationFinish</span><span class="p">:</span>
+                <span class="n">s_finished</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="n">fired</span> <span class="ow">and</span> <span class="n">return_traces</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">{</span><span class="n">s_sig_names</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">s_n_signals</span><span class="p">)}</span></div>
+
+
+
 <div class="viewcode-block" id="_extract_signal">
 <a class="viewcode-back" href="../../../autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile._extract_signal">[docs]</a>
 <span class="nd">@csp</span><span class="o">.</span><span class="n">node</span>
@@ -1253,6 +1532,11 @@
                     <span class="n">en_width</span> <span class="o">=</span> <span class="n">mem</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">width</span> <span class="o">//</span> <span class="n">wp</span><span class="o">.</span><span class="n">granularity</span> <span class="k">if</span> <span class="n">wp</span><span class="o">.</span><span class="n">granularity</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_shapes</span><span class="p">[</span><span class="n">wp</span><span class="o">.</span><span class="n">en</span><span class="p">]</span> <span class="o">=</span> <span class="n">Shape</span><span class="p">(</span><span class="n">en_width</span><span class="p">)</span>
 
+        <span class="c1"># ── Codegen: compile IR blocks into Python functions ──</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_meta</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">four_state</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_meta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_compiled_meta</span><span class="p">()</span>
+
 <div class="viewcode-block" id="CompiledModule.write_vcd">
 <a class="viewcode-back" href="../../../autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile.CompiledModule.write_vcd">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">write_vcd</span><span class="p">(</span>
@@ -1301,6 +1585,77 @@
 
             <span class="n">traces</span> <span class="o">=</span> <span class="n">select_signals</span><span class="p">(</span><span class="n">traces</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="n">signals</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_traces_to_vcd</span><span class="p">(</span><span class="n">traces</span><span class="p">,</span> <span class="n">module</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="n">timescale</span><span class="o">=</span><span class="n">timescale</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CompiledModule._build_compiled_meta">
+<a class="viewcode-back" href="../../../autoapi/dau_sim/compiler/compile/index.html#dau_sim.compiler.compile.CompiledModule._build_compiled_meta">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_compiled_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compile IR blocks into Python functions for the compiled engine.&quot;&quot;&quot;</span>
+        <span class="n">cg</span> <span class="o">=</span> <span class="n">CodeGen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shapes</span><span class="p">)</span>
+        <span class="n">sig_names</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">signal_names</span>
+        <span class="n">sig_index</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">signal_index</span>
+
+        <span class="c1"># Compile per-domain seq block functions</span>
+        <span class="n">seq_fns</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">dname</span><span class="p">,</span> <span class="n">dinfo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_domain_info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">sbs</span> <span class="o">=</span> <span class="n">dinfo</span><span class="p">[</span><span class="s2">&quot;seq_blocks&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">sbs</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="c1"># Merge all seq block stmts for this domain into one function</span>
+            <span class="n">all_stmts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Stmt</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">sb</span> <span class="ow">in</span> <span class="n">sbs</span><span class="p">:</span>
+                <span class="n">all_stmts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sb</span><span class="o">.</span><span class="n">stmts</span><span class="p">)</span>
+            <span class="n">stmts_tuple</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">all_stmts</span><span class="p">)</span>
+            <span class="n">reads</span><span class="p">,</span> <span class="n">writes</span> <span class="o">=</span> <span class="n">collect_reads_writes</span><span class="p">(</span><span class="n">stmts_tuple</span><span class="p">)</span>
+            <span class="n">seq_fns</span><span class="p">[</span><span class="n">dname</span><span class="p">]</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">compile_expr_block</span><span class="p">(</span>
+                <span class="n">stmts_tuple</span><span class="p">,</span>
+                <span class="n">reads</span><span class="p">,</span>
+                <span class="n">writes</span> <span class="o">|</span> <span class="n">reads</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;_seq_</span><span class="si">{</span><span class="n">dname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Compile per-component comb functions</span>
+        <span class="n">comb_fns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">comp_i</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_comb_components</span><span class="p">):</span>
+            <span class="n">all_stmts</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">assignment</span> <span class="ow">in</span> <span class="n">comp</span><span class="o">.</span><span class="n">assignments</span><span class="p">:</span>
+                <span class="n">all_stmts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">assignment</span><span class="o">.</span><span class="n">stmts</span><span class="p">)</span>
+            <span class="n">stmts_tuple</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">all_stmts</span><span class="p">)</span>
+            <span class="n">reads</span><span class="p">,</span> <span class="n">writes</span> <span class="o">=</span> <span class="n">collect_reads_writes</span><span class="p">(</span><span class="n">stmts_tuple</span><span class="p">)</span>
+            <span class="n">comb_fns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">cg</span><span class="o">.</span><span class="n">compile_expr_block</span><span class="p">(</span>
+                    <span class="n">stmts_tuple</span><span class="p">,</span>
+                    <span class="n">reads</span><span class="p">,</span>
+                    <span class="n">writes</span> <span class="o">|</span> <span class="n">reads</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;_comb_</span><span class="si">{</span><span class="n">comp_i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Build array-indexed component routing</span>
+        <span class="n">comb_idx</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">bitmask</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_comb_component_index</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">sig_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">idx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">comb_idx</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">bitmask</span>
+
+        <span class="c1"># Build fast tick function (deferred to _run_sequential when hpt is known)</span>
+        <span class="c1"># Eligibility: no comb components, no memories, no resets</span>
+        <span class="n">fast_tick_eligible</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">comb_fns</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">memories</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">fast_tick_eligible</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">dinfo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_domain_info</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">dinfo</span><span class="p">[</span><span class="s2">&quot;rst_signal&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">fast_tick_eligible</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">break</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;sig_names&quot;</span><span class="p">:</span> <span class="n">sig_names</span><span class="p">,</span>
+            <span class="s2">&quot;sig_index&quot;</span><span class="p">:</span> <span class="n">sig_index</span><span class="p">,</span>
+            <span class="s2">&quot;n_signals&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">sig_names</span><span class="p">),</span>
+            <span class="s2">&quot;seq_fns&quot;</span><span class="p">:</span> <span class="n">seq_fns</span><span class="p">,</span>
+            <span class="s2">&quot;comb_fns&quot;</span><span class="p">:</span> <span class="n">comb_fns</span><span class="p">,</span>
+            <span class="s2">&quot;comb_idx&quot;</span><span class="p">:</span> <span class="n">comb_idx</span><span class="p">,</span>
+            <span class="s2">&quot;fast_tick_eligible&quot;</span><span class="p">:</span> <span class="n">fast_tick_eligible</span><span class="p">,</span>
+        <span class="p">}</span></div>
 
 
 <div class="viewcode-block" id="CompiledModule.run_testbench">
@@ -1545,11 +1900,37 @@
         <span class="c1"># Compute per-domain half-period in ticks (mutates domain_info dicts)</span>
         <span class="n">gcd_ns</span> <span class="o">=</span> <span class="n">_compute_half_period_ticks</span><span class="p">(</span><span class="n">clock_period</span><span class="p">,</span> <span class="n">clocks</span><span class="p">,</span> <span class="n">domain_info</span><span class="p">)</span>
 
+        <span class="c1"># Build fast tick function now that half_period_ticks is known</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">four_state</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_meta</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fast_tick_eligible&quot;</span><span class="p">):</span>
+            <span class="n">cg</span> <span class="o">=</span> <span class="n">CodeGen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shapes</span><span class="p">)</span>
+            <span class="n">fast_tick_fn</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">build_fast_tick</span><span class="p">(</span><span class="n">domain_info</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_meta</span><span class="p">[</span><span class="s2">&quot;fast_tick_fn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fast_tick_fn</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_meta</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_meta</span><span class="p">[</span><span class="s2">&quot;fast_tick_fn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
         <span class="c1"># Total ticks: 2 half-periods per cycle * cycles, scaled by primary</span>
         <span class="c1"># domain&#39;s half_period_ticks.</span>
         <span class="n">primary_name</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">domain_info</span><span class="p">))</span>
         <span class="n">primary_hpt</span> <span class="o">=</span> <span class="n">domain_info</span><span class="p">[</span><span class="n">primary_name</span><span class="p">][</span><span class="s2">&quot;half_period_ticks&quot;</span><span class="p">]</span>
         <span class="n">total_ticks</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">cycles</span> <span class="o">*</span> <span class="n">primary_hpt</span>
+
+        <span class="c1"># ── Batch no-trace fast path: bypass CSP entirely ──</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">return_traces</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">four_state</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_meta</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fast_tick_fn&quot;</span><span class="p">):</span>
+            <span class="n">fast_tick</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_meta</span><span class="p">[</span><span class="s2">&quot;fast_tick_fn&quot;</span><span class="p">]</span>
+            <span class="n">sig_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_meta</span><span class="p">[</span><span class="s2">&quot;sig_index&quot;</span><span class="p">]</span>
+            <span class="n">n_signals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_meta</span><span class="p">[</span><span class="s2">&quot;n_signals&quot;</span><span class="p">]</span>
+            <span class="n">S</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_signals</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">init</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="n">sig_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">idx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">S</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+            <span class="n">clock_arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">domain_info</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">tc</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">total_ticks</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">fast_tick</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">clock_arr</span><span class="p">,</span> <span class="n">tc</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">SimulationFinish</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">return</span> <span class="p">{}</span>
 
         <span class="c1"># Timer period — just for CSP timestamps (must be &gt;= 1µs for timedelta)</span>
         <span class="n">tick_period</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">microseconds</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">gcd_ns</span> <span class="o">//</span> <span class="mi">1000</span><span class="p">))</span>
@@ -1558,8 +1939,6 @@
         <span class="k">def</span><span class="w"> </span><span class="nf">sim_graph</span><span class="p">():</span>
             <span class="n">tick</span> <span class="o">=</span> <span class="n">csp</span><span class="o">.</span><span class="n">timer</span><span class="p">(</span><span class="n">tick_period</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
             <span class="n">init_edge</span> <span class="o">=</span> <span class="n">csp</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
-            <span class="n">comb_edge</span> <span class="o">=</span> <span class="n">csp</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_comb_components</span><span class="p">)</span>
-            <span class="n">comb_index_edge</span> <span class="o">=</span> <span class="n">csp</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_comb_component_index</span><span class="p">)</span>
             <span class="n">domain_edge</span> <span class="o">=</span> <span class="n">csp</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="n">domain_info</span><span class="p">)</span>
             <span class="n">shapes_edge</span> <span class="o">=</span> <span class="n">csp</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="n">shapes</span><span class="p">)</span>
             <span class="n">init_vals_edge</span> <span class="o">=</span> <span class="n">csp</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="n">init_values</span><span class="p">)</span>
@@ -1567,6 +1946,8 @@
             <span class="n">mem_init_edge</span> <span class="o">=</span> <span class="n">csp</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mem_init</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">four_state</span><span class="p">:</span>
+                <span class="n">comb_edge</span> <span class="o">=</span> <span class="n">csp</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_comb_components</span><span class="p">)</span>
+                <span class="n">comb_index_edge</span> <span class="o">=</span> <span class="n">csp</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_comb_component_index</span><span class="p">)</span>
                 <span class="n">all_signals</span> <span class="o">=</span> <span class="n">_sim_engine_seq_4</span><span class="p">(</span>
                     <span class="n">tick</span><span class="p">,</span>
                     <span class="n">init_edge</span><span class="p">,</span>
@@ -1585,17 +1966,34 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">csp</span><span class="o">.</span><span class="n">add_graph_output</span><span class="p">(</span><span class="s2">&quot;__sink__&quot;</span><span class="p">,</span> <span class="n">_trace_sink</span><span class="p">(</span><span class="n">all_signals</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">all_signals</span> <span class="o">=</span> <span class="n">_sim_engine_seq</span><span class="p">(</span>
-                    <span class="n">tick</span><span class="p">,</span>
-                    <span class="n">init_edge</span><span class="p">,</span>
-                    <span class="n">comb_edge</span><span class="p">,</span>
-                    <span class="n">comb_index_edge</span><span class="p">,</span>
-                    <span class="n">domain_edge</span><span class="p">,</span>
-                    <span class="n">shapes_edge</span><span class="p">,</span>
-                    <span class="n">init_vals_edge</span><span class="p">,</span>
-                    <span class="n">mem_edge</span><span class="p">,</span>
-                    <span class="n">mem_init_edge</span><span class="p">,</span>
-                <span class="p">)</span>
+                <span class="n">compiled_meta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_meta</span>
+                <span class="k">if</span> <span class="n">compiled_meta</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">meta_edge</span> <span class="o">=</span> <span class="n">csp</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="n">compiled_meta</span><span class="p">)</span>
+                    <span class="n">all_signals</span> <span class="o">=</span> <span class="n">_sim_engine_compiled</span><span class="p">(</span>
+                        <span class="n">tick</span><span class="p">,</span>
+                        <span class="n">init_edge</span><span class="p">,</span>
+                        <span class="n">domain_edge</span><span class="p">,</span>
+                        <span class="n">shapes_edge</span><span class="p">,</span>
+                        <span class="n">init_vals_edge</span><span class="p">,</span>
+                        <span class="n">mem_edge</span><span class="p">,</span>
+                        <span class="n">mem_init_edge</span><span class="p">,</span>
+                        <span class="n">meta_edge</span><span class="p">,</span>
+                        <span class="n">return_traces</span><span class="o">=</span><span class="n">return_traces</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">comb_edge</span> <span class="o">=</span> <span class="n">csp</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_comb_components</span><span class="p">)</span>
+                    <span class="n">comb_index_edge</span> <span class="o">=</span> <span class="n">csp</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_comb_component_index</span><span class="p">)</span>
+                    <span class="n">all_signals</span> <span class="o">=</span> <span class="n">_sim_engine_seq</span><span class="p">(</span>
+                        <span class="n">tick</span><span class="p">,</span>
+                        <span class="n">init_edge</span><span class="p">,</span>
+                        <span class="n">comb_edge</span><span class="p">,</span>
+                        <span class="n">comb_index_edge</span><span class="p">,</span>
+                        <span class="n">domain_edge</span><span class="p">,</span>
+                        <span class="n">shapes_edge</span><span class="p">,</span>
+                        <span class="n">init_vals_edge</span><span class="p">,</span>
+                        <span class="n">mem_edge</span><span class="p">,</span>
+                        <span class="n">mem_init_edge</span><span class="p">,</span>
+                    <span class="p">)</span>
                 <span class="k">if</span> <span class="n">return_traces</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">all_names</span><span class="p">:</span>
                         <span class="n">sig_out</span> <span class="o">=</span> <span class="n">_extract_signal</span><span class="p">(</span><span class="n">all_signals</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>

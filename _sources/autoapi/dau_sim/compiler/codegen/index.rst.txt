@@ -1,0 +1,205 @@
+dau_sim.compiler.codegen
+========================
+
+.. py:module:: dau_sim.compiler.codegen
+
+.. autoapi-nested-parse::
+
+   IR-to-Python code generator.
+
+   Compiles IR statement/expression trees into flat Python functions,
+   eliminating tree-walking overhead in the simulation hot path.
+
+   Generated functions operate on a flat signal array (list[int]) indexed
+   by integer signal IDs, with shapes/masks precomputed at compile time.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   dau_sim.compiler.codegen.CodeGen
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   dau_sim.compiler.codegen._width_mask
+   dau_sim.compiler.codegen.collect_reads_writes
+   dau_sim.compiler.codegen._collect_rw_stmt
+   dau_sim.compiler.codegen._collect_rw_expr
+
+
+Module Contents
+---------------
+
+.. py:function:: _width_mask(width: int) -> int
+
+.. py:class:: CodeGen(shapes: dict[str, dau_sim.ir.types.Shape])
+
+   Compiles IR trees into Python source that operates on a signal array.
+
+   Usage::
+
+       cg = CodeGen(shapes)
+       fn = cg.compile_block(stmts)
+       # fn(signals, changed_signals) — mutates signals in-place
+
+
+   .. py:attribute:: _shapes
+
+
+   .. py:attribute:: _sig_names
+
+
+   .. py:attribute:: _sig_index
+      :type:  dict[str, int]
+
+
+   .. py:attribute:: _masks
+      :type:  dict[str, int]
+
+
+   .. py:attribute:: _counter
+      :value: 0
+
+
+
+   .. py:property:: signal_names
+      :type: list[str]
+
+
+
+   .. py:property:: signal_index
+      :type: dict[str, int]
+
+
+
+   .. py:method:: _tmp() -> str
+
+
+   .. py:method:: compile_block(stmts: tuple[dau_sim.ir.stmt.Stmt, Ellipsis], *, name: str = '_compiled_block') -> callable
+
+      Compile a statement block into a callable ``fn(S, changed)``.
+
+
+
+   .. py:method:: compile_expr_block(stmts: tuple[dau_sim.ir.stmt.Stmt, Ellipsis], read_signals: set[str], write_signals: set[str], *, name: str = '_compiled_block') -> callable
+
+      Compile a block with local-variable optimization.
+
+      Generates code that loads all read/written signals into locals
+      at the top and stores changed signals back at the bottom.
+
+
+
+   .. py:method:: _local_name(sig: str) -> str
+
+      Generate a valid Python local variable name for a signal.
+
+
+
+   .. py:method:: _make_globals() -> dict
+
+      Build the globals dict for compiled code.
+
+
+
+   .. py:method:: _compile_stmts(stmts: tuple[dau_sim.ir.stmt.Stmt, Ellipsis], indent: int) -> list[str]
+
+
+   .. py:method:: _compile_stmt(stmt: dau_sim.ir.stmt.Stmt, indent: int) -> list[str]
+
+
+   .. py:method:: _compile_assign(stmt: dau_sim.ir.stmt.Assign, indent: int) -> list[str]
+
+
+   .. py:method:: _compile_switch(stmt: dau_sim.ir.stmt.Switch, indent: int) -> list[str]
+
+
+   .. py:method:: _emit_expr(expr: dau_sim.ir.expr.Expr) -> str
+
+      Emit a Python expression string for an IR expression.
+
+
+
+   .. py:method:: _emit_const(expr: dau_sim.ir.expr.Const) -> str
+
+
+   .. py:method:: _emit_signal_ref(expr: dau_sim.ir.expr.SignalRef) -> str
+
+
+   .. py:method:: _emit_unary(expr: dau_sim.ir.expr.Unary) -> str
+
+
+   .. py:method:: _emit_binary(expr: dau_sim.ir.expr.Binary) -> str
+
+
+   .. py:method:: _emit_concat(expr: dau_sim.ir.expr.Concat) -> str
+
+
+   .. py:method:: _emit_slice(expr: dau_sim.ir.expr.Slice) -> str
+
+
+   .. py:method:: _emit_sysrandom(expr: dau_sim.ir.expr.SysRandom) -> str
+
+
+   .. py:method:: _emit_mask(expr_str: str, shape: dau_sim.ir.types.Shape) -> str
+
+      Wrap an expression with mask/sign-extension.
+
+
+
+   .. py:method:: _compile_stmts_local(stmts: tuple[dau_sim.ir.stmt.Stmt, Ellipsis], indent: int, local_reads: set[str]) -> list[str]
+
+
+   .. py:method:: _compile_stmt_local(stmt: dau_sim.ir.stmt.Stmt, indent: int, local_reads: set[str]) -> list[str]
+
+
+   .. py:method:: _compile_assign_local(stmt: dau_sim.ir.stmt.Assign, indent: int, local_reads: set[str]) -> list[str]
+
+
+   .. py:method:: _compile_switch_local(stmt: dau_sim.ir.stmt.Switch, indent: int, local_reads: set[str]) -> list[str]
+
+
+   .. py:method:: _emit_expr_local(expr: dau_sim.ir.expr.Expr, local_reads: set[str]) -> str
+
+      Emit expression using local variables for signal reads where possible.
+
+
+
+   .. py:method:: _emit_unary_raw(op: dau_sim.ir.expr.UnaryOp, a: str, a_shape: dau_sim.ir.types.Shape, out_shape: dau_sim.ir.types.Shape) -> str
+
+
+   .. py:method:: _emit_binary_raw(op: dau_sim.ir.expr.BinaryOp, left: str, right: str, l_shape: dau_sim.ir.types.Shape, r_shape: dau_sim.ir.types.Shape, out_shape: dau_sim.ir.types.Shape) -> str
+
+
+   .. py:method:: _emit_concat_local(expr: dau_sim.ir.expr.Concat, local_reads: set[str]) -> str
+
+
+   .. py:method:: _emit_slice_local(expr: dau_sim.ir.expr.Slice, local_reads: set[str]) -> str
+
+
+   .. py:method:: build_fast_tick(domain_info: dict[str, dict]) -> callable | None
+
+      Generate a compiled tick function that inlines clock toggle + seq body.
+
+      Returns None if any domain has a reset (fast path not applicable).
+      The generated function signature is ``fn(S, clock_arr, tc)``
+      and returns True if any domain fired, False otherwise.
+
+
+
+.. py:function:: collect_reads_writes(stmts: tuple[dau_sim.ir.stmt.Stmt, Ellipsis]) -> tuple[set[str], set[str]]
+
+   Collect all signal names read and written by a statement block.
+
+
+.. py:function:: _collect_rw_stmt(stmt: dau_sim.ir.stmt.Stmt, reads: set[str], writes: set[str]) -> None
+
+.. py:function:: _collect_rw_expr(expr: dau_sim.ir.expr.Expr, reads: set[str]) -> None
+

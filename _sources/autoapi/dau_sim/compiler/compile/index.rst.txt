@@ -43,6 +43,8 @@ Functions
    dau_sim.compiler.compile._sim_tick_4
    dau_sim.compiler.compile._sim_engine_seq
    dau_sim.compiler.compile._sim_engine_seq_4
+   dau_sim.compiler.compile._affected_component_ids_arr
+   dau_sim.compiler.compile._sim_engine_compiled
    dau_sim.compiler.compile._extract_signal
    dau_sim.compiler.compile._extract_signal_4
    dau_sim.compiler.compile._trace_sink
@@ -181,6 +183,20 @@ Module Contents
    Clock-aware simulation engine (four-state).
 
 
+.. py:function:: _affected_component_ids_arr(component_index: dict[int, int], changed: set[int]) -> list[int]
+
+   Like affected_component_ids but operates on integer signal indices.
+
+
+.. py:function:: _sim_engine_compiled(tick: csp.ts[bool], init_signals: csp.ts[dict], domain_info: csp.ts[object], shapes: csp.ts[object], init_values: csp.ts[object], memories: csp.ts[object], mem_init: csp.ts[object], compiled_meta: csp.ts[object], return_traces: bool = True) -> csp.ts[dict]
+
+   Clock-aware compiled simulation engine (two-state).
+
+   Uses codegen-compiled functions and array-based signal storage
+   instead of tree-walking evaluation.  Domain info is pre-extracted
+   into flat lists during init to avoid per-tick dict operations.
+
+
 .. py:function:: _extract_signal(all_signals: csp.ts[dict], name: str) -> csp.ts[int]
 
    Extract a single signal's value from the aggregate dict.
@@ -245,6 +261,12 @@ Module Contents
    .. py:attribute:: _mem_defs
 
 
+   .. py:attribute:: _compiled_meta
+      :type:  dict | None
+      :value: None
+
+
+
    .. py:method:: write_vcd(path: str, traces: dict[str, list[tuple[datetime.datetime, int]]], *, timescale: str = '1ns', signals: list[str] | None = None, exclude: list[str] | None = None) -> None
 
       Write simulation traces to a VCD file.
@@ -261,6 +283,12 @@ Module Contents
       Convert simulation traces to a VCD string.
 
       *signals* and *exclude* accept glob patterns for filtering.
+
+
+
+   .. py:method:: _build_compiled_meta() -> dict
+
+      Compile IR blocks into Python functions for the compiled engine.
 
 
 

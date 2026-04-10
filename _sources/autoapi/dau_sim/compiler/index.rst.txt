@@ -10,6 +10,7 @@ Submodules
 .. toctree::
    :maxdepth: 1
 
+   /autoapi/dau_sim/compiler/codegen/index
    /autoapi/dau_sim/compiler/compile/index
    /autoapi/dau_sim/compiler/depanalysis/index
    /autoapi/dau_sim/compiler/eval/index
