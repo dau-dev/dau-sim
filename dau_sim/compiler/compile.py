@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 import csp
 from csp import ts
 
+from dau_sim.compiler.codegen import CodeGen, collect_reads_writes
 from dau_sim.compiler.depanalysis import (
     Assignment,
     AssignmentComponent,
@@ -806,6 +807,271 @@ def _sim_engine_seq_4(
             return dict(s_signals)
 
 
+def _affected_component_ids_arr(
+    component_index: dict[int, int],
+    changed: set[int],
+) -> list[int]:
+    """Like affected_component_ids but operates on integer signal indices."""
+    mask = 0
+    for idx in changed:
+        bits = component_index.get(idx)
+        if bits is not None:
+            mask |= bits
+    result: list[int] = []
+    while mask:
+        bit = mask & -mask
+        result.append(bit.bit_length() - 1)
+        mask ^= bit
+    return result
+
+
+@csp.node
+def _sim_engine_compiled(
+    tick: ts[bool],
+    init_signals: ts[dict],
+    domain_info: ts[object],
+    shapes: ts[object],
+    init_values: ts[object],
+    memories: ts[object],
+    mem_init: ts[object],
+    compiled_meta: ts[object],
+    return_traces: bool = True,
+) -> ts[dict]:
+    """Clock-aware compiled simulation engine (two-state).
+
+    Uses codegen-compiled functions and array-based signal storage
+    instead of tree-walking evaluation.  Domain info is pre-extracted
+    into flat lists during init to avoid per-tick dict operations.
+    """
+    with csp.state():
+        s_S: list = []  # signal array (list[int])
+        s_sig_names: list = []  # index -> signal name
+        s_sig_index: dict = {}  # signal name -> index
+        s_shapes: dict = {}
+        s_init_values: dict = {}
+        s_initialized: bool = False
+        s_finished: bool = False
+        s_tick_count: int = 0
+        s_memories: tuple = ()
+        s_mem_state: dict = {}
+        # Compiled artifacts
+        s_seq_fns: dict = {}  # domain name -> compiled callable
+        s_comb_fns: list = []
+        s_comb_idx: dict = {}
+        s_n_signals: int = 0
+        s_has_comb: bool = False
+        s_has_memories: bool = False
+        s_fast_tick_fn: object = None  # compiled fast-tick function (or None)
+        # Pre-extracted domain data (flat lists indexed by domain order)
+        s_n_domains: int = 0
+        s_domain_names: list = []
+        s_domain_hpts: list = []  # half_period_ticks per domain
+        s_domain_clk_idx: list = []  # clk signal array index (-1 if missing)
+        s_domain_fire_target: list = []  # 1=posedge, 0=negedge, -1=both
+        s_domain_rst_idx: list = []  # rst signal array index (-1 if none)
+        s_domain_rst_style: list = []
+        s_domain_rst_active_high: list = []
+        s_domain_written_indices: list = []  # list[list[int]] per domain
+        s_domain_seq_fn: list = []  # compiled seq function per domain (or None)
+        s_clock_arr: list = []  # clock state per domain (0 or 1)
+        s_has_any_reset: bool = False  # any domain has a reset signal
+        # Persistent per-tick scratch objects (reused to avoid allocation)
+        s_changed: set = set()
+        s_fired: list = []
+
+    if csp.ticked(compiled_meta):
+        meta = compiled_meta
+        s_sig_names = meta["sig_names"]
+        s_sig_index = meta["sig_index"]
+        s_n_signals = meta["n_signals"]
+        s_seq_fns = meta["seq_fns"]
+        s_comb_fns = meta["comb_fns"]
+        s_comb_idx = meta["comb_idx"]
+        s_has_comb = len(s_comb_fns) > 0
+        s_fast_tick_fn = meta.get("fast_tick_fn")
+
+    if csp.ticked(init_signals):
+        s_S = [0] * s_n_signals
+        for name, val in init_signals.items():
+            idx = s_sig_index.get(name)
+            if idx is not None:
+                s_S[idx] = val
+        s_initialized = True
+
+    if csp.ticked(domain_info):
+        s_domain_names = []
+        s_domain_hpts = []
+        s_domain_clk_idx = []
+        s_domain_fire_target = []
+        s_domain_rst_idx = []
+        s_domain_rst_style = []
+        s_domain_rst_active_high = []
+        s_domain_written_indices = []
+        s_domain_seq_fn = []
+        s_clock_arr = []
+        for dname, dinfo in domain_info.items():
+            s_domain_names.append(dname)
+            s_domain_hpts.append(dinfo.get("half_period_ticks", 1))
+            s_domain_clk_idx.append(s_sig_index.get(dinfo["clk_signal"], -1))
+            edge = dinfo["edge"]
+            if edge == EdgePolarity.POSEDGE:
+                s_domain_fire_target.append(1)
+            elif edge == EdgePolarity.NEGEDGE:
+                s_domain_fire_target.append(0)
+            else:
+                s_domain_fire_target.append(-1)
+            rst_signal = dinfo["rst_signal"]
+            s_domain_rst_idx.append(s_sig_index.get(rst_signal, -1) if rst_signal else -1)
+            s_domain_rst_style.append(dinfo["rst_style"])
+            s_domain_rst_active_high.append(dinfo["rst_active_high"])
+            written_idx = [s_sig_index[n] for n in dinfo["written_signals"] if n in s_sig_index]
+            s_domain_written_indices.append(written_idx)
+            s_domain_seq_fn.append(s_seq_fns.get(dname))
+            s_clock_arr.append(0)
+            if rst_signal:
+                s_has_any_reset = True
+        s_n_domains = len(s_domain_names)
+
+    if csp.ticked(shapes):
+        s_shapes = shapes
+    if csp.ticked(init_values):
+        s_init_values = init_values
+    if csp.ticked(memories):
+        s_memories = memories
+        s_has_memories = bool(memories)
+    if csp.ticked(mem_init):
+        s_mem_state = {k: list(v) for k, v in mem_init.items()}
+
+    if csp.ticked(tick) and s_initialized and not s_finished:
+        S = s_S
+
+        if s_fast_tick_fn is not None:
+            # ── Fast path: compiled tick (no comb, no memory, no reset) ──
+            s_tick_count += 1
+            try:
+                s_fast_tick_fn(S, s_clock_arr, s_tick_count)
+            except SimulationFinish:
+                s_finished = True
+            if return_traces:
+                _any_fired = False
+                for d_i in range(s_n_domains):
+                    if s_tick_count % s_domain_hpts[d_i] == 0:
+                        ft = s_domain_fire_target[d_i]
+                        if ft < 0 or s_clock_arr[d_i] == ft:
+                            _any_fired = True
+                if _any_fired:
+                    return {s_sig_names[i]: S[i] for i in range(s_n_signals)}
+        else:
+            # ── Full path: handles comb, memory, resets ──
+
+            # Seed combinational logic before first edge
+            if s_tick_count == 0:
+                if s_has_comb:
+                    init_changed: set = set(range(s_n_signals))
+                    for comp_id in _affected_component_ids_arr(s_comb_idx, init_changed):
+                        s_comb_fns[comp_id](S, init_changed)
+                if s_has_memories:
+                    sig_dict = {s_sig_names[i]: S[i] for i in range(s_n_signals)}
+                    _exec_mem_reads(s_mem_state, s_memories, sig_dict, [])
+                    for name, idx in s_sig_index.items():
+                        S[idx] = sig_dict.get(name, S[idx])
+
+            s_tick_count += 1
+            tc = s_tick_count
+            changed = s_changed
+            changed.clear()
+
+            # Toggle clocks and detect edges
+            fired = s_fired
+            fired.clear()
+            n_domains = s_n_domains
+            domain_hpts = s_domain_hpts
+            domain_clk_idx = s_domain_clk_idx
+            domain_fire_target = s_domain_fire_target
+            clock_arr = s_clock_arr
+            for d_i in range(n_domains):
+                if tc % domain_hpts[d_i] == 0:
+                    old_clk = clock_arr[d_i]
+                    new_clk = 1 - old_clk
+                    clock_arr[d_i] = new_clk
+                    clk_idx = domain_clk_idx[d_i]
+                    if clk_idx >= 0 and S[clk_idx] != new_clk:
+                        changed.add(clk_idx)
+                        S[clk_idx] = new_clk
+                    ft = domain_fire_target[d_i]
+                    if ft < 0 or new_clk == ft:
+                        fired.append(d_i)
+
+            # Async reset (skipped when no domains have resets)
+            if s_has_any_reset:
+                for d_i in range(n_domains):
+                    rst_idx = s_domain_rst_idx[d_i]
+                    if rst_idx < 0 or s_domain_rst_style[d_i] != ResetStyle.ASYNC:
+                        continue
+                    rst_val = S[rst_idx]
+                    rst_active = rst_val if s_domain_rst_active_high[d_i] else (not rst_val)
+                    if rst_active:
+                        for sidx in s_domain_written_indices[d_i]:
+                            sig_name = s_sig_names[sidx]
+                            reset_val = mask_value(s_init_values.get(sig_name, 0), s_shapes[sig_name])
+                            if S[sidx] != reset_val:
+                                changed.add(sidx)
+                            S[sidx] = reset_val
+                        if d_i in fired:
+                            fired.remove(d_i)
+
+            # Sequential blocks — call compiled functions
+            try:
+                for d_i in fired:
+                    if s_has_any_reset:
+                        rst_idx = s_domain_rst_idx[d_i]
+                        if rst_idx >= 0 and s_domain_rst_style[d_i] == ResetStyle.SYNC:
+                            rst_val = S[rst_idx]
+                            rst_active = rst_val if s_domain_rst_active_high[d_i] else (not rst_val)
+                            if rst_active:
+                                for sidx in s_domain_written_indices[d_i]:
+                                    sig_name = s_sig_names[sidx]
+                                    reset_val = mask_value(s_init_values.get(sig_name, 0), s_shapes[sig_name])
+                                    if S[sidx] != reset_val:
+                                        changed.add(sidx)
+                                    S[sidx] = reset_val
+                                continue
+
+                    seq_fn = s_domain_seq_fn[d_i]
+                    if seq_fn is not None:
+                        seq_fn(S, changed)
+
+                # Memory operations
+                if s_has_memories and fired:
+                    sig_dict = {s_sig_names[i]: S[i] for i in range(s_n_signals)}
+                    fired_names = [s_domain_names[d_i] for d_i in fired]
+                    _exec_mem_writes(s_mem_state, s_memories, sig_dict, s_shapes, fired_names)
+                    _exec_mem_reads(s_mem_state, s_memories, sig_dict, fired_names)
+                    for name, idx in s_sig_index.items():
+                        new_val = sig_dict.get(name, S[idx])
+                        if S[idx] != new_val:
+                            changed.add(idx)
+                            S[idx] = new_val
+                elif s_has_memories:
+                    sig_dict = {s_sig_names[i]: S[i] for i in range(s_n_signals)}
+                    _exec_mem_reads(s_mem_state, s_memories, sig_dict, None)
+                    for name, idx in s_sig_index.items():
+                        new_val = sig_dict.get(name, S[idx])
+                        if S[idx] != new_val:
+                            changed.add(idx)
+                            S[idx] = new_val
+
+                # Settle combinational logic
+                if s_has_comb and fired and changed:
+                    for comp_id in _affected_component_ids_arr(s_comb_idx, changed):
+                        s_comb_fns[comp_id](S, changed)
+            except SimulationFinish:
+                s_finished = True
+
+            if fired and return_traces:
+                return {s_sig_names[i]: S[i] for i in range(s_n_signals)}
+
+
 @csp.node
 def _extract_signal(all_signals: ts[dict], name: str) -> ts[int]:
     """Extract a single signal's value from the aggregate dict."""
@@ -886,6 +1152,11 @@ class CompiledModule:
                     en_width = mem.shape.width // wp.granularity if wp.granularity > 0 else 1
                     self._shapes[wp.en] = Shape(en_width)
 
+        # ── Codegen: compile IR blocks into Python functions ──
+        self._compiled_meta: dict | None = None
+        if not four_state:
+            self._compiled_meta = self._build_compiled_meta()
+
     def write_vcd(
         self,
         path: str,
@@ -929,6 +1200,74 @@ class CompiledModule:
 
             traces = select_signals(traces, include=signals, exclude=exclude)
         return _traces_to_vcd(traces, module=self.module, timescale=timescale)
+
+    def _build_compiled_meta(self) -> dict:
+        """Compile IR blocks into Python functions for the compiled engine."""
+        cg = CodeGen(self._shapes)
+        sig_names = cg.signal_names
+        sig_index = cg.signal_index
+
+        # Compile per-domain seq block functions
+        seq_fns: dict[str, callable] = {}
+        for dname, dinfo in self._domain_info.items():
+            sbs = dinfo["seq_blocks"]
+            if not sbs:
+                continue
+            # Merge all seq block stmts for this domain into one function
+            all_stmts: list[Stmt] = []
+            for sb in sbs:
+                all_stmts.extend(sb.stmts)
+            stmts_tuple = tuple(all_stmts)
+            reads, writes = collect_reads_writes(stmts_tuple)
+            seq_fns[dname] = cg.compile_expr_block(
+                stmts_tuple,
+                reads,
+                writes | reads,
+                name=f"_seq_{dname}",
+            )
+
+        # Compile per-component comb functions
+        comb_fns: list[callable] = []
+        for comp_i, comp in enumerate(self._comb_components):
+            all_stmts = []
+            for assignment in comp.assignments:
+                all_stmts.extend(assignment.stmts)
+            stmts_tuple = tuple(all_stmts)
+            reads, writes = collect_reads_writes(stmts_tuple)
+            comb_fns.append(
+                cg.compile_expr_block(
+                    stmts_tuple,
+                    reads,
+                    writes | reads,
+                    name=f"_comb_{comp_i}",
+                )
+            )
+
+        # Build array-indexed component routing
+        comb_idx: dict[int, int] = {}
+        for name, bitmask in self._comb_component_index.items():
+            idx = sig_index.get(name)
+            if idx is not None:
+                comb_idx[idx] = bitmask
+
+        # Build fast tick function (deferred to _run_sequential when hpt is known)
+        # Eligibility: no comb components, no memories, no resets
+        fast_tick_eligible = len(comb_fns) == 0 and len(self.module.memories) == 0
+        if fast_tick_eligible:
+            for dinfo in self._domain_info.values():
+                if dinfo["rst_signal"] is not None:
+                    fast_tick_eligible = False
+                    break
+
+        return {
+            "sig_names": sig_names,
+            "sig_index": sig_index,
+            "n_signals": len(sig_names),
+            "seq_fns": seq_fns,
+            "comb_fns": comb_fns,
+            "comb_idx": comb_idx,
+            "fast_tick_eligible": fast_tick_eligible,
+        }
 
     def run_testbench(
         self,
@@ -1161,11 +1500,37 @@ class CompiledModule:
         # Compute per-domain half-period in ticks (mutates domain_info dicts)
         gcd_ns = _compute_half_period_ticks(clock_period, clocks, domain_info)
 
+        # Build fast tick function now that half_period_ticks is known
+        if not four_state and self._compiled_meta and self._compiled_meta.get("fast_tick_eligible"):
+            cg = CodeGen(self._shapes)
+            fast_tick_fn = cg.build_fast_tick(domain_info)
+            self._compiled_meta["fast_tick_fn"] = fast_tick_fn
+        elif self._compiled_meta:
+            self._compiled_meta["fast_tick_fn"] = None
+
         # Total ticks: 2 half-periods per cycle * cycles, scaled by primary
         # domain's half_period_ticks.
         primary_name = next(iter(domain_info))
         primary_hpt = domain_info[primary_name]["half_period_ticks"]
         total_ticks = 2 * cycles * primary_hpt
+
+        # ── Batch no-trace fast path: bypass CSP entirely ──
+        if not return_traces and not four_state and self._compiled_meta and self._compiled_meta.get("fast_tick_fn"):
+            fast_tick = self._compiled_meta["fast_tick_fn"]
+            sig_index = self._compiled_meta["sig_index"]
+            n_signals = self._compiled_meta["n_signals"]
+            S = [0] * n_signals
+            for name, val in init.items():
+                idx = sig_index.get(name)
+                if idx is not None:
+                    S[idx] = val
+            clock_arr = [0] * len(domain_info)
+            try:
+                for tc in range(1, total_ticks + 1):
+                    fast_tick(S, clock_arr, tc)
+            except SimulationFinish:
+                pass
+            return {}
 
         # Timer period — just for CSP timestamps (must be >= 1µs for timedelta)
         tick_period = timedelta(microseconds=max(1, gcd_ns // 1000))
@@ -1174,8 +1539,6 @@ class CompiledModule:
         def sim_graph():
             tick = csp.timer(tick_period, True)
             init_edge = csp.const(init)
-            comb_edge = csp.const(self._comb_components)
-            comb_index_edge = csp.const(self._comb_component_index)
             domain_edge = csp.const(domain_info)
             shapes_edge = csp.const(shapes)
             init_vals_edge = csp.const(init_values)
@@ -1183,6 +1546,8 @@ class CompiledModule:
             mem_init_edge = csp.const(self._mem_init)
 
             if four_state:
+                comb_edge = csp.const(self._comb_components)
+                comb_index_edge = csp.const(self._comb_component_index)
                 all_signals = _sim_engine_seq_4(
                     tick,
                     init_edge,
@@ -1201,17 +1566,34 @@ class CompiledModule:
                 else:
                     csp.add_graph_output("__sink__", _trace_sink(all_signals))
             else:
-                all_signals = _sim_engine_seq(
-                    tick,
-                    init_edge,
-                    comb_edge,
-                    comb_index_edge,
-                    domain_edge,
-                    shapes_edge,
-                    init_vals_edge,
-                    mem_edge,
-                    mem_init_edge,
-                )
+                compiled_meta = self._compiled_meta
+                if compiled_meta is not None:
+                    meta_edge = csp.const(compiled_meta)
+                    all_signals = _sim_engine_compiled(
+                        tick,
+                        init_edge,
+                        domain_edge,
+                        shapes_edge,
+                        init_vals_edge,
+                        mem_edge,
+                        mem_init_edge,
+                        meta_edge,
+                        return_traces=return_traces,
+                    )
+                else:
+                    comb_edge = csp.const(self._comb_components)
+                    comb_index_edge = csp.const(self._comb_component_index)
+                    all_signals = _sim_engine_seq(
+                        tick,
+                        init_edge,
+                        comb_edge,
+                        comb_index_edge,
+                        domain_edge,
+                        shapes_edge,
+                        init_vals_edge,
+                        mem_edge,
+                        mem_init_edge,
+                    )
                 if return_traces:
                     for name in all_names:
                         sig_out = _extract_signal(all_signals, name)

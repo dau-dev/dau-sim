@@ -38,10 +38,6 @@ from dau_sim.ir import (
     SignalRef,
 )
 
-# ---------------------------------------------------------------------------
-# IR design builders — translations of the cocotb example HDL
-# ---------------------------------------------------------------------------
-
 
 def _make_dff():
     """D flip-flop: on posedge clk, q <= d.
@@ -166,11 +162,6 @@ def _make_simple_counter():
     )
 
 
-# ---------------------------------------------------------------------------
-# cocotb environment helpers
-# ---------------------------------------------------------------------------
-
-
 class CocotbExampleTestBase:
     """Mix-in that sets up / tears down a cocotb simulation environment."""
 
@@ -272,9 +263,7 @@ class CocotbExampleTestBase:
         cocotb.handle._stop_write_scheduler()
 
 
-# ===================================================================
 # Example 1: Simple DFF (cocotb/examples/simple_dff)
-# ===================================================================
 
 
 class TestDFF(CocotbExampleTestBase):
@@ -362,9 +351,7 @@ class TestDFF(CocotbExampleTestBase):
             self._teardown()
 
 
-# ===================================================================
 # Example 2: Adder (cocotb/examples/adder)
-# ===================================================================
 
 
 def adder_model(a: int, b: int) -> int:
@@ -442,9 +429,7 @@ class TestAdder(CocotbExampleTestBase):
             self._teardown()
 
 
-# ===================================================================
 # Example 3: Simple Counter (cocotb/examples/doc_examples/quickstart)
-# ===================================================================
 
 
 class TestSimpleCounter(CocotbExampleTestBase):
