@@ -31,7 +31,9 @@ classifiers = [
 ]
 
 dependencies = [
+    "amaranth",
     "csp",
+    "pyslang",
     "typer",
     "rich",
 ]
@@ -54,9 +56,6 @@ develop = [
     "ty",
     "uv",
     "wheel",
-    # frontends
-    "amaranth",
-    "pyslang",
     # integrations
     "cocotb",
     "dau-build",
