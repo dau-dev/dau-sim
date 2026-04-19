@@ -151,7 +151,7 @@ multirun/
 ROADMAP.md
 AGENTS.md
 .github/hooks/sdlc.json
-<<<<<<< before updating
+.superpowers
 
 # VCD files
 /*.vcd
@@ -163,6 +163,3 @@ csp
 dau-build
 slang
 verilator
-=======
-.superpowers
->>>>>>> after updating
