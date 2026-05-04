@@ -1,0 +1,335 @@
+csp.impl.pandas_accessor
+========================
+
+.. py:module:: csp.impl.pandas_accessor
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp.impl.pandas_accessor.T
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.impl.pandas_accessor.CspSeriesAccessor
+   csp.impl.pandas_accessor.ToCspSeriesAccessor
+   csp.impl.pandas_accessor.CspDataFrameAccessor
+   csp.impl.pandas_accessor.ToCspFrameAccessor
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.impl.pandas_accessor._basket_valid
+   csp.impl.pandas_accessor._basket_synchronize
+   csp.impl.pandas_accessor._series_to_python_type
+   csp.impl.pandas_accessor._from_series
+   csp.impl.pandas_accessor._run
+   csp.impl.pandas_accessor._empty_index_like
+   csp.impl.pandas_accessor._collect_numpy
+
+
+Module Contents
+---------------
+
+.. py:data:: T
+
+.. py:function:: _basket_valid(xs: List[csp.ts[object]]) -> csp.ts[bool]
+
+.. py:function:: _basket_synchronize(xs: List[csp.ts[T]], threshold: datetime.timedelta) -> csp.OutputBasket(List[ts['T']], shape_of='xs')
+
+.. py:function:: _series_to_python_type(series: pandas.Series)
+
+.. py:function:: _from_series(series: pandas.Series, drop_na: bool = False) -> csp.impl.wiring.edge.Edge
+
+   Convert a series to an Edge.
+   Note: drop_na only applies to float and object types. For all other types, they are automatically dropped.
+
+
+.. py:function:: _run(eval_graph, starttime: datetime.datetime, endtime: datetime.datetime, realtime: bool = False, tick_count: int = -1, tick_history: datetime.timedelta = timedelta(), snap: bool = False) -> Dict
+
+.. py:function:: _empty_index_like(orig_index, snap)
+
+   Creates a new empty index based on an existing (possibly non-empty index).
+   If snap is true, the output index shape is just like the input. If not, an extra datetime index is appended
+   at the end.
+
+
+.. py:class:: CspSeriesAccessor(pandas_obj)
+
+   Bases: :py:obj:`object`
+
+
+   .. py:attribute:: _obj
+
+
+   .. py:method:: _validate(obj)
+      :staticmethod:
+
+
+
+   .. py:method:: _infer_dtype(data)
+
+
+   .. py:method:: apply(func, *args, **kwargs)
+
+      Call Edge.apply to apply a python function to each non-null element of a series, generating a new series.
+      :param func: A scalar function that will be applied on each value of each Edge. If a different output type
+          is returned, pass a tuple (f, typ), where typ is the output type of f.
+      :param args: Positional arguments passed into func
+      :param kwargs: Dictionary of keyword arguments passed into func
+      :return: A TsDtype series containing the output of Edge.apply
+
+
+
+   .. py:method:: pipe(node, *args, **kwargs)
+
+      Call Edge.pipe to apply a csp node to each non-null element of a series, generating a new series.
+
+      :param node: A graph node that will be applied to each Edge, which is passed into node as the first argument.
+          Alternatively, a (node, edge_keyword) tuple where edge_keyword is a string indicating the keyword of node
+          that expects the edge.
+      :param args: Positional arguments passed into node
+      :param kwargs: Dictionary of keyword arguments passed into node
+      :return: A TsDtype series containing the output of Edge.pipe
+
+
+
+   .. py:method:: binop(node, other, *args, **kwargs)
+
+      Call a node of two ts arguments to each pair of edges in the current series and another series.
+
+      :param node: A graph node that takes (at least) two inputs and will be applied to each pair of elements in
+          self and other
+      :param other: A pd.Series containing the second argument to be passed pairwise to node
+      :param args: Positional (non-ts) arguments passed into node
+      :param kwargs: Dictionary of (non-ts) keyword arguments passed into node
+      :return: A TsDtype series containing the outputs of the pairwise application of op
+
+      :example: series1.csp.binop(filter, series2)
+
+
+
+   .. py:method:: sample(trigger: Union[datetime.timedelta, numpy.timedelta64, pandas.Timedelta, csp.ts[object]])
+
+      Sample all non-null elements of the series at a regular timedelta interval or at some custom trigger
+
+      :param trigger: Either a sampling interval or a time series representing the trigger ticks
+      :return: A TsDtype series containing the outputs of csp.sample applied to each non-null element of the series
+
+
+
+   .. py:method:: _flatten(series, columns, prepend_name, delim, recursive)
+      :staticmethod:
+
+
+
+   .. py:method:: flatten(columns=None, prepend_name=True, delim=' ', recursive=True)
+
+      Expands a series of ts of structs into a frame of columns
+
+      :param columns: An optional subset of columns to create from the struct metadata. If not provided, all columns
+          will be expanded
+      :param prepend_name: Whether to prepend the series name to the names of the columns that are generated.
+          Optional, default True
+      :param delim: The delimiter between series name and column names, used if prepend_name is True.
+          Optional, default is a space as it won't occur in a field name, unlike underscore
+      :param recursive: Whether to recursively expand struct fields that themselves contain structs
+      :returns: A pd.DataFrame of TsDtype columns corresponding to the Struct fields.
+
+
+
+   .. py:method:: valid() -> csp.ts[bool]
+
+      Ticks true when all items in the series are valid
+
+
+
+   .. py:method:: synchronize(threshold: datetime.timedelta)
+
+      Synchronizes the series to "bucket" ticks together.
+      When one element ticks, will wait until all other elements in the series tick before returning, or until
+      the threshold has passed. This is particularly useful when doing cross-sectional analysis on data
+      that is generated syncrhonously, but published asynchronously by symbol (i.e. bars).
+
+
+
+   .. py:method:: _eval_graph(tick_count: int = -1, tick_history: datetime.timedelta = timedelta(), snap: bool = False)
+
+
+   .. py:method:: _parse_results(results, name=None, snap=False)
+
+
+   .. py:method:: run(starttime: datetime.datetime, endtime: datetime.datetime, realtime: bool = False, tick_count: int = -1, tick_history: datetime.timedelta = timedelta(), snap: bool = False)
+
+      Run a graph containing the edges in the series.
+
+      :param starttime: The start time for the graph
+      :param endtime: The start time for the graph
+      :param realtime: Whether to use the realtime csp engine
+      :param tick_count: The maximum number of ticks to return. Default is -1 (all ticks)
+      :param tick_history: The maximum tick history to return. Default is timedelta() (all ticks)
+      :param snap: Whether to run in "snap" mode, i.e. return the first tick of every series and stop once all
+          series have ticked
+      :returns: A new Series of type corresponding to the underlying edge type (TsDtype.subtype),
+          with an additional index level containing the datetimes of the ticked values.
+
+
+
+   .. py:method:: snap(timeout: datetime.timedelta = timedelta(seconds=10), starttime: datetime.datetime = None)
+
+      "Snap" a graph containing the edges in the series.
+
+      :param timeout: How long to wait for all the elements to tick before stopping the circuit
+      :param starttime: The start-time for the snap. Could be a time in the past (for snapping historical data) or
+          a time in the future (to schedule a snap at, i.e. the next minute)
+      :returns: A new Series of type corresponding to the underlying edge type (TsDtype.subtype),
+          with the same index as the original series, containing the snapped value of each Edge.
+
+
+
+   .. py:method:: show_graph()
+
+      Show the graph corresponding to the evaluation of all the edges.
+      For large series, this may be very large, so it may be helpful to call .head() first.
+
+
+
+.. py:class:: ToCspSeriesAccessor(pandas_obj)
+
+   Bases: :py:obj:`object`
+
+
+   .. py:attribute:: _obj
+
+
+   .. py:method:: __call__(drop_na: bool = False)
+
+      Return an Edge from the series
+      :param drop_na: If True, will drop na types from series of float and object types. For all other series types,
+          na's are dropped by default for csp's type consistency.
+
+
+
+   .. py:method:: _static_agg(agg: str = 'last')
+
+      Helper function that does a "static aggregation" across the time dimension.
+
+
+
+.. py:class:: CspDataFrameAccessor(pandas_obj)
+
+   Bases: :py:obj:`object`
+
+
+   .. py:attribute:: _obj
+
+
+   .. py:method:: static_frame()
+
+      Return the static part of the data frame (columns not of dtype TsDtype)
+
+
+
+   .. py:method:: ts_frame()
+
+      Return the csp part of the data frame (columns of type TsDtype)
+
+
+
+   .. py:method:: _eval_graph(tick_count: int = -1, tick_history: datetime.timedelta = timedelta(), snap: bool = False)
+
+
+   .. py:method:: run(starttime: datetime.datetime, endtime: datetime.datetime, realtime: bool = False, tick_count: int = -1, tick_history: datetime.timedelta = timedelta(), snap: bool = False, collect: bool = True)
+
+      "Run" a graph containing the edges in all the TsDtype series.
+
+      :param starttime: The start time for the graph
+      :param endtime: The start time for the graph
+      :param realtime: Whether to use the realtime csp engine
+      :param tick_count: The maximum number of ticks to return. Default is -1 (all ticks)
+      :param tick_history: The maximum tick history to return. Default is timedelta() (all ticks)
+      :param snap: Whether to run in "snap" mode, i.e. return the first tick of every series and stop once all
+          series have ticked
+      :param collect: Whether to collect all the data in a single series before publishing.
+          Improves the performance for publishing asynchronous time series, and can handle the case of duplicate
+          timestamps. However, it is slower for synchronous time series.
+      :returns: A new DataFrame with an additional index level containing the datetimes of the ticked values.
+          Columns of type TsDtype are replaced by their ticked values. Values from static columns (not of TsDtype) are
+          repeated for each timestamp.
+
+
+
+   .. py:method:: snap(timeout: datetime.timedelta = timedelta(seconds=10), starttime: datetime.datetime = None)
+
+      "Snap" a graph containing the edges in the series.
+
+      :param timeout: How long to wait for all the elements to tick before stopping the circuit
+      :param starttime: The start-time for the snap. Could be a time in the past (for snapping historical data) or
+          a time in the future (to schedule a snap at, i.e. the next minute)
+      :returns: A new DataFrame with the same indices where every Edge is replaced by it's snapped value.
+
+
+
+   .. py:method:: sample(trigger: Union[datetime.timedelta, numpy.timedelta64, pandas.Timedelta, csp.ts[object]], inplace: bool = False)
+
+      Sample all non-null elements of the series at a regular timedelta interval or at some custom trigger
+
+      :param trigger: Either a sampling interval or a time series representing the trigger ticks
+      :param inplace: Whether the sample is applied to the series in place, or whether a new frame is returned
+      :return: A TsDtype series containing the outputs of csp.sample applied to each non-null element of the series
+
+
+
+   .. py:method:: _collect(data, struct_type)
+
+
+   .. py:method:: collect(columns=None, struct_type=None, delim=' ')
+
+      Collects multiple ts columns of a frame into a series of ts or structs.
+
+      :param columns: An optional subset of columns to map to the struct. If not provided, all columns
+          will be mapped
+      :param struct_type: A struct type to map the columns to
+      :param delim: The delimiter between field names on nested fields
+      :returns: A pd.DataFrame of TsDtype columns corresponding to the Struct fields.
+
+
+
+   .. py:method:: show_graph()
+
+      Show the graph corresponding to the evaluation of all the edges.
+      For large series, this may be very large, so it may be helpful to call .head() first.
+
+
+
+.. py:class:: ToCspFrameAccessor(pandas_obj)
+
+   Bases: :py:obj:`object`
+
+
+   .. py:attribute:: _obj
+
+
+   .. py:method:: __call__(columns=None, agg='last', drop_na=False)
+
+      Return an Edge from the series
+      :param columns: The set of columns to turn into csp edges. If none are provided, all will be. Other columns
+          in the frame are aggregated with a groupby
+      :param agg: The type of aggregation to use for static columns. Can be a string or a function, as long as it works
+          with pd.DataFrameGroupBy.agg (i.e. pd.Series.mode)
+      :param drop_na: If True, will drop na types from series of float and object types. For all other series types,
+          na's are dropped by default for csp's type consistency.
+
+
+
+.. py:function:: _collect_numpy(x: List[csp.ts[object]], dim: int) -> csp.ts[object]
+

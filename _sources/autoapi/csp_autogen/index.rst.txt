@@ -1,0 +1,155 @@
+csp_autogen
+===========
+
+.. py:module:: csp_autogen
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp_autogen.spec
+   csp_autogen.loader
+   csp_autogen.spec
+   csp_autogen.csp_mod
+   csp_autogen.CSP_CPP_TYPE_MAP
+   csp_autogen.parser
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp_autogen.CodeGenerator
+   csp_autogen.Test
+   csp_autogen.Derived
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp_autogen.struct_type
+   csp_autogen.enum_type
+   csp_autogen.array_type
+
+
+Module Contents
+---------------
+
+.. py:data:: spec
+
+.. py:data:: loader
+
+.. py:data:: spec
+   :value: None
+
+
+.. py:data:: csp_mod
+   :value: None
+
+
+.. py:function:: struct_type(type_info)
+
+.. py:function:: enum_type(type_info)
+
+.. py:function:: array_type(type_info)
+
+.. py:data:: CSP_CPP_TYPE_MAP
+
+.. py:class:: CodeGenerator(module_name: str, output_filename: str, namespace: str, generate_imported_types: bool)
+
+   .. py:attribute:: _module_name
+
+
+   .. py:attribute:: _module
+
+
+   .. py:attribute:: _namespace
+
+
+   .. py:attribute:: _header_filename
+
+
+   .. py:attribute:: _cpp_filename
+
+
+   .. py:attribute:: _struct_types
+      :value: []
+
+
+
+   .. py:attribute:: _enum_types
+      :value: []
+
+
+
+   .. py:attribute:: _external_types
+
+
+   .. py:method:: _get_dependent_headers()
+
+      see if there are any dependent headers we need to include
+
+
+
+   .. py:method:: header_filename()
+
+
+   .. py:method:: cpp_filename()
+
+
+   .. py:method:: generate_header_code()
+
+
+   .. py:method:: _generate_headers()
+
+
+   .. py:method:: _generate_enum_class(enum_type)
+
+
+   .. py:method:: _generate_struct_class(struct_type)
+
+
+   .. py:method:: generate_cpp_code()
+
+
+.. py:class:: Test
+
+   Bases: :py:obj:`csp.impl.struct.Struct`
+
+
+   .. py:attribute:: bl
+      :type:  bool
+
+
+   .. py:attribute:: a
+      :type:  int
+
+
+   .. py:attribute:: b
+      :type:  float
+
+
+   .. py:attribute:: s
+      :type:  str
+
+
+.. py:class:: Derived
+
+   Bases: :py:obj:`Test`
+
+
+   .. py:attribute:: string
+      :type:  str
+
+
+   .. py:attribute:: flt
+      :type:  float
+
+
+.. py:data:: parser
+

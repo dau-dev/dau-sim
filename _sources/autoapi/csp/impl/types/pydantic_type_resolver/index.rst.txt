@@ -1,0 +1,89 @@
+csp.impl.types.pydantic_type_resolver
+=====================================
+
+.. py:module:: csp.impl.types.pydantic_type_resolver
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.impl.types.pydantic_type_resolver.TVarValidationContext
+
+
+Module Contents
+---------------
+
+.. py:class:: TVarValidationContext(forced_tvars: Union[Dict[str, Type], None] = None, allow_none_ts: bool = False)
+
+   Custom validation context class for handling the special csp TVAR logic.
+
+
+   .. py:attribute:: field_name
+      :value: None
+
+
+
+   .. py:attribute:: _allow_none_ts
+      :value: False
+
+
+
+   .. py:attribute:: _forced_tvars
+      :type:  Dict[str, Type]
+
+
+   .. py:attribute:: _tvar_type_refs
+      :type:  Dict[str, Set[Tuple[str, Type]]]
+
+
+   .. py:attribute:: _tvar_refs
+      :type:  Dict[str, Dict[str, List[Any]]]
+
+
+   .. py:attribute:: _tvars
+      :type:  Dict[str, Type]
+
+
+   .. py:attribute:: _conflicting_tvar_types
+
+
+   .. py:property:: tvars
+      :type: Dict[str, Type]
+
+
+
+   .. py:property:: allow_none_ts
+      :type: bool
+
+
+
+   .. py:method:: add_tvar_type_ref(tvar, value_type)
+
+
+   .. py:method:: add_tvar_ref(tvar, value)
+
+
+   .. py:method:: resolve_tvars()
+
+
+   .. py:method:: revalidate(model)
+
+      Once tvars have been resolved, need to revalidate input values against resolved tvars
+
+
+
+   .. py:method:: _add_t_var_resolution(tvar, field_name, resolved_type, arg=None)
+
+
+   .. py:method:: _resolve_tvar_container_internal_types(tvar, container_typ, arg, raise_on_error=True)
+
+      This function takes, a container type (i.e. list) and an arg (i.e. 6) and infers the type of the TVar,
+      i.e. typing.List[int]. For simple types, this function is a pass-through (i.e. arg is None).
+
+
+
+   .. py:method:: _try_resolve_tvar_conflicts()
+
+

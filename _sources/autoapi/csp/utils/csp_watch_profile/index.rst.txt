@@ -1,0 +1,29 @@
+csp.utils.csp_watch_profile
+===========================
+
+.. py:module:: csp.utils.csp_watch_profile
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp.utils.csp_watch_profile.parser
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.utils.csp_watch_profile.diff_mem
+
+
+Module Contents
+---------------
+
+.. py:function:: diff_mem(new_meminfo, old_meminfo)
+
+.. py:data:: parser
+

@@ -1,0 +1,25 @@
+csp.tests.adapters
+==================
+
+.. py:module:: csp.tests.adapters
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/csp/tests/adapters/conftest/index
+   /autoapi/csp/tests/adapters/kafka_utils/index
+   /autoapi/csp/tests/adapters/test_arrow/index
+   /autoapi/csp/tests/adapters/test_csv/index
+   /autoapi/csp/tests/adapters/test_db/index
+   /autoapi/csp/tests/adapters/test_kafka/index
+   /autoapi/csp/tests/adapters/test_numpy/index
+   /autoapi/csp/tests/adapters/test_parquet/index
+   /autoapi/csp/tests/adapters/test_perspective/index
+   /autoapi/csp/tests/adapters/test_status/index
+   /autoapi/csp/tests/adapters/test_websocket/index
+
+

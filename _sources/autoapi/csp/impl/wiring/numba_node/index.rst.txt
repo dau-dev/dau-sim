@@ -1,0 +1,96 @@
+csp.impl.wiring.numba_node
+==========================
+
+.. py:module:: csp.impl.wiring.numba_node
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.impl.wiring.numba_node.NumbaNumbaNodeDefMeta
+   csp.impl.wiring.numba_node.NumbaNodeDef
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.impl.wiring.numba_node.numba_node
+
+
+Module Contents
+---------------
+
+.. py:class:: NumbaNumbaNodeDefMeta(*args, **kwargs)
+
+   Bases: :py:obj:`type`
+
+
+   .. py:attribute:: _instantiate_func
+
+
+   .. py:method:: _instantiate_impl(__forced_tvars, args, kwargs)
+
+
+   .. py:method:: _instantiate(__forced_tvars, *args, **kwargs)
+
+
+   .. py:method:: __call__(*args, **kwargs)
+
+
+   .. py:method:: using(**__forced_tvars)
+
+
+   .. py:method:: __get__(instance, owner)
+
+
+.. py:class:: NumbaNodeDef(inputs, scalars, state_types, tvars, impl, pre_create_hook)
+
+   Bases: :py:obj:`csp.impl.wiring.node.NodeDef`
+
+
+   .. py:attribute:: _COMPILED_NODES_CACHE
+
+
+   .. py:attribute:: _state_types
+
+
+   .. py:attribute:: _state_class
+      :value: None
+
+
+
+   .. py:attribute:: _state_instance
+      :value: None
+
+
+
+   .. py:attribute:: _init_func
+      :value: None
+
+
+
+   .. py:attribute:: _next_func
+      :value: None
+
+
+
+   .. py:method:: _create(engine, memo)
+
+
+.. py:function:: numba_node(func=None, *, memoize=True, force_memoize=False, debug_print=False, debug_print_python=False, state_types: Union[Dict[str, Any], None] = None, pre_create_hook=None)
+
+   :param func:
+   :param memoize: Specify whether the node should be memoized (default True)
+   :param force_memoize: If True, the node will be memoized even if csp.memoize(False) was called. Usually it should not be set, set
+   this to True ONLY if memoization required to guarantee correctness of the function (i.e the function must be called at most once with the for each
+   set of parameters).
+   :param debug_print:
+   :param debug_print_python:
+   :param state_types:
+   :return:
+
+

@@ -1,0 +1,791 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>csp.adapters.db - dau-sim v0.15.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/custom.css?v=890fd012" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.15.0</code></div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
+  
+  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.15.0</code></span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../../_sources/autoapi/csp/adapters/db/index.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-csp.adapters.db">
+<span id="csp-adapters-db"></span><h1>csp.adapters.db<a class="headerlink" href="#module-csp.adapters.db" title="Link to this heading">¶</a></h1>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.adapters.db.UTC" title="csp.adapters.db.UTC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UTC</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.adapters.db._SQLALCHEMY_2" title="csp.adapters.db._SQLALCHEMY_2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_SQLALCHEMY_2</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.adapters.db.DBReadAdapter" title="csp.adapters.db.DBReadAdapter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DBReadAdapter</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.adapters.db.TimeAccessor" title="csp.adapters.db.TimeAccessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TimeAccessor</span></code></a></p></td>
+<td><p>Helper class that provides a standard way to create an ABC using</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.adapters.db.EngineStartTimeAccessor" title="csp.adapters.db.EngineStartTimeAccessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EngineStartTimeAccessor</span></code></a></p></td>
+<td><p>A constant time accessor for data that needs to be ingested once at engine start time</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.adapters.db.TimestampAccessor" title="csp.adapters.db.TimestampAccessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TimestampAccessor</span></code></a></p></td>
+<td><p>Helper class that provides a standard way to create an ABC using</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.adapters.db.DateTimeAccessor" title="csp.adapters.db.DateTimeAccessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DateTimeAccessor</span></code></a></p></td>
+<td><p>Helper class that provides a standard way to create an ABC using</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.adapters.db.DBReader" title="csp.adapters.db.DBReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DBReader</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.adapters.db.DBReaderImpl" title="csp.adapters.db.DBReaderImpl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DBReaderImpl</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.adapters.db.DBReadAdapterImpl" title="csp.adapters.db.DBReadAdapterImpl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DBReadAdapterImpl</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="csp.adapters.db.UTC">
+<span class="sig-prename descclassname"><span class="pre">csp.adapters.db.</span></span><span class="sig-name descname"><span class="pre">UTC</span></span><a class="headerlink" href="#csp.adapters.db.UTC" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="csp.adapters.db._SQLALCHEMY_2">
+<span class="sig-prename descclassname"><span class="pre">csp.adapters.db.</span></span><span class="sig-name descname"><span class="pre">_SQLALCHEMY_2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#csp.adapters.db._SQLALCHEMY_2" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.adapters.db.TimeAccessor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.adapters.db.</span></span><span class="sig-name descname"><span class="pre">TimeAccessor</span></span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#TimeAccessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.TimeAccessor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Helper class that provides a standard way to create an ABC using
+inheritance.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.TimeAccessor.get_time_columns">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_time_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#TimeAccessor.get_time_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.TimeAccessor.get_time_columns" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.TimeAccessor.get_time_constraint">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_time_constraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">starttime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endtime</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#TimeAccessor.get_time_constraint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.TimeAccessor.get_time_constraint" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.TimeAccessor.get_order_by_columns">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_order_by_columns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#TimeAccessor.get_order_by_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.TimeAccessor.get_order_by_columns" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.TimeAccessor.get_time">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#TimeAccessor.get_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.TimeAccessor.get_time" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.adapters.db.EngineStartTimeAccessor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.adapters.db.</span></span><span class="sig-name descname"><span class="pre">EngineStartTimeAccessor</span></span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#EngineStartTimeAccessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.EngineStartTimeAccessor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#csp.adapters.db.TimeAccessor" title="csp.adapters.db.TimeAccessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TimeAccessor</span></code></a></p>
+<p>A constant time accessor for data that needs to be ingested once at engine start time</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.EngineStartTimeAccessor.get_time_columns">
+<span class="sig-name descname"><span class="pre">get_time_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#EngineStartTimeAccessor.get_time_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.EngineStartTimeAccessor.get_time_columns" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.EngineStartTimeAccessor.get_time_constraint">
+<span class="sig-name descname"><span class="pre">get_time_constraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">starttime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endtime</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#EngineStartTimeAccessor.get_time_constraint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.EngineStartTimeAccessor.get_time_constraint" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.EngineStartTimeAccessor.get_order_by_columns">
+<span class="sig-name descname"><span class="pre">get_order_by_columns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#EngineStartTimeAccessor.get_order_by_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.EngineStartTimeAccessor.get_order_by_columns" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.EngineStartTimeAccessor.get_time">
+<span class="sig-name descname"><span class="pre">get_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#EngineStartTimeAccessor.get_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.EngineStartTimeAccessor.get_time" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.adapters.db.TimestampAccessor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.adapters.db.</span></span><span class="sig-name descname"><span class="pre">TimestampAccessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#TimestampAccessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.TimestampAccessor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#csp.adapters.db.TimeAccessor" title="csp.adapters.db.TimeAccessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TimeAccessor</span></code></a></p>
+<p>Helper class that provides a standard way to create an ABC using
+inheritance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time_column</strong> – (string) name of the db column containing the timestamp</p></li>
+<li><p><strong>tz</strong> – timezone if the db timestamp doesn’t have timezone</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.TimestampAccessor._time_column">
+<span class="sig-name descname"><span class="pre">_time_column</span></span><a class="headerlink" href="#csp.adapters.db.TimestampAccessor._time_column" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.TimestampAccessor._tz">
+<span class="sig-name descname"><span class="pre">_tz</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#csp.adapters.db.TimestampAccessor._tz" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.TimestampAccessor._db_has_tz">
+<span class="sig-name descname"><span class="pre">_db_has_tz</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#csp.adapters.db.TimestampAccessor._db_has_tz" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.TimestampAccessor.get_time_columns">
+<span class="sig-name descname"><span class="pre">get_time_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#TimestampAccessor.get_time_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.TimestampAccessor.get_time_columns" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.TimestampAccessor.get_time_constraint">
+<span class="sig-name descname"><span class="pre">get_time_constraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">starttime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endtime</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#TimestampAccessor.get_time_constraint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.TimestampAccessor.get_time_constraint" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.TimestampAccessor.get_order_by_columns">
+<span class="sig-name descname"><span class="pre">get_order_by_columns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#TimestampAccessor.get_order_by_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.TimestampAccessor.get_order_by_columns" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.TimestampAccessor.get_time">
+<span class="sig-name descname"><span class="pre">get_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#TimestampAccessor.get_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.TimestampAccessor.get_time" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.adapters.db.DateTimeAccessor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.adapters.db.</span></span><span class="sig-name descname"><span class="pre">DateTimeAccessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DateTimeAccessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DateTimeAccessor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#csp.adapters.db.TimeAccessor" title="csp.adapters.db.TimeAccessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TimeAccessor</span></code></a></p>
+<p>Helper class that provides a standard way to create an ABC using
+inheritance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date_column</strong> – (string) name of the db column containing the date</p></li>
+<li><p><strong>time_column</strong> – (string) name of the db colummn containing the time</p></li>
+<li><p><strong>tz</strong> – timezone if the db time does not have timezone</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.DateTimeAccessor._date_column">
+<span class="sig-name descname"><span class="pre">_date_column</span></span><a class="headerlink" href="#csp.adapters.db.DateTimeAccessor._date_column" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.DateTimeAccessor._time_column">
+<span class="sig-name descname"><span class="pre">_time_column</span></span><a class="headerlink" href="#csp.adapters.db.DateTimeAccessor._time_column" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.DateTimeAccessor._tz">
+<span class="sig-name descname"><span class="pre">_tz</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#csp.adapters.db.DateTimeAccessor._tz" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.DateTimeAccessor._db_has_tz">
+<span class="sig-name descname"><span class="pre">_db_has_tz</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#csp.adapters.db.DateTimeAccessor._db_has_tz" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.DateTimeAccessor.get_time_columns">
+<span class="sig-name descname"><span class="pre">get_time_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DateTimeAccessor.get_time_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DateTimeAccessor.get_time_columns" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.DateTimeAccessor.get_time_constraint">
+<span class="sig-name descname"><span class="pre">get_time_constraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">starttime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endtime</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DateTimeAccessor.get_time_constraint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DateTimeAccessor.get_time_constraint" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.DateTimeAccessor.get_order_by_columns">
+<span class="sig-name descname"><span class="pre">get_order_by_columns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DateTimeAccessor.get_order_by_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DateTimeAccessor.get_order_by_columns" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.DateTimeAccessor.get_time">
+<span class="sig-name descname"><span class="pre">get_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DateTimeAccessor.get_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DateTimeAccessor.get_time" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReader">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.adapters.db.</span></span><span class="sig-name descname"><span class="pre">DBReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_accessor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constraint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_raw_user_query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DBReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DBReader" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>connection</strong> – sqlalchemy engine or (already connected) connection object.</p></li>
+<li><p><strong>time_accessor</strong> – TimeAccessor object</p></li>
+<li><p><strong>table_name</strong> – name of table in database as a string (table only, do not include database and schema)</p></li>
+<li><p><strong>schema_name</strong> – name of the schema to use (for databases like SQL Server that use schema as part of table location, may not
+be needed if schema name is “dbo”)</p></li>
+<li><p><strong>query</strong> – either string query or sqlalchemy query object. Ex: “select * from users”</p></li>
+<li><p><strong>symbol_column</strong> – name of symbol column in table as a string</p></li>
+<li><p><strong>constraint</strong> – additional sqlalchemy constraints for query. Ex: constraint = db.text( ‘PRICE&gt;:price’ ).bindparams( price = 100.0 )</p></li>
+<li><p><strong>log_query</strong> – set to True to see what query was generated to access the data</p></li>
+<li><p><strong>use_raw_user_query</strong> – Don’t do any alteration to user query, assume it contains all the needed columns and sorting</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReader._connection">
+<span class="sig-name descname"><span class="pre">_connection</span></span><a class="headerlink" href="#csp.adapters.db.DBReader._connection" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReader._table_name">
+<span class="sig-name descname"><span class="pre">_table_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#csp.adapters.db.DBReader._table_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReader._schema_name">
+<span class="sig-name descname"><span class="pre">_schema_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#csp.adapters.db.DBReader._schema_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReader._query">
+<span class="sig-name descname"><span class="pre">_query</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#csp.adapters.db.DBReader._query" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReader._time_accessor">
+<span class="sig-name descname"><span class="pre">_time_accessor</span></span><a class="headerlink" href="#csp.adapters.db.DBReader._time_accessor" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReader._symbol_column">
+<span class="sig-name descname"><span class="pre">_symbol_column</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#csp.adapters.db.DBReader._symbol_column" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReader._constraint">
+<span class="sig-name descname"><span class="pre">_constraint</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#csp.adapters.db.DBReader._constraint" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReader._log_query">
+<span class="sig-name descname"><span class="pre">_log_query</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#csp.adapters.db.DBReader._log_query" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReader._use_raw_user_query">
+<span class="sig-name descname"><span class="pre">_use_raw_user_query</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#csp.adapters.db.DBReader._use_raw_user_query" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReader._requested_cols">
+<span class="sig-name descname"><span class="pre">_requested_cols</span></span><a class="headerlink" href="#csp.adapters.db.DBReader._requested_cols" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReader.subscribe">
+<span class="sig-name descname"><span class="pre">subscribe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_map</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">push_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">PushMode.NON_COLLAPSING</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DBReader.subscribe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DBReader.subscribe" title="Link to this definition">¶</a></dt>
+<dd><p>If typ=None, then a struct will be dynamically created that reflects the schema of the table.
+In this case, the database will be queried at graph building time, and the resulting struct can
+be independently accessed via .schema_struct().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReader.subscribe_all">
+<span class="sig-name descname"><span class="pre">subscribe_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">typ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_map</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">push_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">PushMode.NON_COLLAPSING</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DBReader.subscribe_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DBReader.subscribe_all" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReader._subscribe">
+<span class="sig-name descname"><span class="pre">_subscribe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">push_mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DBReader._subscribe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DBReader._subscribe" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReader.schema_struct">
+<span class="sig-name descname"><span class="pre">schema_struct</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DBReader.schema_struct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DBReader.schema_struct" title="Link to this definition">¶</a></dt>
+<dd><p>Return a struct that represents the schema of the underlying table.
+Will be returned if typ=None is passed to subscribe.
+Also useful to inspect manually when defining field_map.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReader._create">
+<span class="sig-name descname"><span class="pre">_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">memo</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DBReader._create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DBReader._create" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReader.create_from_connection">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_from_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_accessor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constraint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DBReader.create_from_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DBReader.create_from_connection" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReader.create_from_url">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_from_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_accessor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constraint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DBReader.create_from_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DBReader.create_from_url" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReaderImpl">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.adapters.db.</span></span><span class="sig-name descname"><span class="pre">DBReaderImpl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adapterRep</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DBReaderImpl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DBReaderImpl" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../impl/adaptermanager/index.html#csp.impl.adaptermanager.AdapterManagerImpl" title="csp.impl.adaptermanager.AdapterManagerImpl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">csp.impl.adaptermanager.AdapterManagerImpl</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReaderImpl._rep">
+<span class="sig-name descname"><span class="pre">_rep</span></span><a class="headerlink" href="#csp.adapters.db.DBReaderImpl._rep" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReaderImpl._inputs">
+<span class="sig-name descname"><span class="pre">_inputs</span></span><a class="headerlink" href="#csp.adapters.db.DBReaderImpl._inputs" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReaderImpl._prev_time">
+<span class="sig-name descname"><span class="pre">_prev_time</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#csp.adapters.db.DBReaderImpl._prev_time" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReaderImpl._row">
+<span class="sig-name descname"><span class="pre">_row</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#csp.adapters.db.DBReaderImpl._row" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReaderImpl.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">starttime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endtime</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DBReaderImpl.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DBReaderImpl.start" title="Link to this definition">¶</a></dt>
+<dd><p>start up the manager, connect to any external sources / files you need.  Spawn any threads you may need
+( usually for realtime only )</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReaderImpl._data_yielder_function">
+<span class="sig-name descname"><span class="pre">_data_yielder_function</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DBReaderImpl._data_yielder_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DBReaderImpl._data_yielder_function" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReaderImpl.build_query">
+<span class="sig-name descname"><span class="pre">build_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">starttime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endtime</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DBReaderImpl.build_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DBReaderImpl.build_query" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReaderImpl.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DBReaderImpl.stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DBReaderImpl.stop" title="Link to this definition">¶</a></dt>
+<dd><p>called on engine shutdown, optional</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReaderImpl.register_input_adapter">
+<span class="sig-name descname"><span class="pre">register_input_adapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adapter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DBReaderImpl.register_input_adapter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DBReaderImpl.register_input_adapter" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReaderImpl.process_next_sim_timeslice">
+<span class="sig-name descname"><span class="pre">process_next_sim_timeslice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">now</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DBReaderImpl.process_next_sim_timeslice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DBReaderImpl.process_next_sim_timeslice" title="Link to this definition">¶</a></dt>
+<dd><p>this method should iterate over all data for the requested time, and push data onto all of the adapters inputs
+that need to tick
+:return: next datetime with data for this adapter manager</p>
+<p>NOTE: Simulation Adapters should overload this method!</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReaderImpl.process_row">
+<span class="sig-name descname"><span class="pre">process_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DBReaderImpl.process_row"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DBReaderImpl.process_row" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReadAdapterImpl">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.adapters.db.</span></span><span class="sig-name descname"><span class="pre">DBReadAdapterImpl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">managerImpl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_map</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/db.html#DBReadAdapterImpl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.db.DBReadAdapterImpl" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../impl/adaptermanager/index.html#csp.impl.adaptermanager.ManagedSimInputAdapter" title="csp.impl.adaptermanager.ManagedSimInputAdapter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">csp.impl.adaptermanager.ManagedSimInputAdapter</span></code></a></p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="csp.adapters.db.DBReadAdapter">
+<span class="sig-prename descclassname"><span class="pre">csp.adapters.db.</span></span><span class="sig-name descname"><span class="pre">DBReadAdapter</span></span><a class="headerlink" href="#csp.adapters.db.DBReadAdapter" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; the csp authors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">csp.adapters.db</a><ul>
+<li><a class="reference internal" href="#attributes">Attributes</a></li>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#csp.adapters.db.UTC"><code class="docutils literal notranslate"><span class="pre">UTC</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db._SQLALCHEMY_2"><code class="docutils literal notranslate"><span class="pre">_SQLALCHEMY_2</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.TimeAccessor"><code class="docutils literal notranslate"><span class="pre">TimeAccessor</span></code></a><ul>
+<li><a class="reference internal" href="#csp.adapters.db.TimeAccessor.get_time_columns"><code class="docutils literal notranslate"><span class="pre">TimeAccessor.get_time_columns()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.TimeAccessor.get_time_constraint"><code class="docutils literal notranslate"><span class="pre">TimeAccessor.get_time_constraint()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.TimeAccessor.get_order_by_columns"><code class="docutils literal notranslate"><span class="pre">TimeAccessor.get_order_by_columns()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.TimeAccessor.get_time"><code class="docutils literal notranslate"><span class="pre">TimeAccessor.get_time()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.adapters.db.EngineStartTimeAccessor"><code class="docutils literal notranslate"><span class="pre">EngineStartTimeAccessor</span></code></a><ul>
+<li><a class="reference internal" href="#csp.adapters.db.EngineStartTimeAccessor.get_time_columns"><code class="docutils literal notranslate"><span class="pre">EngineStartTimeAccessor.get_time_columns()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.EngineStartTimeAccessor.get_time_constraint"><code class="docutils literal notranslate"><span class="pre">EngineStartTimeAccessor.get_time_constraint()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.EngineStartTimeAccessor.get_order_by_columns"><code class="docutils literal notranslate"><span class="pre">EngineStartTimeAccessor.get_order_by_columns()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.EngineStartTimeAccessor.get_time"><code class="docutils literal notranslate"><span class="pre">EngineStartTimeAccessor.get_time()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.adapters.db.TimestampAccessor"><code class="docutils literal notranslate"><span class="pre">TimestampAccessor</span></code></a><ul>
+<li><a class="reference internal" href="#csp.adapters.db.TimestampAccessor._time_column"><code class="docutils literal notranslate"><span class="pre">TimestampAccessor._time_column</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.TimestampAccessor._tz"><code class="docutils literal notranslate"><span class="pre">TimestampAccessor._tz</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.TimestampAccessor._db_has_tz"><code class="docutils literal notranslate"><span class="pre">TimestampAccessor._db_has_tz</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.TimestampAccessor.get_time_columns"><code class="docutils literal notranslate"><span class="pre">TimestampAccessor.get_time_columns()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.TimestampAccessor.get_time_constraint"><code class="docutils literal notranslate"><span class="pre">TimestampAccessor.get_time_constraint()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.TimestampAccessor.get_order_by_columns"><code class="docutils literal notranslate"><span class="pre">TimestampAccessor.get_order_by_columns()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.TimestampAccessor.get_time"><code class="docutils literal notranslate"><span class="pre">TimestampAccessor.get_time()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.adapters.db.DateTimeAccessor"><code class="docutils literal notranslate"><span class="pre">DateTimeAccessor</span></code></a><ul>
+<li><a class="reference internal" href="#csp.adapters.db.DateTimeAccessor._date_column"><code class="docutils literal notranslate"><span class="pre">DateTimeAccessor._date_column</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DateTimeAccessor._time_column"><code class="docutils literal notranslate"><span class="pre">DateTimeAccessor._time_column</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DateTimeAccessor._tz"><code class="docutils literal notranslate"><span class="pre">DateTimeAccessor._tz</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DateTimeAccessor._db_has_tz"><code class="docutils literal notranslate"><span class="pre">DateTimeAccessor._db_has_tz</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DateTimeAccessor.get_time_columns"><code class="docutils literal notranslate"><span class="pre">DateTimeAccessor.get_time_columns()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DateTimeAccessor.get_time_constraint"><code class="docutils literal notranslate"><span class="pre">DateTimeAccessor.get_time_constraint()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DateTimeAccessor.get_order_by_columns"><code class="docutils literal notranslate"><span class="pre">DateTimeAccessor.get_order_by_columns()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DateTimeAccessor.get_time"><code class="docutils literal notranslate"><span class="pre">DateTimeAccessor.get_time()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReader"><code class="docutils literal notranslate"><span class="pre">DBReader</span></code></a><ul>
+<li><a class="reference internal" href="#csp.adapters.db.DBReader._connection"><code class="docutils literal notranslate"><span class="pre">DBReader._connection</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReader._table_name"><code class="docutils literal notranslate"><span class="pre">DBReader._table_name</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReader._schema_name"><code class="docutils literal notranslate"><span class="pre">DBReader._schema_name</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReader._query"><code class="docutils literal notranslate"><span class="pre">DBReader._query</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReader._time_accessor"><code class="docutils literal notranslate"><span class="pre">DBReader._time_accessor</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReader._symbol_column"><code class="docutils literal notranslate"><span class="pre">DBReader._symbol_column</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReader._constraint"><code class="docutils literal notranslate"><span class="pre">DBReader._constraint</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReader._log_query"><code class="docutils literal notranslate"><span class="pre">DBReader._log_query</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReader._use_raw_user_query"><code class="docutils literal notranslate"><span class="pre">DBReader._use_raw_user_query</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReader._requested_cols"><code class="docutils literal notranslate"><span class="pre">DBReader._requested_cols</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReader.subscribe"><code class="docutils literal notranslate"><span class="pre">DBReader.subscribe()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReader.subscribe_all"><code class="docutils literal notranslate"><span class="pre">DBReader.subscribe_all()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReader._subscribe"><code class="docutils literal notranslate"><span class="pre">DBReader._subscribe()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReader.schema_struct"><code class="docutils literal notranslate"><span class="pre">DBReader.schema_struct()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReader._create"><code class="docutils literal notranslate"><span class="pre">DBReader._create()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReader.create_from_connection"><code class="docutils literal notranslate"><span class="pre">DBReader.create_from_connection()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReader.create_from_url"><code class="docutils literal notranslate"><span class="pre">DBReader.create_from_url()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReaderImpl"><code class="docutils literal notranslate"><span class="pre">DBReaderImpl</span></code></a><ul>
+<li><a class="reference internal" href="#csp.adapters.db.DBReaderImpl._rep"><code class="docutils literal notranslate"><span class="pre">DBReaderImpl._rep</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReaderImpl._inputs"><code class="docutils literal notranslate"><span class="pre">DBReaderImpl._inputs</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReaderImpl._prev_time"><code class="docutils literal notranslate"><span class="pre">DBReaderImpl._prev_time</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReaderImpl._row"><code class="docutils literal notranslate"><span class="pre">DBReaderImpl._row</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReaderImpl.start"><code class="docutils literal notranslate"><span class="pre">DBReaderImpl.start()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReaderImpl._data_yielder_function"><code class="docutils literal notranslate"><span class="pre">DBReaderImpl._data_yielder_function()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReaderImpl.build_query"><code class="docutils literal notranslate"><span class="pre">DBReaderImpl.build_query()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReaderImpl.stop"><code class="docutils literal notranslate"><span class="pre">DBReaderImpl.stop()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReaderImpl.register_input_adapter"><code class="docutils literal notranslate"><span class="pre">DBReaderImpl.register_input_adapter()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReaderImpl.process_next_sim_timeslice"><code class="docutils literal notranslate"><span class="pre">DBReaderImpl.process_next_sim_timeslice()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReaderImpl.process_row"><code class="docutils literal notranslate"><span class="pre">DBReaderImpl.process_row()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReadAdapterImpl"><code class="docutils literal notranslate"><span class="pre">DBReadAdapterImpl</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.db.DBReadAdapter"><code class="docutils literal notranslate"><span class="pre">DBReadAdapter</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../../_static/documentation_options.js?v=ef97403f"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../../../_static/js/custom.js?v=956e5d78"></script>
+    </body>
+</html>

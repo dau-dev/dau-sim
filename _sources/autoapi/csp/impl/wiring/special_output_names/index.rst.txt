@@ -1,0 +1,21 @@
+csp.impl.wiring.special_output_names
+====================================
+
+.. py:module:: csp.impl.wiring.special_output_names
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp.impl.wiring.special_output_names.UNNAMED_OUTPUT_NAME
+
+
+Module Contents
+---------------
+
+.. py:data:: UNNAMED_OUTPUT_NAME
+   :value: '__csp__unnamed_output__'
+
+

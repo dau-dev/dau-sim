@@ -1,0 +1,22 @@
+csp.tests.test_showgraph
+========================
+
+.. py:module:: csp.tests.test_showgraph
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.tests.test_showgraph._cant_find_graphviz
+   csp.tests.test_showgraph.test_showgraph_names
+
+
+Module Contents
+---------------
+
+.. py:function:: _cant_find_graphviz()
+
+.. py:function:: test_showgraph_names()
+

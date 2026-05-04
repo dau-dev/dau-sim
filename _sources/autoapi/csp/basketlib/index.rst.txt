@@ -1,0 +1,25 @@
+csp.basketlib
+=============
+
+.. py:module:: csp.basketlib
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.basketlib.sync_list
+   csp.basketlib.sync_dict
+   csp.basketlib.sync
+
+
+Module Contents
+---------------
+
+.. py:function:: sync_list(x: List[csp.ts[T]], threshold: datetime.timedelta, output_incomplete: bool = True) -> csp.OutputBasket(List[ts['T']], shape_of='x')
+
+.. py:function:: sync_dict(x: Dict[K, csp.ts[T]], threshold: datetime.timedelta, output_incomplete: bool = True) -> csp.OutputBasket(Dict['K', ts['T']], shape_of='x')
+
+.. py:function:: sync(x, threshold: datetime.timedelta, output_incomplete: bool = True)
+

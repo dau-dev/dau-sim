@@ -1,0 +1,91 @@
+csp.impl.wiring.runtime
+=======================
+
+.. py:module:: csp.impl.wiring.runtime
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp.impl.wiring.runtime.MAX_END_TIME
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.impl.wiring.runtime.GraphRunInfo
+   csp.impl.wiring.runtime._WrappedContext
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.impl.wiring.runtime._normalize_run_times
+   csp.impl.wiring.runtime.build_graph
+   csp.impl.wiring.runtime._build_engine
+   csp.impl.wiring.runtime.run
+
+
+Module Contents
+---------------
+
+.. py:data:: MAX_END_TIME
+
+.. py:function:: _normalize_run_times(starttime, endtime, realtime)
+
+.. py:function:: build_graph(f, *args, starttime=None, endtime=None, realtime=False, **kwargs)
+
+.. py:function:: _build_engine(engine, context, memo=None)
+
+.. py:class:: GraphRunInfo(starttime, endtime, realtime)
+
+   .. py:attribute:: TLS
+
+
+   .. py:attribute:: _starttime
+
+
+   .. py:attribute:: _endtime
+
+
+   .. py:attribute:: _realtime
+
+
+   .. py:attribute:: _prev
+      :value: None
+
+
+
+   .. py:property:: starttime
+
+
+   .. py:property:: endtime
+
+
+   .. py:property:: is_realtime
+
+
+   .. py:method:: get_cur_run_times_info(raise_if_missing=True)
+      :classmethod:
+
+
+
+   .. py:method:: __enter__()
+
+
+   .. py:method:: __exit__(exc_type, exc_val, exc_tb)
+
+
+.. py:class:: _WrappedContext(context)
+
+   .. py:attribute:: context
+
+
+.. py:function:: run(g, *args, starttime=None, endtime=MAX_END_TIME, queue_wait_time=None, realtime=False, output_numpy=False, **kwargs)
+

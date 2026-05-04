@@ -1,0 +1,1222 @@
+csp
+===
+
+.. py:module:: csp
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/csp/adapters/index
+   /autoapi/csp/baselib/index
+   /autoapi/csp/basketlib/index
+   /autoapi/csp/curve/index
+   /autoapi/csp/dataframe/index
+   /autoapi/csp/impl/index
+   /autoapi/csp/math/index
+   /autoapi/csp/profiler/index
+   /autoapi/csp/random/index
+   /autoapi/csp/showgraph/index
+   /autoapi/csp/stats/index
+   /autoapi/csp/tests/index
+   /autoapi/csp/typing/index
+   /autoapi/csp/utils/index
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp.const
+   csp.ALL_CSP_BUILTIN_FUNCS
+   csp.UNSET
+   csp.UNSET
+   csp.ts
+   csp.add_graph_output
+   csp.abs
+   csp.add
+   csp.arccos
+   csp.arccosh
+   csp.arcsin
+   csp.arcsinh
+   csp.arctan
+   csp.arctanh
+   csp.cos
+   csp.cosh
+   csp.divide
+   csp.eq
+   csp.erf
+   csp.exp
+   csp.exp2
+   csp.floordiv
+   csp.ge
+   csp.gt
+   csp.le
+   csp.ln
+   csp.log10
+   csp.log2
+   csp.lt
+   csp.max
+   csp.min
+   csp.mod
+   csp.multiply
+   csp.ne
+   csp.neg
+   csp.pos
+   csp.pow
+   csp.sin
+   csp.sinh
+   csp.sqrt
+   csp.sub
+   csp.tan
+   csp.tanh
+   csp.__version__
+
+
+Exceptions
+----------
+
+.. autoapisummary::
+
+   csp.OutputTypeError
+   csp.CspParseError
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.DelayedCollect
+   csp.DelayedDemultiplex
+   csp.LogSettings
+   csp.DataFrame
+   csp.DuplicatePolicy
+   csp.TimeIndexPolicy
+   csp.Enum
+   csp.GenericPushAdapter
+   csp.Struct
+   csp.OutputBasket
+   csp.Outputs
+   csp.PushMode
+   csp.attach
+   csp.DynamicBasket
+   csp.snapkey
+   csp.snap
+   csp.DelayedEdge
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.accum
+   csp.apply
+   csp.cast_int_to_float
+   csp.collect
+   csp.count
+   csp.default
+   csp.delay
+   csp.demultiplex
+   csp.diff
+   csp.drop_dups
+   csp.drop_nans
+   csp.dynamic_cast
+   csp.dynamic_collect
+   csp.dynamic_demultiplex
+   csp.exprtk
+   csp.filter
+   csp.firstN
+   csp.flatten
+   csp.gate
+   csp.get_basket_field
+   csp.log
+   csp.merge
+   csp.multiplex
+   csp.null_ts
+   csp.print
+   csp.sample
+   csp.schedule_on_engine_stop
+   csp.split
+   csp.static_cast
+   csp.stop_engine
+   csp.struct_collectts
+   csp.struct_field
+   csp.struct_fromts
+   csp.timer
+   csp.times
+   csp.times_ns
+   csp.unroll
+   csp.wrap_feedback
+   csp.curve
+   csp.DynamicEnum
+   csp.set_print_full_exception_stack
+   csp.csp_memoized
+   csp.memoize
+   csp.build_graph
+   csp.run
+   csp.run_on_thread
+   csp.clear_global_context
+   csp.new_global_context
+   csp.and_
+   csp.bitwise_not
+   csp.not_
+   csp.or_
+   csp.show_graph
+   csp.get_include_path
+   csp.get_lib_path
+
+
+Package Contents
+----------------
+
+.. py:class:: DelayedCollect(ts_type, default_to_null: bool = False)
+
+   Bases: :py:obj:`csp.impl.wiring.delayed_node.DelayedNodeWrapperDef`
+
+
+   special "advanced use" object for delayed collect.  Useful for writing APIs that have publish calls
+   which can be called from multiple places, but need to feed into a single sink
+
+   :param: ts_type - type of input timeseries
+
+
+   .. py:attribute:: _inputs
+      :value: []
+
+
+
+   .. py:attribute:: _output
+
+
+   .. py:method:: copy()
+
+
+   .. py:method:: add_input(x: csp.impl.types.tstype.ts[T])
+
+
+   .. py:method:: output()
+
+      returns collected inputs as ts[ List[ input_ts_type] ]
+
+
+
+   .. py:method:: _instantiate()
+
+
+.. py:class:: DelayedDemultiplex(x: csp.impl.types.tstype.ts[T], key: csp.impl.types.tstype.ts[K], raise_on_bad_key: bool = False)
+
+   Bases: :py:obj:`csp.impl.wiring.delayed_node.DelayedNodeWrapperDef`
+
+
+   special "advanced use" object for delayed demultiplex.  Useful for writing APIs that susbcribe
+   to a fat pipe but want to demux the pipe based on graph-time requests for keys ( subscribe calls )
+
+
+   .. py:attribute:: _stream_ts
+
+
+   .. py:attribute:: _key_ts
+
+
+   .. py:attribute:: _raise_on_bad_key
+      :value: False
+
+
+
+   .. py:attribute:: _demuxed_by_key
+
+
+   .. py:method:: copy()
+
+
+   .. py:method:: demultiplex(key)
+
+
+   .. py:method:: _demultiplex(key: ~K, key_type: K, out_type: T) -> csp.impl.types.tstype.ts[T]
+
+
+   .. py:method:: _instantiate()
+
+
+.. py:class:: LogSettings(logger_name, logging_tz)
+
+   .. py:attribute:: TLS
+
+
+   .. py:attribute:: logger
+
+
+   .. py:attribute:: logging_tz
+
+
+   .. py:method:: set(logger_name='csp', logging_tz=None)
+      :classmethod:
+
+
+
+   .. py:method:: set_queue()
+      :classmethod:
+
+
+
+   .. py:method:: get_queue()
+      :classmethod:
+
+
+
+   .. py:method:: has_queue()
+      :classmethod:
+
+
+
+   .. py:method:: join_queue()
+      :classmethod:
+
+
+
+   .. py:method:: with_set(logger_name='csp', logging_tz=None)
+      :classmethod:
+
+
+
+   .. py:method:: with_set_instance(instance)
+      :classmethod:
+
+
+
+   .. py:method:: get_instance()
+      :classmethod:
+
+
+
+.. py:function:: accum(x: csp.impl.types.tstype.ts[T], start: ~T = 0) -> csp.impl.types.tstype.ts[T]
+
+.. py:function:: apply(x: csp.impl.types.tstype.ts[T], f: Callable[[T], U], result_type: U) -> csp.impl.types.tstype.ts[U]
+
+   :param x: The time series on which the function should be applied
+   :param f: A scalar function that will be applied on each value of x
+   :param result_type: The type of the values in the resulting time series
+   :return: A time series that ticks on each tick of x. Each item in the result time series is the return value of f applied on x. All values should match
+   the specified result_type
+
+
+.. py:function:: cast_int_to_float(x: csp.impl.types.tstype.ts[int]) -> csp.impl.types.tstype.ts[float]
+
+.. py:function:: collect(x: List[csp.impl.types.tstype.ts[T]]) -> csp.impl.types.tstype.ts[List[T]]
+
+   convert basket of timeseries into timeseries of list of ticked values
+
+
+.. py:data:: const
+
+.. py:function:: count(x: csp.impl.types.tstype.ts[T]) -> csp.impl.types.tstype.ts[int]
+
+   return count of ticks of input
+
+
+.. py:function:: default(x: csp.impl.types.tstype.ts[T], default: ~T, delay: datetime.timedelta = timedelta()) -> csp.impl.types.tstype.ts[T]
+
+   default a timeseries with a constant value.  Default will tick at start of engine, unless the input has
+   a valid startup tick
+
+
+.. py:function:: delay(x: csp.impl.types.tstype.ts[T], delay: Union[datetime.timedelta, int]) -> csp.impl.types.tstype.ts[T]
+
+   delay input ticks by given delay
+
+
+.. py:function:: demultiplex(x: csp.impl.types.tstype.ts[T], key: csp.impl.types.tstype.ts[K], keys: List[K], raise_on_bad_key: bool = False) -> OutputBasket(Dict['K', ts['T']], shape='keys')
+
+   whenever the timeseries input ticks, output a tick on the appropriate basket output
+
+
+.. py:function:: diff(x: csp.impl.types.tstype.ts[T], lag: Union[datetime.timedelta, int]) -> csp.impl.types.tstype.ts[T]
+
+   diff x against itself lag time/ticks ago
+
+
+.. py:function:: drop_dups(x: csp.impl.types.tstype.ts[T], eps: float = None) -> csp.impl.types.tstype.ts[T]
+
+   removes consecutive duplicates from the input series
+
+
+.. py:function:: drop_nans(x: csp.impl.types.tstype.ts[float]) -> csp.impl.types.tstype.ts[float]
+
+   removes any nan values from the input series
+
+
+.. py:function:: dynamic_cast(x: csp.impl.types.tstype.ts[T], outType: U) -> csp.impl.types.tstype.ts[U]
+
+   safer version of static_Cast, dynamic_cast will run the data through a node and
+   ensure runtime type checking
+
+
+.. py:function:: dynamic_collect(data: Dict[csp.impl.types.tstype.ts[K], csp.impl.types.tstype.ts[V]]) -> csp.impl.types.tstype.ts[Dict[K, V]]
+
+   whenever any input of the dynamic basket ticks, output the key-value pairs in a dictionary
+
+
+.. py:function:: dynamic_demultiplex(x: csp.impl.types.tstype.ts[T], key: csp.impl.types.tstype.ts[K]) -> Dict[csp.impl.types.tstype.ts[K], csp.impl.types.tstype.ts[T]]
+
+   whenever the timeseries input ticks, output a tick on the appropriate dynamic basket output
+
+
+.. py:function:: exprtk(expression_str: str, inputs: Dict[str, csp.impl.types.tstype.ts[object]], state_vars: dict = {}, trigger: csp.impl.types.tstype.ts[object] = None, functions: dict = {}, constants: dict = {}, output_ndarray: bool = False) -> csp.impl.types.tstype.ts[Union[float, numpy.ndarray]]
+
+   given a mathematical expression,
+       and a set of timeseries corresponding to variables in that expression, tick out the result (a float) of that expression,
+       either every time an input ticks, or on the trigger if provided.
+   :param expression_str: a mathematical expression as per the C++ Mathematical Expression Toolkit Library, ExprTk: http://www.partow.net/programming/exprtk/
+   :param inputs: a dict basket of timeseries.  The keys will correspond to the variables in the expression.  The timeseries can be of float or string
+   :param state_vars: an optional dictionary of variables to be held in state between executions, and assignable within the expression.
+       Keys are the variable names and values are the starting values
+   :param trigger: an optional trigger for when to calculate.  If not provided, will calculate any time an input ticks
+   :param functions: an optional dictionary whose keys are function names that can be used in the expression, and whose values are of the form
+       (("arg1", ..), "function body"), for example {"foo": (("x","y"), "x*y")}
+   :param constants: an optional dictionary of constants.  Keys are names and values are the constant values
+   :param output_ndarray: flag, defaults to False, if True, will output ndarray instead of float.  Must have expression use return like "return [a, b, c]"
+
+
+.. py:function:: filter(flag: csp.impl.types.tstype.ts[bool], x: csp.impl.types.tstype.ts[T]) -> csp.impl.types.tstype.ts[T]
+
+   only ticks out input if flag is true
+
+
+.. py:function:: firstN(x: csp.impl.types.tstype.ts[T], N: int) -> csp.impl.types.tstype.ts[T]
+
+   return first N ticks of input and then stop
+
+
+.. py:function:: flatten(x: List[csp.impl.types.tstype.ts[T]]) -> csp.impl.types.tstype.ts[T]
+
+   flatten a basket of inputs into ts[ 'T' ]
+
+
+.. py:function:: gate(x: csp.impl.types.tstype.ts[T], release: csp.impl.types.tstype.ts[bool], release_on_tick: bool = False) -> csp.impl.types.tstype.ts[List[T]]
+
+   "gate" the input.
+   if release is false, input will be held until release is true.
+   when release ticks true, all gated inputs will tick in one shot
+   If release_on_tick is true, release gated input only on release tick
+
+
+.. py:function:: get_basket_field(dict_basket: Dict[K, csp.impl.types.tstype.ts[V]], field_name: str) -> OutputBasket(Dict['K', ts[object]], shape_of='dict_basket')
+
+   Given a dict basket of Struct objects, get a dict basket of the given field of struct for the matching key
+
+   :param dict_basket:
+   :param field_name:
+   :return:
+
+
+.. py:function:: log(level: int, tag: str, x, logger: Optional[logging.Logger] = None, logger_tz: object = None, use_thread: bool = False)
+
+   Logs a time-series value during the execution of a csp graph
+
+   Arguments:
+   level: log level to use e.g. CRITICAL
+   tag: label for the logged entry e.g. "x"
+   x: the time-series to log
+   logger: optional, the logger to use. If not set, the default csp logger is used
+   logger_tz: optional, time-zone that the logger is set to.
+   use_thread: whether or not to run the log node in a separate thread
+       - This feature is useful for expensive log calls that will be printing large objects, such as structs
+       - NOTE: If use_thread=True and a time-series value is modified after log is called, it may log the modified version.
+       In this case, which is rare, you must pass a copy of the time-series to the log node to ensure correct behavior.
+
+
+.. py:function:: merge(x: csp.impl.types.tstype.ts[T], y: csp.impl.types.tstype.ts[T]) -> csp.impl.types.tstype.ts[T]
+
+   merge two timeseries into one.  If both tick at the same time, left side wins
+
+
+.. py:function:: multiplex(x: Dict[K, csp.impl.types.tstype.ts[T]], key: csp.impl.types.tstype.ts[K], tick_on_index: bool = False, raise_on_bad_key: bool = False) -> csp.impl.types.tstype.ts[T]
+
+   :param x: The basket of time series to multiplex
+   :param key: A
+   :param tick_on_index:
+   :param raise_on_bad_key:
+   :return:
+
+
+.. py:function:: null_ts(typ: T) -> csp.impl.types.tstype.ts[T]
+
+   An empty time series that is guaranteed to never provide any data, can be connected as stub argument of nodes/graphs that expect ts of
+   a given type
+   :param typ: The type of the time series
+
+
+.. py:function:: print(tag: str, x)
+
+.. py:function:: sample(trigger: csp.impl.types.tstype.ts[Y], x: csp.impl.types.tstype.ts[T]) -> csp.impl.types.tstype.ts[T]
+
+   will return current value of x on trigger ticks
+
+
+.. py:function:: schedule_on_engine_stop(f: object)
+
+   Schedules a function to be called on engine stop, useful for cleanup.
+   :param f: The function to be called, the function is expected to take no parameters
+
+
+.. py:function:: split(flag: csp.impl.types.tstype.ts[bool], x: csp.impl.types.tstype.ts[T]) -> Outputs(false=ts['T'], true=ts['T'])
+
+   based on flag tick input on true/false outputs
+
+
+.. py:function:: static_cast(x: csp.impl.types.tstype.ts[T], outType: U) -> csp.impl.types.tstype.ts[U]
+
+   "static" cast of the given timeseries type to timeseries of type "U"
+   This should only be used when the caller knows with 100% certainty that the type conversion is always valid
+   as there will be no runtime type checking.
+
+
+.. py:function:: stop_engine(x: csp.impl.types.tstype.ts[T], dynamic: bool = False)
+
+   stop engine on tick of x
+   :param dynamic: if True, and this is called within a dynamic graph, only shutdown the dynamic sub-graph
+
+
+.. py:function:: struct_collectts(cls: T, inputs: Dict[str, csp.impl.types.tstype.ts[object]]) -> csp.impl.types.tstype.ts[T]
+
+   construct a ticking Struct from the given timeseries.
+   Note structs will be created from all ticked items
+
+
+.. py:function:: struct_field(x: csp.impl.types.tstype.ts[T], field: str, fieldType: Y) -> csp.impl.types.tstype.ts[Y]
+
+.. py:function:: struct_fromts(cls: T, inputs: Dict[str, csp.impl.types.tstype.ts[object]], trigger: csp.impl.types.tstype.ts[object] = None) -> csp.impl.types.tstype.ts[T]
+
+   construct a ticking Struct from the given timeseries basket.
+   Note structs will be created from all valid items.
+    trigger - Optional timeseries to control when struct gets created ( defaults to any time a basket input ticks )
+
+
+.. py:function:: timer(interval: datetime.timedelta, value: ~T = True, allow_deviation: bool = False) -> csp.impl.types.tstype.ts[T]
+
+.. py:function:: times(x: csp.impl.types.tstype.ts[object]) -> csp.impl.types.tstype.ts[datetime.datetime]
+
+   Returns a time-series of datetimes at which x ticks
+
+
+.. py:function:: times_ns(x: csp.impl.types.tstype.ts[object]) -> csp.impl.types.tstype.ts[int]
+
+   Returns a time-series of ints representing the epoch time (in nanoseconds) at which x ticks
+
+
+.. py:function:: unroll(x: csp.impl.types.tstype.ts[List[T]]) -> csp.impl.types.tstype.ts[T]
+
+   "unrolls" timeseries of lists of type 'T' into individual ticks of type 'T'
+
+
+.. py:function:: wrap_feedback(i: csp.impl.types.tstype.ts[T]) -> csp.impl.types.tstype.ts[T]
+
+   A convenience function to wrap the given time series as a feedback.
+   Useful when using in conjunction with some type of delayed nodes. Usually the example would be something like this:
+
+   # The assumption here is that fill generates somehow fills for all orders.
+   # So there exists a loop of strategy -> orders -> fills -> strategy, fills must be implemented as some kind of delayed node
+   # that is instantiated at late stage after all "ordering" nodes have been created. This must create a feeback loop and as convinience
+   # we mark the fills as a feedback by using a call to wrap_feedback.
+   my_fills = get_fills_ts(...)
+   my_orders = my_strategy(wrap_feedback(my_fills))
+   publish_orders(my_orders)
+
+   :param i: The input node to be wrapped as feedback
+   :return:
+
+
+.. py:function:: curve(typ: type, data: Union[list, tuple], push_mode: csp.impl.types.common_definitions.PushMode = PushMode.NON_COLLAPSING)
+
+.. py:class:: DataFrame(data: Optional[Dict] = None)
+
+   .. py:attribute:: _data
+
+
+   .. py:attribute:: _columns
+      :value: []
+
+
+
+   .. py:attribute:: _psp_client
+      :value: None
+
+
+
+   .. py:property:: columns
+
+
+   .. py:method:: _filter(filter_ts)
+
+
+   .. py:method:: __getattr__(column)
+
+
+   .. py:method:: __getitem__(columns)
+
+
+   .. py:method:: __setitem__(columns, values)
+
+
+   .. py:method:: _apply_binary_op(other, method)
+
+
+   .. py:method:: __add__(other)
+
+
+   .. py:method:: __sub__(other)
+
+
+   .. py:method:: __mul__(other)
+
+
+   .. py:method:: __truediv__(other)
+
+
+   .. py:method:: __floordiv__(other)
+
+
+   .. py:method:: __pow__(other)
+
+
+   .. py:method:: __gt__(other)
+
+
+   .. py:method:: __ge__(other)
+
+
+   .. py:method:: __lt__(other)
+
+
+   .. py:method:: __le__(other)
+
+
+   .. py:method:: __eq__(other)
+
+
+   .. py:method:: __ne__(other)
+
+
+   .. py:method:: __str__()
+
+
+   .. py:method:: __repr__()
+
+
+   .. py:method:: _eval_graph()
+
+
+   .. py:method:: _eval(starttime: datetime.datetime, endtime: datetime.datetime = None, realtime: bool = False)
+
+
+   .. py:method:: show_graph()
+
+
+   .. py:method:: to_pandas(starttime: datetime.datetime, endtime: datetime.datetime)
+
+
+   .. py:method:: to_pandas_ts(trigger, window, tindex=None, wait_all_valid=True)
+
+      :param trigger: The trigger for generation and output of the DataFrame.
+                      A new DataFrame will be produced each time trigger ticks.
+                      Can be passed a string referring to a column of the DataFrame
+      :param window: An integer or timedelta representing the maximum window size (i.e. scope of the frame index).
+                      If an integer, note that:
+                      a) DataFrames may have fewer than 'window' rows if the data has not ticked enough
+                      b) If tindex is not provided, DataFrames may have more than 'window' rows to account for
+                          mis-alignment of underlying time series (i.e. there will be 'window' valid values in
+                          each column, but not all at the same times).
+                      Lastly, if there is no data in a window, an empty frame (with the right columns and schema)
+                      will be returned.
+      :param tindex: An (optional) time series on which to sample data before generating the frame.
+                      The index of the returned DataFrames will contain the tick times of tindex.
+                      This aligns the indices of the columns, improving performance when the columns are combined
+                      into a single frame
+                      Can be passed a string referring to a column of the DataFrame.
+      :param wait_all_valid: Whether to wait for all columns to be valid before including a row in the data set.
+              If 'tindex' is provided, and wait_all_valid is True, the DataFrame can be constructed from the buffer numpy
+              arrays with no copying. If it is False, any columns that tick after the first tick of 'tindex' (and
+              are still included in the window) will be copied each time the trigger causes a new DataFrame to be generated.
+      :returns: A time series of pandas DataFrames
+
+
+
+   .. py:method:: to_perspective(starttime: datetime.datetime, endtime: datetime.datetime = None, realtime: bool = False)
+
+
+.. py:data:: ALL_CSP_BUILTIN_FUNCS
+
+.. py:class:: DuplicatePolicy
+
+   Bases: :py:obj:`enum.IntEnum`
+
+
+   An 'enum' that specifies the policy for handling the last value in functions like value_at.
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+   .. py:attribute:: LAST_VALUE
+      :value: 1
+
+
+
+   .. py:attribute:: FIRST_VALUE
+      :value: 2
+
+
+
+.. py:class:: TimeIndexPolicy
+
+   Bases: :py:obj:`csp.impl.enum.Enum`
+
+
+   An enum that specifies the policy for handling the start and end values in functions like values_at.
+
+
+   .. py:attribute:: INCLUSIVE
+      :value: 1
+
+
+
+   .. py:attribute:: EXCLUSIVE
+      :value: 2
+
+
+
+   .. py:attribute:: EXTRAPOLATE
+      :value: 3
+
+
+
+.. py:data:: UNSET
+
+.. py:data:: UNSET
+
+.. py:function:: DynamicEnum(name: str, values: Union[dict, list], start=0, module_name=None)
+
+   create a csp.Enum type dynamically
+   :param name: name of the class type
+   :param values: either a dictionary of key : values or a list of enum names
+   :param start: when providing a list of values, will start enumerating from start
+
+
+.. py:class:: Enum
+
+   Bases: :py:obj:`csp.impl.__csptypesimpl._csptypesimpl.PyCspEnum`
+
+
+   .. py:attribute:: auto
+
+
+   .. py:method:: __reduce__()
+
+
+   .. py:method:: __repr__()
+
+
+   .. py:method:: __str__()
+
+
+   .. py:method:: _validate(v) -> Enum
+      :classmethod:
+
+
+
+   .. py:method:: _serialize(value: Union[str, Enum]) -> str
+      :staticmethod:
+
+
+
+   .. py:method:: __get_pydantic_json_schema__(_core_schema, handler)
+      :classmethod:
+
+
+
+   .. py:method:: __get_pydantic_core_schema__(source_type, handler)
+      :classmethod:
+
+
+
+.. py:function:: set_print_full_exception_stack(new_value: bool)
+
+   :param new_value: A boolean that specifies whether a full exception stack should be printed for debugging purposes
+   :return: The previous value that was set
+
+
+.. py:class:: GenericPushAdapter(typ: type, name: str = None)
+
+   .. py:attribute:: _adapter
+
+
+   .. py:attribute:: _adapter_impl
+      :value: None
+
+
+
+   .. py:attribute:: _started
+      :value: False
+
+
+
+   .. py:attribute:: _stopped
+      :value: False
+
+
+
+   .. py:attribute:: _condvar
+
+
+   .. py:method:: _bind(adapter_impl)
+
+
+   .. py:method:: _unbind()
+
+
+   .. py:method:: wait_for_start(timeout: float = None)
+
+
+   .. py:method:: started()
+
+
+   .. py:method:: stopped()
+
+
+   .. py:method:: out()
+
+
+   .. py:method:: push_tick(value)
+
+
+.. py:function:: csp_memoized(func=None, *, force_memoize=False, function_name=None, is_user_data=True)
+
+   A decorator to register a function as graph object provider.
+
+   The provided object can be any object.
+
+   :param func:
+   :param force_memoize
+   :param function_name: The name of the function that should be used for error/warning logging.
+   :param is_user_data: A flag that specifies whether the memoized object is user object or graph object
+   :return:
+
+
+.. py:function:: memoize(value=True)
+
+   Context manager to turn on/off the memoization
+   :param value:
+
+
+.. py:class:: Struct
+
+   Bases: :py:obj:`csp.impl.__csptypesimpl._csptypesimpl.PyStruct`
+
+
+   .. py:method:: type_adapter()
+      :classmethod:
+
+
+
+   .. py:method:: metadata(typed=False)
+      :classmethod:
+
+
+
+   .. py:method:: optional_fields()
+      :classmethod:
+
+
+
+   .. py:method:: is_strict()
+      :classmethod:
+
+
+
+   .. py:method:: fromts(trigger=None, /, **kwargs)
+      :classmethod:
+
+
+      convert valid inputs into ts[ struct ]
+      trigger - optional position-only argument to control when to sample the inputs and create a struct
+                     ( defaults to creating a new struct on any input tick )
+
+
+
+   .. py:method:: collectts(**kwargs)
+      :classmethod:
+
+
+      convert ticking inputs into ts[ struct ]
+
+
+
+   .. py:method:: _obj_to_python(obj)
+      :classmethod:
+
+
+
+   .. py:method:: _obj_from_python(json, obj_type)
+      :classmethod:
+
+
+
+   .. py:method:: from_dict(json: dict, use_pydantic: bool = False)
+      :classmethod:
+
+
+
+   .. py:method:: to_dict_depr()
+
+
+   .. py:method:: to_dict(callback=None, preserve_enums=False)
+
+      Create a dictionary representation of the struct
+
+      :param callback: Optional function to parse types that are not supported by default in csp and convert them to
+                       dicts csp by default can parse Structs, lists, sets, tuples, dicts, datetimes, and primitive types
+      :param preserve_enums: Optional flag to not convert enums to strings when converting structs into dicts
+
+
+
+   .. py:method:: to_json(callback=lambda x: x)
+
+
+   .. py:method:: to_yaml()
+
+
+   .. py:method:: default_field_map()
+      :classmethod:
+
+
+      Used byt adapters to generate default field maps for reading / writing structs
+
+
+
+   .. py:method:: from_yaml(yaml)
+      :classmethod:
+
+
+
+   .. py:method:: __getstate__()
+
+
+   .. py:method:: __setstate__(state)
+
+
+   .. py:method:: __deepcopy__(memodict={})
+
+
+   .. py:method:: __dir__()
+
+
+.. py:class:: OutputBasket
+
+   Bases: :py:obj:`object`
+
+
+   
+   we are abusing class construction here because we can't use classgetitem.
+   the return value of the constructor should be a `type`
+
+
+   .. py:method:: __get_pydantic_core_schema__(source_type, handler)
+      :classmethod:
+
+
+
+.. py:class:: Outputs(*args, **kwargs)
+
+   
+   we are abusing class construction here because we can't use classgetitem.
+   the return value of the constructor should be a `type`
+
+
+.. py:exception:: OutputTypeError(msg='', *args, **kwargs)
+
+   Bases: :py:obj:`TypeError`
+
+
+   Inappropriate argument type.
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+   .. py:attribute:: _message
+      :value: 'Output malformed'
+
+
+
+.. py:class:: PushMode
+
+   Bases: :py:obj:`enum.IntEnum`
+
+
+   PushMode specifies how to process multiple ticks at the same time on input adapter
+   for sim adapters:
+       LAST_VALUE will collapse ticks with the same timestamp
+       NON_COLLAPSING will tick all events with the same time in separate cycles
+       BURST will provide all ticks wit hthe same timestamp as a list of values
+
+   for realtime adapters:
+       LAST_VALUE will tick the with latest value since last engine cycle ( conflating ticks if engine cant keep up )
+       NON_COLLAPSING will provide all ticks queued up from the realtime input spread across subsequent engine cycles
+       BURST will provide all ticks since last engine cycle as a single list of values
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+   .. py:attribute:: LAST_VALUE
+      :value: 1
+
+
+
+   .. py:attribute:: NON_COLLAPSING
+      :value: 2
+
+
+
+   .. py:attribute:: BURST
+      :value: 3
+
+
+
+.. py:class:: attach
+
+   .. py:attribute:: _dyn_basket
+      :value: None
+
+
+
+   .. py:property:: dyn_basket
+
+
+   .. py:property:: key_tstype
+
+
+   .. py:property:: value_tstype
+
+
+   .. py:method:: __repr__()
+
+
+.. py:class:: DynamicBasket
+
+.. py:class:: snapkey
+
+   .. py:attribute:: _dyn_basket
+      :value: None
+
+
+
+   .. py:property:: dyn_basket
+
+
+   .. py:property:: key_tstype
+
+
+   .. py:method:: __repr__()
+
+
+.. py:class:: snap(edge)
+
+   .. py:attribute:: _edge
+
+
+   .. py:property:: edge
+
+
+   .. py:property:: ts_type
+
+
+   .. py:method:: __repr__()
+
+
+.. py:data:: ts
+
+.. py:exception:: CspParseError(msg, lineno=None, file=None, frame=None)
+
+   Bases: :py:obj:`Exception`
+
+
+   Common base class for all non-exit exceptions.
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+   .. py:attribute:: msg
+
+
+   .. py:attribute:: filename
+      :value: None
+
+
+
+   .. py:attribute:: lineno
+      :value: None
+
+
+
+   .. py:attribute:: frame
+      :value: None
+
+
+
+   .. py:method:: __str__()
+
+      Return str(self).
+
+
+
+.. py:class:: DelayedEdge(tstype, default_to_null: bool = False)
+
+   Bases: :py:obj:`csp.impl.wiring.edge.Edge`
+
+
+   .. py:attribute:: _null_node
+
+
+   .. py:method:: _bind(edge: csp.impl.types.tstype.ts[T])
+
+
+   .. py:method:: bind(edge: csp.impl.wiring.edge.Edge)
+
+
+   .. py:method:: is_bound()
+
+
+.. py:data:: add_graph_output
+
+.. py:function:: build_graph(f, *args, starttime=None, endtime=None, realtime=False, **kwargs)
+
+.. py:function:: run(g, *args, starttime=None, endtime=MAX_END_TIME, queue_wait_time=None, realtime=False, output_numpy=False, **kwargs)
+
+.. py:function:: run_on_thread(g, *args, starttime=None, endtime=MAX_END_TIME, queue_wait_time=None, realtime=False, auto_shutdown=False, daemon=False, **kwargs)
+
+.. py:function:: clear_global_context()
+
+   Clear the global context that was previously set by call to new_global_context
+
+
+.. py:function:: new_global_context(enable=True)
+
+   Example 1:
+   new_global_context() # at this point the context is visible to all subsequent csp calls
+
+   Example 2:
+   context = new_global_context(False) # the context is not visible yet in the CSP lib
+   with context:
+       # The global context is visible only inside the with statement
+       ...
+   :param enable: Whether the context shoudl be entered. If False provided then the new context should be used in a "with" statement
+   :return: The new context
+
+
+.. py:data:: abs
+
+.. py:data:: add
+
+.. py:function:: and_(*inputs)
+
+   binary and of basket of ts[ bool ]. Note that all inputs must be valid
+   before any value is returned
+
+
+.. py:data:: arccos
+
+.. py:data:: arccosh
+
+.. py:data:: arcsin
+
+.. py:data:: arcsinh
+
+.. py:data:: arctan
+
+.. py:data:: arctanh
+
+.. py:function:: bitwise_not(x: csp.impl.types.tstype.ts[int]) -> csp.impl.types.tstype.ts[int]
+
+.. py:data:: cos
+
+.. py:data:: cosh
+
+.. py:data:: divide
+
+.. py:data:: eq
+
+.. py:data:: erf
+
+.. py:data:: exp
+
+.. py:data:: exp2
+
+.. py:data:: floordiv
+
+.. py:data:: ge
+
+.. py:data:: gt
+
+.. py:data:: le
+
+.. py:data:: ln
+
+.. py:data:: log10
+
+.. py:data:: log2
+
+.. py:data:: lt
+
+.. py:data:: max
+
+.. py:data:: min
+
+.. py:data:: mod
+
+.. py:data:: multiply
+
+.. py:data:: ne
+
+.. py:data:: neg
+
+.. py:function:: not_(x: csp.impl.types.tstype.ts[bool]) -> csp.impl.types.tstype.ts[bool]
+
+   boolean not
+
+
+.. py:function:: or_(*inputs)
+
+   binary or of ts[ bool ] inputs.  Note that all inputs must be valid
+   before any value is returned
+
+
+.. py:data:: pos
+
+.. py:data:: pow
+
+.. py:data:: sin
+
+.. py:data:: sinh
+
+.. py:data:: sqrt
+
+.. py:data:: sub
+
+.. py:data:: tan
+
+.. py:data:: tanh
+
+.. py:function:: show_graph(graph_func, *args, graph_filename=None, **kwargs)
+
+.. py:data:: __version__
+   :value: '0.15.0'
+
+
+.. py:function:: get_include_path()
+
+.. py:function:: get_lib_path()
+

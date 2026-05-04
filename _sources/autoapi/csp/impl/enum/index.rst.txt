@@ -1,0 +1,87 @@
+csp.impl.enum
+=============
+
+.. py:module:: csp.impl.enum
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.impl.enum.EnumMeta
+   csp.impl.enum.Enum
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.impl.enum.DynamicEnum
+
+
+Module Contents
+---------------
+
+.. py:class:: EnumMeta
+
+   Bases: :py:obj:`csp.impl.__csptypesimpl._csptypesimpl.PyCspEnumMeta`
+
+
+   .. py:method:: __iter__()
+
+
+   .. py:property:: __members__
+
+
+   .. py:method:: _check_for_existing_members(bases)
+      :staticmethod:
+
+
+
+.. py:class:: Enum
+
+   Bases: :py:obj:`csp.impl.__csptypesimpl._csptypesimpl.PyCspEnum`
+
+
+   .. py:attribute:: auto
+
+
+   .. py:method:: __reduce__()
+
+
+   .. py:method:: __repr__()
+
+
+   .. py:method:: __str__()
+
+
+   .. py:method:: _validate(v) -> Enum
+      :classmethod:
+
+
+
+   .. py:method:: _serialize(value: Union[str, Enum]) -> str
+      :staticmethod:
+
+
+
+   .. py:method:: __get_pydantic_json_schema__(_core_schema, handler)
+      :classmethod:
+
+
+
+   .. py:method:: __get_pydantic_core_schema__(source_type, handler)
+      :classmethod:
+
+
+
+.. py:function:: DynamicEnum(name: str, values: Union[dict, list], start=0, module_name=None)
+
+   create a csp.Enum type dynamically
+   :param name: name of the class type
+   :param values: either a dictionary of key : values or a list of enum names
+   :param start: when providing a list of values, will start enumerating from start
+
+

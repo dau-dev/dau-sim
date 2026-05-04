@@ -1,0 +1,197 @@
+csp.impl.wiring.numba_node_parser
+=================================
+
+.. py:module:: csp.impl.wiring.numba_node_parser
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.impl.wiring.numba_node_parser._StateVarTransformer
+   csp.impl.wiring.numba_node_parser.NumbaNodeParser
+
+
+Module Contents
+---------------
+
+.. py:class:: _StateVarTransformer(state_obj_name)
+
+   Bases: :py:obj:`ast.NodeTransformer`
+
+
+   Transform all usages of vars that are stored in state to be used from the state
+
+   .. rubric:: Example
+
+   Assume that x, is a state variable, y is a function argument (function arguments treated as state variable since they should persist) and z is local variable.
+   x = x + y + z will be transformed to __csp_state__.x = __csp_state__.x +  __csp_state__.y +  z
+
+
+   .. py:attribute:: _state_obj_name
+
+
+   .. py:attribute:: state_vars
+
+
+   .. py:method:: visit_Name(node: ast.Name)
+
+
+.. py:class:: NumbaNodeParser(name, raw_func, func_frame, debug_print=False, state_types=None)
+
+   Bases: :py:obj:`csp.impl.wiring.node_parser.NodeParser`
+
+
+   A :class:`NodeVisitor` subclass that walks the abstract syntax tree and
+   allows modification of nodes.
+
+   The `NodeTransformer` will walk the AST and use the return value of the
+   visitor methods to replace or remove the old node.  If the return value of
+   the visitor method is ``None``, the node will be removed from its location,
+   otherwise it is replaced with the return value.  The return value may be the
+   original node in which case no replacement takes place.
+
+   Here is an example transformer that rewrites all occurrences of name lookups
+   (``foo``) to ``data['foo']``::
+
+      class RewriteName(NodeTransformer):
+
+          def visit_Name(self, node):
+              return Subscript(
+                  value=Name(id='data', ctx=Load()),
+                  slice=Constant(value=node.id),
+                  ctx=node.ctx
+              )
+
+   Keep in mind that if the node you're operating on has child nodes you must
+   either transform the child nodes yourself or call the :meth:`generic_visit`
+   method for the node first.
+
+   For nodes that were part of a collection of statements (that applies to all
+   statement nodes), the visitor may also return a list of nodes rather than
+   just a single node.
+
+   Usually you use the transformer like this::
+
+      node = YourTransformer().visit(node)
+
+
+   .. py:attribute:: _STATE_ARG_NAME
+      :value: '__csp_state_ptr__'
+
+
+
+   .. py:attribute:: _STATE_INST_NAME
+      :value: '__csp_state_inst__'
+
+
+
+   .. py:attribute:: _state_types
+
+
+   .. py:attribute:: _state_vars_transformer
+
+
+   .. py:attribute:: _start_state_block_body
+      :value: []
+
+
+
+   .. py:attribute:: _state_class_name
+
+
+   .. py:method:: _parse_state(node)
+
+
+   .. py:method:: visit_Return(node)
+
+      outputs are done via the + operator on output proxies
+
+
+
+   .. py:method:: visit_Name(node)
+
+
+   .. py:method:: visit_Call(node)
+
+
+   .. py:method:: get_ts_input_value_getter_name(ts_idx)
+      :classmethod:
+
+
+
+   .. py:method:: get_ts_out_value_return_name(ts_idx)
+      :classmethod:
+
+
+
+   .. py:method:: get_arg_type_var_name(arg_name)
+      :classmethod:
+
+
+
+   .. py:method:: get_state_type_var_name(arg_name)
+      :classmethod:
+
+
+
+   .. py:method:: _create_single_input_builtin_call(arg, func)
+
+
+   .. py:method:: _create_single_input_ticked_expression(arg)
+
+
+   .. py:method:: _create_single_input_valid_expression(arg)
+
+
+   .. py:method:: _csp_single_input_builtin_function_transformer(cpp_function_name)
+      :classmethod:
+
+
+      A generic function that is used to transform multiple builtin functions
+      :param node: Call node
+      :param cpp_function_name: The name of the cpp function to call
+
+
+
+   .. py:method:: _create_state_class(state_body: List[Any], args: List[str], state_vars: List[str])
+
+
+   .. py:method:: _transform_state_block()
+
+
+   .. py:method:: has_state()
+
+
+   .. py:method:: _create_init_block()
+
+
+   .. py:method:: _create_function_def(name, body, args=None, decorator_list=None)
+      :classmethod:
+
+
+
+   .. py:method:: _create_jit_func(func_name, inner_body)
+
+
+   .. py:method:: _create_wrapped_inner_body(inner_body)
+
+
+   .. py:method:: _finalize_func_body(newbody)
+
+
+   .. py:method:: _create_top_level_func_def(body)
+
+
+   .. py:method:: _is_ts_args_removed_from_signature()
+
+
+   .. py:method:: _parse_impl()
+
+
+   .. py:method:: _init_internal_maps()
+      :classmethod:
+
+
+

@@ -1,0 +1,146 @@
+csp.adapters.kafka
+==================
+
+.. py:module:: csp.adapters.kafka
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp.adapters.kafka._
+   csp.adapters.kafka.T
+   csp.adapters.kafka.KafkaStartOffset
+   csp.adapters.kafka._kafka_input_adapter_def
+   csp.adapters.kafka._kafka_output_adapter_def
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.adapters.kafka.KafkaStatusMessageType
+   csp.adapters.kafka.KafkaAdapterManager
+
+
+Module Contents
+---------------
+
+.. py:data:: _
+
+.. py:data:: T
+
+.. py:class:: KafkaStatusMessageType
+
+   Bases: :py:obj:`enum.IntEnum`
+
+
+   Enum where members are also (and must be) ints
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+   .. py:attribute:: OK
+      :value: 0
+
+
+
+   .. py:attribute:: MSG_DELIVERY_FAILED
+      :value: 1
+
+
+
+   .. py:attribute:: MSG_SEND_ERROR
+      :value: 2
+
+
+
+   .. py:attribute:: MSG_RECV_ERROR
+      :value: 3
+
+
+
+   .. py:attribute:: GENERIC_ERROR
+      :value: 4
+
+
+
+.. py:data:: KafkaStartOffset
+
+.. py:class:: KafkaAdapterManager(broker, start_offset: Union[KafkaStartOffset, datetime.timedelta, datetime.datetime] = None, group_id: str = None, group_id_prefix: str = '', max_threads=4, max_queue_size=1000000, auth=False, security_protocol='SASL_SSL', sasl_kerberos_keytab='', sasl_kerberos_principal='', ssl_ca_location='', sasl_kerberos_service_name='kafka', rd_kafka_conf_options=None, debug: bool = False, poll_timeout: datetime.timedelta = timedelta(seconds=1), rd_kafka_consumer_conf_options=None, rd_kafka_producer_conf_options=None)
+
+   
+   :param broker - broker URL
+   :param start_offset - signify where to start the stream playback from (defaults to KafkaStartOffset.LATEST ). Can be
+                        one of the KafkaStartOffset enum types.
+                        datetime - to replay from the given absolute time
+                        timedelta - this will be taken as an absolute offset from starttime to playback from
+   :param group_id - ( optional ) if set, this adapter will behave as a consume-once consumer.  start_offset may not be
+                       set in this case since adapter will always replay from the last consumed offset.
+   :param group_id_prefix - ( optional ) when not passing an explicit group_id, a prefix can be supplied that will be use to
+                       prefix the UUID generated for the group_id
+
+
+   .. py:attribute:: _group_id_prefix
+      :value: ''
+
+
+
+   .. py:attribute:: _properties
+
+
+   .. py:method:: subscribe(ts_type: type, msg_mapper: csp.adapters.utils.MsgMapper, topic, key=None, field_map: Union[dict, str] = None, meta_field_map: dict = None, push_mode: csp.PushMode = csp.PushMode.LAST_VALUE, adjust_out_of_order_time: bool = False, tick_timestamp_from_field: str = None, include_msg_before_start_time: bool = True)
+
+      Subscribe to a Kafka topic and map incoming messages to CSP timeseries.
+
+      :param ts_type: The timeseries type to map the data to. Can be a csp.Struct or basic timeseries type
+      :param msg_mapper: MsgMapper object to manage mapping message protocol to struct
+      :param topic: Topic to subscribe to
+      :param key: Key to subscribe to. If None, subscribes to all messages on the topic.
+                  Note: In this "wildcard" mode, all messages will be marked as "live"
+      :param field_map: Dictionary of {message_field: struct_field} mapping or string for single field mapping
+      :param meta_field_map: Dictionary mapping kafka metadata to struct fields. Supported fields:
+                  - "partition": Kafka partition number
+                  - "offset": Message offset
+                  - "live": Whether message is live or replay
+                  - "timestamp": Kafka message timestamp
+                  - "key": Message key
+      :param push_mode: Mode for handling incoming messages (LAST_VALUE, NON_COLLAPSING, BURST)
+      :param adjust_out_of_order_time: Allow out-of-order messages by forcing time to max(time, prev_time), only applies during sim replay.
+      :param tick_timestamp_from_field: Override engine tick time using this struct field. Only applies during sim replay
+      :param include_msg_before_start_time: Include messages from Kafka with times (either the time from Kafka or from the message as specified with `tick_timestamp_from_field`) before the engine start time.
+
+
+
+   .. py:method:: publish(msg_mapper: csp.adapters.utils.MsgMapper, topic: str, key: Union[str, List], x: csp.ts[T], field_map: Union[dict, str] = None)
+
+      :param msg_mapper - MsgMapper object to manage mapping struct to message protocol
+      :param topic - topic to publish to
+      :param key   - a string field of the struct type being published that will be used as the dynamic key to publish to.
+                     key can also be a list of fields to reach into a nested struct field to be used as the key
+      :param x     - timeseries of a Struct type to publish out
+      :param field_map - option fieldmap from struct fieldname -> published field name
+
+
+
+   .. py:method:: status(push_mode=csp.PushMode.NON_COLLAPSING)
+
+
+   .. py:method:: __hash__()
+
+
+   .. py:method:: __eq__(other)
+
+
+   .. py:method:: _create(engine, memo)
+
+      method needs to return the wrapped c++ adapter manager
+
+
+
+.. py:data:: _kafka_input_adapter_def
+
+.. py:data:: _kafka_output_adapter_def
+

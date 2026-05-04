@@ -1,0 +1,27 @@
+csp.adapters
+============
+
+.. py:module:: csp.adapters
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/csp/adapters/arrow/index
+   /autoapi/csp/adapters/csv/index
+   /autoapi/csp/adapters/db/index
+   /autoapi/csp/adapters/kafka/index
+   /autoapi/csp/adapters/output_adapters/index
+   /autoapi/csp/adapters/parquet/index
+   /autoapi/csp/adapters/perspective/index
+   /autoapi/csp/adapters/slack/index
+   /autoapi/csp/adapters/status/index
+   /autoapi/csp/adapters/symphony/index
+   /autoapi/csp/adapters/utils/index
+   /autoapi/csp/adapters/websocket/index
+   /autoapi/csp/adapters/websocket_types/index
+
+

@@ -1,0 +1,72 @@
+csp.impl.wiring.dynamic
+=======================
+
+.. py:module:: csp.impl.wiring.dynamic
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.impl.wiring.dynamic.DynamicNodeDef
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.impl.wiring.dynamic._set_dynbasket_args
+   csp.impl.wiring.dynamic.dynamic
+
+
+Module Contents
+---------------
+
+.. py:class:: DynamicNodeDef(name, inputs, dynamic_args, sub_graph, *raw_args)
+
+   .. py:attribute:: _name
+
+
+   .. py:attribute:: _inputs
+
+
+   .. py:attribute:: _outputs
+      :value: None
+
+
+
+   .. py:attribute:: _sub_graph
+
+
+   .. py:attribute:: _raw_args
+      :value: []
+
+
+
+   .. py:attribute:: _dynamic_args
+
+
+   .. py:method:: ts_inputs()
+
+      return generator of proper (( ts_idx, basket_idx) ,edge) inputs adjusted for alarms
+
+
+
+   .. py:method:: _create(engine, memo)
+
+
+.. py:function:: _set_dynbasket_args(args, trigger, depth=0)
+
+   helper method to set trigger input on snapkey and attach args
+
+
+.. py:function:: dynamic(trigger, sub_graph, *args, **kwargs)
+
+   define a dynamic sub-graph
+   :param trigger:   dynamic basket trigger used to trigger creation / destruction of dynamic sub-graphs
+   :param sub_graph: csp.graph method to be used to create dynamic sub-graphs
+   remaining args/kwargs are passed to sub_graph upon dynamic instantiation
+
+

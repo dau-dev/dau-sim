@@ -1,0 +1,76 @@
+csp.impl.adaptermanager
+=======================
+
+.. py:module:: csp.impl.adaptermanager
+
+.. autoapi-nested-parse::
+
+   This is for Python-defined adapters, not meant to be used for c++ implemented adapters
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.impl.adaptermanager.AdapterManagerImpl
+   csp.impl.adaptermanager.ManagedSimInputAdapter
+
+
+Module Contents
+---------------
+
+.. py:class:: AdapterManagerImpl
+
+   Bases: :py:obj:`csp.impl.__cspimpl._cspimpl.PyAdapterManager`
+
+
+   .. py:method:: start(starttime, endtime)
+      :abstractmethod:
+
+
+      start up the manager, connect to any external sources / files you need.  Spawn any threads you may need
+      ( usually for realtime only )
+
+
+
+   .. py:method:: stop()
+
+      called on engine shutdown, optional
+
+
+
+   .. py:method:: process_next_sim_timeslice(now)
+
+      this method should iterate over all data for the requested time, and push data onto all of the adapters inputs
+      that need to tick
+      :return: next datetime with data for this adapter manager
+
+      NOTE: Simulation Adapters should overload this method!
+
+
+
+.. py:class:: ManagedSimInputAdapter(typ, field_map)
+
+   Bases: :py:obj:`csp.impl.__cspimpl._cspimpl.PyManagedSimInputAdapter`
+
+
+   .. py:attribute:: _type
+
+
+   .. py:attribute:: _field_map
+
+
+   .. py:method:: start(starttime, endtime)
+
+
+   .. py:method:: stop()
+
+
+   .. py:method:: process_dict(data: dict, keep_none=True)
+
+      convenience method to convert dict of data into typ using fieldMap
+
+
+

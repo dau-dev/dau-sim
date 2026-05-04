@@ -1,0 +1,202 @@
+csp.tests.adapters.test_kafka
+=============================
+
+.. py:module:: csp.tests.adapters.test_kafka
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.tests.adapters.test_kafka.MyData
+   csp.tests.adapters.test_kafka.SubData
+   csp.tests.adapters.test_kafka.MetaTextStruct
+   csp.tests.adapters.test_kafka.MetaSubStruct
+   csp.tests.adapters.test_kafka.MetaPubData
+   csp.tests.adapters.test_kafka.MetaSubData
+   csp.tests.adapters.test_kafka.TestKafka
+
+
+Module Contents
+---------------
+
+.. py:class:: MyData
+
+   Bases: :py:obj:`csp.Struct`
+
+
+   .. py:attribute:: b
+      :type:  bool
+
+
+   .. py:attribute:: i
+      :type:  int
+
+
+   .. py:attribute:: d
+      :type:  float
+
+
+   .. py:attribute:: s
+      :type:  str
+
+
+   .. py:attribute:: dt
+      :type:  datetime.datetime
+
+
+   .. py:attribute:: date
+      :type:  MyData.date
+
+
+.. py:class:: SubData
+
+   Bases: :py:obj:`csp.Struct`
+
+
+   .. py:attribute:: b
+      :type:  bool
+
+
+   .. py:attribute:: i
+      :type:  int
+
+
+   .. py:attribute:: d
+      :type:  float
+
+
+   .. py:attribute:: s
+      :type:  str
+
+
+   .. py:attribute:: dt
+      :type:  datetime.datetime
+
+
+   .. py:attribute:: date
+      :type:  SubData.date
+
+
+   .. py:attribute:: b2
+      :type:  bool
+
+
+   .. py:attribute:: i2
+      :type:  int
+
+
+   .. py:attribute:: d2
+      :type:  float
+
+
+   .. py:attribute:: s2
+      :type:  str
+
+
+   .. py:attribute:: dt2
+      :type:  datetime.datetime
+
+
+   .. py:attribute:: date2
+      :type:  SubData.date
+
+
+   .. py:attribute:: prop1
+      :type:  float
+
+
+   .. py:attribute:: prop2
+      :type:  str
+
+
+.. py:class:: MetaTextStruct
+
+   Bases: :py:obj:`csp.Struct`
+
+
+   .. py:attribute:: mapped_c
+      :type:  str
+
+
+.. py:class:: MetaSubStruct
+
+   Bases: :py:obj:`csp.Struct`
+
+
+   .. py:attribute:: mapped_b
+      :type:  MetaTextStruct
+
+
+.. py:class:: MetaPubData
+
+   Bases: :py:obj:`csp.Struct`
+
+
+   .. py:attribute:: mapped_a
+      :type:  MetaSubStruct
+
+
+   .. py:attribute:: mapped_count
+      :type:  int
+
+
+.. py:class:: MetaSubData
+
+   Bases: :py:obj:`csp.Struct`
+
+
+   .. py:attribute:: mapped_a
+      :type:  MetaSubStruct
+
+
+   .. py:attribute:: mapped_count
+      :type:  int
+
+
+   .. py:attribute:: mapped_partition
+      :type:  int
+
+
+   .. py:attribute:: mapped_offset
+      :type:  int
+
+
+   .. py:attribute:: mapped_live
+      :type:  bool
+
+
+   .. py:attribute:: mapped_timestamp
+      :type:  datetime.datetime
+
+
+.. py:class:: TestKafka
+
+   .. py:method:: test_metadata(kafkaadapter)
+
+
+   .. py:method:: test_basic(kafkaadapter)
+
+
+   .. py:method:: test_start_offsets(kafkaadapter, kafkabroker)
+
+
+   .. py:method:: test_raw_pubsub(kafkaadapter)
+
+
+   .. py:method:: test_invalid_topic(kafkaadapterkwargs)
+
+
+   .. py:method:: test_invalid_broker(kafkaadapterkwargs)
+
+
+   .. py:method:: test_meta_field_map_tick_timestamp_from_field(kafkaadapterkwargs)
+
+
+   .. py:method:: test_conf_options()
+
+
+   .. py:method:: test_push_mode(kafkaadapter, kafkabroker)
+
+

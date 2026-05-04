@@ -1,0 +1,183 @@
+csp.impl.types.typing_utils
+===========================
+
+.. py:module:: csp.impl.types.typing_utils
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp.impl.types.typing_utils.T
+   csp.impl.types.typing_utils.CspTypingUtils
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.impl.types.typing_utils.FastList
+   csp.impl.types.typing_utils.CspTypingUtils310
+   csp.impl.types.typing_utils.TsTypeValidator
+
+
+Module Contents
+---------------
+
+.. py:data:: T
+
+.. py:class:: FastList
+
+   Bases: :py:obj:`List`, :py:obj:`Generic`\ [\ :py:obj:`T`\ ]
+
+
+   Built-in mutable sequence.
+
+   If no argument is given, the constructor creates a new empty list.
+   The argument must be an iterable if specified.
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+   .. py:method:: __get_pydantic_core_schema__(source_type, handler)
+      :classmethod:
+
+
+
+.. py:class:: CspTypingUtils310
+
+   .. py:attribute:: _ORIGIN_COMPAT_MAP
+
+
+   .. py:attribute:: _ARRAY_ORIGINS
+
+
+   .. py:attribute:: _GENERIC_ALIASES
+
+
+   .. py:method:: is_generic_container(typ)
+      :classmethod:
+
+
+
+   .. py:method:: is_type_spec(val)
+      :classmethod:
+
+
+
+   .. py:method:: get_origin(typ)
+      :classmethod:
+
+
+
+   .. py:method:: is_callable(typ)
+      :classmethod:
+
+
+
+   .. py:method:: is_numpy_array_type(typ)
+      :classmethod:
+
+
+
+   .. py:method:: is_numpy_nd_array_type(typ)
+      :classmethod:
+
+
+
+   .. py:method:: is_union_type(typ)
+      :classmethod:
+
+
+
+   .. py:method:: is_optional_type(typ)
+      :classmethod:
+
+
+
+   .. py:method:: is_literal_type(typ)
+      :classmethod:
+
+
+
+   .. py:method:: is_forward_ref(typ)
+      :classmethod:
+
+
+
+   .. py:method:: get_orig_base(typ)
+      :classmethod:
+
+
+
+   .. py:method:: pretty_typename(typ)
+      :classmethod:
+
+
+
+.. py:data:: CspTypingUtils
+
+.. py:class:: TsTypeValidator(source_type: type)
+
+   Class to help validate the arg of TsType.
+   For example, this is to make sure that:
+       ts[List] can validate as ts[List[float]]
+       ts[Dict[str, List[str]] won't validate as ts[Dict[str, List[float]]
+   .. rubric:: Notes
+
+   ts["T"], ts[TypeVar("T")], ts[List["T"]], ts[Optional[float]], ts[Union[float, int]], ts[Any] are allowed
+   ts[Annotated[float, None]], are not allowed
+
+   For validation of csp baskets, this piece becomes the bottleneck
+
+
+   .. py:attribute:: _cache
+      :type:  Dict[type, TsTypeValidator]
+
+
+   .. py:method:: make_cached(source_type: type)
+      :classmethod:
+
+
+      Make and cache the instance by source_type
+
+
+
+   .. py:attribute:: _source_type
+
+
+   .. py:attribute:: _source_origin
+
+
+   .. py:attribute:: _source_is_union
+
+
+   .. py:attribute:: _source_args
+
+
+   .. py:attribute:: _source_adapter
+      :value: None
+
+
+
+   .. py:attribute:: _last_value_type
+      :value: None
+
+
+
+   .. py:attribute:: _last_context_ref
+      :value: None
+
+
+
+   .. py:method:: validate(value_type, info=None)
+
+      Run the validation against a proposed input type
+
+
+
+   .. py:method:: _error_message(value_type)
+
+

@@ -1,0 +1,6 @@
+csp.adapters.slack
+==================
+
+.. py:module:: csp.adapters.slack
+
+

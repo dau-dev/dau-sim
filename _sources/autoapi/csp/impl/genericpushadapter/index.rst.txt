@@ -1,0 +1,86 @@
+csp.impl.genericpushadapter
+===========================
+
+.. py:module:: csp.impl.genericpushadapter
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp.impl.genericpushadapter._GenericPushAdapter
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.impl.genericpushadapter._GenericPushAdapterImpl
+   csp.impl.genericpushadapter.GenericPushAdapter
+
+
+Module Contents
+---------------
+
+.. py:class:: _GenericPushAdapterImpl(generic_adapter, otype)
+
+   Bases: :py:obj:`csp.impl.pushadapter.PushInputAdapter`
+
+
+   .. py:attribute:: _generic_adapter
+
+
+   .. py:method:: start(starttime, endtime)
+
+
+   .. py:method:: stop()
+
+
+.. py:class:: GenericPushAdapter(typ: type, name: str = None)
+
+   .. py:attribute:: _adapter
+
+
+   .. py:attribute:: _adapter_impl
+      :value: None
+
+
+
+   .. py:attribute:: _started
+      :value: False
+
+
+
+   .. py:attribute:: _stopped
+      :value: False
+
+
+
+   .. py:attribute:: _condvar
+
+
+   .. py:method:: _bind(adapter_impl)
+
+
+   .. py:method:: _unbind()
+
+
+   .. py:method:: wait_for_start(timeout: float = None)
+
+
+   .. py:method:: started()
+
+
+   .. py:method:: stopped()
+
+
+   .. py:method:: out()
+
+
+   .. py:method:: push_tick(value)
+
+
+.. py:data:: _GenericPushAdapter
+

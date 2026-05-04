@@ -1,0 +1,32 @@
+csp.tests.adapters.test_status
+==============================
+
+.. py:module:: csp.tests.adapters.test_status
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.tests.adapters.test_status.SubData
+   csp.tests.adapters.test_status.TestStatus
+
+
+Module Contents
+---------------
+
+.. py:class:: SubData
+
+   Bases: :py:obj:`csp.Struct`
+
+
+   .. py:attribute:: a
+      :type:  bool
+
+
+.. py:class:: TestStatus
+
+   .. py:method:: test_basic(kafkaadapter)
+
+

@@ -1,0 +1,174 @@
+csp.tests.adapters.test_arrow
+=============================
+
+.. py:module:: csp.tests.adapters.test_arrow
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp.tests.adapters.test_arrow._STARTTIME
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.tests.adapters.test_arrow.TestArrow
+   csp.tests.adapters.test_arrow.TestArrowLazySchema
+   csp.tests.adapters.test_arrow.TestDeferredIterator
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.tests.adapters.test_arrow._make_record_batch
+   csp.tests.adapters.test_arrow._make_data
+   csp.tests.adapters.test_arrow._make_data_with_schema
+   csp.tests.adapters.test_arrow.G
+   csp.tests.adapters.test_arrow.G_lazy_schema
+   csp.tests.adapters.test_arrow.WB
+   csp.tests.adapters.test_arrow._concat_batches
+
+
+Module Contents
+---------------
+
+.. py:data:: _STARTTIME
+
+.. py:function:: _make_record_batch(ts_col_name: str, row_size: int, ts: datetime.datetime) -> pyarrow.RecordBatch
+
+.. py:function:: _make_data(ts_col_name: str, row_sizes: list[int], start: datetime.datetime = _STARTTIME, interval: int = 1)
+
+.. py:function:: _make_data_with_schema(ts_col_name: str, row_sizes: list[int], start: datetime.datetime = _STARTTIME, interval: int = 1)
+
+.. py:function:: G(ts_col_name: str, schema: pyarrow.Schema, batches: object, expect_small: bool)
+
+.. py:function:: G_lazy_schema(ts_col_name: str, batches: object, expect_small: bool)
+
+   Graph that passes schema=None for lazy schema extraction.
+
+
+.. py:function:: WB(where: str, merge: bool, batch_size: int, batches: csp.ts[[pyarrow.RecordBatch]])
+
+.. py:function:: _concat_batches(batches: list[pyarrow.RecordBatch]) -> pyarrow.RecordBatch
+
+.. py:class:: TestArrow
+
+   .. py:method:: test_bad_ts_col_name(small_batches: bool)
+
+
+   .. py:method:: test_bad_ts_col_type(small_batches: bool)
+
+
+   .. py:method:: test_bad_source(small_batches: bool)
+
+
+   .. py:method:: test_empty_rb(small_batches: bool)
+
+
+   .. py:method:: test_start_not_found(small_batches: bool, row_sizes: [int], delta: datetime.timedelta)
+
+
+   .. py:method:: test_start_found(small_batches: bool, row_sizes: [int], row_sizes_prev: [int], delta: datetime.timedelta)
+
+
+   .. py:method:: test_split(small_batches: bool, row_sizes: [int], repeat: int, dt_count: int)
+
+
+   .. py:method:: test_end_time_early(small_batches: bool, row_sizes: [int])
+
+
+   .. py:method:: test_different_size_rbs(small_batches: bool, seed: int)
+
+
+   .. py:method:: test_write_record_batches(row_sizes: [int], concat: bool, batch_size: int)
+
+
+   .. py:method:: test_write_record_batches_concat(row_sizes: [int], concat: bool)
+
+
+   .. py:method:: test_write_record_batches_batch_sizes()
+
+
+.. py:class:: TestArrowLazySchema
+
+   Tests for lazy schema initialization (schema=None).
+
+   These tests verify that RecordBatchPullInputAdapter correctly extracts
+   the schema from the first record batch when schema=None is passed.
+
+
+   .. py:method:: test_lazy_schema_basic(small_batches: bool)
+
+      Test basic lazy schema extraction from first batch.
+
+
+
+   .. py:method:: test_lazy_schema_multiple_batches(small_batches: bool)
+
+      Test lazy schema with multiple record batches.
+
+
+
+   .. py:method:: test_lazy_schema_empty_batches_before_data(small_batches: bool)
+
+      Test lazy schema extraction skips empty batches to find first non-empty.
+
+
+
+   .. py:method:: test_lazy_schema_all_empty(small_batches: bool)
+
+      Test lazy schema with all empty batches.
+
+
+
+   .. py:method:: test_lazy_schema_bad_ts_col_name(small_batches: bool)
+
+      Test error handling for wrong timestamp column with lazy schema.
+
+
+
+   .. py:method:: test_lazy_schema_bad_ts_col_type(small_batches: bool)
+
+      Test error handling for non-timestamp column with lazy schema.
+
+
+
+   .. py:method:: test_lazy_schema_random_sizes(small_batches: bool, seed: int)
+
+      Test lazy schema with random sized batches.
+
+
+
+   .. py:method:: test_lazy_schema_matches_explicit_schema(small_batches: bool)
+
+      Test that lazy schema produces same results as explicit schema.
+
+
+
+.. py:class:: TestDeferredIterator
+
+   Tests for deferred iterator behavior.
+
+   These tests verify that the iterator is not consumed at graph build time,
+   allowing lazy iterators to be set up after graph construction.
+
+
+   .. py:method:: test_deferred_iterator_not_consumed_at_build_time()
+
+      Test that iterator is not consumed during graph build, but is consumed at run time.
+
+
+
+   .. py:method:: test_lazy_iterator_pattern()
+
+      Test the lazy iterator pattern used by LazyParquetIterator.
+
+
+

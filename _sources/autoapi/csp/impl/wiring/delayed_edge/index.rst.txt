@@ -1,0 +1,52 @@
+csp.impl.wiring.delayed_edge
+============================
+
+.. py:module:: csp.impl.wiring.delayed_edge
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp.impl.wiring.delayed_edge.T
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.impl.wiring.delayed_edge._UnsetNodedef
+   csp.impl.wiring.delayed_edge.DelayedEdge
+
+
+Module Contents
+---------------
+
+.. py:data:: T
+
+.. py:class:: _UnsetNodedef
+
+   .. py:method:: _create(*args, **kwargs)
+      :classmethod:
+
+
+
+.. py:class:: DelayedEdge(tstype, default_to_null: bool = False)
+
+   Bases: :py:obj:`csp.impl.wiring.edge.Edge`
+
+
+   .. py:attribute:: _null_node
+
+
+   .. py:method:: _bind(edge: csp.impl.types.tstype.ts[T])
+
+
+   .. py:method:: bind(edge: csp.impl.wiring.edge.Edge)
+
+
+   .. py:method:: is_bound()
+
+

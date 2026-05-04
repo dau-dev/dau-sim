@@ -1,0 +1,1171 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../../../genindex.html"><link rel="search" title="Search" href="../../../../../search.html">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>csp.tests.impl.test_pandas_ext_type - dau-sim v0.15.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/custom.css?v=890fd012" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.15.0</code></div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../../index.html">
+  
+  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.15.0</code></span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../../../_sources/autoapi/csp/tests/impl/test_pandas_ext_type/index.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-csp.tests.impl.test_pandas_ext_type">
+<span id="csp-tests-impl-test-pandas-ext-type"></span><h1>csp.tests.impl.test_pandas_ext_type<a class="headerlink" href="#module-csp.tests.impl.test_pandas_ext_type" title="Link to this heading">¶</a></h1>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.PANDAS_BASE_EXTENSION_TESTS" title="csp.tests.impl.test_pandas_ext_type.PANDAS_BASE_EXTENSION_TESTS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PANDAS_BASE_EXTENSION_TESTS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.PANDAS_MAJOR" title="csp.tests.impl.test_pandas_ext_type.PANDAS_MAJOR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PANDAS_MAJOR</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type._all_arithmetic_operators" title="csp.tests.impl.test_pandas_ext_type._all_arithmetic_operators"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_all_arithmetic_operators</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type._all_numeric_reductions" title="csp.tests.impl.test_pandas_ext_type._all_numeric_reductions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_all_numeric_reductions</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type._all_boolean_reductions" title="csp.tests.impl.test_pandas_ext_type._all_boolean_reductions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_all_boolean_reductions</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestConstructors" title="csp.tests.impl.test_pandas_ext_type.TestConstructors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestConstructors</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestTsDtype" title="csp.tests.impl.test_pandas_ext_type.TestTsDtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestTsDtype</span></code></a></p></td>
+<td><p>Base class for ExtensionDtype classes</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestCasting" title="csp.tests.impl.test_pandas_ext_type.TestCasting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestCasting</span></code></a></p></td>
+<td><p>Casting to and from ExtensionDtypes</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestGetitem" title="csp.tests.impl.test_pandas_ext_type.TestGetitem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestGetitem</span></code></a></p></td>
+<td><p>Tests for ExtensionArray.__getitem__.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestGroupby" title="csp.tests.impl.test_pandas_ext_type.TestGroupby"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestGroupby</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestInterface" title="csp.tests.impl.test_pandas_ext_type.TestInterface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestInterface</span></code></a></p></td>
+<td><p>Tests that the basic interface is satisfied.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods" title="csp.tests.impl.test_pandas_ext_type.TestMethods"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestMethods</span></code></a></p></td>
+<td><p>Selected tests copied from base.BaseMethodsTests, because many of them are not expected to work.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMissing" title="csp.tests.impl.test_pandas_ext_type.TestMissing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestMissing</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestArithmeticOps" title="csp.tests.impl.test_pandas_ext_type.TestArithmeticOps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestArithmeticOps</span></code></a></p></td>
+<td><p>Various Series and DataFrame arithmetic ops methods.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestComparisonOps" title="csp.tests.impl.test_pandas_ext_type.TestComparisonOps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestComparisonOps</span></code></a></p></td>
+<td><p>Various Series and DataFrame comparison ops methods.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestLogicalOps" title="csp.tests.impl.test_pandas_ext_type.TestLogicalOps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestLogicalOps</span></code></a></p></td>
+<td><p>Various Series and DataFrame logical ops methods.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestUnaryOps" title="csp.tests.impl.test_pandas_ext_type.TestUnaryOps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestUnaryOps</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestPrinting" title="csp.tests.impl.test_pandas_ext_type.TestPrinting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestPrinting</span></code></a></p></td>
+<td><p>Tests checking the formatting of your EA when printed.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestReduce" title="csp.tests.impl.test_pandas_ext_type.TestReduce"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestReduce</span></code></a></p></td>
+<td><p>Reduction specific tests. Generally these only</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestReshaping" title="csp.tests.impl.test_pandas_ext_type.TestReshaping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestReshaping</span></code></a></p></td>
+<td><p>Tests for reshaping and concatenation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestSetitem" title="csp.tests.impl.test_pandas_ext_type.TestSetitem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestSetitem</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestAsType" title="csp.tests.impl.test_pandas_ext_type.TestAsType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestAsType</span></code></a></p></td>
+<td><p>This is not part of the pandas test suite, but needed to test the astype functionality.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.pytype" title="csp.tests.impl.test_pandas_ext_type.pytype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pytype</span></code></a>()</p></td>
+<td><p>This is the python type used for the tests.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.edge_equality_mock" title="csp.tests.impl.test_pandas_ext_type.edge_equality_mock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_equality_mock</span></code></a>(monkeypatch)</p></td>
+<td><p>Because csp defines Edge equality to return another Edge, but the provided pandas tests rely on a standard</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.dtype" title="csp.tests.impl.test_pandas_ext_type.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a>(pytype)</p></td>
+<td><p>A fixture providing the ExtensionDtype to validate.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.data" title="csp.tests.impl.test_pandas_ext_type.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a>(pytype)</p></td>
+<td><p>Length-100 array for this type in pandas 2.x, Length-10 in pandas 3.x.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.data_missing" title="csp.tests.impl.test_pandas_ext_type.data_missing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data_missing</span></code></a>(pytype)</p></td>
+<td><p>Length-2 array with [NA, Valid]</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.all_data" title="csp.tests.impl.test_pandas_ext_type.all_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_data</span></code></a>(request, data, data_missing)</p></td>
+<td><p>Parametrized fixture giving 'data' and 'data_missing'</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.data_repeated" title="csp.tests.impl.test_pandas_ext_type.data_repeated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data_repeated</span></code></a>(data)</p></td>
+<td><p>Generate many datasets.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.data_for_grouping" title="csp.tests.impl.test_pandas_ext_type.data_for_grouping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data_for_grouping</span></code></a>(dtype, pytype)</p></td>
+<td><p>Data for factorization, grouping, and unique tests.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.data_for_twos" title="csp.tests.impl.test_pandas_ext_type.data_for_twos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data_for_twos</span></code></a>(pytype)</p></td>
+<td><p>Length-100 (or 10 in pandas 3.x) array in which all the elements are two.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.na_cmp" title="csp.tests.impl.test_pandas_ext_type.na_cmp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">na_cmp</span></code></a>()</p></td>
+<td><p>Binary operator for comparing NA values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.na_value" title="csp.tests.impl.test_pandas_ext_type.na_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">na_value</span></code></a>()</p></td>
+<td><p>The scalar missing value for this type. Default 'None'</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.box_in_series" title="csp.tests.impl.test_pandas_ext_type.box_in_series"><code class="xref py py-obj docutils literal notranslate"><span class="pre">box_in_series</span></code></a>(request)</p></td>
+<td><p>Whether to box the data in a Series</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.groupby_apply_op" title="csp.tests.impl.test_pandas_ext_type.groupby_apply_op"><code class="xref py py-obj docutils literal notranslate"><span class="pre">groupby_apply_op</span></code></a>(request)</p></td>
+<td><p>Functions to test groupby.apply().</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.as_frame" title="csp.tests.impl.test_pandas_ext_type.as_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">as_frame</span></code></a>(request)</p></td>
+<td><p>Boolean fixture to support Series and Series.to_frame() comparison testing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.as_series" title="csp.tests.impl.test_pandas_ext_type.as_series"><code class="xref py py-obj docutils literal notranslate"><span class="pre">as_series</span></code></a>(request)</p></td>
+<td><p>Boolean fixture to support arr and Series(arr) comparison testing.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.use_numpy" title="csp.tests.impl.test_pandas_ext_type.use_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_numpy</span></code></a>(request)</p></td>
+<td><p>Boolean fixture to support comparison testing of ExtensionDtype array</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.fillna_method" title="csp.tests.impl.test_pandas_ext_type.fillna_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fillna_method</span></code></a>(request)</p></td>
+<td><p>Parametrized fixture giving method parameters 'ffill' and 'bfill' for</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.as_array" title="csp.tests.impl.test_pandas_ext_type.as_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">as_array</span></code></a>(request)</p></td>
+<td><p>Boolean fixture to support ExtensionDtype _from_sequence method testing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.all_arithmetic_operators" title="csp.tests.impl.test_pandas_ext_type.all_arithmetic_operators"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_arithmetic_operators</span></code></a>(request)</p></td>
+<td><p>Fixture for dunder names for common arithmetic operations.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.comparison_op" title="csp.tests.impl.test_pandas_ext_type.comparison_op"><code class="xref py py-obj docutils literal notranslate"><span class="pre">comparison_op</span></code></a>(request)</p></td>
+<td><p>Fixture for operator module comparison functions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id0" title="csp.tests.impl.test_pandas_ext_type.all_numeric_reductions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_numeric_reductions</span></code></a>(request)</p></td>
+<td><p>Fixture for numeric reduction names.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id0" title="csp.tests.impl.test_pandas_ext_type.all_numeric_reductions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_numeric_reductions</span></code></a>(request)</p></td>
+<td><p>Fixture for numeric reduction names.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.all_boolean_reductions" title="csp.tests.impl.test_pandas_ext_type.all_boolean_reductions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_boolean_reductions</span></code></a>(request)</p></td>
+<td><p>Fixture for boolean reduction names.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.check_reduce" title="csp.tests.impl.test_pandas_ext_type.check_reduce"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_reduce</span></code></a>(self, s, op_name[, skipna])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.PANDAS_BASE_EXTENSION_TESTS">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">PANDAS_BASE_EXTENSION_TESTS</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.PANDAS_BASE_EXTENSION_TESTS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.PANDAS_MAJOR">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">PANDAS_MAJOR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.PANDAS_MAJOR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.pytype">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">pytype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.pytype" title="Link to this definition">¶</a></dt>
+<dd><p>This is the python type used for the tests.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.edge_equality_mock">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">edge_equality_mock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">monkeypatch</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.edge_equality_mock" title="Link to this definition">¶</a></dt>
+<dd><p>Because csp defines Edge equality to return another Edge, but the provided pandas tests rely on a standard
+equality test (returning a bool) to confirm that the right things are happening, we monkeypatch edge equality
+so that we can re-use the extensive pandas testing logic for extension types.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.dtype">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">dtype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pytype</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.dtype" title="Link to this definition">¶</a></dt>
+<dd><p>A fixture providing the ExtensionDtype to validate.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.data">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pytype</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.data" title="Link to this definition">¶</a></dt>
+<dd><p>Length-100 array for this type in pandas 2.x, Length-10 in pandas 3.x.
+* data[0] and data[1] should both be non missing
+* data[0] and data[1] should not be equal</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.data_missing">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">data_missing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pytype</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.data_missing" title="Link to this definition">¶</a></dt>
+<dd><p>Length-2 array with [NA, Valid]</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.all_data">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">all_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_missing</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.all_data" title="Link to this definition">¶</a></dt>
+<dd><p>Parametrized fixture giving ‘data’ and ‘data_missing’</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.data_repeated">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">data_repeated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.data_repeated" title="Link to this definition">¶</a></dt>
+<dd><p>Generate many datasets.
+:param data:
+:type data: fixture implementing <cite>data</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A callable that takes a <cite>count</cite> argument and
+returns a generator yielding <cite>count</cite> datasets.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Callable[[int], Generator]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.data_for_grouping">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">data_for_grouping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pytype</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.data_for_grouping" title="Link to this definition">¶</a></dt>
+<dd><p>Data for factorization, grouping, and unique tests.
+Expected to be like [B, B, NA, NA, A, A, B, C]
+Where A &lt; B &lt; C and NA is missing</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.data_for_twos">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">data_for_twos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pytype</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.data_for_twos" title="Link to this definition">¶</a></dt>
+<dd><p>Length-100 (or 10 in pandas 3.x) array in which all the elements are two.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.na_cmp">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">na_cmp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.na_cmp" title="Link to this definition">¶</a></dt>
+<dd><p>Binary operator for comparing NA values.
+Should return a function of two arguments that returns
+True if both arguments are (scalar) NA for your type.
+By default, uses <code class="docutils literal notranslate"><span class="pre">operator.is_</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.na_value">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">na_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.na_value" title="Link to this definition">¶</a></dt>
+<dd><p>The scalar missing value for this type. Default ‘None’</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.box_in_series">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">box_in_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.box_in_series" title="Link to this definition">¶</a></dt>
+<dd><p>Whether to box the data in a Series</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.groupby_apply_op">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">groupby_apply_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.groupby_apply_op" title="Link to this definition">¶</a></dt>
+<dd><p>Functions to test groupby.apply().</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.as_frame">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">as_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.as_frame" title="Link to this definition">¶</a></dt>
+<dd><p>Boolean fixture to support Series and Series.to_frame() comparison testing.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.as_series">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">as_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.as_series" title="Link to this definition">¶</a></dt>
+<dd><p>Boolean fixture to support arr and Series(arr) comparison testing.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.use_numpy">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">use_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.use_numpy" title="Link to this definition">¶</a></dt>
+<dd><p>Boolean fixture to support comparison testing of ExtensionDtype array
+and numpy array.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.fillna_method">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">fillna_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.fillna_method" title="Link to this definition">¶</a></dt>
+<dd><p>Parametrized fixture giving method parameters ‘ffill’ and ‘bfill’ for
+Series.fillna(method=&lt;method&gt;) testing.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.as_array">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">as_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.as_array" title="Link to this definition">¶</a></dt>
+<dd><p>Boolean fixture to support ExtensionDtype _from_sequence method testing.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type._all_arithmetic_operators">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">_all_arithmetic_operators</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['__add__',</span> <span class="pre">'__radd__',</span> <span class="pre">'__sub__',</span> <span class="pre">'__rsub__',</span> <span class="pre">'__mul__',</span> <span class="pre">'__rmul__',</span> <span class="pre">'__floordiv__',...</span></em><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type._all_arithmetic_operators" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.all_arithmetic_operators">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">all_arithmetic_operators</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.all_arithmetic_operators" title="Link to this definition">¶</a></dt>
+<dd><p>Fixture for dunder names for common arithmetic operations.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.comparison_op">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">comparison_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.comparison_op" title="Link to this definition">¶</a></dt>
+<dd><p>Fixture for operator module comparison functions.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type._all_numeric_reductions">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">_all_numeric_reductions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['sum',</span> <span class="pre">'max',</span> <span class="pre">'min',</span> <span class="pre">'mean',</span> <span class="pre">'prod',</span> <span class="pre">'std',</span> <span class="pre">'var',</span> <span class="pre">'median',</span> <span class="pre">'kurt',</span> <span class="pre">'skew']</span></em><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type._all_numeric_reductions" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.all_numeric_reductions">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">all_numeric_reductions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.all_numeric_reductions" title="Link to this definition">¶</a></dt>
+<dd><p>Fixture for numeric reduction names.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">all_numeric_reductions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd><p>Fixture for numeric reduction names.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type._all_boolean_reductions">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">_all_boolean_reductions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['all',</span> <span class="pre">'any']</span></em><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type._all_boolean_reductions" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.all_boolean_reductions">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">all_boolean_reductions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.all_boolean_reductions" title="Link to this definition">¶</a></dt>
+<dd><p>Fixture for boolean reduction names.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestConstructors">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">TestConstructors</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestConstructors" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.tests.extension.base.BaseConstructorsTests</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestTsDtype">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">TestTsDtype</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestTsDtype" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.tests.extension.base.BaseDtypeTests</span></code></p>
+<p>Base class for ExtensionDtype classes</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestTsDtype.test_equality">
+<span class="sig-name descname"><span class="pre">test_equality</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestTsDtype.test_equality" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestTsDtype.test_caching">
+<span class="sig-name descname"><span class="pre">test_caching</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestTsDtype.test_caching" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestCasting">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">TestCasting</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestCasting" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.tests.extension.base.BaseCastingTests</span></code></p>
+<p>Casting to and from ExtensionDtypes</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestGetitem">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">TestGetitem</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestGetitem" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.tests.extension.base.BaseGetitemTests</span></code></p>
+<p>Tests for ExtensionArray.__getitem__.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestGetitem.test_getitem_scalar">
+<span class="sig-name descname"><span class="pre">test_getitem_scalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestGetitem.test_getitem_scalar" title="Link to this definition">¶</a></dt>
+<dd><p>Overwrite from parent because Edges are not actually of type TsType</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestGroupby">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">TestGroupby</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestGroupby" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.PANDAS_BASE_EXTENSION_TESTS" title="csp.tests.impl.test_pandas_ext_type.PANDAS_BASE_EXTENSION_TESTS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PANDAS_BASE_EXTENSION_TESTS</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestGroupby.test_groupby_apply_identity">
+<span class="sig-name descname"><span class="pre">test_groupby_apply_identity</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestGroupby.test_groupby_apply_identity" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestGroupby.test_in_numeric_groupby">
+<span class="sig-name descname"><span class="pre">test_in_numeric_groupby</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_for_grouping</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestGroupby.test_in_numeric_groupby" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestGroupby.test_groupby_agg_extension">
+<span class="sig-name descname"><span class="pre">test_groupby_agg_extension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_for_grouping</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestGroupby.test_groupby_agg_extension" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestGroupby.test_groupby_extension_apply">
+<span class="sig-name descname"><span class="pre">test_groupby_extension_apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_for_grouping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupby_apply_op</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestGroupby.test_groupby_extension_apply" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestInterface">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">TestInterface</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestInterface" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.tests.extension.base.BaseInterfaceTests</span></code></p>
+<p>Tests that the basic interface is satisfied.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestInterface.test_contains">
+<span class="sig-name descname"><span class="pre">test_contains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_missing</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestInterface.test_contains" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestInterface.test_array_interface_copy">
+<span class="sig-name descname"><span class="pre">test_array_interface_copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestInterface.test_array_interface_copy" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">TestMethods</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.PANDAS_BASE_EXTENSION_TESTS" title="csp.tests.impl.test_pandas_ext_type.PANDAS_BASE_EXTENSION_TESTS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PANDAS_BASE_EXTENSION_TESTS</span></code></a></p>
+<p>Selected tests copied from base.BaseMethodsTests, because many of them are not expected to work.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_count">
+<span class="sig-name descname"><span class="pre">test_count</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_count" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_series_count">
+<span class="sig-name descname"><span class="pre">test_series_count</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_series_count" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_apply_simple_series">
+<span class="sig-name descname"><span class="pre">test_apply_simple_series</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_apply_simple_series" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_unique">
+<span class="sig-name descname"><span class="pre">test_unique</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_unique" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_fillna_copy_frame">
+<span class="sig-name descname"><span class="pre">test_fillna_copy_frame</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_fillna_copy_frame" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_fillna_copy_series">
+<span class="sig-name descname"><span class="pre">test_fillna_copy_series</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_fillna_copy_series" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_fillna_length_mismatch">
+<span class="sig-name descname"><span class="pre">test_fillna_length_mismatch</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_fillna_length_mismatch" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_combine_first">
+<span class="sig-name descname"><span class="pre">test_combine_first</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_combine_first" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_container_shift">
+<span class="sig-name descname"><span class="pre">test_container_shift</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_container_shift" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_shift_0_periods">
+<span class="sig-name descname"><span class="pre">test_shift_0_periods</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_shift_0_periods" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_shift_non_empty_array">
+<span class="sig-name descname"><span class="pre">test_shift_non_empty_array</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_shift_non_empty_array" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_shift_empty_array">
+<span class="sig-name descname"><span class="pre">test_shift_empty_array</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_shift_empty_array" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_shift_zero_copies">
+<span class="sig-name descname"><span class="pre">test_shift_zero_copies</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_shift_zero_copies" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_shift_fill_value">
+<span class="sig-name descname"><span class="pre">test_shift_fill_value</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_shift_fill_value" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_not_hashable">
+<span class="sig-name descname"><span class="pre">test_not_hashable</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_not_hashable" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_hash_pandas_object_works">
+<span class="sig-name descname"><span class="pre">test_hash_pandas_object_works</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_hash_pandas_object_works" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_where_series">
+<span class="sig-name descname"><span class="pre">test_where_series</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_where_series" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_repeat">
+<span class="sig-name descname"><span class="pre">test_repeat</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_repeat" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_repeat_raises">
+<span class="sig-name descname"><span class="pre">test_repeat_raises</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_repeat_raises" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_value_counts">
+<span class="sig-name descname"><span class="pre">test_value_counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_for_grouping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropna</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_value_counts" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMethods.test_describe">
+<span class="sig-name descname"><span class="pre">test_describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_for_grouping</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_describe" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestMissing">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">TestMissing</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestMissing" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.tests.extension.base.BaseMissingTests</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestArithmeticOps">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">TestArithmeticOps</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestArithmeticOps" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.tests.extension.base.BaseArithmeticOpsTests</span></code></p>
+<p>Various Series and DataFrame arithmetic ops methods.</p>
+<p>Subclasses supporting various ops should set the class variables
+to indicate that they support ops of that kind</p>
+<ul class="simple">
+<li><p>series_scalar_exc = TypeError</p></li>
+<li><p>frame_scalar_exc = TypeError</p></li>
+<li><p>series_array_exc = TypeError</p></li>
+<li><p>divmod_exc = TypeError</p></li>
+</ul>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestArithmeticOps.series_scalar_exc">
+<span class="sig-name descname"><span class="pre">series_scalar_exc</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestArithmeticOps.series_scalar_exc" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestArithmeticOps.frame_scalar_exc">
+<span class="sig-name descname"><span class="pre">frame_scalar_exc</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestArithmeticOps.frame_scalar_exc" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestArithmeticOps.series_array_exc">
+<span class="sig-name descname"><span class="pre">series_array_exc</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestArithmeticOps.series_array_exc" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestArithmeticOps.divmod_exc">
+<span class="sig-name descname"><span class="pre">divmod_exc</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestArithmeticOps.divmod_exc" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestArithmeticOps.test_error">
+<span class="sig-name descname"><span class="pre">test_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_arithmetic_operators</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestArithmeticOps.test_error" title="Link to this definition">¶</a></dt>
+<dd><p>This is supposed to be overridden when things work. See <a class="reference external" href="https://github.com/pandas-dev/pandas/pull/39386">https://github.com/pandas-dev/pandas/pull/39386</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestComparisonOps">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">TestComparisonOps</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestComparisonOps" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.tests.extension.base.BaseComparisonOpsTests</span></code></p>
+<p>Various Series and DataFrame comparison ops methods.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestComparisonOps._compare_other">
+<span class="sig-name descname"><span class="pre">_compare_other</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.Series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestComparisonOps._compare_other" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestComparisonOps.test_compare_scalar">
+<span class="sig-name descname"><span class="pre">test_compare_scalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparison_op</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestComparisonOps.test_compare_scalar" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestComparisonOps.test_compare_array">
+<span class="sig-name descname"><span class="pre">test_compare_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparison_op</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestComparisonOps.test_compare_array" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestLogicalOps">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">TestLogicalOps</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestLogicalOps" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.tests.extension.base.ops.BaseOpsUtil</span></code></p>
+<p>Various Series and DataFrame logical ops methods.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestLogicalOps._compare_other">
+<span class="sig-name descname"><span class="pre">_compare_other</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.Series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestLogicalOps._compare_other" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestLogicalOps.test_logical_scalar">
+<span class="sig-name descname"><span class="pre">test_logical_scalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparison_op</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestLogicalOps.test_logical_scalar" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestLogicalOps.test_logical_array">
+<span class="sig-name descname"><span class="pre">test_logical_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparison_op</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestLogicalOps.test_logical_array" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestUnaryOps">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">TestUnaryOps</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestUnaryOps" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.tests.extension.base.BaseUnaryOpsTests</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestPrinting">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">TestPrinting</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestPrinting" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.tests.extension.base.BasePrintingTests</span></code></p>
+<p>Tests checking the formatting of your EA when printed.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.check_reduce">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">check_reduce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skipna</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.check_reduce" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestReduce">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">TestReduce</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestReduce" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.tests.extension.base.BaseReduceTests</span></code></p>
+<p>Reduction specific tests. Generally these only
+make sense for numeric/boolean operations.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestReduce._supports_reduction">
+<span class="sig-name descname"><span class="pre">_supports_reduction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestReduce._supports_reduction" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestReduce.check_reduce">
+<span class="sig-name descname"><span class="pre">check_reduce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skipna</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestReduce.check_reduce" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestReduce._get_expected_reduction_dtype">
+<span class="sig-name descname"><span class="pre">_get_expected_reduction_dtype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skipna</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestReduce._get_expected_reduction_dtype" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestReshaping">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">TestReshaping</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestReshaping" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.tests.extension.base.BaseReshapingTests</span></code></p>
+<p>Tests for reshaping and concatenation.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestReshaping.test_merge_on_extension_array">
+<span class="sig-name descname"><span class="pre">test_merge_on_extension_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestReshaping.test_merge_on_extension_array" title="Link to this definition">¶</a></dt>
+<dd><p>“Do not implement because merge behavior not well defined</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestReshaping.test_merge_on_extension_array_duplicates">
+<span class="sig-name descname"><span class="pre">test_merge_on_extension_array_duplicates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestReshaping.test_merge_on_extension_array_duplicates" title="Link to this definition">¶</a></dt>
+<dd><p>“Do not implement because merge behavior not well defined</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestSetitem">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">TestSetitem</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestSetitem" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.tests.extension.base.BaseSetitemTests</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestSetitem.test_setitem_invalid">
+<span class="sig-name descname"><span class="pre">test_setitem_invalid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestSetitem.test_setitem_invalid" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestAsType">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.impl.test_pandas_ext_type.</span></span><span class="sig-name descname"><span class="pre">TestAsType</span></span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestAsType" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.PANDAS_BASE_EXTENSION_TESTS" title="csp.tests.impl.test_pandas_ext_type.PANDAS_BASE_EXTENSION_TESTS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PANDAS_BASE_EXTENSION_TESTS</span></code></a></p>
+<p>This is not part of the pandas test suite, but needed to test the astype functionality.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestAsType._check_astype">
+<span class="sig-name descname"><span class="pre">_check_astype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">equality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestAsType._check_astype" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestAsType.test_as_object">
+<span class="sig-name descname"><span class="pre">test_as_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestAsType.test_as_object" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestAsType.test_as_ts_float">
+<span class="sig-name descname"><span class="pre">test_as_ts_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestAsType.test_as_ts_float" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestAsType.test_as_ts_object">
+<span class="sig-name descname"><span class="pre">test_as_ts_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestAsType.test_as_ts_object" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.impl.test_pandas_ext_type.TestAsType.test_as_string">
+<span class="sig-name descname"><span class="pre">test_as_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.impl.test_pandas_ext_type.TestAsType.test_as_string" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; the csp authors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">csp.tests.impl.test_pandas_ext_type</a><ul>
+<li><a class="reference internal" href="#attributes">Attributes</a></li>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.PANDAS_BASE_EXTENSION_TESTS"><code class="docutils literal notranslate"><span class="pre">PANDAS_BASE_EXTENSION_TESTS</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.PANDAS_MAJOR"><code class="docutils literal notranslate"><span class="pre">PANDAS_MAJOR</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.pytype"><code class="docutils literal notranslate"><span class="pre">pytype()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.edge_equality_mock"><code class="docutils literal notranslate"><span class="pre">edge_equality_mock()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.dtype"><code class="docutils literal notranslate"><span class="pre">dtype()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.data"><code class="docutils literal notranslate"><span class="pre">data()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.data_missing"><code class="docutils literal notranslate"><span class="pre">data_missing()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.all_data"><code class="docutils literal notranslate"><span class="pre">all_data()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.data_repeated"><code class="docutils literal notranslate"><span class="pre">data_repeated()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.data_for_grouping"><code class="docutils literal notranslate"><span class="pre">data_for_grouping()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.data_for_twos"><code class="docutils literal notranslate"><span class="pre">data_for_twos()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.na_cmp"><code class="docutils literal notranslate"><span class="pre">na_cmp()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.na_value"><code class="docutils literal notranslate"><span class="pre">na_value()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.box_in_series"><code class="docutils literal notranslate"><span class="pre">box_in_series()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.groupby_apply_op"><code class="docutils literal notranslate"><span class="pre">groupby_apply_op()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.as_frame"><code class="docutils literal notranslate"><span class="pre">as_frame()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.as_series"><code class="docutils literal notranslate"><span class="pre">as_series()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.use_numpy"><code class="docutils literal notranslate"><span class="pre">use_numpy()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.fillna_method"><code class="docutils literal notranslate"><span class="pre">fillna_method()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.as_array"><code class="docutils literal notranslate"><span class="pre">as_array()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type._all_arithmetic_operators"><code class="docutils literal notranslate"><span class="pre">_all_arithmetic_operators</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.all_arithmetic_operators"><code class="docutils literal notranslate"><span class="pre">all_arithmetic_operators()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.comparison_op"><code class="docutils literal notranslate"><span class="pre">comparison_op()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type._all_numeric_reductions"><code class="docutils literal notranslate"><span class="pre">_all_numeric_reductions</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.all_numeric_reductions"><code class="docutils literal notranslate"><span class="pre">all_numeric_reductions()</span></code></a></li>
+<li><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">all_numeric_reductions()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type._all_boolean_reductions"><code class="docutils literal notranslate"><span class="pre">_all_boolean_reductions</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.all_boolean_reductions"><code class="docutils literal notranslate"><span class="pre">all_boolean_reductions()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestConstructors"><code class="docutils literal notranslate"><span class="pre">TestConstructors</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestTsDtype"><code class="docutils literal notranslate"><span class="pre">TestTsDtype</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestTsDtype.test_equality"><code class="docutils literal notranslate"><span class="pre">TestTsDtype.test_equality()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestTsDtype.test_caching"><code class="docutils literal notranslate"><span class="pre">TestTsDtype.test_caching()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestCasting"><code class="docutils literal notranslate"><span class="pre">TestCasting</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestGetitem"><code class="docutils literal notranslate"><span class="pre">TestGetitem</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestGetitem.test_getitem_scalar"><code class="docutils literal notranslate"><span class="pre">TestGetitem.test_getitem_scalar()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestGroupby"><code class="docutils literal notranslate"><span class="pre">TestGroupby</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestGroupby.test_groupby_apply_identity"><code class="docutils literal notranslate"><span class="pre">TestGroupby.test_groupby_apply_identity</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestGroupby.test_in_numeric_groupby"><code class="docutils literal notranslate"><span class="pre">TestGroupby.test_in_numeric_groupby()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestGroupby.test_groupby_agg_extension"><code class="docutils literal notranslate"><span class="pre">TestGroupby.test_groupby_agg_extension()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestGroupby.test_groupby_extension_apply"><code class="docutils literal notranslate"><span class="pre">TestGroupby.test_groupby_extension_apply()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestInterface"><code class="docutils literal notranslate"><span class="pre">TestInterface</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestInterface.test_contains"><code class="docutils literal notranslate"><span class="pre">TestInterface.test_contains()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestInterface.test_array_interface_copy"><code class="docutils literal notranslate"><span class="pre">TestInterface.test_array_interface_copy()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods"><code class="docutils literal notranslate"><span class="pre">TestMethods</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_count"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_count</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_series_count"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_series_count</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_apply_simple_series"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_apply_simple_series</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_unique"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_unique</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_fillna_copy_frame"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_fillna_copy_frame</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_fillna_copy_series"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_fillna_copy_series</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_fillna_length_mismatch"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_fillna_length_mismatch</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_combine_first"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_combine_first</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_container_shift"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_container_shift</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_shift_0_periods"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_shift_0_periods</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_shift_non_empty_array"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_shift_non_empty_array</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_shift_empty_array"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_shift_empty_array</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_shift_zero_copies"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_shift_zero_copies</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_shift_fill_value"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_shift_fill_value</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_not_hashable"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_not_hashable</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_hash_pandas_object_works"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_hash_pandas_object_works</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_where_series"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_where_series</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_repeat"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_repeat</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_repeat_raises"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_repeat_raises</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_value_counts"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_value_counts()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMethods.test_describe"><code class="docutils literal notranslate"><span class="pre">TestMethods.test_describe()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestMissing"><code class="docutils literal notranslate"><span class="pre">TestMissing</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestArithmeticOps"><code class="docutils literal notranslate"><span class="pre">TestArithmeticOps</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestArithmeticOps.series_scalar_exc"><code class="docutils literal notranslate"><span class="pre">TestArithmeticOps.series_scalar_exc</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestArithmeticOps.frame_scalar_exc"><code class="docutils literal notranslate"><span class="pre">TestArithmeticOps.frame_scalar_exc</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestArithmeticOps.series_array_exc"><code class="docutils literal notranslate"><span class="pre">TestArithmeticOps.series_array_exc</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestArithmeticOps.divmod_exc"><code class="docutils literal notranslate"><span class="pre">TestArithmeticOps.divmod_exc</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestArithmeticOps.test_error"><code class="docutils literal notranslate"><span class="pre">TestArithmeticOps.test_error()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestComparisonOps"><code class="docutils literal notranslate"><span class="pre">TestComparisonOps</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestComparisonOps._compare_other"><code class="docutils literal notranslate"><span class="pre">TestComparisonOps._compare_other()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestComparisonOps.test_compare_scalar"><code class="docutils literal notranslate"><span class="pre">TestComparisonOps.test_compare_scalar()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestComparisonOps.test_compare_array"><code class="docutils literal notranslate"><span class="pre">TestComparisonOps.test_compare_array()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestLogicalOps"><code class="docutils literal notranslate"><span class="pre">TestLogicalOps</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestLogicalOps._compare_other"><code class="docutils literal notranslate"><span class="pre">TestLogicalOps._compare_other()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestLogicalOps.test_logical_scalar"><code class="docutils literal notranslate"><span class="pre">TestLogicalOps.test_logical_scalar()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestLogicalOps.test_logical_array"><code class="docutils literal notranslate"><span class="pre">TestLogicalOps.test_logical_array()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestUnaryOps"><code class="docutils literal notranslate"><span class="pre">TestUnaryOps</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestPrinting"><code class="docutils literal notranslate"><span class="pre">TestPrinting</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.check_reduce"><code class="docutils literal notranslate"><span class="pre">check_reduce()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestReduce"><code class="docutils literal notranslate"><span class="pre">TestReduce</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestReduce._supports_reduction"><code class="docutils literal notranslate"><span class="pre">TestReduce._supports_reduction()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestReduce.check_reduce"><code class="docutils literal notranslate"><span class="pre">TestReduce.check_reduce()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestReduce._get_expected_reduction_dtype"><code class="docutils literal notranslate"><span class="pre">TestReduce._get_expected_reduction_dtype()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestReshaping"><code class="docutils literal notranslate"><span class="pre">TestReshaping</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestReshaping.test_merge_on_extension_array"><code class="docutils literal notranslate"><span class="pre">TestReshaping.test_merge_on_extension_array()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestReshaping.test_merge_on_extension_array_duplicates"><code class="docutils literal notranslate"><span class="pre">TestReshaping.test_merge_on_extension_array_duplicates()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestSetitem"><code class="docutils literal notranslate"><span class="pre">TestSetitem</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestSetitem.test_setitem_invalid"><code class="docutils literal notranslate"><span class="pre">TestSetitem.test_setitem_invalid()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestAsType"><code class="docutils literal notranslate"><span class="pre">TestAsType</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestAsType._check_astype"><code class="docutils literal notranslate"><span class="pre">TestAsType._check_astype()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestAsType.test_as_object"><code class="docutils literal notranslate"><span class="pre">TestAsType.test_as_object()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestAsType.test_as_ts_float"><code class="docutils literal notranslate"><span class="pre">TestAsType.test_as_ts_float()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestAsType.test_as_ts_object"><code class="docutils literal notranslate"><span class="pre">TestAsType.test_as_ts_object()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.impl.test_pandas_ext_type.TestAsType.test_as_string"><code class="docutils literal notranslate"><span class="pre">TestAsType.test_as_string()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../../../_static/documentation_options.js?v=ef97403f"></script>
+    <script src="../../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../../../../_static/js/custom.js?v=956e5d78"></script>
+    </body>
+</html>

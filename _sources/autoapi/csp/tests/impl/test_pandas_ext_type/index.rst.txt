@@ -1,0 +1,532 @@
+csp.tests.impl.test_pandas_ext_type
+===================================
+
+.. py:module:: csp.tests.impl.test_pandas_ext_type
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp.tests.impl.test_pandas_ext_type.PANDAS_BASE_EXTENSION_TESTS
+   csp.tests.impl.test_pandas_ext_type.PANDAS_MAJOR
+   csp.tests.impl.test_pandas_ext_type._all_arithmetic_operators
+   csp.tests.impl.test_pandas_ext_type._all_numeric_reductions
+   csp.tests.impl.test_pandas_ext_type._all_boolean_reductions
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.tests.impl.test_pandas_ext_type.TestConstructors
+   csp.tests.impl.test_pandas_ext_type.TestTsDtype
+   csp.tests.impl.test_pandas_ext_type.TestCasting
+   csp.tests.impl.test_pandas_ext_type.TestGetitem
+   csp.tests.impl.test_pandas_ext_type.TestGroupby
+   csp.tests.impl.test_pandas_ext_type.TestInterface
+   csp.tests.impl.test_pandas_ext_type.TestMethods
+   csp.tests.impl.test_pandas_ext_type.TestMissing
+   csp.tests.impl.test_pandas_ext_type.TestArithmeticOps
+   csp.tests.impl.test_pandas_ext_type.TestComparisonOps
+   csp.tests.impl.test_pandas_ext_type.TestLogicalOps
+   csp.tests.impl.test_pandas_ext_type.TestUnaryOps
+   csp.tests.impl.test_pandas_ext_type.TestPrinting
+   csp.tests.impl.test_pandas_ext_type.TestReduce
+   csp.tests.impl.test_pandas_ext_type.TestReshaping
+   csp.tests.impl.test_pandas_ext_type.TestSetitem
+   csp.tests.impl.test_pandas_ext_type.TestAsType
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.tests.impl.test_pandas_ext_type.pytype
+   csp.tests.impl.test_pandas_ext_type.edge_equality_mock
+   csp.tests.impl.test_pandas_ext_type.dtype
+   csp.tests.impl.test_pandas_ext_type.data
+   csp.tests.impl.test_pandas_ext_type.data_missing
+   csp.tests.impl.test_pandas_ext_type.all_data
+   csp.tests.impl.test_pandas_ext_type.data_repeated
+   csp.tests.impl.test_pandas_ext_type.data_for_grouping
+   csp.tests.impl.test_pandas_ext_type.data_for_twos
+   csp.tests.impl.test_pandas_ext_type.na_cmp
+   csp.tests.impl.test_pandas_ext_type.na_value
+   csp.tests.impl.test_pandas_ext_type.box_in_series
+   csp.tests.impl.test_pandas_ext_type.groupby_apply_op
+   csp.tests.impl.test_pandas_ext_type.as_frame
+   csp.tests.impl.test_pandas_ext_type.as_series
+   csp.tests.impl.test_pandas_ext_type.use_numpy
+   csp.tests.impl.test_pandas_ext_type.fillna_method
+   csp.tests.impl.test_pandas_ext_type.as_array
+   csp.tests.impl.test_pandas_ext_type.all_arithmetic_operators
+   csp.tests.impl.test_pandas_ext_type.comparison_op
+   csp.tests.impl.test_pandas_ext_type.all_numeric_reductions
+   csp.tests.impl.test_pandas_ext_type.all_numeric_reductions
+   csp.tests.impl.test_pandas_ext_type.all_boolean_reductions
+   csp.tests.impl.test_pandas_ext_type.check_reduce
+
+
+Module Contents
+---------------
+
+.. py:data:: PANDAS_BASE_EXTENSION_TESTS
+
+.. py:data:: PANDAS_MAJOR
+   :value: 3
+
+
+.. py:function:: pytype()
+
+   This is the python type used for the tests.
+
+
+.. py:function:: edge_equality_mock(monkeypatch)
+
+   Because csp defines Edge equality to return another Edge, but the provided pandas tests rely on a standard
+   equality test (returning a bool) to confirm that the right things are happening, we monkeypatch edge equality
+   so that we can re-use the extensive pandas testing logic for extension types.
+
+
+.. py:function:: dtype(pytype)
+
+   A fixture providing the ExtensionDtype to validate.
+
+
+.. py:function:: data(pytype)
+
+   Length-100 array for this type in pandas 2.x, Length-10 in pandas 3.x.
+   * data[0] and data[1] should both be non missing
+   * data[0] and data[1] should not be equal
+
+
+.. py:function:: data_missing(pytype)
+
+   Length-2 array with [NA, Valid]
+
+
+.. py:function:: all_data(request, data, data_missing)
+
+   Parametrized fixture giving 'data' and 'data_missing'
+
+
+.. py:function:: data_repeated(data)
+
+   Generate many datasets.
+   :param data:
+   :type data: fixture implementing `data`
+
+   :returns: A callable that takes a `count` argument and
+             returns a generator yielding `count` datasets.
+   :rtype: Callable[[int], Generator]
+
+
+.. py:function:: data_for_grouping(dtype, pytype)
+
+   Data for factorization, grouping, and unique tests.
+   Expected to be like [B, B, NA, NA, A, A, B, C]
+   Where A < B < C and NA is missing
+
+
+.. py:function:: data_for_twos(pytype)
+
+   Length-100 (or 10 in pandas 3.x) array in which all the elements are two.
+
+
+.. py:function:: na_cmp()
+
+   Binary operator for comparing NA values.
+   Should return a function of two arguments that returns
+   True if both arguments are (scalar) NA for your type.
+   By default, uses ``operator.is_``
+
+
+.. py:function:: na_value()
+
+   The scalar missing value for this type. Default 'None'
+
+
+.. py:function:: box_in_series(request)
+
+   Whether to box the data in a Series
+
+
+.. py:function:: groupby_apply_op(request)
+
+   Functions to test groupby.apply().
+
+
+.. py:function:: as_frame(request)
+
+   Boolean fixture to support Series and Series.to_frame() comparison testing.
+
+
+.. py:function:: as_series(request)
+
+   Boolean fixture to support arr and Series(arr) comparison testing.
+
+
+.. py:function:: use_numpy(request)
+
+   Boolean fixture to support comparison testing of ExtensionDtype array
+   and numpy array.
+
+
+.. py:function:: fillna_method(request)
+
+   Parametrized fixture giving method parameters 'ffill' and 'bfill' for
+   Series.fillna(method=<method>) testing.
+
+
+.. py:function:: as_array(request)
+
+   Boolean fixture to support ExtensionDtype _from_sequence method testing.
+
+
+.. py:data:: _all_arithmetic_operators
+   :value: ['__add__', '__radd__', '__sub__', '__rsub__', '__mul__', '__rmul__', '__floordiv__',...
+
+
+.. py:function:: all_arithmetic_operators(request)
+
+   Fixture for dunder names for common arithmetic operations.
+
+
+.. py:function:: comparison_op(request)
+
+   Fixture for operator module comparison functions.
+
+
+.. py:data:: _all_numeric_reductions
+   :value: ['sum', 'max', 'min', 'mean', 'prod', 'std', 'var', 'median', 'kurt', 'skew']
+
+
+.. py:function:: all_numeric_reductions(request)
+
+   Fixture for numeric reduction names.
+
+
+.. py:function:: all_numeric_reductions(request)
+
+   Fixture for numeric reduction names.
+
+
+.. py:data:: _all_boolean_reductions
+   :value: ['all', 'any']
+
+
+.. py:function:: all_boolean_reductions(request)
+
+   Fixture for boolean reduction names.
+
+
+.. py:class:: TestConstructors
+
+   Bases: :py:obj:`pandas.tests.extension.base.BaseConstructorsTests`
+
+
+.. py:class:: TestTsDtype
+
+   Bases: :py:obj:`pandas.tests.extension.base.BaseDtypeTests`
+
+
+   Base class for ExtensionDtype classes
+
+
+   .. py:method:: test_equality()
+
+
+   .. py:method:: test_caching()
+
+
+.. py:class:: TestCasting
+
+   Bases: :py:obj:`pandas.tests.extension.base.BaseCastingTests`
+
+
+   Casting to and from ExtensionDtypes
+
+
+.. py:class:: TestGetitem
+
+   Bases: :py:obj:`pandas.tests.extension.base.BaseGetitemTests`
+
+
+   Tests for ExtensionArray.__getitem__.
+
+
+   .. py:method:: test_getitem_scalar(data)
+
+      Overwrite from parent because Edges are not actually of type TsType
+
+
+
+.. py:class:: TestGroupby
+
+   Bases: :py:obj:`PANDAS_BASE_EXTENSION_TESTS`
+
+
+   .. py:attribute:: test_groupby_apply_identity
+
+
+   .. py:method:: test_in_numeric_groupby(data_for_grouping)
+
+
+   .. py:method:: test_groupby_agg_extension(data_for_grouping)
+
+
+   .. py:method:: test_groupby_extension_apply(data_for_grouping, groupby_apply_op)
+
+
+.. py:class:: TestInterface
+
+   Bases: :py:obj:`pandas.tests.extension.base.BaseInterfaceTests`
+
+
+   Tests that the basic interface is satisfied.
+
+
+   .. py:method:: test_contains(data, data_missing)
+
+
+   .. py:method:: test_array_interface_copy(data)
+
+
+.. py:class:: TestMethods
+
+   Bases: :py:obj:`PANDAS_BASE_EXTENSION_TESTS`
+
+
+   Selected tests copied from base.BaseMethodsTests, because many of them are not expected to work.
+
+
+   .. py:attribute:: test_count
+
+
+   .. py:attribute:: test_series_count
+
+
+   .. py:attribute:: test_apply_simple_series
+
+
+   .. py:attribute:: test_unique
+
+
+   .. py:attribute:: test_fillna_copy_frame
+
+
+   .. py:attribute:: test_fillna_copy_series
+
+
+   .. py:attribute:: test_fillna_length_mismatch
+
+
+   .. py:attribute:: test_combine_first
+
+
+   .. py:attribute:: test_container_shift
+
+
+   .. py:attribute:: test_shift_0_periods
+
+
+   .. py:attribute:: test_shift_non_empty_array
+
+
+   .. py:attribute:: test_shift_empty_array
+
+
+   .. py:attribute:: test_shift_zero_copies
+
+
+   .. py:attribute:: test_shift_fill_value
+
+
+   .. py:attribute:: test_not_hashable
+
+
+   .. py:attribute:: test_hash_pandas_object_works
+
+
+   .. py:attribute:: test_where_series
+
+
+   .. py:attribute:: test_repeat
+
+
+   .. py:attribute:: test_repeat_raises
+
+
+   .. py:method:: test_value_counts(data_for_grouping, dropna)
+
+
+   .. py:method:: test_describe(data_for_grouping)
+
+
+.. py:class:: TestMissing
+
+   Bases: :py:obj:`pandas.tests.extension.base.BaseMissingTests`
+
+
+.. py:class:: TestArithmeticOps
+
+   Bases: :py:obj:`pandas.tests.extension.base.BaseArithmeticOpsTests`
+
+
+   Various Series and DataFrame arithmetic ops methods.
+
+   Subclasses supporting various ops should set the class variables
+   to indicate that they support ops of that kind
+
+   * series_scalar_exc = TypeError
+   * frame_scalar_exc = TypeError
+   * series_array_exc = TypeError
+   * divmod_exc = TypeError
+
+
+   .. py:attribute:: series_scalar_exc
+      :value: None
+
+
+
+   .. py:attribute:: frame_scalar_exc
+      :value: None
+
+
+
+   .. py:attribute:: series_array_exc
+      :value: None
+
+
+
+   .. py:attribute:: divmod_exc
+
+
+   .. py:method:: test_error(data, all_arithmetic_operators)
+
+      This is supposed to be overridden when things work. See https://github.com/pandas-dev/pandas/pull/39386
+
+
+
+.. py:class:: TestComparisonOps
+
+   Bases: :py:obj:`pandas.tests.extension.base.BaseComparisonOpsTests`
+
+
+   Various Series and DataFrame comparison ops methods.
+
+
+   .. py:method:: _compare_other(ser: pandas.Series, data, op, other)
+
+
+   .. py:method:: test_compare_scalar(data, comparison_op)
+
+
+   .. py:method:: test_compare_array(data, comparison_op)
+
+
+.. py:class:: TestLogicalOps
+
+   Bases: :py:obj:`pandas.tests.extension.base.ops.BaseOpsUtil`
+
+
+   Various Series and DataFrame logical ops methods.
+
+
+   .. py:method:: _compare_other(ser: pandas.Series, data, op, other)
+
+
+   .. py:method:: test_logical_scalar(data, comparison_op)
+
+
+   .. py:method:: test_logical_array(data, comparison_op)
+
+
+.. py:class:: TestUnaryOps
+
+   Bases: :py:obj:`pandas.tests.extension.base.BaseUnaryOpsTests`
+
+
+.. py:class:: TestPrinting
+
+   Bases: :py:obj:`pandas.tests.extension.base.BasePrintingTests`
+
+
+   Tests checking the formatting of your EA when printed.
+
+
+.. py:function:: check_reduce(self, s, op_name, skipna=None)
+
+.. py:class:: TestReduce
+
+   Bases: :py:obj:`pandas.tests.extension.base.BaseReduceTests`
+
+
+   Reduction specific tests. Generally these only
+   make sense for numeric/boolean operations.
+
+
+   .. py:method:: _supports_reduction(series, op_name)
+
+
+   .. py:method:: check_reduce(s, op_name, skipna)
+
+
+   .. py:method:: _get_expected_reduction_dtype(arr, op_name: str, skipna: bool)
+
+
+.. py:class:: TestReshaping
+
+   Bases: :py:obj:`pandas.tests.extension.base.BaseReshapingTests`
+
+
+   Tests for reshaping and concatenation.
+
+
+   .. py:method:: test_merge_on_extension_array(data)
+
+      "Do not implement because merge behavior not well defined
+
+
+
+   .. py:method:: test_merge_on_extension_array_duplicates(data)
+
+      "Do not implement because merge behavior not well defined
+
+
+
+.. py:class:: TestSetitem
+
+   Bases: :py:obj:`pandas.tests.extension.base.BaseSetitemTests`
+
+
+   .. py:method:: test_setitem_invalid()
+
+
+.. py:class:: TestAsType
+
+   Bases: :py:obj:`PANDAS_BASE_EXTENSION_TESTS`
+
+
+   This is not part of the pandas test suite, but needed to test the astype functionality.
+
+
+   .. py:method:: _check_astype(data, out, dtype, equality=True)
+
+
+   .. py:method:: test_as_object(data)
+
+
+   .. py:method:: test_as_ts_float(data)
+
+
+   .. py:method:: test_as_ts_object(data)
+
+
+   .. py:method:: test_as_string(data)
+
+
