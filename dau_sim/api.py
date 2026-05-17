@@ -5,7 +5,6 @@ from datetime import timedelta
 
 from dau_sim.compiler import compile_module
 from dau_sim.compiler.compile import CompiledModule
-from dau_sim.frontends import from_amaranth, parse_sv, parse_sv_file
 from dau_sim.ir.module import Module
 
 
@@ -53,16 +52,22 @@ class Simulator:
 
     @classmethod
     def from_sv(cls, source: str, *, top: str | None = None, four_state: bool = False) -> "Simulator":
+        from dau_sim.frontends import parse_sv
+
         module = parse_sv(source, top=top)
         return cls.from_module(module, four_state=four_state)
 
     @classmethod
     def from_sv_file(cls, path: str, *, top: str | None = None, four_state: bool = False) -> "Simulator":
+        from dau_sim.frontends import parse_sv_file
+
         module = parse_sv_file(path, top=top)
         return cls.from_module(module, four_state=four_state)
 
     @classmethod
     def from_amaranth(cls, design, *, four_state: bool = False) -> "Simulator":
+        from dau_sim.frontends import from_amaranth
+
         module = from_amaranth(design)
         return cls.from_module(module, four_state=four_state)
 
