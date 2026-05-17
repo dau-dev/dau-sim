@@ -25,56 +25,59 @@ from dau_sim.ir.module import (
 from dau_sim.ir.stmt import Assign, IfElse, Stmt
 from dau_sim.ir.types import EdgePolarity, PortDirection, ResetStyle, Shape
 
+_ps_ast = getattr(ps, "ast", ps)
+_ps_syntax = getattr(ps, "syntax", ps)
+
 __all__ = (
     "parse_sv",
     "parse_sv_file",
     "from_dau_build",
 )
 
-_BINOP_MAP: dict[ps.BinaryOperator, BinaryOp] = {
-    ps.BinaryOperator.Add: BinaryOp.ADD,
-    ps.BinaryOperator.Subtract: BinaryOp.SUB,
-    ps.BinaryOperator.Multiply: BinaryOp.MUL,
-    ps.BinaryOperator.Divide: BinaryOp.DIV,
-    ps.BinaryOperator.Mod: BinaryOp.MOD,
-    ps.BinaryOperator.BinaryAnd: BinaryOp.AND,
-    ps.BinaryOperator.BinaryOr: BinaryOp.OR,
-    ps.BinaryOperator.BinaryXor: BinaryOp.XOR,
-    ps.BinaryOperator.LogicalShiftLeft: BinaryOp.SHL,
-    ps.BinaryOperator.LogicalShiftRight: BinaryOp.SHR,
-    ps.BinaryOperator.ArithmeticShiftLeft: BinaryOp.SHL,
-    ps.BinaryOperator.ArithmeticShiftRight: BinaryOp.SHR,
-    ps.BinaryOperator.Equality: BinaryOp.EQ,
-    ps.BinaryOperator.Inequality: BinaryOp.NE,
-    ps.BinaryOperator.CaseEquality: BinaryOp.EQ,
-    ps.BinaryOperator.CaseInequality: BinaryOp.NE,
-    ps.BinaryOperator.LessThan: BinaryOp.LT,
-    ps.BinaryOperator.LessThanEqual: BinaryOp.LE,
-    ps.BinaryOperator.GreaterThan: BinaryOp.GT,
-    ps.BinaryOperator.GreaterThanEqual: BinaryOp.GE,
-    ps.BinaryOperator.LogicalAnd: BinaryOp.LOGIC_AND,
-    ps.BinaryOperator.LogicalOr: BinaryOp.LOGIC_OR,
+_BINOP_MAP: dict[_ps_ast.BinaryOperator, BinaryOp] = {
+    _ps_ast.BinaryOperator.Add: BinaryOp.ADD,
+    _ps_ast.BinaryOperator.Subtract: BinaryOp.SUB,
+    _ps_ast.BinaryOperator.Multiply: BinaryOp.MUL,
+    _ps_ast.BinaryOperator.Divide: BinaryOp.DIV,
+    _ps_ast.BinaryOperator.Mod: BinaryOp.MOD,
+    _ps_ast.BinaryOperator.BinaryAnd: BinaryOp.AND,
+    _ps_ast.BinaryOperator.BinaryOr: BinaryOp.OR,
+    _ps_ast.BinaryOperator.BinaryXor: BinaryOp.XOR,
+    _ps_ast.BinaryOperator.LogicalShiftLeft: BinaryOp.SHL,
+    _ps_ast.BinaryOperator.LogicalShiftRight: BinaryOp.SHR,
+    _ps_ast.BinaryOperator.ArithmeticShiftLeft: BinaryOp.SHL,
+    _ps_ast.BinaryOperator.ArithmeticShiftRight: BinaryOp.SHR,
+    _ps_ast.BinaryOperator.Equality: BinaryOp.EQ,
+    _ps_ast.BinaryOperator.Inequality: BinaryOp.NE,
+    _ps_ast.BinaryOperator.CaseEquality: BinaryOp.EQ,
+    _ps_ast.BinaryOperator.CaseInequality: BinaryOp.NE,
+    _ps_ast.BinaryOperator.LessThan: BinaryOp.LT,
+    _ps_ast.BinaryOperator.LessThanEqual: BinaryOp.LE,
+    _ps_ast.BinaryOperator.GreaterThan: BinaryOp.GT,
+    _ps_ast.BinaryOperator.GreaterThanEqual: BinaryOp.GE,
+    _ps_ast.BinaryOperator.LogicalAnd: BinaryOp.LOGIC_AND,
+    _ps_ast.BinaryOperator.LogicalOr: BinaryOp.LOGIC_OR,
 }
 
-_UNOP_MAP: dict[ps.UnaryOperator, UnaryOp] = {
-    ps.UnaryOperator.BitwiseNot: UnaryOp.NOT,
-    ps.UnaryOperator.Minus: UnaryOp.NEG,
-    ps.UnaryOperator.Plus: None,  # unary + is identity
-    ps.UnaryOperator.LogicalNot: UnaryOp.BOOL,  # !x == ~(|x)
-    ps.UnaryOperator.BitwiseAnd: UnaryOp.RED_AND,
-    ps.UnaryOperator.BitwiseNand: UnaryOp.RED_AND,  # post-negate
-    ps.UnaryOperator.BitwiseOr: UnaryOp.RED_OR,
-    ps.UnaryOperator.BitwiseNor: UnaryOp.RED_OR,  # post-negate
-    ps.UnaryOperator.BitwiseXor: UnaryOp.RED_XOR,
-    ps.UnaryOperator.BitwiseXnor: UnaryOp.RED_XOR,  # post-negate
+_UNOP_MAP: dict[_ps_ast.UnaryOperator, UnaryOp] = {
+    _ps_ast.UnaryOperator.BitwiseNot: UnaryOp.NOT,
+    _ps_ast.UnaryOperator.Minus: UnaryOp.NEG,
+    _ps_ast.UnaryOperator.Plus: None,  # unary + is identity
+    _ps_ast.UnaryOperator.LogicalNot: UnaryOp.BOOL,  # !x == ~(|x)
+    _ps_ast.UnaryOperator.BitwiseAnd: UnaryOp.RED_AND,
+    _ps_ast.UnaryOperator.BitwiseNand: UnaryOp.RED_AND,  # post-negate
+    _ps_ast.UnaryOperator.BitwiseOr: UnaryOp.RED_OR,
+    _ps_ast.UnaryOperator.BitwiseNor: UnaryOp.RED_OR,  # post-negate
+    _ps_ast.UnaryOperator.BitwiseXor: UnaryOp.RED_XOR,
+    _ps_ast.UnaryOperator.BitwiseXnor: UnaryOp.RED_XOR,  # post-negate
 }
 
 # Operators that need a post-inversion after the reduction
-_UNOP_NEGATE: set[ps.UnaryOperator] = {
-    ps.UnaryOperator.LogicalNot,
-    ps.UnaryOperator.BitwiseNand,
-    ps.UnaryOperator.BitwiseNor,
-    ps.UnaryOperator.BitwiseXnor,
+_UNOP_NEGATE: set[_ps_ast.UnaryOperator] = {
+    _ps_ast.UnaryOperator.LogicalNot,
+    _ps_ast.UnaryOperator.BitwiseNand,
+    _ps_ast.UnaryOperator.BitwiseNor,
+    _ps_ast.UnaryOperator.BitwiseXnor,
 }
 
 
@@ -89,7 +92,7 @@ def _lower_expr(expr) -> Expr:
     kind = expr.kind
 
     # Unwrap implicit conversions (sign/width extension)
-    if kind == ps.ExpressionKind.Conversion:
+    if kind == _ps_ast.ExpressionKind.Conversion:
         inner = _lower_expr(expr.operand)
         target_shape = _shape_of(expr)
         # If shapes differ, the IR evaluator handles width via mask_value;
@@ -99,13 +102,13 @@ def _lower_expr(expr) -> Expr:
         # Re-wrap with target shape — the evaluator's mask_value handles truncation/extension
         return _rewrap(inner, target_shape)
 
-    if kind == ps.ExpressionKind.IntegerLiteral:
+    if kind == _ps_ast.ExpressionKind.IntegerLiteral:
         return Const(shape=_shape_of(expr), value=int(expr.value))
 
-    if kind == ps.ExpressionKind.NamedValue:
+    if kind == _ps_ast.ExpressionKind.NamedValue:
         return SignalRef(shape=_shape_of(expr), name=expr.symbol.name)
 
-    if kind == ps.ExpressionKind.BinaryOp:
+    if kind == _ps_ast.ExpressionKind.BinaryOp:
         op = _BINOP_MAP.get(expr.op)
         if op is None:
             raise NotImplementedError(f"Unsupported binary operator: {expr.op}")
@@ -113,25 +116,25 @@ def _lower_expr(expr) -> Expr:
         right = _lower_expr(expr.right)
         return Binary(shape=_shape_of(expr), op=op, left=left, right=right)
 
-    if kind == ps.ExpressionKind.UnaryOp:
+    if kind == _ps_ast.ExpressionKind.UnaryOp:
         mapped = _UNOP_MAP.get(expr.op)
-        if mapped is None and expr.op != ps.UnaryOperator.Plus:
+        if mapped is None and expr.op != _ps_ast.UnaryOperator.Plus:
             raise NotImplementedError(f"Unsupported unary operator: {expr.op}")
         operand = _lower_expr(expr.operand)
-        if expr.op == ps.UnaryOperator.Plus:
+        if expr.op == _ps_ast.UnaryOperator.Plus:
             return operand  # identity
         result = Unary(shape=_shape_of(expr), op=mapped, operand=operand)
         if expr.op in _UNOP_NEGATE:
             # LogicalNot: !x means ~(|x) → BOOL then NOT
             # NAND/NOR/XNOR: reduction then NOT
-            if expr.op == ps.UnaryOperator.LogicalNot:
+            if expr.op == _ps_ast.UnaryOperator.LogicalNot:
                 # BOOL already gives 1-bit result; we need to invert it
                 return Unary(shape=Shape(1, False), op=UnaryOp.NOT, operand=result)
             else:
                 return Unary(shape=Shape(1, False), op=UnaryOp.NOT, operand=result)
         return result
 
-    if kind == ps.ExpressionKind.ConditionalOp:
+    if kind == _ps_ast.ExpressionKind.ConditionalOp:
         # Ternary: sel ? left : right
         cond_expr = expr.conditions[0].expr
         sel = _lower_expr(cond_expr)
@@ -139,11 +142,11 @@ def _lower_expr(expr) -> Expr:
         if_false = _lower_expr(expr.right)
         return Mux(shape=_shape_of(expr), sel=sel, if_true=if_true, if_false=if_false)
 
-    if kind == ps.ExpressionKind.Concatenation:
+    if kind == _ps_ast.ExpressionKind.Concatenation:
         parts = tuple(_lower_expr(op) for op in expr.operands)
         return Concat(shape=_shape_of(expr), parts=parts)
 
-    if kind == ps.ExpressionKind.RangeSelect:
+    if kind == _ps_ast.ExpressionKind.RangeSelect:
         value = _lower_expr(expr.value)
         high_bit = int(expr.left.value)  # SV: a[high:low]
         low_bit = int(expr.right.value)
@@ -154,7 +157,7 @@ def _lower_expr(expr) -> Expr:
             high=high_bit + 1,  # IR uses exclusive upper bound
         )
 
-    if kind == ps.ExpressionKind.ElementSelect:
+    if kind == _ps_ast.ExpressionKind.ElementSelect:
         value = _lower_expr(expr.value)
         idx = _lower_expr(expr.selector)
         # Single-bit select: a[i] → Slice(low=i, high=i+1)
@@ -167,14 +170,14 @@ def _lower_expr(expr) -> Expr:
             )
         raise NotImplementedError("Dynamic bit select not yet supported")
 
-    if kind == ps.ExpressionKind.Replication:
+    if kind == _ps_ast.ExpressionKind.Replication:
         # {N{expr}} — replicate expr N times → Concat
         inner = _lower_expr(expr.operands[0]) if hasattr(expr, "operands") else _lower_expr(expr.concat)
         count = _shape_of(expr).width // inner.shape.width
         parts = tuple(inner for _ in range(count))
         return Concat(shape=_shape_of(expr), parts=parts)
 
-    if kind == ps.ExpressionKind.Assignment:
+    if kind == _ps_ast.ExpressionKind.Assignment:
         # This shouldn't appear as an expression we need to lower to Expr;
         # assignments are handled at the statement level.
         raise ValueError("Assignment expression encountered in expression context")
@@ -206,26 +209,26 @@ def _flatten_stmts(stmt) -> list[Stmt]:
     """Recursively lower a pyslang statement AST node to a list of IR Stmts."""
     kind = stmt.kind
 
-    if kind == ps.StatementKind.ExpressionStatement:
+    if kind == _ps_ast.StatementKind.ExpressionStatement:
         return _lower_assign_stmt(stmt.expr)
 
-    if kind == ps.StatementKind.Block:
+    if kind == _ps_ast.StatementKind.Block:
         body = stmt.body
         result: list[Stmt] = []
-        if body.kind == ps.StatementKind.List:
+        if body.kind == _ps_ast.StatementKind.List:
             for s in body.list:
                 result.extend(_flatten_stmts(s))
         else:
             result.extend(_flatten_stmts(body))
         return result
 
-    if kind == ps.StatementKind.List:
+    if kind == _ps_ast.StatementKind.List:
         result = []
         for s in stmt.list:
             result.extend(_flatten_stmts(s))
         return result
 
-    if kind == ps.StatementKind.Conditional:
+    if kind == _ps_ast.StatementKind.Conditional:
         cond_expr = _lower_expr(stmt.conditions[0].expr)
         then_body = tuple(_flatten_stmts(stmt.ifTrue))
         else_body = tuple(_flatten_stmts(stmt.ifFalse)) if stmt.ifFalse else ()
@@ -239,15 +242,15 @@ def _lower_assign_stmt(expr) -> list[Stmt]:
 
     Handles simple named targets and LHS concatenation (e.g. {carry, sum} = ...).
     """
-    if expr.kind != ps.ExpressionKind.Assignment:
+    if expr.kind != _ps_ast.ExpressionKind.Assignment:
         raise NotImplementedError(f"Expected assignment expression, got {expr.kind}")
     lhs = expr.left
     rhs = _lower_expr(expr.right)
 
-    if lhs.kind == ps.ExpressionKind.NamedValue:
+    if lhs.kind == _ps_ast.ExpressionKind.NamedValue:
         return [Assign(target=lhs.symbol.name, value=rhs)]
 
-    if lhs.kind == ps.ExpressionKind.Concatenation:
+    if lhs.kind == _ps_ast.ExpressionKind.Concatenation:
         # Split {a, b, c} = rhs into:
         #   a = rhs[total-1 : total-a.width]
         #   b = rhs[total-a.width-1 : total-a.width-b.width]
@@ -256,7 +259,7 @@ def _lower_assign_stmt(expr) -> list[Stmt]:
         total_width = lhs.type.bitWidth
         offset = total_width
         for operand in lhs.operands:
-            if operand.kind != ps.ExpressionKind.NamedValue:
+            if operand.kind != _ps_ast.ExpressionKind.NamedValue:
                 raise NotImplementedError(f"Unsupported LHS concat operand: {operand.kind}")
             w = operand.type.bitWidth
             offset -= w
@@ -298,9 +301,9 @@ def _extract_timing(timed_stmt) -> tuple[list[tuple[str, EdgePolarity]], object]
 
 
 def _map_edge(edge_kind) -> EdgePolarity:
-    if edge_kind == ps.EdgeKind.PosEdge:
+    if edge_kind == _ps_ast.EdgeKind.PosEdge:
         return EdgePolarity.POSEDGE
-    elif edge_kind == ps.EdgeKind.NegEdge:
+    elif edge_kind == _ps_ast.EdgeKind.NegEdge:
         return EdgePolarity.NEGEDGE
     else:
         return EdgePolarity.BOTH
@@ -349,7 +352,7 @@ def _lower_module_instance(inst) -> Module:
     for child in inst.body:
         sym_kind = child.kind
 
-        if sym_kind == ps.SymbolKind.Port:
+        if sym_kind == _ps_ast.SymbolKind.Port:
             sig_name = child.name
             shape = Shape(width=child.type.bitWidth, signed=child.type.isSigned)
             direction = _map_direction(child.direction)
@@ -357,37 +360,37 @@ def _lower_module_instance(inst) -> Module:
             ports.append(Port(signal=sig, direction=direction))
             seen_signals.add(sig_name)
 
-        elif sym_kind == ps.SymbolKind.Net:
+        elif sym_kind == _ps_ast.SymbolKind.Net:
             sig_name = child.name
             if sig_name not in seen_signals:
                 shape = Shape(width=child.type.bitWidth, signed=child.type.isSigned)
                 signals.append(Signal(name=sig_name, shape=shape))
                 seen_signals.add(sig_name)
 
-        elif sym_kind == ps.SymbolKind.Variable:
+        elif sym_kind == _ps_ast.SymbolKind.Variable:
             sig_name = child.name
             if sig_name not in seen_signals:
                 shape = Shape(width=child.type.bitWidth, signed=child.type.isSigned)
                 signals.append(Signal(name=sig_name, shape=shape))
                 seen_signals.add(sig_name)
 
-        elif sym_kind == ps.SymbolKind.ContinuousAssign:
+        elif sym_kind == _ps_ast.SymbolKind.ContinuousAssign:
             # assign y = expr;
             assign_expr = child.assignment
             stmts = _lower_assign_stmt(assign_expr)
             comb_blocks.append(CombBlock(stmts=tuple(stmts)))
 
-        elif sym_kind == ps.SymbolKind.ProceduralBlock:
+        elif sym_kind == _ps_ast.SymbolKind.ProceduralBlock:
             pk = child.procedureKind
 
-            if pk == ps.ProceduralBlockKind.AlwaysComb:
+            if pk == _ps_ast.ProceduralBlockKind.AlwaysComb:
                 stmts = _flatten_stmts(child.body)
                 comb_blocks.append(CombBlock(stmts=tuple(stmts)))
 
-            elif pk in (ps.ProceduralBlockKind.AlwaysFF, ps.ProceduralBlockKind.Always):
+            elif pk in (_ps_ast.ProceduralBlockKind.AlwaysFF, _ps_ast.ProceduralBlockKind.Always):
                 body = child.body
 
-                if body.kind == ps.StatementKind.Timed:
+                if body.kind == _ps_ast.StatementKind.Timed:
                     events, inner_stmt = _extract_timing(body)
                     stmts = _flatten_stmts(inner_stmt)
 
@@ -429,11 +432,11 @@ def _lower_module_instance(inst) -> Module:
 
 
 def _map_direction(direction) -> PortDirection:
-    if direction == ps.ArgumentDirection.In:
+    if direction == _ps_ast.ArgumentDirection.In:
         return PortDirection.INPUT
-    elif direction == ps.ArgumentDirection.Out:
+    elif direction == _ps_ast.ArgumentDirection.Out:
         return PortDirection.OUTPUT
-    elif direction == ps.ArgumentDirection.InOut:
+    elif direction == _ps_ast.ArgumentDirection.InOut:
         return PortDirection.INOUT
     raise ValueError(f"Unsupported port direction: {direction}")
 
@@ -460,8 +463,8 @@ def parse_sv(source: str, *, top: str | None = None) -> Module:
         If the source has compilation errors or the requested top module
         is not found.
     """
-    tree = ps.SyntaxTree.fromText(source)
-    comp = ps.Compilation()
+    tree = _ps_syntax.SyntaxTree.fromText(source)
+    comp = _ps_ast.Compilation()
     comp.addSyntaxTree(tree)
 
     # Check for compilation errors
