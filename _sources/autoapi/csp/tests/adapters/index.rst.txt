@@ -13,6 +13,7 @@ Submodules
    /autoapi/csp/tests/adapters/conftest/index
    /autoapi/csp/tests/adapters/kafka_utils/index
    /autoapi/csp/tests/adapters/test_arrow/index
+   /autoapi/csp/tests/adapters/test_arrow_record_batches/index
    /autoapi/csp/tests/adapters/test_csv/index
    /autoapi/csp/tests/adapters/test_db/index
    /autoapi/csp/tests/adapters/test_kafka/index

@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
-        <title>csp.adapters.arrow - dau-sim v0.15.0</title>
+        <title>csp.adapters.arrow - dau-sim v0.16.0</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
@@ -166,7 +166,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.15.0</code></div></a>
+      <a href="../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.16.0</code></div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -187,7 +187,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.15.0</code></span>
+  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.16.0</code></span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -227,7 +227,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for csp.adapters.arrow</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TypeVar</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyarrow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pa</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyarrow.parquet</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pq</span>
@@ -235,16 +235,21 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">csp</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">csp.impl.types.tstype</span><span class="w"> </span><span class="kn">import</span> <span class="n">ts</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">csp.impl.types.typing_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">CspTypingUtils</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">csp.impl.wiring</span><span class="w"> </span><span class="kn">import</span> <span class="n">input_adapter_def</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">csp.lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">_arrowadapterimpl</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;CRecordBatchPullInputAdapter&quot;</span><span class="p">,</span>
     <span class="s2">&quot;RecordBatchPullInputAdapter&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;record_batches_to_struct&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;struct_to_record_batches&quot;</span><span class="p">,</span>
     <span class="s2">&quot;write_record_batches&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="n">_PYARROW_HAS_CONCAT_BATCHES</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">pa</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;19.0.0&quot;</span><span class="p">)</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
 
 
 <span class="n">CRecordBatchPullInputAdapter</span> <span class="o">=</span> <span class="n">input_adapter_def</span><span class="p">(</span>
@@ -381,6 +386,176 @@
                 <span class="n">s_prev_batch</span> <span class="o">+=</span> <span class="p">[</span><span class="n">batch</span><span class="p">]</span>
                 <span class="n">s_prev_batch_size</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span></div>
 
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_extract_numpy_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">field_map</span><span class="p">,</span> <span class="n">numpy_dimensions_column_map</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Categorize struct fields into scalar and numpy fields.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cls: csp.Struct type</span>
+<span class="sd">        field_map: Resolved mapping of struct field name -&gt; arrow column name (must not be None).</span>
+<span class="sd">        numpy_dimensions_column_map: Mapping of arrow column name -&gt; dimensions column name.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Tuple of (scalar_fields, numpy_fields, numpy_dimension_names, numpy_element_types) where:</span>
+<span class="sd">        - scalar_fields: list of (struct_field_name, arrow_col_name) tuples</span>
+<span class="sd">        - numpy_fields: dict {arrow_col_name: struct_field_name}</span>
+<span class="sd">        - numpy_dimension_names: dict {arrow_col_name: dim_col_name}</span>
+<span class="sd">        - numpy_element_types: dict {struct_field_name: python_type}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">csp.adapters.output_adapters.parquet</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_array_shape_column_name</span>
+
+    <span class="n">numpy_dimensions_column_map</span> <span class="o">=</span> <span class="n">numpy_dimensions_column_map</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="n">meta_typed</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span><span class="n">typed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">scalar_fields</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">numpy_fields</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">numpy_element_types</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">numpy_dimension_names</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">struct_field_name</span><span class="p">,</span> <span class="n">arrow_col_name</span> <span class="ow">in</span> <span class="n">field_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">field_typ</span> <span class="o">=</span> <span class="n">meta_typed</span><span class="p">[</span><span class="n">struct_field_name</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">CspTypingUtils</span><span class="o">.</span><span class="n">is_numpy_array_type</span><span class="p">(</span><span class="n">field_typ</span><span class="p">):</span>
+            <span class="n">numpy_fields</span><span class="p">[</span><span class="n">arrow_col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">struct_field_name</span>
+            <span class="n">numpy_element_types</span><span class="p">[</span><span class="n">struct_field_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">field_typ</span><span class="o">.</span><span class="n">__args__</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">CspTypingUtils</span><span class="o">.</span><span class="n">is_numpy_nd_array_type</span><span class="p">(</span><span class="n">field_typ</span><span class="p">):</span>
+                <span class="n">dim_col_name</span> <span class="o">=</span> <span class="n">resolve_array_shape_column_name</span><span class="p">(</span>
+                    <span class="n">arrow_col_name</span><span class="p">,</span> <span class="n">numpy_dimensions_column_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">arrow_col_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">numpy_dimension_names</span><span class="p">[</span><span class="n">arrow_col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">dim_col_name</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scalar_fields</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">struct_field_name</span><span class="p">,</span> <span class="n">arrow_col_name</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">scalar_fields</span><span class="p">,</span> <span class="n">numpy_fields</span><span class="p">,</span> <span class="n">numpy_dimension_names</span><span class="p">,</span> <span class="n">numpy_element_types</span>
+
+
+<span class="nd">@csp</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="n">cppimpl</span><span class="o">=</span><span class="n">_arrowadapterimpl</span><span class="o">.</span><span class="n">record_batches_to_struct</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_record_batches_to_struct</span><span class="p">(</span>
+    <span class="n">schema_ptr</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span>
+    <span class="bp">cls</span><span class="p">:</span> <span class="s2">&quot;T&quot;</span><span class="p">,</span>
+    <span class="n">properties</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="nb">object</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ts</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">]]:</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;C++ implementation only&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="record_batches_to_struct">
+<a class="viewcode-back" href="../../../autoapi/csp/adapters/arrow/index.html#csp.adapters.arrow.record_batches_to_struct">[docs]</a>
+<span class="nd">@csp</span><span class="o">.</span><span class="n">graph</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">record_batches_to_struct</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">pa</span><span class="o">.</span><span class="n">RecordBatch</span><span class="p">]],</span>
+    <span class="bp">cls</span><span class="p">:</span> <span class="s2">&quot;T&quot;</span><span class="p">,</span>
+    <span class="n">schema</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">Schema</span><span class="p">,</span>
+    <span class="n">field_map</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">numpy_dimensions_column_map</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ts</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert ts[List[pa.RecordBatch]] into ts[List[T]] where T is a csp.Struct type.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data: Timeseries of lists of Arrow RecordBatches</span>
+<span class="sd">        cls: Target csp.Struct type</span>
+<span class="sd">        schema: Arrow schema of the record batches (required).</span>
+<span class="sd">        field_map: Optional mapping of struct field name -&gt; arrow column name.</span>
+<span class="sd">            If None, defaults to identity naming for all fields.</span>
+<span class="sd">        numpy_dimensions_column_map: Optional mapping of arrow column name -&gt; dimensions column name</span>
+<span class="sd">            for NumpyNDArray fields. If not provided for an NDArray field, defaults to</span>
+<span class="sd">            ``&lt;column_name&gt;_csp_dimensions``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Timeseries of lists of struct instances</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">field_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">field_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span><span class="n">typed</span><span class="o">=</span><span class="kc">True</span><span class="p">)}</span>
+
+    <span class="n">scalar_fields</span><span class="p">,</span> <span class="n">numpy_fields</span><span class="p">,</span> <span class="n">numpy_dimension_names</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_extract_numpy_metadata</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">field_map</span><span class="p">,</span> <span class="n">numpy_dimensions_column_map</span>
+    <span class="p">)</span>
+    <span class="n">scalar_field_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">arrow_col</span><span class="p">:</span> <span class="n">struct_field</span> <span class="k">for</span> <span class="n">struct_field</span><span class="p">,</span> <span class="n">arrow_col</span> <span class="ow">in</span> <span class="n">scalar_fields</span><span class="p">}</span>
+
+    <span class="c1"># Build properties dict for the C++ node</span>
+    <span class="n">properties</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;field_map&quot;</span><span class="p">:</span> <span class="n">scalar_field_map</span><span class="p">,</span>
+        <span class="s2">&quot;numpy_fields&quot;</span><span class="p">:</span> <span class="n">numpy_fields</span><span class="p">,</span>
+        <span class="s2">&quot;numpy_dimension_names&quot;</span><span class="p">:</span> <span class="n">numpy_dimension_names</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Export schema to PyCapsule</span>
+    <span class="n">schema_capsule</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">__arrow_c_schema__</span><span class="p">()</span>
+
+    <span class="c1"># Convert RecordBatches to PyCapsule tuples for C++ consumption</span>
+    <span class="n">c_data</span> <span class="o">=</span> <span class="n">csp</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="n">data</span><span class="p">,</span>
+        <span class="k">lambda</span> <span class="n">batches</span><span class="p">:</span> <span class="p">[</span><span class="n">rb</span><span class="o">.</span><span class="n">__arrow_c_array__</span><span class="p">()</span> <span class="k">for</span> <span class="n">rb</span> <span class="ow">in</span> <span class="n">batches</span><span class="p">],</span>
+        <span class="nb">object</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_record_batches_to_struct</span><span class="p">(</span><span class="n">schema_capsule</span><span class="p">,</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">c_data</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@csp</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="n">cppimpl</span><span class="o">=</span><span class="n">_arrowadapterimpl</span><span class="o">.</span><span class="n">struct_to_record_batches</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_struct_to_record_batches</span><span class="p">(</span>
+    <span class="bp">cls</span><span class="p">:</span> <span class="s2">&quot;T&quot;</span><span class="p">,</span>
+    <span class="n">properties</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">]],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ts</span><span class="p">[</span><span class="nb">object</span><span class="p">]:</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;C++ implementation only&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="struct_to_record_batches">
+<a class="viewcode-back" href="../../../autoapi/csp/adapters/arrow/index.html#csp.adapters.arrow.struct_to_record_batches">[docs]</a>
+<span class="nd">@csp</span><span class="o">.</span><span class="n">graph</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">struct_to_record_batches</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">]],</span>
+    <span class="bp">cls</span><span class="p">:</span> <span class="s2">&quot;T&quot;</span><span class="p">,</span>
+    <span class="n">field_map</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">numpy_dimensions_column_map</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">max_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">65536</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ts</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">pa</span><span class="o">.</span><span class="n">RecordBatch</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert ts[List[T]] into ts[List[pa.RecordBatch]] where T is a csp.Struct type.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data: Timeseries of lists of struct instances</span>
+<span class="sd">        cls: Source csp.Struct type</span>
+<span class="sd">        field_map: Optional mapping of struct field name -&gt; arrow column name.</span>
+<span class="sd">            If None, defaults to identity naming for all fields.</span>
+<span class="sd">        numpy_dimensions_column_map: Optional mapping of arrow column name -&gt; dimensions column name</span>
+<span class="sd">            for NumpyNDArray fields. If not provided for an NDArray field, defaults to</span>
+<span class="sd">            ``&lt;column_name&gt;_csp_dimensions``.</span>
+<span class="sd">        max_batch_size: Maximum number of rows per output RecordBatch.</span>
+<span class="sd">            Defaults to 65536. Set to 0 to disable chunking.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Timeseries of lists of RecordBatch</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">field_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">field_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span><span class="n">typed</span><span class="o">=</span><span class="kc">True</span><span class="p">)}</span>
+
+    <span class="n">scalar_fields</span><span class="p">,</span> <span class="n">numpy_fields</span><span class="p">,</span> <span class="n">numpy_dimension_names</span><span class="p">,</span> <span class="n">numpy_element_types</span> <span class="o">=</span> <span class="n">_extract_numpy_metadata</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">field_map</span><span class="p">,</span> <span class="n">numpy_dimensions_column_map</span>
+    <span class="p">)</span>
+    <span class="n">scalar_field_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">struct_field</span><span class="p">:</span> <span class="n">arrow_col</span> <span class="k">for</span> <span class="n">struct_field</span><span class="p">,</span> <span class="n">arrow_col</span> <span class="ow">in</span> <span class="n">scalar_fields</span><span class="p">}</span>
+
+    <span class="c1"># Build properties dict for the C++ node</span>
+    <span class="n">properties</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;field_map&quot;</span><span class="p">:</span> <span class="n">scalar_field_map</span><span class="p">,</span>
+        <span class="s2">&quot;numpy_fields&quot;</span><span class="p">:</span> <span class="n">numpy_fields</span><span class="p">,</span>
+        <span class="s2">&quot;numpy_element_types&quot;</span><span class="p">:</span> <span class="n">numpy_element_types</span><span class="p">,</span>
+        <span class="s2">&quot;numpy_dimension_names&quot;</span><span class="p">:</span> <span class="n">numpy_dimension_names</span><span class="p">,</span>
+        <span class="s2">&quot;max_batch_size&quot;</span><span class="p">:</span> <span class="n">max_batch_size</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Call C++ node, then convert capsule tuples -&gt; RecordBatch</span>
+    <span class="n">c_data</span> <span class="o">=</span> <span class="n">_struct_to_record_batches</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">csp</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="n">c_data</span><span class="p">,</span>
+        <span class="k">lambda</span> <span class="n">c_tups</span><span class="p">:</span> <span class="p">[</span><span class="n">pa</span><span class="o">.</span><span class="n">record_batch</span><span class="p">(</span><span class="n">_RecordBatchCSource</span><span class="p">(</span><span class="n">c_tup</span><span class="p">))</span> <span class="k">for</span> <span class="n">c_tup</span> <span class="ow">in</span> <span class="n">c_tups</span><span class="p">],</span>
+        <span class="n">List</span><span class="p">[</span><span class="n">pa</span><span class="o">.</span><span class="n">RecordBatch</span><span class="p">],</span>
+    <span class="p">)</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -413,7 +588,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=ef97403f"></script>
+</div><script src="../../../_static/documentation_options.js?v=7de89ed4"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

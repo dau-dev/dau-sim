@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
-        <title>csp.adapters.arrow - dau-sim v0.15.0</title>
+        <title>csp.adapters.arrow - dau-sim v0.16.0</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
@@ -167,7 +167,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.15.0</code></div></a>
+      <a href="../../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.16.0</code></div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -188,7 +188,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
-  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.15.0</code></span>
+  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.16.0</code></span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -258,6 +258,12 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#csp.adapters.arrow.write_record_batches" title="csp.adapters.arrow.write_record_batches"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_record_batches</span></code></a>(where, batches, kwargs[, ...])</p></td>
 <td><p>Dump all the record batches to a parquet file</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.adapters.arrow.record_batches_to_struct" title="csp.adapters.arrow.record_batches_to_struct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">record_batches_to_struct</span></code></a>(...)</p></td>
+<td><p>Convert ts[List[pa.RecordBatch]] into ts[List[T]] where T is a csp.Struct type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.adapters.arrow.struct_to_record_batches" title="csp.adapters.arrow.struct_to_record_batches"><code class="xref py py-obj docutils literal notranslate"><span class="pre">struct_to_record_batches</span></code></a>(...)</p></td>
+<td><p>Convert ts[List[T]] into ts[List[pa.RecordBatch]] where T is a csp.Struct type.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -318,6 +324,53 @@
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.adapters.arrow.record_batches_to_struct">
+<span class="sig-prename descclassname"><span class="pre">csp.adapters.arrow.</span></span><span class="sig-name descname"><span class="pre">record_batches_to_struct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pyarrow.RecordBatch</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pyarrow.Schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../../impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsDtype.None" title="csp.impl.pandas_ext_type.TsDtype.None"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numpy_dimensions_column_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../../impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsDtype.None" title="csp.impl.pandas_ext_type.TsDtype.None"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/csp/adapters/arrow.html#record_batches_to_struct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.arrow.record_batches_to_struct" title="Link to this definition">¶</a></dt>
+<dd><p>Convert ts[List[pa.RecordBatch]] into ts[List[T]] where T is a csp.Struct type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – Timeseries of lists of Arrow RecordBatches</p></li>
+<li><p><strong>cls</strong> – Target csp.Struct type</p></li>
+<li><p><strong>schema</strong> – Arrow schema of the record batches (required).</p></li>
+<li><p><strong>field_map</strong> – Optional mapping of struct field name -&gt; arrow column name.
+If None, defaults to identity naming for all fields.</p></li>
+<li><p><strong>numpy_dimensions_column_map</strong> – Optional mapping of arrow column name -&gt; dimensions column name
+for NumpyNDArray fields. If not provided for an NDArray field, defaults to
+<code class="docutils literal notranslate"><span class="pre">&lt;column_name&gt;_csp_dimensions</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Timeseries of lists of struct instances</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.adapters.arrow.struct_to_record_batches">
+<span class="sig-prename descclassname"><span class="pre">csp.adapters.arrow.</span></span><span class="sig-name descname"><span class="pre">struct_to_record_batches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../../impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsDtype.None" title="csp.impl.pandas_ext_type.TsDtype.None"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numpy_dimensions_column_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../../impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsDtype.None" title="csp.impl.pandas_ext_type.TsDtype.None"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">65536</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pyarrow.RecordBatch</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/csp/adapters/arrow.html#struct_to_record_batches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.arrow.struct_to_record_batches" title="Link to this definition">¶</a></dt>
+<dd><p>Convert ts[List[T]] into ts[List[pa.RecordBatch]] where T is a csp.Struct type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – Timeseries of lists of struct instances</p></li>
+<li><p><strong>cls</strong> – Source csp.Struct type</p></li>
+<li><p><strong>field_map</strong> – Optional mapping of struct field name -&gt; arrow column name.
+If None, defaults to identity naming for all fields.</p></li>
+<li><p><strong>numpy_dimensions_column_map</strong> – Optional mapping of arrow column name -&gt; dimensions column name
+for NumpyNDArray fields. If not provided for an NDArray field, defaults to
+<code class="docutils literal notranslate"><span class="pre">&lt;column_name&gt;_csp_dimensions</span></code>.</p></li>
+<li><p><strong>max_batch_size</strong> – Maximum number of rows per output RecordBatch.
+Defaults to 65536. Set to 0 to disable chunking.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Timeseries of lists of RecordBatch</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 
@@ -365,6 +418,8 @@
 <li><a class="reference internal" href="#csp.adapters.arrow.CRecordBatchPullInputAdapter"><code class="docutils literal notranslate"><span class="pre">CRecordBatchPullInputAdapter</span></code></a></li>
 <li><a class="reference internal" href="#csp.adapters.arrow.RecordBatchPullInputAdapter"><code class="docutils literal notranslate"><span class="pre">RecordBatchPullInputAdapter()</span></code></a></li>
 <li><a class="reference internal" href="#csp.adapters.arrow.write_record_batches"><code class="docutils literal notranslate"><span class="pre">write_record_batches()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.arrow.record_batches_to_struct"><code class="docutils literal notranslate"><span class="pre">record_batches_to_struct()</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.arrow.struct_to_record_batches"><code class="docutils literal notranslate"><span class="pre">struct_to_record_batches()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -378,7 +433,7 @@
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=ef97403f"></script>
+</div><script src="../../../../_static/documentation_options.js?v=7de89ed4"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>

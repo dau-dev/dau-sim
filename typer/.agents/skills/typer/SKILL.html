@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
-        <title>Typer - dau-sim v0.15.0</title>
+        <title>Typer - dau-sim v0.16.0</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
@@ -167,7 +167,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.15.0</code></div></a>
+      <a href="../../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.16.0</code></div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -188,7 +188,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
-  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.15.0</code></span>
+  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.16.0</code></span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -324,7 +324,7 @@ python<span class="w"> </span>main.py<span class="w"> </span>Rick
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Hello </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Similarly, the old style could use ellipsis (…) to explicitely mark an argument as required.</p>
+<p>Similarly, the old style could use ellipsis (…) to explicitly mark an argument as required.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># DO NOT DO THIS: old style. Use Annotated without a default value instead.</span>
 
 <span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
@@ -336,7 +336,26 @@ python<span class="w"> </span>main.py<span class="w"> </span>Rick
 </section>
 <section id="cli-options">
 <h2>CLI Options<a class="headerlink" href="#cli-options" title="Link to this heading">¶</a></h2>
-<p>CLI options are declared in a similar fashion as arguments, but will be called on the CLI with a single dash (single letter) or 2 dashes (full name):</p>
+<p>CLI options are declared in a similar fashion as arguments, but will be called on the CLI with a single dash (single letter) or 2 dashes (full name).</p>
+<p>The CLI option name is automatically generated from the variable name, so <code class="docutils literal notranslate"><span class="pre">user_name</span></code> becomes <code class="docutils literal notranslate"><span class="pre">--user-name</span></code> automatically:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">typer</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Typer</span><span class="p">()</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">user_name</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">()]):</span>
+    <span class="c1"># On the CLI, the required user name can be specified with --user-name</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Hello </span><span class="si">{</span><span class="n">user_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">app</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If you want to specify a different name, or want to add a short version, declare them in the <code class="docutils literal notranslate"><span class="pre">typer.Option</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">typer</span>
@@ -458,7 +477,7 @@ python<span class="w"> </span>main.py<span class="w"> </span>--name<span class="
 </section>
 <section id="click">
 <h2>Click<a class="headerlink" href="#click" title="Link to this heading">¶</a></h2>
-<p>Originally, Typer was built on Click. However, going forward Typer will vendor Click. As such, Click extensions should not be used anymore.</p>
+<p>Originally, Typer was built on Click. However, since version 0.26.0, Typer has vendored Click. As such, Click extensions should not be used anymore.</p>
 <p>Other settings of <code class="docutils literal notranslate"><span class="pre">Option</span></code> and <code class="docutils literal notranslate"><span class="pre">Argument</span></code> that came from Click but shouldn’t be used in Typer anymore, include: <code class="docutils literal notranslate"><span class="pre">expose_value</span></code>, <code class="docutils literal notranslate"><span class="pre">shell_complete</span></code>, <code class="docutils literal notranslate"><span class="pre">show_choices</span></code>, <code class="docutils literal notranslate"><span class="pre">errors</span></code>, <code class="docutils literal notranslate"><span class="pre">prompt_required</span></code>, <code class="docutils literal notranslate"><span class="pre">is_flag</span></code>, <code class="docutils literal notranslate"><span class="pre">flag_value</span></code> and <code class="docutils literal notranslate"><span class="pre">allow_from_autoenv</span></code>.</p>
 <p>Code bases using these should be refactored to use pure Typer functionality.</p>
 </section>
@@ -526,7 +545,7 @@ python<span class="w"> </span>main.py<span class="w"> </span>--name<span class="
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=ef97403f"></script>
+</div><script src="../../../../_static/documentation_options.js?v=7de89ed4"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>

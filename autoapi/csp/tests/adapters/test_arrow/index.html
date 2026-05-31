@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../../../../genindex.html"><link rel="search" title="Search" href="../../../../../search.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
-        <title>csp.tests.adapters.test_arrow - dau-sim v0.15.0</title>
+        <title>csp.tests.adapters.test_arrow - dau-sim v0.16.0</title>
       <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
@@ -167,7 +167,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.15.0</code></div></a>
+      <a href="../../../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.16.0</code></div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -188,7 +188,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../../index.html">
   
-  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.15.0</code></span>
+  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.16.0</code></span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -260,6 +260,9 @@
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.adapters.test_arrow.TestDeferredIterator" title="csp.tests.adapters.test_arrow.TestDeferredIterator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestDeferredIterator</span></code></a></p></td>
 <td><p>Tests for deferred iterator behavior.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.adapters.test_arrow.TestStructConversion" title="csp.tests.adapters.test_arrow.TestStructConversion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestStructConversion</span></code></a></p></td>
+<td><p>Tests for struct_to_record_batches conversion.</p></td>
 </tr>
 </tbody>
 </table>
@@ -479,6 +482,22 @@ allowing lazy iterators to be set up after graph construction.</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_arrow.TestStructConversion">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.adapters.test_arrow.</span></span><span class="sig-name descname"><span class="pre">TestStructConversion</span></span><a class="headerlink" href="#csp.tests.adapters.test_arrow.TestStructConversion" title="Link to this definition">¶</a></dt>
+<dd><p>Tests for struct_to_record_batches conversion.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_arrow.TestStructConversion.test_nested_struct_with_nulls">
+<span class="sig-name descname"><span class="pre">test_nested_struct_with_nulls</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_arrow.TestStructConversion.test_nested_struct_with_nulls" title="Link to this definition">¶</a></dt>
+<dd><p>Regression test: NestedStructWriter::writeNull must not double-append to child builders.</p>
+<p>When a parent struct has a null nested struct field, the children of the
+struct column must still have exactly one entry per row.  A prior bug caused
+AppendNull() to also append empty values to children (on top of the explicit
+writeNull per child), shifting all subsequent valid values to wrong indices.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 
@@ -563,6 +582,10 @@ allowing lazy iterators to be set up after graph construction.</p>
 <li><a class="reference internal" href="#csp.tests.adapters.test_arrow.TestDeferredIterator.test_lazy_iterator_pattern"><code class="docutils literal notranslate"><span class="pre">TestDeferredIterator.test_lazy_iterator_pattern()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_arrow.TestStructConversion"><code class="docutils literal notranslate"><span class="pre">TestStructConversion</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.adapters.test_arrow.TestStructConversion.test_nested_struct_with_nulls"><code class="docutils literal notranslate"><span class="pre">TestStructConversion.test_nested_struct_with_nulls()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -576,7 +599,7 @@ allowing lazy iterators to be set up after graph construction.</p>
       
     </aside>
   </div>
-</div><script src="../../../../../_static/documentation_options.js?v=ef97403f"></script>
+</div><script src="../../../../../_static/documentation_options.js?v=7de89ed4"></script>
     <script src="../../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../../_static/scripts/furo.js?v=46bd48cc"></script>

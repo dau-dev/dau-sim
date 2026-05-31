@@ -119,6 +119,7 @@ Classes
    csp.impl.wiring.Context
    csp.impl.wiring.Edge
    csp.impl.wiring.OutputsContainer
+   csp.impl.wiring.Profiler
    csp.impl.wiring.GraphRunInfo
    csp.impl.wiring._WrappedContext
    csp.impl.wiring.ArgKind
@@ -166,6 +167,7 @@ Functions
    csp.impl.wiring.function_full_name
    csp.impl.wiring._create_node
    csp.impl.wiring.numba_node
+   csp.impl.wiring.graph_info
    csp.impl.wiring._normalize_run_times
    csp.impl.wiring.build_graph
    csp.impl.wiring._build_engine
@@ -3426,6 +3428,80 @@ Package Contents
 
 
    .. py:method:: __repr__()
+
+
+.. py:class:: Profiler(http_port: int = None, cycle_file: str = '', node_file: str = '', display_graphs: bool = False)
+
+   
+   If a port number is provided, then the Profiler Web UI will be available.
+
+
+   .. py:attribute:: TLS
+
+
+   .. py:attribute:: prof_info
+
+
+   .. py:attribute:: graph_info
+
+
+   .. py:attribute:: initialized
+      :value: False
+
+
+
+   .. py:attribute:: http_port
+      :value: None
+
+
+
+   .. py:attribute:: cycle_file
+      :value: ''
+
+
+
+   .. py:attribute:: node_file
+      :value: ''
+
+
+
+   .. py:attribute:: display_graphs
+      :value: False
+
+
+
+   .. py:method:: __enter__()
+
+
+   .. py:method:: __exit__(exc_type, exc_value, exc_traceback)
+
+
+   .. py:method:: init_profiler()
+
+
+   .. py:method:: instance()
+      :classmethod:
+
+
+
+   .. py:method:: end_build()
+
+
+   .. py:method:: results()
+
+
+.. py:function:: graph_info(g, *args, **kwargs)
+
+   Returns static information about the given csp.graph in the form of a GraphInfo object
+
+   Input:
+       graph: the csp graph to analyze
+
+   Output: a GraphInfo object with the following attributes
+       node_count: the number of nodes in the graph, including adapters
+       edge_count: the number of node inputs in the graph
+       nodetype_counts: a dictionary of node types (by name) to the number of those types in the graph
+       longest_path: the longest path in the DAG, represented as a list of nodes
 
 
 .. py:data:: MAX_END_TIME

@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
-        <title>csp.impl.wiring - dau-sim v0.15.0</title>
+        <title>csp.impl.wiring - dau-sim v0.16.0</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
@@ -167,7 +167,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.15.0</code></div></a>
+      <a href="../../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.16.0</code></div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -188,7 +188,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
-  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.15.0</code></span>
+  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.16.0</code></span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -487,43 +487,46 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#id448" title="csp.impl.wiring.OutputsContainer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OutputsContainer</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#csp.impl.wiring.GraphRunInfo" title="csp.impl.wiring.GraphRunInfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GraphRunInfo</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.impl.wiring.Profiler" title="csp.impl.wiring.Profiler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Profiler</span></code></a></p></td>
+<td><p>If a port number is provided, then the Profiler Web UI will be available.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.impl.wiring.GraphRunInfo" title="csp.impl.wiring.GraphRunInfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GraphRunInfo</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#csp.impl.wiring._WrappedContext" title="csp.impl.wiring._WrappedContext"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_WrappedContext</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.impl.wiring._WrappedContext" title="csp.impl.wiring._WrappedContext"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_WrappedContext</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id338" title="csp.impl.wiring.ArgKind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ArgKind</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id338" title="csp.impl.wiring.ArgKind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ArgKind</span></code></a></p></td>
 <td><p>Enum where members are also (and must be) ints</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id351" title="csp.impl.wiring.InputDef"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InputDef</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id351" title="csp.impl.wiring.InputDef"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InputDef</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id358" title="csp.impl.wiring.OutputBasketContainer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OutputBasketContainer</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id358" title="csp.impl.wiring.OutputBasketContainer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OutputBasketContainer</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id377" title="csp.impl.wiring.OutputDef"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OutputDef</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id377" title="csp.impl.wiring.OutputDef"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OutputDef</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id383" title="csp.impl.wiring.GenericValuesResolver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GenericValuesResolver</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id383" title="csp.impl.wiring.GenericValuesResolver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GenericValuesResolver</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#csp.impl.wiring.InputInstanceTypeResolver" title="csp.impl.wiring.InputInstanceTypeResolver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InputInstanceTypeResolver</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.impl.wiring.InputInstanceTypeResolver" title="csp.impl.wiring.InputInstanceTypeResolver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InputInstanceTypeResolver</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#csp.impl.wiring.AttachType" title="csp.impl.wiring.AttachType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AttachType</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.impl.wiring.AttachType" title="csp.impl.wiring.AttachType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AttachType</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id386" title="csp.impl.wiring.Context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Context</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id386" title="csp.impl.wiring.Context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Context</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id399" title="csp.impl.wiring.Edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Edge</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id399" title="csp.impl.wiring.Edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Edge</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id448" title="csp.impl.wiring.OutputsContainer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OutputsContainer</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id448" title="csp.impl.wiring.OutputsContainer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OutputsContainer</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id462" title="csp.impl.wiring.Signature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Signature</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id462" title="csp.impl.wiring.Signature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Signature</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -616,22 +619,25 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="numba_node/index.html#module-csp.impl.wiring.numba_node" title="csp.impl.wiring.numba_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numba_node</span></code></a>([func, memoize, force_memoize, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#csp.impl.wiring._normalize_run_times" title="csp.impl.wiring._normalize_run_times"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_normalize_run_times</span></code></a>(starttime, endtime, realtime)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.impl.wiring.graph_info" title="csp.impl.wiring.graph_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_info</span></code></a>(g, *args, **kwargs)</p></td>
+<td><p>Returns static information about the given csp.graph in the form of a GraphInfo object</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.impl.wiring._normalize_run_times" title="csp.impl.wiring._normalize_run_times"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_normalize_run_times</span></code></a>(starttime, endtime, realtime)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#csp.impl.wiring.build_graph" title="csp.impl.wiring.build_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_graph</span></code></a>(f, *args[, starttime, endtime, realtime])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.impl.wiring.build_graph" title="csp.impl.wiring.build_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_graph</span></code></a>(f, *args[, starttime, endtime, realtime])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#csp.impl.wiring._build_engine" title="csp.impl.wiring._build_engine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_build_engine</span></code></a>(engine, context[, memo])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.impl.wiring._build_engine" title="csp.impl.wiring._build_engine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_build_engine</span></code></a>(engine, context[, memo])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#csp.impl.wiring.run" title="csp.impl.wiring.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(g, *args[, starttime, endtime, queue_wait_time, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.impl.wiring.run" title="csp.impl.wiring.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(g, *args[, starttime, endtime, queue_wait_time, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id337" title="csp.impl.wiring.fmt_errors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fmt_errors</span></code></a>(→ str)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id337" title="csp.impl.wiring.fmt_errors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fmt_errors</span></code></a>(→ str)</p></td>
 <td><p>See <a class="reference external" href="https://github.com/pydantic/pydantic-core/blob/15b9c7b/src/errors/validation_exception.rs#L96-L107">https://github.com/pydantic/pydantic-core/blob/15b9c7b/src/errors/validation_exception.rs#L96-L107</a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#csp.impl.wiring.run_on_thread" title="csp.impl.wiring.run_on_thread"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_on_thread</span></code></a>(g, *args[, starttime, endtime, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.impl.wiring.run_on_thread" title="csp.impl.wiring.run_on_thread"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_on_thread</span></code></a>(g, *args[, starttime, endtime, ...])</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -5215,6 +5221,97 @@ that expects the edge.</p></li>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.impl.wiring.Profiler">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.impl.wiring.</span></span><span class="sig-name descname"><span class="pre">Profiler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">http_port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display_graphs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/profiler.html#Profiler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.impl.wiring.Profiler" title="Link to this definition">¶</a></dt>
+<dd><p>If a port number is provided, then the Profiler Web UI will be available.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.impl.wiring.Profiler.TLS">
+<span class="sig-name descname"><span class="pre">TLS</span></span><a class="headerlink" href="#csp.impl.wiring.Profiler.TLS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.impl.wiring.Profiler.prof_info">
+<span class="sig-name descname"><span class="pre">prof_info</span></span><a class="headerlink" href="#csp.impl.wiring.Profiler.prof_info" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.impl.wiring.Profiler.graph_info">
+<span class="sig-name descname"><span class="pre">graph_info</span></span><a class="headerlink" href="#csp.impl.wiring.Profiler.graph_info" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.impl.wiring.Profiler.initialized">
+<span class="sig-name descname"><span class="pre">initialized</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#csp.impl.wiring.Profiler.initialized" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.impl.wiring.Profiler.http_port">
+<span class="sig-name descname"><span class="pre">http_port</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#csp.impl.wiring.Profiler.http_port" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.impl.wiring.Profiler.cycle_file">
+<span class="sig-name descname"><span class="pre">cycle_file</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#csp.impl.wiring.Profiler.cycle_file" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.impl.wiring.Profiler.node_file">
+<span class="sig-name descname"><span class="pre">node_file</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#csp.impl.wiring.Profiler.node_file" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.impl.wiring.Profiler.display_graphs">
+<span class="sig-name descname"><span class="pre">display_graphs</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#csp.impl.wiring.Profiler.display_graphs" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.impl.wiring.Profiler.__enter__">
+<span class="sig-name descname"><span class="pre">__enter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/profiler.html#Profiler.__enter__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.impl.wiring.Profiler.__enter__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.impl.wiring.Profiler.__exit__">
+<span class="sig-name descname"><span class="pre">__exit__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exc_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc_traceback</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/profiler.html#Profiler.__exit__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.impl.wiring.Profiler.__exit__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.impl.wiring.Profiler.init_profiler">
+<span class="sig-name descname"><span class="pre">init_profiler</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/profiler.html#Profiler.init_profiler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.impl.wiring.Profiler.init_profiler" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.impl.wiring.Profiler.instance">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/profiler.html#Profiler.instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.impl.wiring.Profiler.instance" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.impl.wiring.Profiler.end_build">
+<span class="sig-name descname"><span class="pre">end_build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/profiler.html#Profiler.end_build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.impl.wiring.Profiler.end_build" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.impl.wiring.Profiler.results">
+<span class="sig-name descname"><span class="pre">results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/profiler.html#Profiler.results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.impl.wiring.Profiler.results" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.impl.wiring.graph_info">
+<span class="sig-prename descclassname"><span class="pre">csp.impl.wiring.</span></span><span class="sig-name descname"><span class="pre">graph_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/profiler.html#graph_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.impl.wiring.graph_info" title="Link to this definition">¶</a></dt>
+<dd><p>Returns static information about the given csp.graph in the form of a GraphInfo object</p>
+<dl class="simple">
+<dt>Input:</dt><dd><p>graph: the csp graph to analyze</p>
+</dd>
+<dt>Output: a GraphInfo object with the following attributes</dt><dd><p>node_count: the number of nodes in the graph, including adapters
+edge_count: the number of node inputs in the graph
+nodetype_counts: a dictionary of node types (by name) to the number of those types in the graph
+longest_path: the longest path in the DAG, represented as a list of nodes</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="csp.impl.wiring.MAX_END_TIME">
 <span class="sig-prename descclassname"><span class="pre">csp.impl.wiring.</span></span><span class="sig-name descname"><span class="pre">MAX_END_TIME</span></span><a class="headerlink" href="#csp.impl.wiring.MAX_END_TIME" title="Link to this definition">¶</a></dt>
@@ -7225,6 +7322,24 @@ allow_missing=True will return None only for lookup by name</p>
 <li><a class="reference internal" href="#id335"><code class="docutils literal notranslate"><span class="pre">OutputsContainer.__repr__()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#csp.impl.wiring.Profiler"><code class="docutils literal notranslate"><span class="pre">Profiler</span></code></a><ul>
+<li><a class="reference internal" href="#csp.impl.wiring.Profiler.TLS"><code class="docutils literal notranslate"><span class="pre">Profiler.TLS</span></code></a></li>
+<li><a class="reference internal" href="#csp.impl.wiring.Profiler.prof_info"><code class="docutils literal notranslate"><span class="pre">Profiler.prof_info</span></code></a></li>
+<li><a class="reference internal" href="#csp.impl.wiring.Profiler.graph_info"><code class="docutils literal notranslate"><span class="pre">Profiler.graph_info</span></code></a></li>
+<li><a class="reference internal" href="#csp.impl.wiring.Profiler.initialized"><code class="docutils literal notranslate"><span class="pre">Profiler.initialized</span></code></a></li>
+<li><a class="reference internal" href="#csp.impl.wiring.Profiler.http_port"><code class="docutils literal notranslate"><span class="pre">Profiler.http_port</span></code></a></li>
+<li><a class="reference internal" href="#csp.impl.wiring.Profiler.cycle_file"><code class="docutils literal notranslate"><span class="pre">Profiler.cycle_file</span></code></a></li>
+<li><a class="reference internal" href="#csp.impl.wiring.Profiler.node_file"><code class="docutils literal notranslate"><span class="pre">Profiler.node_file</span></code></a></li>
+<li><a class="reference internal" href="#csp.impl.wiring.Profiler.display_graphs"><code class="docutils literal notranslate"><span class="pre">Profiler.display_graphs</span></code></a></li>
+<li><a class="reference internal" href="#csp.impl.wiring.Profiler.__enter__"><code class="docutils literal notranslate"><span class="pre">Profiler.__enter__()</span></code></a></li>
+<li><a class="reference internal" href="#csp.impl.wiring.Profiler.__exit__"><code class="docutils literal notranslate"><span class="pre">Profiler.__exit__()</span></code></a></li>
+<li><a class="reference internal" href="#csp.impl.wiring.Profiler.init_profiler"><code class="docutils literal notranslate"><span class="pre">Profiler.init_profiler()</span></code></a></li>
+<li><a class="reference internal" href="#csp.impl.wiring.Profiler.instance"><code class="docutils literal notranslate"><span class="pre">Profiler.instance()</span></code></a></li>
+<li><a class="reference internal" href="#csp.impl.wiring.Profiler.end_build"><code class="docutils literal notranslate"><span class="pre">Profiler.end_build()</span></code></a></li>
+<li><a class="reference internal" href="#csp.impl.wiring.Profiler.results"><code class="docutils literal notranslate"><span class="pre">Profiler.results()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.impl.wiring.graph_info"><code class="docutils literal notranslate"><span class="pre">graph_info()</span></code></a></li>
 <li><a class="reference internal" href="#csp.impl.wiring.MAX_END_TIME"><code class="docutils literal notranslate"><span class="pre">MAX_END_TIME</span></code></a></li>
 <li><a class="reference internal" href="#csp.impl.wiring._normalize_run_times"><code class="docutils literal notranslate"><span class="pre">_normalize_run_times()</span></code></a></li>
 <li><a class="reference internal" href="#csp.impl.wiring.build_graph"><code class="docutils literal notranslate"><span class="pre">build_graph()</span></code></a></li>
@@ -7462,7 +7577,7 @@ allow_missing=True will return None only for lookup by name</p>
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=ef97403f"></script>
+</div><script src="../../../../_static/documentation_options.js?v=7de89ed4"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>

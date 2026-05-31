@@ -20,6 +20,7 @@ Classes
    csp.tests.adapters.test_arrow.TestArrow
    csp.tests.adapters.test_arrow.TestArrowLazySchema
    csp.tests.adapters.test_arrow.TestDeferredIterator
+   csp.tests.adapters.test_arrow.TestStructConversion
 
 
 Functions
@@ -169,6 +170,22 @@ Module Contents
    .. py:method:: test_lazy_iterator_pattern()
 
       Test the lazy iterator pattern used by LazyParquetIterator.
+
+
+
+.. py:class:: TestStructConversion
+
+   Tests for struct_to_record_batches conversion.
+
+
+   .. py:method:: test_nested_struct_with_nulls()
+
+      Regression test: NestedStructWriter::writeNull must not double-append to child builders.
+
+      When a parent struct has a null nested struct field, the children of the
+      struct column must still have exactly one entry per row.  A prior bug caused
+      AppendNull() to also append empty values to children (on top of the explicit
+      writeNull per child), shifting all subsequent valid values to wrong indices.
 
 
 
