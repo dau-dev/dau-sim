@@ -106,6 +106,8 @@ def _lower_expr(expr) -> Expr:
         return Const(shape=_shape_of(expr), value=int(expr.value))
 
     if kind == _ps_ast.ExpressionKind.NamedValue:
+        if expr.symbol.kind == _ps_ast.SymbolKind.Parameter:
+            return Const(shape=_shape_of(expr), value=_constant_value_to_int(expr.symbol.value))
         return SignalRef(shape=_shape_of(expr), name=expr.symbol.name)
 
     if kind == _ps_ast.ExpressionKind.BinaryOp:
@@ -203,6 +205,12 @@ def _rewrap(inner: Expr, target: Shape) -> Expr:
         return Concat(shape=target, parts=(pad, inner))
     # Same width, different signedness — just return inner; evaluator handles it
     return inner
+
+
+def _constant_value_to_int(value) -> int:
+    if value.hasUnknown():
+        raise ValueError("parameter constants with unknown bits are not supported")
+    return int(value.value.toString(ps.LiteralBase.Decimal, False).replace("_", ""))
 
 
 def _flatten_stmts(stmt) -> list[Stmt]:
