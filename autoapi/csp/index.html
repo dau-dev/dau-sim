@@ -591,52 +591,55 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#csp.wrap_feedback" title="csp.wrap_feedback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrap_feedback</span></code></a>(→ csp.impl.types.tstype.ts[T])</p></td>
 <td><p>A convenience function to wrap the given time series as a feedback.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#csp.DynamicEnum" title="csp.DynamicEnum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DynamicEnum</span></code></a>(name, values[, start, module_name])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.curve" title="csp.curve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curve</span></code></a>(typ, data[, push_mode])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.DynamicEnum" title="csp.DynamicEnum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DynamicEnum</span></code></a>(name, values[, start, module_name])</p></td>
 <td><p>create a csp.Enum type dynamically</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#csp.set_print_full_exception_stack" title="csp.set_print_full_exception_stack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_print_full_exception_stack</span></code></a>(new_value)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.set_print_full_exception_stack" title="csp.set_print_full_exception_stack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_print_full_exception_stack</span></code></a>(new_value)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#csp.csp_memoized" title="csp.csp_memoized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">csp_memoized</span></code></a>([func, force_memoize, function_name, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.csp_memoized" title="csp.csp_memoized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">csp_memoized</span></code></a>([func, force_memoize, function_name, ...])</p></td>
 <td><p>A decorator to register a function as graph object provider.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#csp.memoize" title="csp.memoize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">memoize</span></code></a>([value])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.memoize" title="csp.memoize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">memoize</span></code></a>([value])</p></td>
 <td><p>Context manager to turn on/off the memoization</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#csp.build_graph" title="csp.build_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_graph</span></code></a>(f, *args[, starttime, endtime, realtime])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.build_graph" title="csp.build_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_graph</span></code></a>(f, *args[, starttime, endtime, realtime])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#csp.run" title="csp.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(g, *args[, starttime, endtime, queue_wait_time, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.run" title="csp.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(g, *args[, starttime, endtime, queue_wait_time, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#csp.run_on_thread" title="csp.run_on_thread"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_on_thread</span></code></a>(g, *args[, starttime, endtime, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.run_on_thread" title="csp.run_on_thread"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_on_thread</span></code></a>(g, *args[, starttime, endtime, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#csp.clear_global_context" title="csp.clear_global_context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_global_context</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.clear_global_context" title="csp.clear_global_context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_global_context</span></code></a>()</p></td>
 <td><p>Clear the global context that was previously set by call to new_global_context</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#csp.new_global_context" title="csp.new_global_context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_global_context</span></code></a>([enable])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.new_global_context" title="csp.new_global_context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_global_context</span></code></a>([enable])</p></td>
 <td><p>Example 1:</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#csp.and_" title="csp.and_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">and_</span></code></a>(*inputs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.and_" title="csp.and_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">and_</span></code></a>(*inputs)</p></td>
 <td><p>binary and of basket of ts[ bool ]. Note that all inputs must be valid</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#csp.bitwise_not" title="csp.bitwise_not"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bitwise_not</span></code></a>(→ csp.impl.types.tstype.ts[int])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.bitwise_not" title="csp.bitwise_not"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bitwise_not</span></code></a>(→ csp.impl.types.tstype.ts[int])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#csp.not_" title="csp.not_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">not_</span></code></a>(→ csp.impl.types.tstype.ts[bool])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.not_" title="csp.not_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">not_</span></code></a>(→ csp.impl.types.tstype.ts[bool])</p></td>
 <td><p>boolean not</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#csp.or_" title="csp.or_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">or_</span></code></a>(*inputs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.or_" title="csp.or_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">or_</span></code></a>(*inputs)</p></td>
 <td><p>binary or of ts[ bool ] inputs.  Note that all inputs must be valid</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#csp.show_graph" title="csp.show_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_graph</span></code></a>(graph_func, *args[, graph_filename])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.show_graph" title="csp.show_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_graph</span></code></a>(graph_func, *args[, graph_filename])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#csp.get_include_path" title="csp.get_include_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_include_path</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.get_include_path" title="csp.get_include_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_include_path</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#csp.get_lib_path" title="csp.get_lib_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_lib_path</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.get_lib_path" title="csp.get_lib_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_lib_path</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -1124,6 +1127,11 @@ publish_orders(my_orders)</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.curve">
+<span class="sig-prename descclassname"><span class="pre">csp.</span></span><span class="sig-name descname"><span class="pre">curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">typ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">push_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="impl/types/common_definitions/index.html#csp.impl.types.common_definitions.PushMode" title="csp.impl.types.common_definitions.PushMode"><span class="pre">csp.impl.types.common_definitions.PushMode</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">PushMode.NON_COLLAPSING</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/csp/curve.html#curve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.curve" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="csp.DataFrame">
@@ -2252,6 +2260,7 @@ before any value is returned</p>
 <li><a class="reference internal" href="#csp.times_ns"><code class="docutils literal notranslate"><span class="pre">times_ns()</span></code></a></li>
 <li><a class="reference internal" href="#csp.unroll"><code class="docutils literal notranslate"><span class="pre">unroll()</span></code></a></li>
 <li><a class="reference internal" href="#csp.wrap_feedback"><code class="docutils literal notranslate"><span class="pre">wrap_feedback()</span></code></a></li>
+<li><a class="reference internal" href="#csp.curve"><code class="docutils literal notranslate"><span class="pre">curve()</span></code></a></li>
 <li><a class="reference internal" href="#csp.DataFrame"><code class="docutils literal notranslate"><span class="pre">DataFrame</span></code></a><ul>
 <li><a class="reference internal" href="#csp.DataFrame._data"><code class="docutils literal notranslate"><span class="pre">DataFrame._data</span></code></a></li>
 <li><a class="reference internal" href="#csp.DataFrame._columns"><code class="docutils literal notranslate"><span class="pre">DataFrame._columns</span></code></a></li>

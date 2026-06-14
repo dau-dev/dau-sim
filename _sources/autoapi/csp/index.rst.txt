@@ -153,6 +153,7 @@ Functions
    csp.times_ns
    csp.unroll
    csp.wrap_feedback
+   csp.curve
    csp.DynamicEnum
    csp.set_print_full_exception_stack
    csp.csp_memoized
@@ -530,6 +531,8 @@ Package Contents
    :param i: The input node to be wrapped as feedback
    :return:
 
+
+.. py:function:: curve(typ: type, data: Union[list, tuple], push_mode: csp.impl.types.common_definitions.PushMode = PushMode.NON_COLLAPSING)
 
 .. py:class:: DataFrame(data: Optional[Dict] = None)
 
