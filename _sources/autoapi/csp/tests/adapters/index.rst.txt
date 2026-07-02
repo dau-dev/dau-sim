@@ -19,6 +19,7 @@ Submodules
    /autoapi/csp/tests/adapters/test_kafka/index
    /autoapi/csp/tests/adapters/test_numpy/index
    /autoapi/csp/tests/adapters/test_parquet/index
+   /autoapi/csp/tests/adapters/test_parquet_output/index
    /autoapi/csp/tests/adapters/test_perspective/index
    /autoapi/csp/tests/adapters/test_status/index
    /autoapi/csp/tests/adapters/test_websocket/index

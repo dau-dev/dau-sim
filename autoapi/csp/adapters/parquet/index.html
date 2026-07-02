@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
-        <title>csp.adapters.parquet - dau-sim v0.16.0</title>
+        <title>csp.adapters.parquet - dau-sim v0.17.0</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
@@ -167,7 +167,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.16.0</code></div></a>
+      <a href="../../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.17.0</code></div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -188,7 +188,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
-  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.16.0</code></span>
+  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.17.0</code></span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -279,6 +279,11 @@
 <span class="sig-name descname"><span class="pre">write_arrow_binary</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#csp.adapters.parquet.ParquetOutputConfig.write_arrow_binary" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.adapters.parquet.ParquetOutputConfig.write_dictionary">
+<span class="sig-name descname"><span class="pre">write_dictionary</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#csp.adapters.parquet.ParquetOutputConfig.write_dictionary" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="csp.adapters.parquet.ParquetOutputConfig.resolve_compression">
 <span class="sig-name descname"><span class="pre">resolve_compression</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/output_adapters/parquet.html#ParquetOutputConfig.resolve_compression"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.parquet.ParquetOutputConfig.resolve_compression" title="Link to this definition">¶</a></dt>
@@ -304,12 +309,12 @@ This enable partitioning and splitting the data based on time.
 file_name must be a folder into which the data will be written.
 :param file_metadata: optional str:str dict that will get written as file-level metadata
 :param column_metadata: optional dict of column : { str:str} that will get written as column-level metadata
-:param file_visitor: optional callable that will be called, after a file is written, with the file name.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="csp.adapters.parquet.ParquetWriter.PARQUET_VERSION">
-<span class="sig-name descname"><span class="pre">PARQUET_VERSION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'2.6'</span></em><a class="headerlink" href="#csp.adapters.parquet.ParquetWriter.PARQUET_VERSION" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
+:param file_visitor: optional callable invoked with the file path after each file is closed (on rotation
+and at shutdown). It runs synchronously on the engine thread with the GIL held, so a slow visitor (e.g.
+uploading to remote storage) blocks the engine for its duration – offload heavy work to a background
+queue/thread if that matters. An exception raised by the visitor propagates out of csp.run.
+Note: file_visitor is NOT invoked for dict-basket files (the value/symbol/index files written by
+publish_dict_basket); it only covers the main writer’s files (and any regular published columns).</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="csp.adapters.parquet.ParquetWriter._filename_provider">
 <span class="sig-name descname"><span class="pre">_filename_provider</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#csp.adapters.parquet.ParquetWriter._filename_provider" title="Link to this definition">¶</a></dt>
@@ -437,11 +442,6 @@ if subscribing to the timestamp columns as data, it will still return the origin
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="csp.adapters.parquet.ParquetReader._arrow_c_data_interface">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_arrow_c_data_interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gen</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endtime</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/parquet.html#ParquetReader._arrow_c_data_interface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.parquet.ParquetReader._arrow_c_data_interface" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="csp.adapters.parquet.ParquetReader._reconstruct_struct_array_fields">
 <span class="sig-name descname"><span class="pre">_reconstruct_struct_array_fields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">{str:</span> <span class="pre">ts[object]}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">struct_typ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/csp/adapters/parquet.html#ParquetReader._reconstruct_struct_array_fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.parquet.ParquetReader._reconstruct_struct_array_fields" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -492,11 +492,6 @@ column name.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="csp.adapters.parquet.ParquetReader.subscribe_dict_basket">
 <span class="sig-name descname"><span class="pre">subscribe_dict_basket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">typ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">push_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../impl/types/common_definitions/index.html#csp.impl.types.common_definitions.PushMode" title="csp.impl.types.common_definitions.PushMode"><span class="pre">csp.impl.types.common_definitions.PushMode</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">PushMode.NON_COLLAPSING</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/parquet.html#ParquetReader.subscribe_dict_basket"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.parquet.ParquetReader.subscribe_dict_basket" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="csp.adapters.parquet.ParquetReader.subscribe_dict_basket_struct_column">
-<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">subscribe_dict_basket_struct_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">typ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">push_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../impl/types/common_definitions/index.html#csp.impl.types.common_definitions.PushMode" title="csp.impl.types.common_definitions.PushMode"><span class="pre">csp.impl.types.common_definitions.PushMode</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">PushMode.NON_COLLAPSING</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/csp/adapters/parquet.html#ParquetReader.subscribe_dict_basket_struct_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.adapters.parquet.ParquetReader.subscribe_dict_basket_struct_column" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -560,11 +555,11 @@ column name.</p>
 <li><a class="reference internal" href="#csp.adapters.parquet.ParquetOutputConfig.batch_size"><code class="docutils literal notranslate"><span class="pre">ParquetOutputConfig.batch_size</span></code></a></li>
 <li><a class="reference internal" href="#csp.adapters.parquet.ParquetOutputConfig.compression"><code class="docutils literal notranslate"><span class="pre">ParquetOutputConfig.compression</span></code></a></li>
 <li><a class="reference internal" href="#csp.adapters.parquet.ParquetOutputConfig.write_arrow_binary"><code class="docutils literal notranslate"><span class="pre">ParquetOutputConfig.write_arrow_binary</span></code></a></li>
+<li><a class="reference internal" href="#csp.adapters.parquet.ParquetOutputConfig.write_dictionary"><code class="docutils literal notranslate"><span class="pre">ParquetOutputConfig.write_dictionary</span></code></a></li>
 <li><a class="reference internal" href="#csp.adapters.parquet.ParquetOutputConfig.resolve_compression"><code class="docutils literal notranslate"><span class="pre">ParquetOutputConfig.resolve_compression()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#csp.adapters.parquet.ParquetWriter"><code class="docutils literal notranslate"><span class="pre">ParquetWriter</span></code></a><ul>
-<li><a class="reference internal" href="#csp.adapters.parquet.ParquetWriter.PARQUET_VERSION"><code class="docutils literal notranslate"><span class="pre">ParquetWriter.PARQUET_VERSION</span></code></a></li>
 <li><a class="reference internal" href="#csp.adapters.parquet.ParquetWriter._filename_provider"><code class="docutils literal notranslate"><span class="pre">ParquetWriter._filename_provider</span></code></a></li>
 <li><a class="reference internal" href="#csp.adapters.parquet.ParquetWriter._split_columns_to_files"><code class="docutils literal notranslate"><span class="pre">ParquetWriter._split_columns_to_files</span></code></a></li>
 <li><a class="reference internal" href="#csp.adapters.parquet.ParquetWriter._parquet_output_adapter_manager"><code class="docutils literal notranslate"><span class="pre">ParquetWriter._parquet_output_adapter_manager</span></code></a></li>
@@ -582,13 +577,11 @@ column name.</p>
 </li>
 <li><a class="reference internal" href="#csp.adapters.parquet.ParquetReader"><code class="docutils literal notranslate"><span class="pre">ParquetReader</span></code></a><ul>
 <li><a class="reference internal" href="#csp.adapters.parquet.ParquetReader._properties"><code class="docutils literal notranslate"><span class="pre">ParquetReader._properties</span></code></a></li>
-<li><a class="reference internal" href="#csp.adapters.parquet.ParquetReader._arrow_c_data_interface"><code class="docutils literal notranslate"><span class="pre">ParquetReader._arrow_c_data_interface()</span></code></a></li>
 <li><a class="reference internal" href="#csp.adapters.parquet.ParquetReader._reconstruct_struct_array_fields"><code class="docutils literal notranslate"><span class="pre">ParquetReader._reconstruct_struct_array_fields()</span></code></a></li>
 <li><a class="reference internal" href="#csp.adapters.parquet.ParquetReader._subscribe_impl"><code class="docutils literal notranslate"><span class="pre">ParquetReader._subscribe_impl()</span></code></a></li>
 <li><a class="reference internal" href="#csp.adapters.parquet.ParquetReader.subscribe"><code class="docutils literal notranslate"><span class="pre">ParquetReader.subscribe()</span></code></a></li>
 <li><a class="reference internal" href="#csp.adapters.parquet.ParquetReader.subscribe_all"><code class="docutils literal notranslate"><span class="pre">ParquetReader.subscribe_all()</span></code></a></li>
 <li><a class="reference internal" href="#csp.adapters.parquet.ParquetReader.subscribe_dict_basket"><code class="docutils literal notranslate"><span class="pre">ParquetReader.subscribe_dict_basket()</span></code></a></li>
-<li><a class="reference internal" href="#csp.adapters.parquet.ParquetReader.subscribe_dict_basket_struct_column"><code class="docutils literal notranslate"><span class="pre">ParquetReader.subscribe_dict_basket_struct_column()</span></code></a></li>
 <li><a class="reference internal" href="#csp.adapters.parquet.ParquetReader.status"><code class="docutils literal notranslate"><span class="pre">ParquetReader.status()</span></code></a></li>
 <li><a class="reference internal" href="#csp.adapters.parquet.ParquetReader._create"><code class="docutils literal notranslate"><span class="pre">ParquetReader._create()</span></code></a></li>
 </ul>
@@ -606,7 +599,7 @@ column name.</p>
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=7de89ed4"></script>
+</div><script src="../../../../_static/documentation_options.js?v=0c3dd48d"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>

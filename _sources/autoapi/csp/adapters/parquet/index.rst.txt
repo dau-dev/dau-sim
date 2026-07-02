@@ -44,6 +44,12 @@ Module Contents
 
 
 
+   .. py:attribute:: write_dictionary
+      :type:  bool
+      :value: True
+
+
+
    .. py:method:: resolve_compression()
 
 
@@ -61,12 +67,12 @@ Module Contents
    file_name must be a folder into which the data will be written.
    :param file_metadata: optional str:str dict that will get written as file-level metadata
    :param column_metadata: optional dict of column : { str:str} that will get written as column-level metadata
-   :param file_visitor: optional callable that will be called, after a file is written, with the file name.
-
-
-   .. py:attribute:: PARQUET_VERSION
-      :value: '2.6'
-
+   :param file_visitor: optional callable invoked with the file path after each file is closed (on rotation
+   and at shutdown). It runs synchronously on the engine thread with the GIL held, so a slow visitor (e.g.
+   uploading to remote storage) blocks the engine for its duration -- offload heavy work to a background
+   queue/thread if that matters. An exception raised by the visitor propagates out of csp.run.
+   Note: file_visitor is NOT invoked for dict-basket files (the value/symbol/index files written by
+   publish_dict_basket); it only covers the main writer's files (and any regular published columns).
 
 
    .. py:attribute:: _filename_provider
@@ -165,11 +171,6 @@ Module Contents
    .. py:attribute:: _properties
 
 
-   .. py:method:: _arrow_c_data_interface(gen, startime, endtime)
-      :classmethod:
-
-
-
    .. py:method:: _reconstruct_struct_array_fields(s: csp.impl.types.tstype.ts[T], fields: {str: ts[object]}, struct_typ: T) -> csp.impl.types.tstype.ts[T]
 
 
@@ -213,11 +214,6 @@ Module Contents
 
 
    .. py:method:: subscribe_dict_basket(typ, name, shape, push_mode: csp.impl.types.common_definitions.PushMode = PushMode.NON_COLLAPSING)
-
-
-   .. py:method:: subscribe_dict_basket_struct_column(typ, name, shape, field_name, push_mode: csp.impl.types.common_definitions.PushMode = PushMode.NON_COLLAPSING)
-      :abstractmethod:
-
 
 
    .. py:method:: status(push_mode=PushMode.NON_COLLAPSING)

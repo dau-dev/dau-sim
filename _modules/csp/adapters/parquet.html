@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
-        <title>csp.adapters.parquet - dau-sim v0.16.0</title>
+        <title>csp.adapters.parquet - dau-sim v0.17.0</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
@@ -166,7 +166,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.16.0</code></div></a>
+      <a href="../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.17.0</code></div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -187,7 +187,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.16.0</code></span>
+  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.17.0</code></span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -228,11 +228,13 @@
         <article role="main" id="furo-main-content">
           <h1>Source code for csp.adapters.parquet</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">importlib.metadata</span><span class="w"> </span><span class="kn">import</span> <span class="n">PackageNotFoundError</span><span class="p">,</span> <span class="n">version</span> <span class="k">as</span> <span class="n">get_package_version</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypeVar</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyarrow</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyarrow.ipc</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyarrow.parquet</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">packaging</span><span class="w"> </span><span class="kn">import</span> <span class="n">version</span>
 
@@ -261,6 +263,76 @@
 <span class="k">except</span> <span class="p">(</span><span class="n">PackageNotFoundError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
     <span class="c1"># Cannot read binary arrow</span>
     <span class="o">...</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_ipc_stream_factory</span><span class="p">(</span>
+    <span class="n">filenames_gen</span><span class="p">,</span>
+    <span class="n">allow_missing_files</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">split_columns</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a stream factory for Arrow IPC stream files.</span>
+
+<span class="sd">    Returns a callable(starttime, endtime, needed_columns) -&gt; iterator of</span>
+<span class="sd">    {column: reader} dicts.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">factory</span><span class="p">(</span><span class="n">starttime</span><span class="p">,</span> <span class="n">endtime</span><span class="p">,</span> <span class="n">needed_columns</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">split_columns</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">directory</span> <span class="ow">in</span> <span class="n">filenames_gen</span><span class="p">(</span><span class="n">starttime</span><span class="p">,</span> <span class="n">endtime</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">allow_missing_files</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="k">raise</span> <span class="ne">NotADirectoryError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;split_columns_to_files expects a directory, got: </span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">needed_columns</span><span class="p">:</span>
+                    <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">needed_columns</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">columns</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">f</span><span class="p">[:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;.arrow&quot;</span><span class="p">)]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.arrow&quot;</span><span class="p">))</span>
+
+                <span class="n">readers</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+                    <span class="n">col_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">.arrow&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">col_path</span><span class="p">):</span>
+                        <span class="k">continue</span>
+                    <span class="n">readers</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pyarrow</span><span class="o">.</span><span class="n">ipc</span><span class="o">.</span><span class="n">open_stream</span><span class="p">(</span><span class="n">col_path</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">readers</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">readers</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">filenames_gen</span><span class="p">(</span><span class="n">starttime</span><span class="p">,</span> <span class="n">endtime</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">allow_missing_files</span><span class="p">:</span>
+                <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">f</span><span class="p">)]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+                        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;IPC file not found: </span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                <span class="n">reader</span> <span class="o">=</span> <span class="n">pyarrow</span><span class="o">.</span><span class="n">ipc</span><span class="o">.</span><span class="n">open_stream</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                <span class="k">yield</span> <span class="p">{</span><span class="n">reader</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">reader</span><span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">factory</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_memory_table_stream_factory</span><span class="p">(</span><span class="n">table_gen</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a stream factory for in-memory Arrow Tables.</span>
+
+<span class="sd">    Returns a callable(starttime, endtime, needed_columns) -&gt; iterator of</span>
+<span class="sd">    {column: reader} dicts.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">factory</span><span class="p">(</span><span class="n">starttime</span><span class="p">,</span> <span class="n">endtime</span><span class="p">,</span> <span class="n">needed_columns</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">table_gen</span><span class="p">(</span><span class="n">starttime</span><span class="p">,</span> <span class="n">endtime</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">pyarrow</span><span class="o">.</span><span class="n">Table</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected pyarrow.Table, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">needed_columns</span><span class="p">:</span>
+                <span class="n">available</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">column_names</span><span class="p">)</span>
+                <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">needed_columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">available</span><span class="p">]</span>
+                <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">to_reader</span><span class="p">()</span>
+            <span class="k">yield</span> <span class="p">{</span><span class="n">reader</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">reader</span><span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">factory</span>
 
 
 <div class="viewcode-block" id="ParquetReader">
@@ -317,8 +389,7 @@
         <span class="k">if</span> <span class="n">read_from_memory_tables</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">_CAN_READ_ARROW_BINARY</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;CSP Cannot load binary arrows derived from pyarrow versions less than 4.0.1&quot;</span><span class="p">)</span>
-            <span class="n">wrapped</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filenames_gen</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_filenames_gen</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">starttime</span><span class="p">,</span> <span class="n">endtime</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_c_data_interface</span><span class="p">(</span><span class="n">wrapped</span><span class="p">,</span> <span class="n">starttime</span><span class="p">,</span> <span class="n">endtime</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_table_gen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filenames_gen</span>  <span class="c1"># Alias: memory-table path uses _table_gen</span>
             <span class="n">binary_arrow</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;split_columns_to_files&quot;</span><span class="p">:</span> <span class="n">split_columns_to_files</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">symbol_column</span><span class="p">:</span>
@@ -342,17 +413,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;time_shift&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_shift</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;allow_missing_columns&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">allow_missing_columns</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s2">&quot;allow_missing_files&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">allow_missing_files</span>
-
-<div class="viewcode-block" id="ParquetReader._arrow_c_data_interface">
-<a class="viewcode-back" href="../../../autoapi/csp/adapters/parquet/index.html#csp.adapters.parquet.ParquetReader._arrow_c_data_interface">[docs]</a>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_arrow_c_data_interface</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">gen</span><span class="p">,</span> <span class="n">startime</span><span class="p">,</span> <span class="n">endtime</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">gen</span><span class="p">(</span><span class="n">startime</span><span class="p">,</span> <span class="n">endtime</span><span class="p">):</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">pyarrow</span><span class="o">.</span><span class="n">Table</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected PyTable from generator, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="c1"># Use the PyCapsule C data interface to pass data zero copy</span>
-            <span class="k">yield</span> <span class="n">v</span><span class="o">.</span><span class="n">__arrow_c_stream__</span><span class="p">()</span></div>
-
 
 <div class="viewcode-block" id="ParquetReader._reconstruct_struct_array_fields">
 <a class="viewcode-back" href="../../../autoapi/csp/adapters/parquet/index.html#csp.adapters.parquet.ParquetReader._reconstruct_struct_array_fields">[docs]</a>
@@ -397,7 +457,7 @@
                     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">field_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                         <span class="n">field_typ</span> <span class="o">=</span> <span class="n">meta_typed</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
                         <span class="k">if</span> <span class="n">CspTypingUtils</span><span class="o">.</span><span class="n">is_numpy_array_type</span><span class="p">(</span><span class="n">field_typ</span><span class="p">):</span>
-                            <span class="n">array_fields</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">field_typ</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+                            <span class="n">array_fields</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">field_typ</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">push_mode</span><span class="o">=</span><span class="n">push_mode</span><span class="p">)</span>
                         <span class="k">else</span><span class="p">:</span>
                             <span class="n">new_field_map</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
                     <span class="n">field_map</span> <span class="o">=</span> <span class="n">new_field_map</span>
@@ -508,16 +568,6 @@
         <span class="k">return</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subscribe_impl</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">typ</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">push_mode</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">shape</span><span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="ParquetReader.subscribe_dict_basket_struct_column">
-<a class="viewcode-back" href="../../../autoapi/csp/adapters/parquet/index.html#csp.adapters.parquet.ParquetReader.subscribe_dict_basket_struct_column">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">subscribe_dict_basket_struct_column</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">push_mode</span><span class="p">:</span> <span class="n">PushMode</span> <span class="o">=</span> <span class="n">PushMode</span><span class="o">.</span><span class="n">NON_COLLAPSING</span>
-    <span class="p">):</span>
-        <span class="c1"># field_type = typ.metadata()[field_name]</span>
-        <span class="c1"># return {v: self._subscribe_impl(v, field_type, field_name, push_mode, name) for v in shape}</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
-
-
 <div class="viewcode-block" id="ParquetReader.status">
 <a class="viewcode-back" href="../../../autoapi/csp/adapters/parquet/index.html#csp.adapters.parquet.ParquetReader.status">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">push_mode</span><span class="o">=</span><span class="n">PushMode</span><span class="o">.</span><span class="n">NON_COLLAPSING</span><span class="p">):</span>
@@ -529,7 +579,28 @@
 <a class="viewcode-back" href="../../../autoapi/csp/adapters/parquet/index.html#csp.adapters.parquet.ParquetReader._create">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">memo</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;method needs to return the wrapped c++ adapter manager&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_parquetadapterimpl</span><span class="o">.</span><span class="n">_parquet_input_adapter_manager</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filenames_gen</span><span class="p">)</span></div>
+        <span class="n">props</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span>
+
+        <span class="k">if</span> <span class="n">props</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;read_from_memory_tables&quot;</span><span class="p">):</span>
+            <span class="n">stream_factory</span> <span class="o">=</span> <span class="n">_memory_table_stream_factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_table_gen</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">_parquetadapterimpl</span><span class="o">.</span><span class="n">_parquet_input_adapter_manager</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="n">stream_factory</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">props</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_arrow_ipc&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">props</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;split_columns_to_files&quot;</span><span class="p">):</span>
+                <span class="n">stream_factory</span> <span class="o">=</span> <span class="n">_ipc_stream_factory</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_filenames_gen</span><span class="p">,</span>
+                    <span class="n">split_columns</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">allow_missing_files</span><span class="o">=</span><span class="n">props</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;allow_missing_files&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">stream_factory</span> <span class="o">=</span> <span class="n">_ipc_stream_factory</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_filenames_gen</span><span class="p">,</span>
+                    <span class="n">allow_missing_files</span><span class="o">=</span><span class="n">props</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;allow_missing_files&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="n">_parquetadapterimpl</span><span class="o">.</span><span class="n">_parquet_input_adapter_manager</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="n">stream_factory</span><span class="p">)</span>
+
+        <span class="c1"># Native C++ parquet reader — no Python in the read loop</span>
+        <span class="k">return</span> <span class="n">_parquetadapterimpl</span><span class="o">.</span><span class="n">_parquet_input_adapter_manager_native</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filenames_gen</span><span class="p">)</span></div>
 </div>
 
 
@@ -569,7 +640,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=7de89ed4"></script>
+</div><script src="../../../_static/documentation_options.js?v=0c3dd48d"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

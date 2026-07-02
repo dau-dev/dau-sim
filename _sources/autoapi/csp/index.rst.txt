@@ -1213,7 +1213,7 @@ Package Contents
 .. py:function:: show_graph(graph_func, *args, graph_filename=None, **kwargs)
 
 .. py:data:: __version__
-   :value: '0.16.0'
+   :value: '0.17.0'
 
 
 .. py:function:: get_include_path()

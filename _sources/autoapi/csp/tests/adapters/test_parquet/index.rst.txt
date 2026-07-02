@@ -21,6 +21,13 @@ Classes
    csp.tests.adapters.test_parquet.PriceQuantity
    csp.tests.adapters.test_parquet.PriceQuantity2
    csp.tests.adapters.test_parquet.TestParquet
+   csp.tests.adapters.test_parquet.TestDictBasket
+   csp.tests.adapters.test_parquet.TestParquetFeatures
+   csp.tests.adapters.test_parquet.TestParquetEdgeCases
+   csp.tests.adapters.test_parquet.TestParquetRegressions
+   csp.tests.adapters.test_parquet.TestParquetSchemaEvolution
+   csp.tests.adapters.test_parquet.TestParquetTypes
+   csp.tests.adapters.test_parquet.TestParquetSchemaValidation
 
 
 Module Contents
@@ -179,9 +186,708 @@ Module Contents
    .. py:method:: test_parquet_int_symbol()
 
 
+   .. py:method:: test_parquet_symbol_type_change_across_files()
+
+      Symbol column type change across files must raise a clean error.
+
+      File 1 has a string symbol column, file 2 has int64.
+      The adapter re-detects the type on schema change and raises
+      TypeError because the subscriber's string symbol doesn't match.
+
+
+
    .. py:method:: test_parquet_polars_read()
 
 
    .. py:method:: test_parquet_read()
+
+
+.. py:class:: TestDictBasket(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   Tests for dict basket read/write through parquet adapter.
+
+   Dict baskets store per-tick basket entries inline in the parquet file.
+   The main columns have N rows (one per engine tick), while basket
+   columns have M rows (sum of value_count per tick). A separate
+   value_count column tells the reader how many basket rows per tick.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: _write_dict_basket(output_dir, start, basket_data, endtime_seconds=10)
+
+      Helper to write dict basket data via csp graph.
+
+      basket_data: dict of {symbol: [(timedelta, value), ...]}
+
+
+
+   .. py:method:: _read_dict_basket(input_dir, start, symbols, endtime_seconds=10, start_time=None)
+
+      Helper to read dict basket data via csp graph.
+
+
+
+   .. py:method:: test_dict_basket_basic()
+
+      Basic dict basket round-trip: write basket values, read them back by symbol.
+
+
+
+   .. py:method:: test_dict_basket_skip_rows()
+
+      Dict basket with start_time exercises the skip loop.
+
+      When start_time is after some data, the adapter skips rows. The skip loop
+      must not double-advance by calling both readNextRow() and skipRow().
+
+
+
+   .. py:method:: test_dict_basket_multiple_files()
+
+      Dict basket data spanning multiple parquet files.
+
+      Dict basket processors must be rebound when the main processor crosses
+      a batch boundary (new file).
+
+
+
+   .. py:method:: test_dict_basket_multiple_symbols_same_tick()
+
+      Dict basket with multiple symbols ticking at the same time.
+
+
+
+   .. py:method:: test_dict_basket_skip_multi_symbol()
+
+      Skip loop with multiple symbols per tick.
+
+      Each skipped main row has value_count=2 (AAPL + IBM).  A double-advance
+      would skip 4 basket rows per main row instead of 2, corrupting row
+      alignment and losing data.
+
+
+
+   .. py:method:: test_dict_basket_multiple_files_multi_symbol()
+
+      Multiple symbols spanning file boundaries.
+
+      After crossing the file boundary, both AAPL and IBM must read
+      correctly from the new basket batch.  Distinct values across files
+      ensure we are reading fresh data, not stale pointers from file 1.
+
+
+
+   .. py:method:: test_dict_basket_schema_change()
+
+      Basket across files with different main-batch schemas.
+
+      File 1 has an extra regular column, making its main-batch schema
+      wider than file 2.  When crossing to file 2, the schema change
+      triggers setupProcessor which destroys and recreates dispatchers
+      in the main processor.  The m_valueCountDispatcher pointer in
+      DictBasketReaderRecord must remain valid after the transition.
+
+
+
+   .. py:method:: test_dict_basket_symbol_routing_three_symbols()
+
+      Three symbols with mixed overlapping ticks.
+
+      Each tick dispatches basket entries to subscribers by reading the
+      basket's own __csp_symbol column.  The main processor's symbol must
+      not be passed instead, or ValueDispatcher silently drops every entry.
+      Three symbols with different tick patterns stress the routing logic.
+
+
+
+   .. py:method:: test_dict_basket_schema_change_missing_value_count()
+
+      Crossing to a file without basket columns must not crash.
+
+      Dir 1 has basket (price) + regular column (extra).
+      Dir 2 has ONLY the regular column (extra) — no basket columns.
+      The adapter skips basket processing for files that lack basket columns.
+
+
+
+   .. py:method:: test_dict_basket_int64_symbol()
+
+      Dict basket with int64 symbol column routes entries correctly.
+
+
+
+.. py:class:: TestParquetFeatures(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   Tests for previously uncovered ParquetReader/Writer features.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: test_allow_overlapping_periods()
+
+      Write overlapping time ranges to two files, read with allow_overlapping_periods=True.
+
+
+
+   .. py:method:: test_overlapping_periods_default_raises()
+
+      With allow_overlapping_periods=False (default), overlapping files raise an error.
+
+
+
+   .. py:method:: test_time_shift()
+
+      Read with time_shift shifts all callback timestamps by the given amount.
+
+
+
+   .. py:method:: test_end_time_filtering()
+
+      ParquetReader end_time parameter filters data to the specified range.
+
+
+
+   .. py:method:: test_end_time_before_any_data()
+
+      end_time before any data returns empty result.
+
+
+
+   .. py:method:: test_start_time_and_end_time_combined()
+
+      start_time + end_time on ParquetReader selects a sub-range.
+
+
+
+   .. py:method:: test_numpy_ndarray_2d()
+
+      Round-trip 2D NumpyNDArray through parquet preserves shape.
+
+
+
+   .. py:method:: test_numpy_ndarray_3d()
+
+      Round-trip 3D NumpyNDArray through parquet preserves shape.
+
+
+
+   .. py:method:: test_status_method()
+
+      ParquetReader.status() can be called and returns a ts[Status].
+
+
+
+   .. py:method:: test_push_mode_last_value()
+
+      PushMode.LAST_VALUE collapses same-timestamp ticks to one value.
+
+
+
+   .. py:method:: test_push_mode_burst()
+
+      PushMode.BURST delivers all same-timestamp values as a list in one tick.
+
+
+
+   .. py:method:: test_push_mode_non_collapsing()
+
+      PushMode.NON_COLLAPSING delivers each same-timestamp value as separate cycle.
+
+
+
+   .. py:method:: test_split_columns_to_files_regular_columns()
+
+      split_columns_to_files with regular (non-basket) columns round-trips correctly.
+
+
+
+   .. py:method:: test_split_columns_to_files_struct()
+
+      split_columns_to_files with struct publish round-trips correctly.
+
+
+
+.. py:class:: TestParquetEdgeCases(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   Additional tests for gaps identified in RecordBatch-based parquet processing.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: test_ipc_with_allow_missing_columns()
+
+      IPC files with differing schemas: allow_missing_columns=True fills missing fields,
+      allow_missing_columns=False raises RuntimeError.
+
+
+
+   .. py:method:: test_split_columns_missing_column_file()
+
+      split_columns_to_files with a deleted column file:
+      allow_missing_columns=True succeeds, False raises RuntimeError.
+
+
+
+   .. py:method:: test_time_shift_with_end_time()
+
+      time_shift combined with end_time: only shifted timestamps within range are returned.
+
+
+
+   .. py:method:: test_column_projection_subset()
+
+      Subscribe to a subset of columns from a file with many columns.
+
+      Verifies the column projection optimization reads only needed columns.
+
+
+
+.. py:class:: TestParquetRegressions(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   Regression tests for edge cases involving dictionary encoding, split columns, and error handling.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: test_subscribe_with_dict_encoded_symbol_and_skip()
+
+      Subscribe (not dict basket) with dict-encoded symbol and skip.
+
+      The subscribe path uses readNextRow() (which calls doExtract) rather than
+      skipRow(). This test confirms that path works.
+
+
+
+   .. py:method:: test_skiprow_dict_basket_with_dict_encoded_symbol()
+
+      DictStringReader via read_from_memory_tables with struct containing dict-encoded field.
+
+      When a table has dictionary-encoded string columns and rows are skipped
+      (via start_time), the old code deferred m_dict initialization to
+      doExtract(row==0). After skipRow, row>0 on first extract → null deref.
+      The onBind() fix should make this pass.
+
+
+
+   .. py:method:: test_value_count_type_mismatch()
+
+      Value count column stored as int32 instead of uint16.
+
+      getCurValue<uint16_t>() does a static_cast on the dispatcher's internal
+      std::optional<T> — UB if T != uint16_t. Expect either correct behavior
+      (if type-checked) or a clear error, not silent corruption.
+
+
+
+   .. py:method:: test_split_column_row_count_mismatch()
+
+      Split-column files with different row counts must raise an error.
+
+      Timestamp column has 5 rows, value column has 3 rows. The processor
+      must detect the misalignment and raise a RuntimeError.
+
+
+
+   .. py:method:: test_memory_table_empty_projection()
+
+      Memory table with no matching columns → IndexError.
+
+      When projected columns don't overlap with table columns, the reader
+      gets a 0-column schema and schema.names[0] raises IndexError.
+      Expect a clear error, not a raw IndexError.
+
+
+
+   .. py:method:: test_zero_column_ipc_file()
+
+      IPC file with 0 columns → IndexError at schema.names[0].
+
+      A pathological IPC file with empty schema should produce a clear error.
+
+
+
+   .. py:method:: test_basket_missing_symbol_column()
+
+      Basket symbol column disappears across files + allow_missing_columns.
+
+      File 1 has price__csp_symbol. File 2 does not. With allow_missing_columns=True,
+      basket entries in file 2 should not be silently misrouted.
+
+
+
+   .. py:method:: test_multiple_symbol_subscriptions_same_struct()
+
+      Multiple symbols subscribing to the same struct type.
+
+      Verifies that redundant createFieldSetters calls (once per subscriber)
+      don't cause data corruption. Both symbols should receive correct data.
+
+
+
+   .. py:method:: test_repeated_runs_same_reader_config()
+
+      Repeated csp.run calls with the same reader configuration.
+
+      Each run creates a fresh adapter manager, so dangling pointers in
+      m_mainCursorsByName from stop() don't affect the next run. This test
+      verifies repeated runs produce consistent results.
+
+
+
+   .. py:method:: test_non_monotonic_timestamps()
+
+      Non-monotonic timestamps should produce a clear error.
+
+      Data with timestamps out of order (3, 1, 2) should raise an error
+      mentioning unsorted data, not just a scheduler error.
+
+
+
+   .. py:method:: test_overlapping_periods_equal_timestamp_not_deduped()
+
+      allow_overlapping_periods does not deduplicate equal timestamps.
+
+      File 1 has data at t=1,2,3. File 2 has data at t=3,4,5. With
+      allow_overlapping_periods=True, t=3 from file 2 is NOT skipped
+      (skip uses < not <=), producing a duplicate tick at t=3.
+      This documents the pre-existing behavior.
+
+
+
+   .. py:method:: test_timedelta_zero_time_shift()
+
+      timedelta(0) time_shift is equivalent to no shift.
+
+      Python's `if timedelta(0):` is False, so the property is never set.
+      C++ defaults to zero, so behavior is identical. This test confirms
+      both paths produce the same output.
+
+
+
+   .. py:method:: test_dict_basket_zero_value_count_tick()
+
+      T1: Dict basket where some ticks have value_count=0.
+
+      Tick 1: 2 basket entries (AAPL=100, IBM=200)
+      Tick 2: 0 basket entries
+      Tick 3: 1 basket entry (AAPL=101)
+      Tick 2 should produce no output; ticks 1 and 3 should be correct.
+
+
+
+   .. py:method:: test_subscribe_nonexistent_basket_symbol()
+
+      T2: subscribe_dict_basket with a symbol not present in the data.
+
+      Data contains AAPL and IBM, but we subscribe to ["AAPL", "GOOG"].
+      GOOG should produce no ticks; AAPL should work correctly.
+
+
+
+   .. py:method:: test_null_symbol_column_value()
+
+      T8: Symbol column with null values via read_from_memory_tables.
+
+      When the symbol column contains None, the reader should either skip
+      those rows or raise a clear error — not crash or silently corrupt.
+
+
+
+   .. py:method:: test_time_column_disappears_after_schema_change()
+
+      Second IPC file drops the time column entirely.
+
+      With allow_missing_columns=True the time column may be absent
+      in a later file.  The adapter must raise a clear error rather
+      than segfault via null m_cachedTimeDispatcher.
+
+
+
+.. py:class:: TestParquetSchemaEvolution(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   Tests for specific coverage gaps in the parquet input adapter rewrite.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: test_column_type_change_across_files()
+
+      Gap 1: Column type changes from int32 in file1 to float64 in file2.
+
+      Tests isArrowTypeCompatible and FieldReader recreation on schema change.
+      Arrow should allow int32→float64 widening when subscribing as float.
+
+
+
+   .. py:method:: test_null_values_in_scalar_column()
+
+      Gap 3: Null values in an int64 column via pyarrow validity bitmap.
+
+      Verifies that non-null rows are delivered correctly and null rows
+      don't crash. Expected: null values produce no tick for that timestamp.
+
+
+
+   .. py:method:: test_empty_parquet_file_in_multi_file_read()
+
+      Gap 4: Empty (0-row) parquet file between files with data.
+
+      Verifies that the adapter skips the empty file gracefully and
+      returns data from file1 and file3.
+
+
+
+   .. py:method:: test_symbol_column_absent_allow_missing()
+
+      Gap 5: Symbol column present in file1 but absent in file2.
+
+      With allow_missing_columns=True, file1 filters by symbol normally.
+      File2 (missing symbol column) cannot perform symbol filtering, so
+      those rows are silently skipped for all symbol-based subscribers.
+      This verifies allow_missing_columns doesn't crash and file1 data
+      is still correctly filtered by symbol.
+
+
+
+.. py:class:: TestParquetTypes(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   Tests for type handling, schema transitions, and edge cases.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: test_time_column_precision_change_across_files()
+
+      Time column changes from timestamp[s] to timestamp[ns] across files.
+
+      The adapter re-fetches the time dispatcher on schema change. This test
+      verifies it handles different timestamp precisions correctly.
+
+
+
+   .. py:method:: test_schema_change_with_symbol_column()
+
+      Schema change with symbol column verifies m_cachedSymbolDispatcher is refreshed.
+
+
+
+   .. py:method:: test_struct_column_with_nulls()
+
+      Struct column with null entries interspersed with valid entries.
+
+      NestedStructReader has a two-path strategy: fast columnar path when
+      no nulls, row-by-row with skipNext() when nulls exist. This test
+      exercises the null path via in-memory tables.
+
+
+
+   .. py:method:: test_dict_basket_and_subscribe_on_same_reader()
+
+      Dict basket and regular subscribe on the same reader instance.
+
+
+
+   .. py:method:: test_large_multi_row_group()
+
+      Write enough rows to trigger multiple record batches (row groups).
+
+
+
+   .. py:method:: test_starttime_exactly_at_row_timestamp()
+
+      Start time exactly matches a row timestamp — that row should be included.
+
+
+
+   .. py:method:: test_endtime_exactly_at_row_timestamp()
+
+      End time exactly matches a row timestamp — that row should be included.
+
+
+
+   .. py:method:: test_symbol_column_dict_encoded_string()
+
+      Symbol column as dictionary-encoded string via in-memory tables.
+
+
+
+   .. py:method:: test_struct_with_nested_struct()
+
+      Multi-level struct nesting: outer.inner.x via write+read.
+
+      NOTE: sub-struct reading in native parquet mode only reads the first field
+      of the nested struct (known limitation, also noted in test_all_types).
+      We use arrow IPC (binary_arrow=True via in-memory tables) to test full nesting.
+
+
+
+   .. py:method:: test_struct_in_middle_of_schema()
+
+      Struct in middle of schema: fields after it must get correct leaf indices.
+
+      Schema: [timestamp, before(int), middle(struct<a,b,c>), after(float)]
+      Parquet leaves: [0]timestamp [1]before [2]middle.a [3]middle.b [4]middle.c [5]after
+      Without countLeafColumns fix, 'after' would be read from leaf 3 (middle.b) instead of leaf 5.
+
+
+
+   .. py:method:: test_multiple_scalar_subscribers_same_reader()
+
+      Multiple scalar fields from the same reader.
+
+
+
+   .. py:method:: test_arrow_ipc_round_trip_with_symbol()
+
+      Arrow IPC file round-trip with symbol column filtering.
+
+
+
+   .. py:method:: test_null_values_in_struct_fields()
+
+      Struct with some fields null on some rows.
+
+
+
+   .. py:method:: test_bytes_type_subscription()
+
+      Bytes column subscription via parquet.
+
+
+
+   .. py:method:: test_scalar_with_field_map_string()
+
+      Scalar subscription with field_map (string alias for column name).
+
+
+
+   .. py:method:: test_csp_run_starttime_after_all_data()
+
+      csp.run starttime is after all data in the file → no output.
+
+
+
+   .. py:method:: test_all_files_empty()
+
+      All files in the list are empty (0 rows).
+
+
+
+   .. py:method:: test_narrow_int_types_scalar_subscription()
+
+      INT8, INT16, UINT8, UINT16, UINT32, UINT64 as scalar subscriptions.
+
+
+
+   .. py:method:: test_narrow_int_types_with_nulls()
+
+      Null values in narrow int types (int8/int16/uint*).
+
+
+
+   .. py:method:: test_half_float_subscription()
+
+      HALF_FLOAT (float16) column read as float.
+
+
+
+   .. py:method:: test_date64_subscription()
+
+      DATE64 column read as date type.
+
+
+
+   .. py:method:: test_time32_subscription()
+
+      TIME32 column read as time type.
+
+
+
+   .. py:method:: test_nulls_spanning_row_group_boundaries()
+
+      Null values at row group boundaries are correctly handled.
+
+
+
+   .. py:method:: test_dict_basket_with_null_values()
+
+      Dict basket where some ticks have null values — verifies no crash.
+
+
+
+   .. py:method:: test_split_columns_different_arrow_types()
+
+      Split columns where shards use different Arrow storage types for same logical column.
+
+
+
+   .. py:method:: test_partial_read_many_row_groups()
+
+      Partial read with many row groups exercises prefetch thread shutdown.
+
+      Regression test: when CSP stops mid-file, the PrefetchingRecordBatchReader
+      must cleanly shut down its background thread before the FileReader is released.
+
+
+
+.. py:class:: TestParquetSchemaValidation(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   Tests for schema validation across file boundaries.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: test_time_column_type_change_after_schema_change()
+
+      Time column type re-validation on schema change.
+
+      If a later file has the time column with a non-TIMESTAMP type (e.g. INT64),
+      advanceToNextStream() must reject it rather than allowing an unchecked cast.
+
+
+
+   .. py:method:: test_ipc_split_columns_allow_missing_files()
+
+      allow_missing_files forwarded in split-columns IPC branch.
+
+      With split_columns_to_files=True and binary_arrow=True (IPC mode),
+      allow_missing_files=True should skip missing directories instead of raising.
+
 
 

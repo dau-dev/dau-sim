@@ -1,0 +1,593 @@
+csp.tests.adapters.test_parquet_output
+======================================
+
+.. py:module:: csp.tests.adapters.test_parquet_output
+
+.. autoapi-nested-parse::
+
+   Comprehensive tests for the parquet output adapter.
+
+   Tests all output scenarios: scalar types, structs, file rotation, split columns,
+   Arrow IPC, dict baskets, numpy arrays, batch sizes, compression, metadata, etc.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp.tests.adapters.test_parquet_output.START
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.tests.adapters.test_parquet_output.TestOutputScalarTypes
+   csp.tests.adapters.test_parquet_output.TestOutputStruct
+   csp.tests.adapters.test_parquet_output.TestOutputFileRotation
+   csp.tests.adapters.test_parquet_output.TestOutputArrowIPC
+   csp.tests.adapters.test_parquet_output.TestOutputSplitColumns
+   csp.tests.adapters.test_parquet_output.TestOutputDictBasket
+   csp.tests.adapters.test_parquet_output.TestOutputNumpyArrays
+   csp.tests.adapters.test_parquet_output.TestOutputCompression
+   csp.tests.adapters.test_parquet_output.TestOutputBatchSize
+   csp.tests.adapters.test_parquet_output.TestOutputMetadata
+   csp.tests.adapters.test_parquet_output.TestOutputAllowOverwrite
+   csp.tests.adapters.test_parquet_output.TestOutputEdgeCases
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.tests.adapters.test_parquet_output._read_ipc
+
+
+Module Contents
+---------------
+
+.. py:data:: START
+
+.. py:function:: _read_ipc(path)
+
+   Read an Arrow IPC stream fully into memory, leaving no open file handle.
+
+   ``pyarrow.memory_map`` keeps an OS handle open until GC, which blocks
+   ``tempfile.TemporaryDirectory`` cleanup on Windows ("file in use by another
+   process"). Reading the bytes up front and parsing from an in-memory buffer
+   avoids holding the file open.
+
+
+.. py:class:: TestOutputScalarTypes(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   Test writing all scalar types to parquet and reading them back.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: _write_and_read_scalar(col_type, values, column_name='value')
+
+      Helper: write a scalar column and read it back via pandas.
+
+
+
+   .. py:method:: test_int()
+
+
+   .. py:method:: test_float()
+
+
+   .. py:method:: test_bool()
+
+
+   .. py:method:: test_string()
+
+
+   .. py:method:: test_datetime()
+
+
+   .. py:method:: test_timedelta()
+
+
+   .. py:method:: test_date()
+
+
+   .. py:method:: test_time()
+
+
+   .. py:method:: test_enum()
+
+
+   .. py:method:: test_bytes()
+
+
+   .. py:method:: test_multiple_columns_different_types()
+
+      Write multiple columns of different types simultaneously.
+
+
+
+   .. py:method:: test_no_timestamp_column()
+
+      Write without a timestamp column.
+
+
+
+.. py:class:: TestOutputStruct(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   Test struct publishing.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: test_basic_struct()
+
+
+   .. py:method:: test_struct_with_field_map()
+
+
+   .. py:method:: test_wide_struct()
+
+
+   .. py:method:: test_struct_with_generic_field_raises()
+
+      Publishing a struct with a DIALECT_GENERIC (object) field raises rather than silently
+      dropping the column.
+
+
+
+   .. py:method:: test_nested_struct_child_field_order_is_declaration_order()
+
+      Nested-struct child columns are written in declaration order (not struct memory-layout
+      order), consistent with top-level column order. Pins the on-disk schema shape: a_flag (a 1-byte
+      bool declared first) must come first, which memory-layout packing -- which front-loads the
+      8-byte fields -- would never produce.
+
+
+
+.. py:class:: TestOutputFileRotation(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   Test file rotation via filename_provider.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: test_basic_rotation()
+
+
+   .. py:method:: test_multiple_rotations()
+
+
+   .. py:method:: test_file_visitor_called()
+
+
+   .. py:method:: test_file_visitor_exception_surfaces_without_double_close()
+
+      If file_visitor raises, that error surfaces cleanly (no double-close crash on teardown).
+
+
+
+   .. py:method:: test_rotation_no_initial_file()
+
+      filename_provider only, no initial file_name.
+
+
+
+   .. py:method:: test_file_visitor_split_mode_visits_directory()
+
+      In split-column mode the file_visitor is invoked once, with the output *directory* path
+      (not each per-column file). Pins this contract so a future change is visible.
+
+
+
+   .. py:method:: test_rotate_to_empty_then_resume()
+
+      A filename_provider may tick "" to pause output (close the current file, open none) and later
+      resume with a new path. A value that ticks while paused is retained and emitted on the first row
+      after the file reopens.
+
+      Scenario: A ticks 100 (file f0 open), then 999 while paused; B ticks 5 when f1 reopens; A does
+      not tick at reopen, so its first f1 row carries the paused-window value 999.
+
+
+
+.. py:class:: TestOutputArrowIPC(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   Test Arrow IPC (binary arrow) output format.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: test_basic_ipc()
+
+
+   .. py:method:: test_ipc_with_compression()
+
+
+   .. py:method:: test_ipc_round_trip_via_csp()
+
+      Write IPC and read back via csp ParquetReader.
+
+
+
+.. py:class:: TestOutputSplitColumns(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   Test split_columns_to_files output.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: test_split_scalars()
+
+
+   .. py:method:: test_split_round_trip_via_csp()
+
+      Write split columns and read back via csp ParquetReader.
+
+
+
+   .. py:method:: test_split_struct()
+
+
+   .. py:method:: test_split_ipc_format()
+
+      split_columns_to_files with write_arrow_binary=True produces .arrow files.
+
+
+
+.. py:class:: TestOutputDictBasket(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   Test dict basket output.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: test_single_file_dict_basket_raises_clear_error()
+
+      Publishing a dict basket on a single-file (non-split) writer fails fast with a clear error.
+
+
+
+   .. py:method:: test_basic_dict_basket()
+
+
+   .. py:method:: test_dict_basket_many_symbols()
+
+
+   .. py:method:: test_dict_basket_with_rotation()
+
+      A dict basket whose filename_provider rotates mid-run lands data in the correct directory
+      and keeps the value/symbol/index files aligned across the rotation.
+
+
+
+   .. py:method:: test_dict_basket_with_rotation_round_trips()
+
+      The rotated basket files read back correctly via ParquetReader for each segment.
+
+
+
+   .. py:method:: test_dict_basket_file_metadata()
+
+      file_metadata is written to every dict-basket file (value, symbol, index) as well as the
+      main timestamp file, matching single-vs-split metadata behavior for regular columns.
+
+
+
+   .. py:method:: test_dict_basket_column_metadata()
+
+      column_metadata keyed to a dict-basket column attaches to that basket's value file field.
+
+
+
+   .. py:method:: test_all_writers_flushed_when_file_visitor_raises()
+
+      A throwing file_visitor must not prevent any sibling writer from being flushed and closed.
+      With a regular column and a dict basket, after the visitor error surfaces, every file -- the
+      regular column and the basket value/symbol/index files -- is still present and complete.
+
+
+
+.. py:class:: TestOutputNumpyArrays(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   Test numpy array column output.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: test_1d_float_array()
+
+
+   .. py:method:: test_1d_int_array()
+
+
+   .. py:method:: test_2d_ndarray()
+
+
+   .. py:method:: test_3d_ndarray()
+
+
+.. py:class:: TestOutputCompression(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   Test various compression codecs — verify codec is actually applied.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: _write_and_check_codec(compression, expected_codec, n_rows=100)
+
+      Write with compression and verify the codec in file metadata.
+
+
+
+   .. py:method:: test_snappy()
+
+
+   .. py:method:: test_gzip()
+
+
+   .. py:method:: test_zstd()
+
+
+   .. py:method:: test_none()
+
+
+   .. py:method:: test_compression_name_case_insensitive()
+
+      Upper/mixed-case compression names resolve via Arrow (case-insensitive).
+
+
+
+   .. py:method:: test_invalid_compression_raises_clear_error()
+
+      An unknown compression name fails with a clear error (not a cryptic one).
+
+
+
+   .. py:method:: test_invalid_ipc_compression_raises_clear_error()
+
+      A codec Arrow IPC does not support (e.g. snappy) fails with a message naming the codec.
+
+      Arrow only allows uncompressed/lz4/zstd for Arrow IPC streams and supplies its own
+      "Only LZ4_FRAME and ZSTD ..." reason; the writer surfaces which codec was requested. This
+      restriction is specific to write_arrow_binary=True -- parquet output accepts snappy.
+
+
+
+   .. py:method:: test_write_dictionary_disabled()
+
+      write_dictionary=False disables parquet dictionary encoding; data still round-trips and the
+      column uses a non-dictionary encoding (default write_dictionary=True keeps dictionary on).
+
+
+
+.. py:class:: TestOutputBatchSize(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   Test batch_size controls row group flushing.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: _write_and_check_row_groups(batch_size, n_rows)
+
+      Write and verify row group count matches batch_size.
+
+
+
+   .. py:method:: test_tiny_batch()
+
+
+   .. py:method:: test_small_batch()
+
+
+   .. py:method:: test_batch_larger_than_data()
+
+
+   .. py:method:: test_batch_exactly_divides_data()
+
+
+   .. py:method:: test_partial_final_batch()
+
+      n_rows not evenly divisible → final partial batch flushed at stop().
+
+
+
+.. py:class:: TestOutputMetadata(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   Test file and column metadata.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: test_file_metadata()
+
+
+   .. py:method:: test_column_metadata()
+
+
+   .. py:method:: test_file_metadata_in_split_mode()
+
+      file_metadata is preserved in split-column mode (regression test for metadata propagation).
+
+
+
+   .. py:method:: test_file_metadata_in_split_ipc_mode()
+
+      file_metadata preserved in split-column + IPC mode.
+
+
+
+   .. py:method:: test_split_and_single_metadata_equivalent()
+
+      Metadata and field types are identical between single-file and split-column modes.
+
+
+
+.. py:class:: TestOutputAllowOverwrite(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   Test allow_overwrite behavior.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: test_overwrite_true()
+
+
+   .. py:method:: test_overwrite_false_raises()
+
+
+.. py:class:: TestOutputEdgeCases(methodName='runTest')
+
+   Bases: :py:obj:`unittest.TestCase`
+
+
+   Edge cases and special scenarios.
+
+   Create an instance of the class that will use the named test
+   method when executed. Raises a ValueError if the instance does
+   not have a method with the specified name.
+
+
+   .. py:method:: test_bare_relative_filename_no_directory()
+
+      Writing to a bare relative filename with no directory component succeeds.
+
+
+
+   .. py:method:: test_bare_relative_directory_split_columns()
+
+      split_columns_to_files with a bare relative directory name must work.
+
+
+
+   .. py:method:: test_multiple_ticks_same_timestamp()
+
+      Multiple values at the same engine time produce multiple rows.
+
+
+
+   .. py:method:: test_empty_output_no_ticks()
+
+      No data ticked — file should still be created with schema.
+
+
+
+   .. py:method:: test_large_number_of_columns()
+
+      Write 100 columns.
+
+
+
+   .. py:method:: test_creates_parent_directories()
+
+      Writer creates parent directories if they don't exist.
+
+
+
+   .. py:method:: test_duplicate_column_name_raises()
+
+      Publishing same column name twice raises.
+
+
+
+   .. py:method:: test_very_long_strings()
+
+      Write very long string values.
+
+
+
+   .. py:method:: test_write_read_round_trip_all_types()
+
+      Full round-trip test with all supported types in one file.
+
+
+
+   .. py:method:: test_float_nan_round_trip()
+
+      NaN values round-trip correctly.
+
+
+
+   .. py:method:: test_struct_with_unset_fields_produces_nulls()
+
+      Struct fields that are never set produce null cells.
+
+
+
+   .. py:method:: test_multi_batch_with_rotation()
+
+      Rows spanning multiple batches + file rotation land in correct files.
+
+
+
+   .. py:method:: test_file_visitor_exact_contract()
+
+      file_visitor called once per closed file, in order, including final at stop().
+
+
+
+   .. py:method:: test_metadata_in_ipc_mode()
+
+      file_metadata and column_metadata work in Arrow IPC mode.
+
+
+

@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
-        <title>csp.adapters.output_adapters.parquet - dau-sim v0.16.0</title>
+        <title>csp.adapters.output_adapters.parquet - dau-sim v0.17.0</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
@@ -166,7 +166,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.16.0</code></div></a>
+      <a href="../../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.17.0</code></div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -187,7 +187,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
-  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.16.0</code></span>
+  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.17.0</code></span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -228,11 +228,9 @@
         <article role="main" id="furo-main-content">
           <h1>Source code for csp.adapters.output_adapters.parquet</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">importlib.metadata</span><span class="w"> </span><span class="kn">import</span> <span class="n">PackageNotFoundError</span><span class="p">,</span> <span class="n">version</span> <span class="k">as</span> <span class="n">get_package_version</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TypeVar</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">packaging</span><span class="w"> </span><span class="kn">import</span> <span class="n">version</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">csp</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">csp.impl.struct</span><span class="w"> </span><span class="kn">import</span> <span class="n">Struct</span>
@@ -261,6 +259,8 @@
     <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">15</span>
     <span class="n">compression</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">write_arrow_binary</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># If true will write output as binary arrow data rather than parquet</span>
+    <span class="n">write_dictionary</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># If false, disables parquet dictionary encoding (faster writes for</span>
+    <span class="c1"># high-cardinality numeric columns, at the cost of larger files; low-cardinality data benefits from True)</span>
 
 <div class="viewcode-block" id="ParquetOutputConfig.resolve_compression">
 <a class="viewcode-back" href="../../../../autoapi/csp/adapters/parquet/index.html#csp.adapters.output_adapters.parquet.ParquetOutputConfig.resolve_compression">[docs]</a>
@@ -272,21 +272,9 @@
 
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_get_default_parquet_version</span><span class="p">():</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">version</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">get_package_version</span><span class="p">(</span><span class="s2">&quot;pyarrow&quot;</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">version</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;6.0.1&quot;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="s2">&quot;2.6&quot;</span>
-    <span class="k">except</span> <span class="n">PackageNotFoundError</span><span class="p">:</span>
-        <span class="c1"># Don&#39;t need to do anything in particular</span>
-        <span class="o">...</span>
-    <span class="k">return</span> <span class="s2">&quot;2.0&quot;</span>
-
-
 <div class="viewcode-block" id="ParquetWriter">
 <a class="viewcode-back" href="../../../../autoapi/csp/adapters/parquet/index.html#csp.adapters.output_adapters.parquet.ParquetWriter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ParquetWriter</span><span class="p">:</span>
-    <span class="n">PARQUET_VERSION</span> <span class="o">=</span> <span class="n">_get_default_parquet_version</span><span class="p">()</span>
-
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">file_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -310,7 +298,12 @@
 <span class="sd">        file_name must be a folder into which the data will be written.</span>
 <span class="sd">        :param file_metadata: optional str:str dict that will get written as file-level metadata</span>
 <span class="sd">        :param column_metadata: optional dict of column : { str:str} that will get written as column-level metadata</span>
-<span class="sd">        :param file_visitor: optional callable that will be called, after a file is written, with the file name.</span>
+<span class="sd">        :param file_visitor: optional callable invoked with the file path after each file is closed (on rotation</span>
+<span class="sd">        and at shutdown). It runs synchronously on the engine thread with the GIL held, so a slow visitor (e.g.</span>
+<span class="sd">        uploading to remote storage) blocks the engine for its duration -- offload heavy work to a background</span>
+<span class="sd">        queue/thread if that matters. An exception raised by the visitor propagates out of csp.run.</span>
+<span class="sd">        Note: file_visitor is NOT invoked for dict-basket files (the value/symbol/index files written by</span>
+<span class="sd">        publish_dict_basket); it only covers the main writer&#39;s files (and any regular published columns).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">ParquetOutputConfig</span><span class="p">()</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -339,6 +332,7 @@
             <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
             <span class="s2">&quot;compression&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">compression</span><span class="p">,</span>
             <span class="s2">&quot;write_arrow_binary&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">write_arrow_binary</span><span class="p">,</span>
+            <span class="s2">&quot;write_dictionary&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">write_dictionary</span><span class="p">,</span>
             <span class="s2">&quot;split_columns_to_files&quot;</span><span class="p">:</span> <span class="n">split_columns_to_files</span><span class="p">,</span>
             <span class="s2">&quot;file_metadata&quot;</span><span class="p">:</span> <span class="n">file_metadata</span><span class="p">,</span>
             <span class="s2">&quot;column_metadata&quot;</span><span class="p">:</span> <span class="n">column_metadata</span><span class="p">,</span>
@@ -447,6 +441,11 @@
 <div class="viewcode-block" id="ParquetWriter.publish_dict_basket">
 <a class="viewcode-back" href="../../../../autoapi/csp/adapters/parquet/index.html#csp.adapters.output_adapters.parquet.ParquetWriter.publish_dict_basket">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">publish_dict_basket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">key_type</span><span class="p">,</span> <span class="n">value_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_split_columns_to_files</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot publish dict basket &#39;</span><span class="si">{</span><span class="n">column_name</span><span class="si">}</span><span class="s2">&#39;: dict baskets require &quot;</span>
+                <span class="s2">&quot;split_columns_to_files=True (single-file parquet output is not supported for baskets)&quot;</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="n">key_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Writing of baskets with non str key type is not supported&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename_provider</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -532,7 +531,7 @@
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=7de89ed4"></script>
+</div><script src="../../../../_static/documentation_options.js?v=0c3dd48d"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
