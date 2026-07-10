@@ -14,6 +14,9 @@ class VerilatorProfile:
 
 _SV_TESTBENCH_DIR = Path(__file__).resolve().parents[1] / "tests" / "sv"
 
+# dau-sim is a generic simulation package: only its own benches are built in.
+# Domain packages register their profiles (register_verilator_profile) or
+# ship artlink manifests resolved by their own tooling.
 _PROFILES: dict[str, VerilatorProfile] = {
     "ready-valid-sum": VerilatorProfile(
         name="ready-valid-sum",
@@ -29,6 +32,14 @@ _PROFILES: dict[str, VerilatorProfile] = {
 
 def available_verilator_profiles() -> tuple[str, ...]:
     return tuple(sorted(_PROFILES))
+
+
+def register_verilator_profile(profile: VerilatorProfile, *, replace: bool = False) -> None:
+    """Open registration: packages and user code add profiles without
+    editing dau-sim (mirrors the dau-build config-overlay idiom)."""
+    if not replace and profile.name in _PROFILES:
+        raise ValueError(f"verilator profile {profile.name!r} is already registered; pass replace=True to override")
+    _PROFILES[profile.name] = profile
 
 
 def resolve_verilator_profile(name: str) -> VerilatorProfile:

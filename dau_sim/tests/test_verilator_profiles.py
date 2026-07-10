@@ -4,10 +4,15 @@ from pathlib import Path
 
 import pytest
 
-from dau_sim.integrations.verilator_profiles import available_verilator_profiles, resolve_verilator_profile
+from dau_sim.integrations.verilator_profiles import (
+    VerilatorProfile,
+    available_verilator_profiles,
+    register_verilator_profile,
+    resolve_verilator_profile,
+)
 
 
-def test_available_verilator_profiles_lists_generic_benches() -> None:
+def test_available_verilator_profiles_lists_registered_benches() -> None:
     assert available_verilator_profiles() == ("ready-valid-sum",)
 
 
@@ -26,3 +31,20 @@ def test_resolve_verilator_profile_returns_existing_sources(name: str) -> None:
 def test_resolve_verilator_profile_rejects_unknown_name() -> None:
     with pytest.raises(KeyError, match="unknown verilator profile"):
         resolve_verilator_profile("unknown-profile")
+
+
+def test_register_verilator_profile_open_registration() -> None:
+    profile = VerilatorProfile(name="user-bench", sources=(Path("user_bench.sv"),), top_module="user_bench_tb", expect_stdout="USER_BENCH_OK")
+    register_verilator_profile(profile)
+    try:
+        assert resolve_verilator_profile("user-bench") is profile
+        assert "user-bench" in available_verilator_profiles()
+        with pytest.raises(ValueError, match="already registered"):
+            register_verilator_profile(profile)
+        replacement = VerilatorProfile(name="user-bench", sources=(Path("v2.sv"),), top_module="v2_tb", expect_stdout="V2_OK")
+        register_verilator_profile(replacement, replace=True)
+        assert resolve_verilator_profile("user-bench") is replacement
+    finally:
+        from dau_sim.integrations.verilator_profiles import _PROFILES
+
+        _PROFILES.pop("user-bench", None)
