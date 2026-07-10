@@ -33,7 +33,6 @@ classifiers = [
 dependencies = [
     "amaranth",
     "csp",
-    "dau-core",
     "pyslang",
     "typer",
     "rich",

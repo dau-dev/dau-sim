@@ -13,14 +13,7 @@ from dau_sim.integrations.verilator_profiles import (
 
 
 def test_available_verilator_profiles_lists_registered_benches() -> None:
-    assert available_verilator_profiles() == (
-        "dau-int32-arrow-lite-stream-aggregation",
-        "dau-int32-grouped-aggregation",
-        "dau-int32-map-alu",
-        "dau-int32-predicate-filter",
-        "dau-int32-record-batch-aggregation",
-        "ready-valid-sum",
-    )
+    assert available_verilator_profiles() == ("ready-valid-sum",)
 
 
 @pytest.mark.parametrize("name", available_verilator_profiles())
