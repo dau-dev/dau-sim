@@ -94,10 +94,6 @@ def _run_amaranth_cxxsim(cycles: int) -> None:
 
 
 def _compile_verilator_binary(cycles: int, *, persist: bool = False) -> tuple[Path, Path]:
-    verilator = shutil.which("verilator")
-    if not verilator:
-        raise RuntimeError("verilator not found on PATH")
-
     verilog = textwrap.dedent(
         f"""
         `timescale 1ns/1ps
@@ -145,15 +141,16 @@ def _compile_verilator_binary(cycles: int, *, persist: bool = False) -> tuple[Pa
         td = Path(tempfile.mkdtemp(prefix="dau_sim_verilator_"))
     src = td / "tb.v"
     src.write_text(verilog)
-    cp = subprocess.run([verilator, "--binary", "--timing", "-Wno-fatal", str(src)], cwd=td, capture_output=True, text=True)
-    if cp.returncode != 0:
+    # the canonical runner is the single Verilator invocation path; the bench
+    # reuses its compiled executable for repeat runs
+    from dau_sim.integrations.verilator import VerilatorExecutionError, run_verilator_testbench
+
+    try:
+        result = run_verilator_testbench(sources=(src,), top_module="tb", work_dir=td)
+    except VerilatorExecutionError as exc:
         shutil.rmtree(td, ignore_errors=True)
-        raise RuntimeError("verilator compile failed")
-    exe = td / "obj_dir" / "Vtb"
-    if not exe.exists():
-        shutil.rmtree(td, ignore_errors=True)
-        raise RuntimeError("verilator binary missing")
-    return td, exe
+        raise RuntimeError(f"verilator compile/run failed: {exc}") from exc
+    return td, result.executable_path
 
 
 def _run_verilator_compiled(exe: Path) -> None:
