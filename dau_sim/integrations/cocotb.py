@@ -10,9 +10,21 @@ between test suites (the same rule the SV benches follow through
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
+from dataclasses import dataclass
 from pathlib import Path
 
 DEFAULT_BUILD_ARGS = ("--timing", "-Wno-fatal")
+
+
+@dataclass(frozen=True)
+class CocotbProfile:
+    """A registered cocotb bench: HDL sources, the toplevel they build,
+    and the cocotb test module that drives it."""
+
+    name: str
+    sources: tuple[Path, ...]
+    hdl_toplevel: str
+    test_module: str
 
 
 class CocotbRunnerUnavailableError(RuntimeError):
