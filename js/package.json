@@ -1,6 +1,6 @@
 {
   "name": "dau-sim",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "dau simulator",
   "repository": "git@github.com:dau-dev/dau-sim.git",
   "author": "the dau authors <dev@dau.dev>",
