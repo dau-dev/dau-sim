@@ -1,0 +1,71 @@
+csp.adapters.websocket_types
+============================
+
+.. py:module:: csp.adapters.websocket_types
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp.adapters.websocket_types.CSP_AUTOGEN_HINTS
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.adapters.websocket_types.WebsocketStatus
+   csp.adapters.websocket_types.WebsocketHeaderUpdate
+
+
+Module Contents
+---------------
+
+.. py:data:: CSP_AUTOGEN_HINTS
+
+.. py:class:: WebsocketStatus
+
+   Bases: :py:obj:`csp.impl.enum.Enum`
+
+
+   .. py:attribute:: ACTIVE
+      :value: 0
+
+
+
+   .. py:attribute:: GENERIC_ERROR
+      :value: 1
+
+
+
+   .. py:attribute:: CONNECTION_FAILED
+      :value: 2
+
+
+
+   .. py:attribute:: CLOSED
+      :value: 3
+
+
+
+   .. py:attribute:: MESSAGE_SEND_FAIL
+      :value: 4
+
+
+
+.. py:class:: WebsocketHeaderUpdate
+
+   Bases: :py:obj:`csp.impl.struct.Struct`
+
+
+   .. py:attribute:: key
+      :type:  str
+
+
+   .. py:attribute:: value
+      :type:  str
+
+

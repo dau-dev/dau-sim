@@ -1,0 +1,101 @@
+csp.impl.wiring.context
+=======================
+
+.. py:module:: csp.impl.wiring.context
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.impl.wiring.context.Context
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.impl.wiring.context.new_global_context
+   csp.impl.wiring.context.clear_global_context
+
+
+Module Contents
+---------------
+
+.. py:class:: Context(start_time: datetime.datetime = None, end_time: datetime.datetime = None, is_global_instance: bool = False)
+
+   .. py:attribute:: TLS
+
+
+   .. py:attribute:: roots
+      :value: []
+
+
+
+   .. py:attribute:: start_time
+      :value: None
+
+
+
+   .. py:attribute:: end_time
+      :value: None
+
+
+
+   .. py:attribute:: mem_cache
+      :value: None
+
+
+
+   .. py:attribute:: delayed_nodes
+      :value: []
+
+
+
+   .. py:attribute:: _is_global_instance
+      :value: False
+
+
+
+   .. py:method:: instance()
+      :classmethod:
+
+
+
+   .. py:method:: new_global_context(enable=True)
+      :classmethod:
+
+
+
+   .. py:method:: clear_global_context()
+      :classmethod:
+
+
+
+   .. py:method:: __enter__()
+
+
+   .. py:method:: __exit__(type, value, traceback)
+
+
+.. py:function:: new_global_context(enable=True)
+
+   Example 1:
+   new_global_context() # at this point the context is visible to all subsequent csp calls
+
+   Example 2:
+   context = new_global_context(False) # the context is not visible yet in the CSP lib
+   with context:
+       # The global context is visible only inside the with statement
+       ...
+   :param enable: Whether the context shoudl be entered. If False provided then the new context should be used in a "with" statement
+   :return: The new context
+
+
+.. py:function:: clear_global_context()
+
+   Clear the global context that was previously set by call to new_global_context
+
+

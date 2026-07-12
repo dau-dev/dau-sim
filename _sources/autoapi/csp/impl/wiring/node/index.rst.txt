@@ -1,0 +1,126 @@
+csp.impl.wiring.node
+====================
+
+.. py:module:: csp.impl.wiring.node
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.impl.wiring.node.NodeDefMeta
+   csp.impl.wiring.node.NodeDef
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.impl.wiring.node._create_node
+   csp.impl.wiring.node._node_internal_use
+   csp.impl.wiring.node.node
+
+
+Module Contents
+---------------
+
+.. py:class:: NodeDefMeta(*args, **kwargs)
+
+   Bases: :py:obj:`type`
+
+
+   .. py:attribute:: _instantiate_func
+
+
+   .. py:method:: _instantiate_impl(__forced_tvars, name, args, kwargs)
+
+
+   .. py:method:: _instantiate(__forced_tvars, name=None, *args, **kwargs)
+
+
+   .. py:method:: __call__(*args, **kwargs)
+
+
+   .. py:method:: using(name=None, **__forced_tvars)
+
+
+   .. py:method:: __get__(instance, owner)
+
+
+.. py:class:: NodeDef(inputs, scalars, tvars, impl, pre_create_hook)
+
+   .. py:attribute:: _inputs
+
+
+   .. py:attribute:: _scalars
+
+
+   .. py:attribute:: _impl
+
+
+   .. py:attribute:: _tvars
+
+
+   .. py:attribute:: _outputs
+      :value: None
+
+
+
+   .. py:attribute:: _output_types
+      :value: None
+
+
+
+   .. py:attribute:: _pre_create_hook
+
+
+   .. py:property:: _signature
+
+
+   .. py:property:: outputs
+
+
+   .. py:method:: _get_normalized_ts_or_basket_type(output)
+      :classmethod:
+
+
+
+   .. py:method:: _normalize_inputs_to_cpp_types(inputs, name)
+      :classmethod:
+
+
+      convert input edges into the c++ equivalents expected for construction
+
+
+
+   .. py:method:: ts_inputs()
+
+      return generator of proper (( ts_idx, basket_idx) ,edge) inputs adjusted for alarms
+
+
+
+   .. py:method:: _create(engine, memo)
+
+
+.. py:function:: _create_node(func, func_frame, debug_print, memoize, force_memoize, cppimpl, pre_create_hook, name)
+
+.. py:function:: _node_internal_use(func=None, *, func_frame=None, memoize=True, force_memoize=False, debug_print=False, cppimpl=None, pre_create_hook=None, name=None)
+
+   A decorator similar to the @node decorator that exposes some internal arguments that shoudn't be visible to users
+
+
+.. py:function:: node(func=None, *, memoize=True, force_memoize=False, debug_print=False, cppimpl=None, name=None)
+
+   :param func: The wrapped node function
+   :param memoize: Specify whether the node should be memoized (default True)
+   :param force_memoize: If True, the node will be memoized even if csp.memoize(False) was called. Usually it should not be set, set
+   this to True ONLY if memoization required to guarantee correctness of the function (i.e the function must be called at most once with the for each
+   set of parameters).
+   :param debug_print: A boolean that specifies that processed function should be printed
+   :param cppimpl:
+   :param name: Provide a custom name for the constructed node type, helpful when viewing a graph with many same-named nodes
+   :return:
+
+

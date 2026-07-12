@@ -1,0 +1,54 @@
+csp.impl.wiring.outputs
+=======================
+
+.. py:module:: csp.impl.wiring.outputs
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.impl.wiring.outputs.OutputsContainer
+
+
+Module Contents
+---------------
+
+.. py:class:: OutputsContainer(**kwargs)
+
+   .. py:attribute:: __slots__
+      :value: ['_dict']
+
+
+
+   .. py:method:: __getattr__(item)
+
+
+   .. py:method:: __getitem__(item)
+
+
+   .. py:method:: __setattr__(key, item)
+
+
+   .. py:method:: __setitem__(key, item)
+
+
+   .. py:method:: __len__()
+
+
+   .. py:method:: __iter__()
+
+
+   .. py:method:: _values()
+
+
+   .. py:method:: _items()
+
+
+   .. py:method:: _get(item, dflt=None)
+
+
+   .. py:method:: __repr__()
+
+

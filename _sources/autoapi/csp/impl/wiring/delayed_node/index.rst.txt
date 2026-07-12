@@ -1,0 +1,37 @@
+csp.impl.wiring.delayed_node
+============================
+
+.. py:module:: csp.impl.wiring.delayed_node
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.impl.wiring.delayed_node.DelayedNodeWrapperDef
+
+
+Module Contents
+---------------
+
+.. py:class:: DelayedNodeWrapperDef
+
+   Base utility class that should be used for wiring time "delayed" instantiation of output nodes
+
+
+   .. py:attribute:: _nodedef
+      :value: None
+
+
+
+   .. py:method:: copy()
+      :abstractmethod:
+
+
+
+   .. py:method:: _instantiate()
+      :abstractmethod:
+
+
+

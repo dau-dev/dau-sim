@@ -1,0 +1,323 @@
+csp.adapters.db
+===============
+
+.. py:module:: csp.adapters.db
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp.adapters.db.UTC
+   csp.adapters.db._SQLALCHEMY_2
+   csp.adapters.db.DBReadAdapter
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.adapters.db.TimeAccessor
+   csp.adapters.db.EngineStartTimeAccessor
+   csp.adapters.db.TimestampAccessor
+   csp.adapters.db.DateTimeAccessor
+   csp.adapters.db.DBReader
+   csp.adapters.db.DBReaderImpl
+   csp.adapters.db.DBReadAdapterImpl
+
+
+Module Contents
+---------------
+
+.. py:data:: UTC
+
+.. py:data:: _SQLALCHEMY_2
+   :value: True
+
+
+.. py:class:: TimeAccessor
+
+   Bases: :py:obj:`abc.ABC`
+
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+
+   .. py:method:: get_time_columns(engine)
+      :abstractmethod:
+
+
+
+   .. py:method:: get_time_constraint(starttime, endtime)
+      :abstractmethod:
+
+
+
+   .. py:method:: get_order_by_columns()
+      :abstractmethod:
+
+
+
+   .. py:method:: get_time(row)
+      :abstractmethod:
+
+
+
+.. py:class:: EngineStartTimeAccessor
+
+   Bases: :py:obj:`TimeAccessor`
+
+
+   A constant time accessor for data that needs to be ingested once at engine start time
+
+
+   .. py:method:: get_time_columns(engine)
+
+
+   .. py:method:: get_time_constraint(starttime, endtime)
+
+
+   .. py:method:: get_order_by_columns()
+
+
+   .. py:method:: get_time(row)
+
+
+.. py:class:: TimestampAccessor(time_column, tz=None)
+
+   Bases: :py:obj:`TimeAccessor`
+
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+   :param time_column: (string) name of the db column containing the timestamp
+   :param tz: timezone if the db timestamp doesn't have timezone
+
+
+   .. py:attribute:: _time_column
+
+
+   .. py:attribute:: _tz
+      :value: None
+
+
+
+   .. py:attribute:: _db_has_tz
+      :value: None
+
+
+
+   .. py:method:: get_time_columns(engine)
+
+
+   .. py:method:: get_time_constraint(starttime, endtime)
+
+
+   .. py:method:: get_order_by_columns()
+
+
+   .. py:method:: get_time(row)
+
+
+.. py:class:: DateTimeAccessor(date_column, time_column, tz=None)
+
+   Bases: :py:obj:`TimeAccessor`
+
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+   :param date_column: (string) name of the db column containing the date
+   :param time_column: (string) name of the db colummn containing the time
+   :param tz: timezone if the db time does not have timezone
+
+
+   .. py:attribute:: _date_column
+
+
+   .. py:attribute:: _time_column
+
+
+   .. py:attribute:: _tz
+      :value: None
+
+
+
+   .. py:attribute:: _db_has_tz
+      :value: None
+
+
+
+   .. py:method:: get_time_columns(engine)
+
+
+   .. py:method:: get_time_constraint(starttime, endtime)
+
+
+   .. py:method:: get_order_by_columns()
+
+
+   .. py:method:: get_time(row)
+
+
+.. py:class:: DBReader(connection, time_accessor, table_name=None, schema_name=None, query=None, symbol_column=None, constraint=None, log_query=False, use_raw_user_query=False)
+
+   
+   :param connection: sqlalchemy engine or (already connected) connection object.
+   :param time_accessor: TimeAccessor object
+   :param table_name: name of table in database as a string (table only, do not include database and schema)
+   :param schema_name: name of the schema to use (for databases like SQL Server that use schema as part of table location, may not
+                                                  be needed if schema name is "dbo")
+   :param query: either string query or sqlalchemy query object. Ex: "select * from users"
+   :param symbol_column: name of symbol column in table as a string
+   :param constraint: additional sqlalchemy constraints for query. Ex: constraint = db.text( 'PRICE>:price' ).bindparams( price = 100.0 )
+   :param log_query: set to True to see what query was generated to access the data
+   :param use_raw_user_query: Don't do any alteration to user query, assume it contains all the needed columns and sorting
+
+
+   .. py:attribute:: _connection
+
+
+   .. py:attribute:: _table_name
+      :value: None
+
+
+
+   .. py:attribute:: _schema_name
+      :value: None
+
+
+
+   .. py:attribute:: _query
+      :value: None
+
+
+
+   .. py:attribute:: _time_accessor
+
+
+   .. py:attribute:: _symbol_column
+      :value: None
+
+
+
+   .. py:attribute:: _constraint
+      :value: None
+
+
+
+   .. py:attribute:: _log_query
+      :value: False
+
+
+
+   .. py:attribute:: _use_raw_user_query
+      :value: False
+
+
+
+   .. py:attribute:: _requested_cols
+
+
+   .. py:method:: subscribe(symbol, typ, field_map=None, push_mode=PushMode.NON_COLLAPSING)
+
+      If typ=None, then a struct will be dynamically created that reflects the schema of the table.
+      In this case, the database will be queried at graph building time, and the resulting struct can
+      be independently accessed via .schema_struct().
+
+
+
+   .. py:method:: subscribe_all(typ, field_map=None, push_mode=PushMode.NON_COLLAPSING)
+
+
+   .. py:method:: _subscribe(symbol, typ, field_map, push_mode)
+
+
+   .. py:method:: schema_struct()
+
+      Return a struct that represents the schema of the underlying table.
+      Will be returned if typ=None is passed to subscribe.
+      Also useful to inspect manually when defining field_map.
+
+
+
+   .. py:method:: _create(engine, memo)
+
+
+   .. py:method:: create_from_connection(connection, time_accessor, table_name=None, schema_name=None, query=None, symbol_column=None, constraint=None, log_query=False)
+      :classmethod:
+
+
+
+   .. py:method:: create_from_url(url, time_accessor, table_name=None, schema_name=None, query=None, symbol_column=None, constraint=None, log_query=False)
+      :classmethod:
+
+
+
+.. py:class:: DBReaderImpl(engine, adapterRep)
+
+   Bases: :py:obj:`csp.impl.adaptermanager.AdapterManagerImpl`
+
+
+   .. py:attribute:: _rep
+
+
+   .. py:attribute:: _inputs
+
+
+   .. py:attribute:: _prev_time
+      :value: None
+
+
+
+   .. py:attribute:: _row
+      :value: None
+
+
+
+   .. py:method:: start(starttime, endtime)
+
+      start up the manager, connect to any external sources / files you need.  Spawn any threads you may need
+      ( usually for realtime only )
+
+
+
+   .. py:method:: _data_yielder_function()
+
+
+   .. py:method:: build_query(starttime, endtime)
+
+
+   .. py:method:: stop()
+
+      called on engine shutdown, optional
+
+
+
+   .. py:method:: register_input_adapter(symbol, adapter)
+
+
+   .. py:method:: process_next_sim_timeslice(now)
+
+      this method should iterate over all data for the requested time, and push data onto all of the adapters inputs
+      that need to tick
+      :return: next datetime with data for this adapter manager
+
+      NOTE: Simulation Adapters should overload this method!
+
+
+
+   .. py:method:: process_row(row)
+
+
+.. py:class:: DBReadAdapterImpl(managerImpl, symbol, typ, field_map)
+
+   Bases: :py:obj:`csp.impl.adaptermanager.ManagedSimInputAdapter`
+
+
+.. py:data:: DBReadAdapter
+

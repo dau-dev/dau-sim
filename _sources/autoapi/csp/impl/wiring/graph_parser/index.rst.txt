@@ -1,0 +1,91 @@
+csp.impl.wiring.graph_parser
+============================
+
+.. py:module:: csp.impl.wiring.graph_parser
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.impl.wiring.graph_parser.GraphParser
+
+
+Module Contents
+---------------
+
+.. py:class:: GraphParser(name, raw_func, func_frame, debug_print=False)
+
+   Bases: :py:obj:`csp.impl.wiring.base_parser.BaseParser`
+
+
+   A :class:`NodeVisitor` subclass that walks the abstract syntax tree and
+   allows modification of nodes.
+
+   The `NodeTransformer` will walk the AST and use the return value of the
+   visitor methods to replace or remove the old node.  If the return value of
+   the visitor method is ``None``, the node will be removed from its location,
+   otherwise it is replaced with the return value.  The return value may be the
+   original node in which case no replacement takes place.
+
+   Here is an example transformer that rewrites all occurrences of name lookups
+   (``foo``) to ``data['foo']``::
+
+      class RewriteName(NodeTransformer):
+
+          def visit_Name(self, node):
+              return Subscript(
+                  value=Name(id='data', ctx=Load()),
+                  slice=Constant(value=node.id),
+                  ctx=node.ctx
+              )
+
+   Keep in mind that if the node you're operating on has child nodes you must
+   either transform the child nodes yourself or call the :meth:`generic_visit`
+   method for the node first.
+
+   For nodes that were part of a collection of statements (that applies to all
+   statement nodes), the visitor may also return a list of nodes rather than
+   just a single node.
+
+   Usually you use the transformer like this::
+
+      node = YourTransformer().visit(node)
+
+
+   .. py:attribute:: _DEBUG_PARSE
+      :value: False
+
+
+
+   .. py:method:: visit_FunctionDef(node)
+
+
+   .. py:method:: _add_special_outputs_to_return(res, special_outputs)
+
+
+   .. py:method:: _wrap_returned_value_and_add_special_outputs(returned_value)
+
+
+   .. py:method:: visit_Return(node)
+
+
+   .. py:method:: _parse_single_output_definition(name, arg_type_node, ts_idx, typ=None)
+
+
+   .. py:method:: _parse_return(node, special_outputs=None)
+
+
+   .. py:method:: visit_Expr(node)
+
+
+   .. py:method:: visit_Call(node: ast.Call)
+
+
+   .. py:method:: _is_ts_args_removed_from_signature()
+
+
+   .. py:method:: _parse_impl()
+
+

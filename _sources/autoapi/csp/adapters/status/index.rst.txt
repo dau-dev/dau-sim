@@ -1,0 +1,70 @@
+csp.adapters.status
+===================
+
+.. py:module:: csp.adapters.status
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.adapters.status.Status
+   csp.adapters.status.Level
+
+
+Module Contents
+---------------
+
+.. py:class:: Status
+
+   Bases: :py:obj:`csp.impl.struct.Struct`
+
+
+   .. py:attribute:: level
+      :type:  int
+
+
+   .. py:attribute:: status_code
+      :type:  int
+
+
+   .. py:attribute:: msg
+      :type:  str
+
+
+.. py:class:: Level
+
+   Bases: :py:obj:`enum.IntEnum`
+
+
+   Enum where members are also (and must be) ints
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+   .. py:attribute:: DEBUG
+      :value: 0
+
+
+
+   .. py:attribute:: INFO
+      :value: 1
+
+
+
+   .. py:attribute:: WARNING
+      :value: 2
+
+
+
+   .. py:attribute:: ERROR
+      :value: 3
+
+
+
+   .. py:attribute:: CRITICAL
+      :value: 4
+
+
+

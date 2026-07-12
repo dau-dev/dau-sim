@@ -1,0 +1,1367 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../../../genindex.html"><link rel="search" title="Search" href="../../../../../search.html">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>csp.tests.adapters.test_parquet - dau-sim v0.17.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/custom.css?v=890fd012" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.17.0</code></div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../../index.html">
+  
+  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.17.0</code></span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../../../_sources/autoapi/csp/tests/adapters/test_parquet/index.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-csp.tests.adapters.test_parquet">
+<span id="csp-tests-adapters-test-parquet"></span><h1>csp.tests.adapters.test_parquet<a class="headerlink" href="#module-csp.tests.adapters.test_parquet" title="Link to this heading">¶</a></h1>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.adapters.test_parquet.parquet_filename" title="csp.tests.adapters.test_parquet.parquet_filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parquet_filename</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.adapters.test_parquet.arrow_filename" title="csp.tests.adapters.test_parquet.arrow_filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">arrow_filename</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.adapters.test_parquet.PriceQuantity" title="csp.tests.adapters.test_parquet.PriceQuantity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PriceQuantity</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.adapters.test_parquet.PriceQuantity2" title="csp.tests.adapters.test_parquet.PriceQuantity2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PriceQuantity2</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet" title="csp.tests.adapters.test_parquet.TestParquet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestParquet</span></code></a></p></td>
+<td><p>A class whose instances are single test cases.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestDictBasket" title="csp.tests.adapters.test_parquet.TestDictBasket"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestDictBasket</span></code></a></p></td>
+<td><p>Tests for dict basket read/write through parquet adapter.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetFeatures" title="csp.tests.adapters.test_parquet.TestParquetFeatures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestParquetFeatures</span></code></a></p></td>
+<td><p>Tests for previously uncovered ParquetReader/Writer features.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetEdgeCases" title="csp.tests.adapters.test_parquet.TestParquetEdgeCases"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestParquetEdgeCases</span></code></a></p></td>
+<td><p>Additional tests for gaps identified in RecordBatch-based parquet processing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetRegressions" title="csp.tests.adapters.test_parquet.TestParquetRegressions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestParquetRegressions</span></code></a></p></td>
+<td><p>Regression tests for edge cases involving dictionary encoding, split columns, and error handling.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetSchemaEvolution" title="csp.tests.adapters.test_parquet.TestParquetSchemaEvolution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestParquetSchemaEvolution</span></code></a></p></td>
+<td><p>Tests for specific coverage gaps in the parquet input adapter rewrite.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes" title="csp.tests.adapters.test_parquet.TestParquetTypes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestParquetTypes</span></code></a></p></td>
+<td><p>Tests for type handling, schema transitions, and edge cases.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetSchemaValidation" title="csp.tests.adapters.test_parquet.TestParquetSchemaValidation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestParquetSchemaValidation</span></code></a></p></td>
+<td><p>Tests for schema validation across file boundaries.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.PriceQuantity">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.adapters.test_parquet.</span></span><span class="sig-name descname"><span class="pre">PriceQuantity</span></span><a class="headerlink" href="#csp.tests.adapters.test_parquet.PriceQuantity" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../index.html#csp.Struct" title="csp.Struct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">csp.Struct</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.PriceQuantity.PRICE">
+<span class="sig-name descname"><span class="pre">PRICE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#csp.tests.adapters.test_parquet.PriceQuantity.PRICE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.PriceQuantity.SIZE">
+<span class="sig-name descname"><span class="pre">SIZE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#csp.tests.adapters.test_parquet.PriceQuantity.SIZE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.PriceQuantity.SIDE">
+<span class="sig-name descname"><span class="pre">SIDE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#csp.tests.adapters.test_parquet.PriceQuantity.SIDE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.PriceQuantity.SYMBOL">
+<span class="sig-name descname"><span class="pre">SYMBOL</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#csp.tests.adapters.test_parquet.PriceQuantity.SYMBOL" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.PriceQuantity2">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.adapters.test_parquet.</span></span><span class="sig-name descname"><span class="pre">PriceQuantity2</span></span><a class="headerlink" href="#csp.tests.adapters.test_parquet.PriceQuantity2" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../index.html#csp.Struct" title="csp.Struct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">csp.Struct</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.PriceQuantity2.price">
+<span class="sig-name descname"><span class="pre">price</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#csp.tests.adapters.test_parquet.PriceQuantity2.price" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.PriceQuantity2.quantity">
+<span class="sig-name descname"><span class="pre">quantity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#csp.tests.adapters.test_parquet.PriceQuantity2.quantity" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.PriceQuantity2.side">
+<span class="sig-name descname"><span class="pre">side</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#csp.tests.adapters.test_parquet.PriceQuantity2.side" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.parquet_filename">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.adapters.test_parquet.</span></span><span class="sig-name descname"><span class="pre">parquet_filename</span></span><a class="headerlink" href="#csp.tests.adapters.test_parquet.parquet_filename" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.arrow_filename">
+<span class="sig-prename descclassname"><span class="pre">csp.tests.adapters.test_parquet.</span></span><span class="sig-name descname"><span class="pre">arrow_filename</span></span><a class="headerlink" href="#csp.tests.adapters.test_parquet.arrow_filename" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.adapters.test_parquet.</span></span><span class="sig-name descname"><span class="pre">TestParquet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
+<p>A class whose instances are single test cases.</p>
+<p>By default, the test code itself should be placed in a method named
+‘runTest’.</p>
+<p>If the fixture may be used for many test cases, create as
+many test methods as are needed. When instantiating such a TestCase
+subclass, specify in the constructor arguments the name of the test method
+that the instance is to execute.</p>
+<p>Test authors should subclass TestCase for their own tests. Construction
+and deconstruction of the test’s environment (‘fixture’) can be
+implemented by overriding the ‘setUp’ and ‘tearDown’ methods respectively.</p>
+<p>If it is necessary to override the __init__ method, the base class
+__init__ method must always be called. It is important that subclasses
+should not change the signature of their __init__ method, since instances
+of the classes are instantiated automatically by parts of the framework
+in order to be run.</p>
+<p>When subclassing TestCase, you can set these attributes:
+* failureException: determines which exception will be raised when</p>
+<blockquote>
+<div><p>the instance’s assertion methods fail; test methods raising this
+exception will be deemed to have ‘failed’ rather than ‘errored’.</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>longMessage: determines whether long messages (including repr of</dt><dd><p>objects used in assert methods) will be printed on failure in <em>addition</em>
+to any explicit message passed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>maxDiff: sets the maximum length of a diff in failure messages</dt><dd><p>by assert methods using difflib. It is looked up as an instance
+attribute so can be configured by individual tests if required.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.do_test_body">
+<span class="sig-name descname"><span class="pre">do_test_body</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arrow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.do_test_body" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_arrow">
+<span class="sig-name descname"><span class="pre">test_arrow</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_arrow" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_parquet">
+<span class="sig-name descname"><span class="pre">test_parquet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_parquet_output_file_rotation">
+<span class="sig-name descname"><span class="pre">test_parquet_output_file_rotation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet_output_file_rotation" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_parquet_writer">
+<span class="sig-name descname"><span class="pre">test_parquet_writer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet_writer" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_arrow_writer">
+<span class="sig-name descname"><span class="pre">test_arrow_writer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_arrow_writer" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_parquet_multiple_values_same_tick">
+<span class="sig-name descname"><span class="pre">test_parquet_multiple_values_same_tick</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet_multiple_values_same_tick" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_duplicate_field_name">
+<span class="sig-name descname"><span class="pre">test_duplicate_field_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_duplicate_field_name" title="Link to this definition">¶</a></dt>
+<dd><p>better errors in parquet writer</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_non_python_c_fields">
+<span class="sig-name descname"><span class="pre">test_non_python_c_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_non_python_c_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_in_memory_arrow_read">
+<span class="sig-name descname"><span class="pre">test_in_memory_arrow_read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_in_memory_arrow_read" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_bytes_read_write">
+<span class="sig-name descname"><span class="pre">test_bytes_read_write</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_bytes_read_write" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_parquet_mismatched_column_type_error">
+<span class="sig-name descname"><span class="pre">test_parquet_mismatched_column_type_error</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet_mismatched_column_type_error" title="Link to this definition">¶</a></dt>
+<dd><p>Tests that we provide the name of the column in the parquet file that has a mismatched type
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_parquet_schema_change">
+<span class="sig-name descname"><span class="pre">test_parquet_schema_change</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet_schema_change" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_parquet_missing_files_read">
+<span class="sig-name descname"><span class="pre">test_parquet_missing_files_read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet_missing_files_read" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_bad_field_map">
+<span class="sig-name descname"><span class="pre">test_bad_field_map</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_bad_field_map" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_numpy_array_on_struct_with_field_map">
+<span class="sig-name descname"><span class="pre">test_numpy_array_on_struct_with_field_map</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_numpy_array_on_struct_with_field_map" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_string_array_with_nulls">
+<span class="sig-name descname"><span class="pre">test_string_array_with_nulls</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_string_array_with_nulls" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_float_array_with_nulls">
+<span class="sig-name descname"><span class="pre">test_float_array_with_nulls</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_float_array_with_nulls" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_all_types">
+<span class="sig-name descname"><span class="pre">test_all_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_all_types" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_write_metadata">
+<span class="sig-name descname"><span class="pre">test_write_metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_write_metadata" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_parquet_int_symbol">
+<span class="sig-name descname"><span class="pre">test_parquet_int_symbol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet_int_symbol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_parquet_symbol_type_change_across_files">
+<span class="sig-name descname"><span class="pre">test_parquet_symbol_type_change_across_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet_symbol_type_change_across_files" title="Link to this definition">¶</a></dt>
+<dd><p>Symbol column type change across files must raise a clean error.</p>
+<p>File 1 has a string symbol column, file 2 has int64.
+The adapter re-detects the type on schema change and raises
+TypeError because the subscriber’s string symbol doesn’t match.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_parquet_polars_read">
+<span class="sig-name descname"><span class="pre">test_parquet_polars_read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet_polars_read" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquet.test_parquet_read">
+<span class="sig-name descname"><span class="pre">test_parquet_read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet_read" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestDictBasket">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.adapters.test_parquet.</span></span><span class="sig-name descname"><span class="pre">TestDictBasket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestDictBasket" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
+<p>Tests for dict basket read/write through parquet adapter.</p>
+<p>Dict baskets store per-tick basket entries inline in the parquet file.
+The main columns have N rows (one per engine tick), while basket
+columns have M rows (sum of value_count per tick). A separate
+value_count column tells the reader how many basket rows per tick.</p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestDictBasket._write_dict_basket">
+<span class="sig-name descname"><span class="pre">_write_dict_basket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basket_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endtime_seconds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestDictBasket._write_dict_basket" title="Link to this definition">¶</a></dt>
+<dd><p>Helper to write dict basket data via csp graph.</p>
+<p>basket_data: dict of {symbol: [(timedelta, value), …]}</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestDictBasket._read_dict_basket">
+<span class="sig-name descname"><span class="pre">_read_dict_basket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endtime_seconds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestDictBasket._read_dict_basket" title="Link to this definition">¶</a></dt>
+<dd><p>Helper to read dict basket data via csp graph.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_basic">
+<span class="sig-name descname"><span class="pre">test_dict_basket_basic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_basic" title="Link to this definition">¶</a></dt>
+<dd><p>Basic dict basket round-trip: write basket values, read them back by symbol.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_skip_rows">
+<span class="sig-name descname"><span class="pre">test_dict_basket_skip_rows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_skip_rows" title="Link to this definition">¶</a></dt>
+<dd><p>Dict basket with start_time exercises the skip loop.</p>
+<p>When start_time is after some data, the adapter skips rows. The skip loop
+must not double-advance by calling both readNextRow() and skipRow().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_multiple_files">
+<span class="sig-name descname"><span class="pre">test_dict_basket_multiple_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_multiple_files" title="Link to this definition">¶</a></dt>
+<dd><p>Dict basket data spanning multiple parquet files.</p>
+<p>Dict basket processors must be rebound when the main processor crosses
+a batch boundary (new file).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_multiple_symbols_same_tick">
+<span class="sig-name descname"><span class="pre">test_dict_basket_multiple_symbols_same_tick</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_multiple_symbols_same_tick" title="Link to this definition">¶</a></dt>
+<dd><p>Dict basket with multiple symbols ticking at the same time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_skip_multi_symbol">
+<span class="sig-name descname"><span class="pre">test_dict_basket_skip_multi_symbol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_skip_multi_symbol" title="Link to this definition">¶</a></dt>
+<dd><p>Skip loop with multiple symbols per tick.</p>
+<p>Each skipped main row has value_count=2 (AAPL + IBM).  A double-advance
+would skip 4 basket rows per main row instead of 2, corrupting row
+alignment and losing data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_multiple_files_multi_symbol">
+<span class="sig-name descname"><span class="pre">test_dict_basket_multiple_files_multi_symbol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_multiple_files_multi_symbol" title="Link to this definition">¶</a></dt>
+<dd><p>Multiple symbols spanning file boundaries.</p>
+<p>After crossing the file boundary, both AAPL and IBM must read
+correctly from the new basket batch.  Distinct values across files
+ensure we are reading fresh data, not stale pointers from file 1.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_schema_change">
+<span class="sig-name descname"><span class="pre">test_dict_basket_schema_change</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_schema_change" title="Link to this definition">¶</a></dt>
+<dd><p>Basket across files with different main-batch schemas.</p>
+<p>File 1 has an extra regular column, making its main-batch schema
+wider than file 2.  When crossing to file 2, the schema change
+triggers setupProcessor which destroys and recreates dispatchers
+in the main processor.  The m_valueCountDispatcher pointer in
+DictBasketReaderRecord must remain valid after the transition.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_symbol_routing_three_symbols">
+<span class="sig-name descname"><span class="pre">test_dict_basket_symbol_routing_three_symbols</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_symbol_routing_three_symbols" title="Link to this definition">¶</a></dt>
+<dd><p>Three symbols with mixed overlapping ticks.</p>
+<p>Each tick dispatches basket entries to subscribers by reading the
+basket’s own __csp_symbol column.  The main processor’s symbol must
+not be passed instead, or ValueDispatcher silently drops every entry.
+Three symbols with different tick patterns stress the routing logic.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_schema_change_missing_value_count">
+<span class="sig-name descname"><span class="pre">test_dict_basket_schema_change_missing_value_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_schema_change_missing_value_count" title="Link to this definition">¶</a></dt>
+<dd><p>Crossing to a file without basket columns must not crash.</p>
+<p>Dir 1 has basket (price) + regular column (extra).
+Dir 2 has ONLY the regular column (extra) — no basket columns.
+The adapter skips basket processing for files that lack basket columns.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_int64_symbol">
+<span class="sig-name descname"><span class="pre">test_dict_basket_int64_symbol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_int64_symbol" title="Link to this definition">¶</a></dt>
+<dd><p>Dict basket with int64 symbol column routes entries correctly.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetFeatures">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.adapters.test_parquet.</span></span><span class="sig-name descname"><span class="pre">TestParquetFeatures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetFeatures" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
+<p>Tests for previously uncovered ParquetReader/Writer features.</p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetFeatures.test_allow_overlapping_periods">
+<span class="sig-name descname"><span class="pre">test_allow_overlapping_periods</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_allow_overlapping_periods" title="Link to this definition">¶</a></dt>
+<dd><p>Write overlapping time ranges to two files, read with allow_overlapping_periods=True.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetFeatures.test_overlapping_periods_default_raises">
+<span class="sig-name descname"><span class="pre">test_overlapping_periods_default_raises</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_overlapping_periods_default_raises" title="Link to this definition">¶</a></dt>
+<dd><p>With allow_overlapping_periods=False (default), overlapping files raise an error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetFeatures.test_time_shift">
+<span class="sig-name descname"><span class="pre">test_time_shift</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_time_shift" title="Link to this definition">¶</a></dt>
+<dd><p>Read with time_shift shifts all callback timestamps by the given amount.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetFeatures.test_end_time_filtering">
+<span class="sig-name descname"><span class="pre">test_end_time_filtering</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_end_time_filtering" title="Link to this definition">¶</a></dt>
+<dd><p>ParquetReader end_time parameter filters data to the specified range.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetFeatures.test_end_time_before_any_data">
+<span class="sig-name descname"><span class="pre">test_end_time_before_any_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_end_time_before_any_data" title="Link to this definition">¶</a></dt>
+<dd><p>end_time before any data returns empty result.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetFeatures.test_start_time_and_end_time_combined">
+<span class="sig-name descname"><span class="pre">test_start_time_and_end_time_combined</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_start_time_and_end_time_combined" title="Link to this definition">¶</a></dt>
+<dd><p>start_time + end_time on ParquetReader selects a sub-range.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetFeatures.test_numpy_ndarray_2d">
+<span class="sig-name descname"><span class="pre">test_numpy_ndarray_2d</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_numpy_ndarray_2d" title="Link to this definition">¶</a></dt>
+<dd><p>Round-trip 2D NumpyNDArray through parquet preserves shape.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetFeatures.test_numpy_ndarray_3d">
+<span class="sig-name descname"><span class="pre">test_numpy_ndarray_3d</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_numpy_ndarray_3d" title="Link to this definition">¶</a></dt>
+<dd><p>Round-trip 3D NumpyNDArray through parquet preserves shape.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetFeatures.test_status_method">
+<span class="sig-name descname"><span class="pre">test_status_method</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_status_method" title="Link to this definition">¶</a></dt>
+<dd><p>ParquetReader.status() can be called and returns a ts[Status].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetFeatures.test_push_mode_last_value">
+<span class="sig-name descname"><span class="pre">test_push_mode_last_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_push_mode_last_value" title="Link to this definition">¶</a></dt>
+<dd><p>PushMode.LAST_VALUE collapses same-timestamp ticks to one value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetFeatures.test_push_mode_burst">
+<span class="sig-name descname"><span class="pre">test_push_mode_burst</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_push_mode_burst" title="Link to this definition">¶</a></dt>
+<dd><p>PushMode.BURST delivers all same-timestamp values as a list in one tick.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetFeatures.test_push_mode_non_collapsing">
+<span class="sig-name descname"><span class="pre">test_push_mode_non_collapsing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_push_mode_non_collapsing" title="Link to this definition">¶</a></dt>
+<dd><p>PushMode.NON_COLLAPSING delivers each same-timestamp value as separate cycle.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetFeatures.test_split_columns_to_files_regular_columns">
+<span class="sig-name descname"><span class="pre">test_split_columns_to_files_regular_columns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_split_columns_to_files_regular_columns" title="Link to this definition">¶</a></dt>
+<dd><p>split_columns_to_files with regular (non-basket) columns round-trips correctly.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetFeatures.test_split_columns_to_files_struct">
+<span class="sig-name descname"><span class="pre">test_split_columns_to_files_struct</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_split_columns_to_files_struct" title="Link to this definition">¶</a></dt>
+<dd><p>split_columns_to_files with struct publish round-trips correctly.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetEdgeCases">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.adapters.test_parquet.</span></span><span class="sig-name descname"><span class="pre">TestParquetEdgeCases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetEdgeCases" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
+<p>Additional tests for gaps identified in RecordBatch-based parquet processing.</p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetEdgeCases.test_ipc_with_allow_missing_columns">
+<span class="sig-name descname"><span class="pre">test_ipc_with_allow_missing_columns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetEdgeCases.test_ipc_with_allow_missing_columns" title="Link to this definition">¶</a></dt>
+<dd><p>IPC files with differing schemas: allow_missing_columns=True fills missing fields,
+allow_missing_columns=False raises RuntimeError.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetEdgeCases.test_split_columns_missing_column_file">
+<span class="sig-name descname"><span class="pre">test_split_columns_missing_column_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetEdgeCases.test_split_columns_missing_column_file" title="Link to this definition">¶</a></dt>
+<dd><p>split_columns_to_files with a deleted column file:
+allow_missing_columns=True succeeds, False raises RuntimeError.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetEdgeCases.test_time_shift_with_end_time">
+<span class="sig-name descname"><span class="pre">test_time_shift_with_end_time</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetEdgeCases.test_time_shift_with_end_time" title="Link to this definition">¶</a></dt>
+<dd><p>time_shift combined with end_time: only shifted timestamps within range are returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetEdgeCases.test_column_projection_subset">
+<span class="sig-name descname"><span class="pre">test_column_projection_subset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetEdgeCases.test_column_projection_subset" title="Link to this definition">¶</a></dt>
+<dd><p>Subscribe to a subset of columns from a file with many columns.</p>
+<p>Verifies the column projection optimization reads only needed columns.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetRegressions">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.adapters.test_parquet.</span></span><span class="sig-name descname"><span class="pre">TestParquetRegressions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetRegressions" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
+<p>Regression tests for edge cases involving dictionary encoding, split columns, and error handling.</p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetRegressions.test_subscribe_with_dict_encoded_symbol_and_skip">
+<span class="sig-name descname"><span class="pre">test_subscribe_with_dict_encoded_symbol_and_skip</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_subscribe_with_dict_encoded_symbol_and_skip" title="Link to this definition">¶</a></dt>
+<dd><p>Subscribe (not dict basket) with dict-encoded symbol and skip.</p>
+<p>The subscribe path uses readNextRow() (which calls doExtract) rather than
+skipRow(). This test confirms that path works.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetRegressions.test_skiprow_dict_basket_with_dict_encoded_symbol">
+<span class="sig-name descname"><span class="pre">test_skiprow_dict_basket_with_dict_encoded_symbol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_skiprow_dict_basket_with_dict_encoded_symbol" title="Link to this definition">¶</a></dt>
+<dd><p>DictStringReader via read_from_memory_tables with struct containing dict-encoded field.</p>
+<p>When a table has dictionary-encoded string columns and rows are skipped
+(via start_time), the old code deferred m_dict initialization to
+doExtract(row==0). After skipRow, row&gt;0 on first extract → null deref.
+The onBind() fix should make this pass.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetRegressions.test_value_count_type_mismatch">
+<span class="sig-name descname"><span class="pre">test_value_count_type_mismatch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_value_count_type_mismatch" title="Link to this definition">¶</a></dt>
+<dd><p>Value count column stored as int32 instead of uint16.</p>
+<p>getCurValue&lt;uint16_t&gt;() does a static_cast on the dispatcher’s internal
+std::optional&lt;T&gt; — UB if T != uint16_t. Expect either correct behavior
+(if type-checked) or a clear error, not silent corruption.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetRegressions.test_split_column_row_count_mismatch">
+<span class="sig-name descname"><span class="pre">test_split_column_row_count_mismatch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_split_column_row_count_mismatch" title="Link to this definition">¶</a></dt>
+<dd><p>Split-column files with different row counts must raise an error.</p>
+<p>Timestamp column has 5 rows, value column has 3 rows. The processor
+must detect the misalignment and raise a RuntimeError.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetRegressions.test_memory_table_empty_projection">
+<span class="sig-name descname"><span class="pre">test_memory_table_empty_projection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_memory_table_empty_projection" title="Link to this definition">¶</a></dt>
+<dd><p>Memory table with no matching columns → IndexError.</p>
+<p>When projected columns don’t overlap with table columns, the reader
+gets a 0-column schema and schema.names[0] raises IndexError.
+Expect a clear error, not a raw IndexError.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetRegressions.test_zero_column_ipc_file">
+<span class="sig-name descname"><span class="pre">test_zero_column_ipc_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_zero_column_ipc_file" title="Link to this definition">¶</a></dt>
+<dd><p>IPC file with 0 columns → IndexError at schema.names[0].</p>
+<p>A pathological IPC file with empty schema should produce a clear error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetRegressions.test_basket_missing_symbol_column">
+<span class="sig-name descname"><span class="pre">test_basket_missing_symbol_column</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_basket_missing_symbol_column" title="Link to this definition">¶</a></dt>
+<dd><p>Basket symbol column disappears across files + allow_missing_columns.</p>
+<p>File 1 has price__csp_symbol. File 2 does not. With allow_missing_columns=True,
+basket entries in file 2 should not be silently misrouted.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetRegressions.test_multiple_symbol_subscriptions_same_struct">
+<span class="sig-name descname"><span class="pre">test_multiple_symbol_subscriptions_same_struct</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_multiple_symbol_subscriptions_same_struct" title="Link to this definition">¶</a></dt>
+<dd><p>Multiple symbols subscribing to the same struct type.</p>
+<p>Verifies that redundant createFieldSetters calls (once per subscriber)
+don’t cause data corruption. Both symbols should receive correct data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetRegressions.test_repeated_runs_same_reader_config">
+<span class="sig-name descname"><span class="pre">test_repeated_runs_same_reader_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_repeated_runs_same_reader_config" title="Link to this definition">¶</a></dt>
+<dd><p>Repeated csp.run calls with the same reader configuration.</p>
+<p>Each run creates a fresh adapter manager, so dangling pointers in
+m_mainCursorsByName from stop() don’t affect the next run. This test
+verifies repeated runs produce consistent results.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetRegressions.test_non_monotonic_timestamps">
+<span class="sig-name descname"><span class="pre">test_non_monotonic_timestamps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_non_monotonic_timestamps" title="Link to this definition">¶</a></dt>
+<dd><p>Non-monotonic timestamps should produce a clear error.</p>
+<p>Data with timestamps out of order (3, 1, 2) should raise an error
+mentioning unsorted data, not just a scheduler error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetRegressions.test_overlapping_periods_equal_timestamp_not_deduped">
+<span class="sig-name descname"><span class="pre">test_overlapping_periods_equal_timestamp_not_deduped</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_overlapping_periods_equal_timestamp_not_deduped" title="Link to this definition">¶</a></dt>
+<dd><p>allow_overlapping_periods does not deduplicate equal timestamps.</p>
+<p>File 1 has data at t=1,2,3. File 2 has data at t=3,4,5. With
+allow_overlapping_periods=True, t=3 from file 2 is NOT skipped
+(skip uses &lt; not &lt;=), producing a duplicate tick at t=3.
+This documents the pre-existing behavior.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetRegressions.test_timedelta_zero_time_shift">
+<span class="sig-name descname"><span class="pre">test_timedelta_zero_time_shift</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_timedelta_zero_time_shift" title="Link to this definition">¶</a></dt>
+<dd><p>timedelta(0) time_shift is equivalent to no shift.</p>
+<p>Python’s <cite>if timedelta(0):</cite> is False, so the property is never set.
+C++ defaults to zero, so behavior is identical. This test confirms
+both paths produce the same output.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetRegressions.test_dict_basket_zero_value_count_tick">
+<span class="sig-name descname"><span class="pre">test_dict_basket_zero_value_count_tick</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_dict_basket_zero_value_count_tick" title="Link to this definition">¶</a></dt>
+<dd><p>T1: Dict basket where some ticks have value_count=0.</p>
+<p>Tick 1: 2 basket entries (AAPL=100, IBM=200)
+Tick 2: 0 basket entries
+Tick 3: 1 basket entry (AAPL=101)
+Tick 2 should produce no output; ticks 1 and 3 should be correct.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetRegressions.test_subscribe_nonexistent_basket_symbol">
+<span class="sig-name descname"><span class="pre">test_subscribe_nonexistent_basket_symbol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_subscribe_nonexistent_basket_symbol" title="Link to this definition">¶</a></dt>
+<dd><p>T2: subscribe_dict_basket with a symbol not present in the data.</p>
+<p>Data contains AAPL and IBM, but we subscribe to [“AAPL”, “GOOG”].
+GOOG should produce no ticks; AAPL should work correctly.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetRegressions.test_null_symbol_column_value">
+<span class="sig-name descname"><span class="pre">test_null_symbol_column_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_null_symbol_column_value" title="Link to this definition">¶</a></dt>
+<dd><p>T8: Symbol column with null values via read_from_memory_tables.</p>
+<p>When the symbol column contains None, the reader should either skip
+those rows or raise a clear error — not crash or silently corrupt.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetRegressions.test_time_column_disappears_after_schema_change">
+<span class="sig-name descname"><span class="pre">test_time_column_disappears_after_schema_change</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_time_column_disappears_after_schema_change" title="Link to this definition">¶</a></dt>
+<dd><p>Second IPC file drops the time column entirely.</p>
+<p>With allow_missing_columns=True the time column may be absent
+in a later file.  The adapter must raise a clear error rather
+than segfault via null m_cachedTimeDispatcher.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetSchemaEvolution">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.adapters.test_parquet.</span></span><span class="sig-name descname"><span class="pre">TestParquetSchemaEvolution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetSchemaEvolution" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
+<p>Tests for specific coverage gaps in the parquet input adapter rewrite.</p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetSchemaEvolution.test_column_type_change_across_files">
+<span class="sig-name descname"><span class="pre">test_column_type_change_across_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetSchemaEvolution.test_column_type_change_across_files" title="Link to this definition">¶</a></dt>
+<dd><p>Gap 1: Column type changes from int32 in file1 to float64 in file2.</p>
+<p>Tests isArrowTypeCompatible and FieldReader recreation on schema change.
+Arrow should allow int32→float64 widening when subscribing as float.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetSchemaEvolution.test_null_values_in_scalar_column">
+<span class="sig-name descname"><span class="pre">test_null_values_in_scalar_column</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetSchemaEvolution.test_null_values_in_scalar_column" title="Link to this definition">¶</a></dt>
+<dd><p>Gap 3: Null values in an int64 column via pyarrow validity bitmap.</p>
+<p>Verifies that non-null rows are delivered correctly and null rows
+don’t crash. Expected: null values produce no tick for that timestamp.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetSchemaEvolution.test_empty_parquet_file_in_multi_file_read">
+<span class="sig-name descname"><span class="pre">test_empty_parquet_file_in_multi_file_read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetSchemaEvolution.test_empty_parquet_file_in_multi_file_read" title="Link to this definition">¶</a></dt>
+<dd><p>Gap 4: Empty (0-row) parquet file between files with data.</p>
+<p>Verifies that the adapter skips the empty file gracefully and
+returns data from file1 and file3.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetSchemaEvolution.test_symbol_column_absent_allow_missing">
+<span class="sig-name descname"><span class="pre">test_symbol_column_absent_allow_missing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetSchemaEvolution.test_symbol_column_absent_allow_missing" title="Link to this definition">¶</a></dt>
+<dd><p>Gap 5: Symbol column present in file1 but absent in file2.</p>
+<p>With allow_missing_columns=True, file1 filters by symbol normally.
+File2 (missing symbol column) cannot perform symbol filtering, so
+those rows are silently skipped for all symbol-based subscribers.
+This verifies allow_missing_columns doesn’t crash and file1 data
+is still correctly filtered by symbol.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.adapters.test_parquet.</span></span><span class="sig-name descname"><span class="pre">TestParquetTypes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
+<p>Tests for type handling, schema transitions, and edge cases.</p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_time_column_precision_change_across_files">
+<span class="sig-name descname"><span class="pre">test_time_column_precision_change_across_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_time_column_precision_change_across_files" title="Link to this definition">¶</a></dt>
+<dd><p>Time column changes from timestamp[s] to timestamp[ns] across files.</p>
+<p>The adapter re-fetches the time dispatcher on schema change. This test
+verifies it handles different timestamp precisions correctly.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_schema_change_with_symbol_column">
+<span class="sig-name descname"><span class="pre">test_schema_change_with_symbol_column</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_schema_change_with_symbol_column" title="Link to this definition">¶</a></dt>
+<dd><p>Schema change with symbol column verifies m_cachedSymbolDispatcher is refreshed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_struct_column_with_nulls">
+<span class="sig-name descname"><span class="pre">test_struct_column_with_nulls</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_struct_column_with_nulls" title="Link to this definition">¶</a></dt>
+<dd><p>Struct column with null entries interspersed with valid entries.</p>
+<p>NestedStructReader has a two-path strategy: fast columnar path when
+no nulls, row-by-row with skipNext() when nulls exist. This test
+exercises the null path via in-memory tables.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_dict_basket_and_subscribe_on_same_reader">
+<span class="sig-name descname"><span class="pre">test_dict_basket_and_subscribe_on_same_reader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_dict_basket_and_subscribe_on_same_reader" title="Link to this definition">¶</a></dt>
+<dd><p>Dict basket and regular subscribe on the same reader instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_large_multi_row_group">
+<span class="sig-name descname"><span class="pre">test_large_multi_row_group</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_large_multi_row_group" title="Link to this definition">¶</a></dt>
+<dd><p>Write enough rows to trigger multiple record batches (row groups).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_starttime_exactly_at_row_timestamp">
+<span class="sig-name descname"><span class="pre">test_starttime_exactly_at_row_timestamp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_starttime_exactly_at_row_timestamp" title="Link to this definition">¶</a></dt>
+<dd><p>Start time exactly matches a row timestamp — that row should be included.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_endtime_exactly_at_row_timestamp">
+<span class="sig-name descname"><span class="pre">test_endtime_exactly_at_row_timestamp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_endtime_exactly_at_row_timestamp" title="Link to this definition">¶</a></dt>
+<dd><p>End time exactly matches a row timestamp — that row should be included.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_symbol_column_dict_encoded_string">
+<span class="sig-name descname"><span class="pre">test_symbol_column_dict_encoded_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_symbol_column_dict_encoded_string" title="Link to this definition">¶</a></dt>
+<dd><p>Symbol column as dictionary-encoded string via in-memory tables.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_struct_with_nested_struct">
+<span class="sig-name descname"><span class="pre">test_struct_with_nested_struct</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_struct_with_nested_struct" title="Link to this definition">¶</a></dt>
+<dd><p>Multi-level struct nesting: outer.inner.x via write+read.</p>
+<p>NOTE: sub-struct reading in native parquet mode only reads the first field
+of the nested struct (known limitation, also noted in test_all_types).
+We use arrow IPC (binary_arrow=True via in-memory tables) to test full nesting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_struct_in_middle_of_schema">
+<span class="sig-name descname"><span class="pre">test_struct_in_middle_of_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_struct_in_middle_of_schema" title="Link to this definition">¶</a></dt>
+<dd><p>Struct in middle of schema: fields after it must get correct leaf indices.</p>
+<p>Schema: [timestamp, before(int), middle(struct&lt;a,b,c&gt;), after(float)]
+Parquet leaves: [0]timestamp [1]before [2]middle.a [3]middle.b [4]middle.c [5]after
+Without countLeafColumns fix, ‘after’ would be read from leaf 3 (middle.b) instead of leaf 5.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_multiple_scalar_subscribers_same_reader">
+<span class="sig-name descname"><span class="pre">test_multiple_scalar_subscribers_same_reader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_multiple_scalar_subscribers_same_reader" title="Link to this definition">¶</a></dt>
+<dd><p>Multiple scalar fields from the same reader.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_arrow_ipc_round_trip_with_symbol">
+<span class="sig-name descname"><span class="pre">test_arrow_ipc_round_trip_with_symbol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_arrow_ipc_round_trip_with_symbol" title="Link to this definition">¶</a></dt>
+<dd><p>Arrow IPC file round-trip with symbol column filtering.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_null_values_in_struct_fields">
+<span class="sig-name descname"><span class="pre">test_null_values_in_struct_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_null_values_in_struct_fields" title="Link to this definition">¶</a></dt>
+<dd><p>Struct with some fields null on some rows.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_bytes_type_subscription">
+<span class="sig-name descname"><span class="pre">test_bytes_type_subscription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_bytes_type_subscription" title="Link to this definition">¶</a></dt>
+<dd><p>Bytes column subscription via parquet.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_scalar_with_field_map_string">
+<span class="sig-name descname"><span class="pre">test_scalar_with_field_map_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_scalar_with_field_map_string" title="Link to this definition">¶</a></dt>
+<dd><p>Scalar subscription with field_map (string alias for column name).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_csp_run_starttime_after_all_data">
+<span class="sig-name descname"><span class="pre">test_csp_run_starttime_after_all_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_csp_run_starttime_after_all_data" title="Link to this definition">¶</a></dt>
+<dd><p>csp.run starttime is after all data in the file → no output.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_all_files_empty">
+<span class="sig-name descname"><span class="pre">test_all_files_empty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_all_files_empty" title="Link to this definition">¶</a></dt>
+<dd><p>All files in the list are empty (0 rows).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_narrow_int_types_scalar_subscription">
+<span class="sig-name descname"><span class="pre">test_narrow_int_types_scalar_subscription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_narrow_int_types_scalar_subscription" title="Link to this definition">¶</a></dt>
+<dd><p>INT8, INT16, UINT8, UINT16, UINT32, UINT64 as scalar subscriptions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_narrow_int_types_with_nulls">
+<span class="sig-name descname"><span class="pre">test_narrow_int_types_with_nulls</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_narrow_int_types_with_nulls" title="Link to this definition">¶</a></dt>
+<dd><p>Null values in narrow int types (int8/int16/uint*).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_half_float_subscription">
+<span class="sig-name descname"><span class="pre">test_half_float_subscription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_half_float_subscription" title="Link to this definition">¶</a></dt>
+<dd><p>HALF_FLOAT (float16) column read as float.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_date64_subscription">
+<span class="sig-name descname"><span class="pre">test_date64_subscription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_date64_subscription" title="Link to this definition">¶</a></dt>
+<dd><p>DATE64 column read as date type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_time32_subscription">
+<span class="sig-name descname"><span class="pre">test_time32_subscription</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_time32_subscription" title="Link to this definition">¶</a></dt>
+<dd><p>TIME32 column read as time type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_nulls_spanning_row_group_boundaries">
+<span class="sig-name descname"><span class="pre">test_nulls_spanning_row_group_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_nulls_spanning_row_group_boundaries" title="Link to this definition">¶</a></dt>
+<dd><p>Null values at row group boundaries are correctly handled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_dict_basket_with_null_values">
+<span class="sig-name descname"><span class="pre">test_dict_basket_with_null_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_dict_basket_with_null_values" title="Link to this definition">¶</a></dt>
+<dd><p>Dict basket where some ticks have null values — verifies no crash.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_split_columns_different_arrow_types">
+<span class="sig-name descname"><span class="pre">test_split_columns_different_arrow_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_split_columns_different_arrow_types" title="Link to this definition">¶</a></dt>
+<dd><p>Split columns where shards use different Arrow storage types for same logical column.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetTypes.test_partial_read_many_row_groups">
+<span class="sig-name descname"><span class="pre">test_partial_read_many_row_groups</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_partial_read_many_row_groups" title="Link to this definition">¶</a></dt>
+<dd><p>Partial read with many row groups exercises prefetch thread shutdown.</p>
+<p>Regression test: when CSP stops mid-file, the PrefetchingRecordBatchReader
+must cleanly shut down its background thread before the FileReader is released.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetSchemaValidation">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.tests.adapters.test_parquet.</span></span><span class="sig-name descname"><span class="pre">TestParquetSchemaValidation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetSchemaValidation" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
+<p>Tests for schema validation across file boundaries.</p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetSchemaValidation.test_time_column_type_change_after_schema_change">
+<span class="sig-name descname"><span class="pre">test_time_column_type_change_after_schema_change</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetSchemaValidation.test_time_column_type_change_after_schema_change" title="Link to this definition">¶</a></dt>
+<dd><p>Time column type re-validation on schema change.</p>
+<p>If a later file has the time column with a non-TIMESTAMP type (e.g. INT64),
+advanceToNextStream() must reject it rather than allowing an unchecked cast.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.tests.adapters.test_parquet.TestParquetSchemaValidation.test_ipc_split_columns_allow_missing_files">
+<span class="sig-name descname"><span class="pre">test_ipc_split_columns_allow_missing_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csp.tests.adapters.test_parquet.TestParquetSchemaValidation.test_ipc_split_columns_allow_missing_files" title="Link to this definition">¶</a></dt>
+<dd><p>allow_missing_files forwarded in split-columns IPC branch.</p>
+<p>With split_columns_to_files=True and binary_arrow=True (IPC mode),
+allow_missing_files=True should skip missing directories instead of raising.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; the csp authors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">csp.tests.adapters.test_parquet</a><ul>
+<li><a class="reference internal" href="#attributes">Attributes</a></li>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.PriceQuantity"><code class="docutils literal notranslate"><span class="pre">PriceQuantity</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.PriceQuantity.PRICE"><code class="docutils literal notranslate"><span class="pre">PriceQuantity.PRICE</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.PriceQuantity.SIZE"><code class="docutils literal notranslate"><span class="pre">PriceQuantity.SIZE</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.PriceQuantity.SIDE"><code class="docutils literal notranslate"><span class="pre">PriceQuantity.SIDE</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.PriceQuantity.SYMBOL"><code class="docutils literal notranslate"><span class="pre">PriceQuantity.SYMBOL</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.PriceQuantity2"><code class="docutils literal notranslate"><span class="pre">PriceQuantity2</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.PriceQuantity2.price"><code class="docutils literal notranslate"><span class="pre">PriceQuantity2.price</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.PriceQuantity2.quantity"><code class="docutils literal notranslate"><span class="pre">PriceQuantity2.quantity</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.PriceQuantity2.side"><code class="docutils literal notranslate"><span class="pre">PriceQuantity2.side</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.parquet_filename"><code class="docutils literal notranslate"><span class="pre">parquet_filename</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.arrow_filename"><code class="docutils literal notranslate"><span class="pre">arrow_filename</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet"><code class="docutils literal notranslate"><span class="pre">TestParquet</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.do_test_body"><code class="docutils literal notranslate"><span class="pre">TestParquet.do_test_body()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_arrow"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_arrow()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_parquet()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet_output_file_rotation"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_parquet_output_file_rotation()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet_writer"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_parquet_writer()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_arrow_writer"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_arrow_writer()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet_multiple_values_same_tick"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_parquet_multiple_values_same_tick()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_duplicate_field_name"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_duplicate_field_name()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_non_python_c_fields"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_non_python_c_fields()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_in_memory_arrow_read"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_in_memory_arrow_read()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_bytes_read_write"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_bytes_read_write()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet_mismatched_column_type_error"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_parquet_mismatched_column_type_error()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet_schema_change"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_parquet_schema_change()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet_missing_files_read"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_parquet_missing_files_read()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_bad_field_map"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_bad_field_map()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_numpy_array_on_struct_with_field_map"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_numpy_array_on_struct_with_field_map()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_string_array_with_nulls"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_string_array_with_nulls()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_float_array_with_nulls"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_float_array_with_nulls()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_all_types"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_all_types()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_write_metadata"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_write_metadata()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet_int_symbol"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_parquet_int_symbol()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet_symbol_type_change_across_files"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_parquet_symbol_type_change_across_files()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet_polars_read"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_parquet_polars_read()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquet.test_parquet_read"><code class="docutils literal notranslate"><span class="pre">TestParquet.test_parquet_read()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestDictBasket"><code class="docutils literal notranslate"><span class="pre">TestDictBasket</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestDictBasket._write_dict_basket"><code class="docutils literal notranslate"><span class="pre">TestDictBasket._write_dict_basket()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestDictBasket._read_dict_basket"><code class="docutils literal notranslate"><span class="pre">TestDictBasket._read_dict_basket()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_basic"><code class="docutils literal notranslate"><span class="pre">TestDictBasket.test_dict_basket_basic()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_skip_rows"><code class="docutils literal notranslate"><span class="pre">TestDictBasket.test_dict_basket_skip_rows()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_multiple_files"><code class="docutils literal notranslate"><span class="pre">TestDictBasket.test_dict_basket_multiple_files()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_multiple_symbols_same_tick"><code class="docutils literal notranslate"><span class="pre">TestDictBasket.test_dict_basket_multiple_symbols_same_tick()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_skip_multi_symbol"><code class="docutils literal notranslate"><span class="pre">TestDictBasket.test_dict_basket_skip_multi_symbol()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_multiple_files_multi_symbol"><code class="docutils literal notranslate"><span class="pre">TestDictBasket.test_dict_basket_multiple_files_multi_symbol()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_schema_change"><code class="docutils literal notranslate"><span class="pre">TestDictBasket.test_dict_basket_schema_change()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_symbol_routing_three_symbols"><code class="docutils literal notranslate"><span class="pre">TestDictBasket.test_dict_basket_symbol_routing_three_symbols()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_schema_change_missing_value_count"><code class="docutils literal notranslate"><span class="pre">TestDictBasket.test_dict_basket_schema_change_missing_value_count()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestDictBasket.test_dict_basket_int64_symbol"><code class="docutils literal notranslate"><span class="pre">TestDictBasket.test_dict_basket_int64_symbol()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetFeatures"><code class="docutils literal notranslate"><span class="pre">TestParquetFeatures</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_allow_overlapping_periods"><code class="docutils literal notranslate"><span class="pre">TestParquetFeatures.test_allow_overlapping_periods()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_overlapping_periods_default_raises"><code class="docutils literal notranslate"><span class="pre">TestParquetFeatures.test_overlapping_periods_default_raises()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_time_shift"><code class="docutils literal notranslate"><span class="pre">TestParquetFeatures.test_time_shift()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_end_time_filtering"><code class="docutils literal notranslate"><span class="pre">TestParquetFeatures.test_end_time_filtering()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_end_time_before_any_data"><code class="docutils literal notranslate"><span class="pre">TestParquetFeatures.test_end_time_before_any_data()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_start_time_and_end_time_combined"><code class="docutils literal notranslate"><span class="pre">TestParquetFeatures.test_start_time_and_end_time_combined()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_numpy_ndarray_2d"><code class="docutils literal notranslate"><span class="pre">TestParquetFeatures.test_numpy_ndarray_2d()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_numpy_ndarray_3d"><code class="docutils literal notranslate"><span class="pre">TestParquetFeatures.test_numpy_ndarray_3d()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_status_method"><code class="docutils literal notranslate"><span class="pre">TestParquetFeatures.test_status_method()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_push_mode_last_value"><code class="docutils literal notranslate"><span class="pre">TestParquetFeatures.test_push_mode_last_value()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_push_mode_burst"><code class="docutils literal notranslate"><span class="pre">TestParquetFeatures.test_push_mode_burst()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_push_mode_non_collapsing"><code class="docutils literal notranslate"><span class="pre">TestParquetFeatures.test_push_mode_non_collapsing()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_split_columns_to_files_regular_columns"><code class="docutils literal notranslate"><span class="pre">TestParquetFeatures.test_split_columns_to_files_regular_columns()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetFeatures.test_split_columns_to_files_struct"><code class="docutils literal notranslate"><span class="pre">TestParquetFeatures.test_split_columns_to_files_struct()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetEdgeCases"><code class="docutils literal notranslate"><span class="pre">TestParquetEdgeCases</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetEdgeCases.test_ipc_with_allow_missing_columns"><code class="docutils literal notranslate"><span class="pre">TestParquetEdgeCases.test_ipc_with_allow_missing_columns()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetEdgeCases.test_split_columns_missing_column_file"><code class="docutils literal notranslate"><span class="pre">TestParquetEdgeCases.test_split_columns_missing_column_file()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetEdgeCases.test_time_shift_with_end_time"><code class="docutils literal notranslate"><span class="pre">TestParquetEdgeCases.test_time_shift_with_end_time()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetEdgeCases.test_column_projection_subset"><code class="docutils literal notranslate"><span class="pre">TestParquetEdgeCases.test_column_projection_subset()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetRegressions"><code class="docutils literal notranslate"><span class="pre">TestParquetRegressions</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_subscribe_with_dict_encoded_symbol_and_skip"><code class="docutils literal notranslate"><span class="pre">TestParquetRegressions.test_subscribe_with_dict_encoded_symbol_and_skip()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_skiprow_dict_basket_with_dict_encoded_symbol"><code class="docutils literal notranslate"><span class="pre">TestParquetRegressions.test_skiprow_dict_basket_with_dict_encoded_symbol()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_value_count_type_mismatch"><code class="docutils literal notranslate"><span class="pre">TestParquetRegressions.test_value_count_type_mismatch()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_split_column_row_count_mismatch"><code class="docutils literal notranslate"><span class="pre">TestParquetRegressions.test_split_column_row_count_mismatch()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_memory_table_empty_projection"><code class="docutils literal notranslate"><span class="pre">TestParquetRegressions.test_memory_table_empty_projection()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_zero_column_ipc_file"><code class="docutils literal notranslate"><span class="pre">TestParquetRegressions.test_zero_column_ipc_file()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_basket_missing_symbol_column"><code class="docutils literal notranslate"><span class="pre">TestParquetRegressions.test_basket_missing_symbol_column()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_multiple_symbol_subscriptions_same_struct"><code class="docutils literal notranslate"><span class="pre">TestParquetRegressions.test_multiple_symbol_subscriptions_same_struct()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_repeated_runs_same_reader_config"><code class="docutils literal notranslate"><span class="pre">TestParquetRegressions.test_repeated_runs_same_reader_config()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_non_monotonic_timestamps"><code class="docutils literal notranslate"><span class="pre">TestParquetRegressions.test_non_monotonic_timestamps()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_overlapping_periods_equal_timestamp_not_deduped"><code class="docutils literal notranslate"><span class="pre">TestParquetRegressions.test_overlapping_periods_equal_timestamp_not_deduped()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_timedelta_zero_time_shift"><code class="docutils literal notranslate"><span class="pre">TestParquetRegressions.test_timedelta_zero_time_shift()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_dict_basket_zero_value_count_tick"><code class="docutils literal notranslate"><span class="pre">TestParquetRegressions.test_dict_basket_zero_value_count_tick()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_subscribe_nonexistent_basket_symbol"><code class="docutils literal notranslate"><span class="pre">TestParquetRegressions.test_subscribe_nonexistent_basket_symbol()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_null_symbol_column_value"><code class="docutils literal notranslate"><span class="pre">TestParquetRegressions.test_null_symbol_column_value()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetRegressions.test_time_column_disappears_after_schema_change"><code class="docutils literal notranslate"><span class="pre">TestParquetRegressions.test_time_column_disappears_after_schema_change()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetSchemaEvolution"><code class="docutils literal notranslate"><span class="pre">TestParquetSchemaEvolution</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetSchemaEvolution.test_column_type_change_across_files"><code class="docutils literal notranslate"><span class="pre">TestParquetSchemaEvolution.test_column_type_change_across_files()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetSchemaEvolution.test_null_values_in_scalar_column"><code class="docutils literal notranslate"><span class="pre">TestParquetSchemaEvolution.test_null_values_in_scalar_column()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetSchemaEvolution.test_empty_parquet_file_in_multi_file_read"><code class="docutils literal notranslate"><span class="pre">TestParquetSchemaEvolution.test_empty_parquet_file_in_multi_file_read()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetSchemaEvolution.test_symbol_column_absent_allow_missing"><code class="docutils literal notranslate"><span class="pre">TestParquetSchemaEvolution.test_symbol_column_absent_allow_missing()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_time_column_precision_change_across_files"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_time_column_precision_change_across_files()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_schema_change_with_symbol_column"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_schema_change_with_symbol_column()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_struct_column_with_nulls"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_struct_column_with_nulls()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_dict_basket_and_subscribe_on_same_reader"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_dict_basket_and_subscribe_on_same_reader()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_large_multi_row_group"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_large_multi_row_group()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_starttime_exactly_at_row_timestamp"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_starttime_exactly_at_row_timestamp()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_endtime_exactly_at_row_timestamp"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_endtime_exactly_at_row_timestamp()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_symbol_column_dict_encoded_string"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_symbol_column_dict_encoded_string()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_struct_with_nested_struct"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_struct_with_nested_struct()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_struct_in_middle_of_schema"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_struct_in_middle_of_schema()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_multiple_scalar_subscribers_same_reader"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_multiple_scalar_subscribers_same_reader()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_arrow_ipc_round_trip_with_symbol"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_arrow_ipc_round_trip_with_symbol()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_null_values_in_struct_fields"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_null_values_in_struct_fields()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_bytes_type_subscription"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_bytes_type_subscription()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_scalar_with_field_map_string"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_scalar_with_field_map_string()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_csp_run_starttime_after_all_data"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_csp_run_starttime_after_all_data()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_all_files_empty"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_all_files_empty()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_narrow_int_types_scalar_subscription"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_narrow_int_types_scalar_subscription()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_narrow_int_types_with_nulls"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_narrow_int_types_with_nulls()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_half_float_subscription"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_half_float_subscription()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_date64_subscription"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_date64_subscription()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_time32_subscription"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_time32_subscription()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_nulls_spanning_row_group_boundaries"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_nulls_spanning_row_group_boundaries()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_dict_basket_with_null_values"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_dict_basket_with_null_values()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_split_columns_different_arrow_types"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_split_columns_different_arrow_types()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetTypes.test_partial_read_many_row_groups"><code class="docutils literal notranslate"><span class="pre">TestParquetTypes.test_partial_read_many_row_groups()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetSchemaValidation"><code class="docutils literal notranslate"><span class="pre">TestParquetSchemaValidation</span></code></a><ul>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetSchemaValidation.test_time_column_type_change_after_schema_change"><code class="docutils literal notranslate"><span class="pre">TestParquetSchemaValidation.test_time_column_type_change_after_schema_change()</span></code></a></li>
+<li><a class="reference internal" href="#csp.tests.adapters.test_parquet.TestParquetSchemaValidation.test_ipc_split_columns_allow_missing_files"><code class="docutils literal notranslate"><span class="pre">TestParquetSchemaValidation.test_ipc_split_columns_allow_missing_files()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../../../_static/documentation_options.js?v=0c3dd48d"></script>
+    <script src="../../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../../../../_static/js/custom.js?v=956e5d78"></script>
+    </body>
+</html>

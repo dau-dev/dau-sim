@@ -1,0 +1,164 @@
+csp.impl.mem_cache
+==================
+
+.. py:module:: csp.impl.mem_cache
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.impl.mem_cache.GraphFunctionObjectKey
+   csp.impl.mem_cache.MemoizeControl
+   csp.impl.mem_cache.CspGraphObjectsMemCache
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.impl.mem_cache.memoize
+   csp.impl.mem_cache._resolve_func_args
+   csp.impl.mem_cache.normalize_arg
+   csp.impl.mem_cache._preprocess_args
+   csp.impl.mem_cache.function_full_name
+   csp.impl.mem_cache.csp_memoized
+   csp.impl.mem_cache.csp_memoized_graph_object
+
+
+Module Contents
+---------------
+
+.. py:class:: GraphFunctionObjectKey
+
+   Bases: :py:obj:`tuple`
+
+
+   .. py:attribute:: func
+
+
+   .. py:attribute:: args
+
+
+.. py:class:: MemoizeControl(memoize)
+
+   Bases: :py:obj:`object`
+
+
+   .. py:attribute:: INST
+
+
+   .. py:attribute:: _memoize
+
+
+   .. py:attribute:: _prev
+      :value: None
+
+
+
+   .. py:method:: is_memoize_on()
+      :classmethod:
+
+
+
+   .. py:method:: __enter__()
+
+
+   .. py:method:: __exit__(exc_type, exc_val, exc_tb)
+
+
+.. py:function:: memoize(value=True)
+
+   Context manager to turn on/off the memoization
+   :param value:
+
+
+.. py:class:: CspGraphObjectsMemCache
+
+   Bases: :py:obj:`object`
+
+
+   An object cache that simplifies graph building
+
+   For simple applications, single factory (singleton) can be used, for more complicated graph
+   building applications multiple non default factories can be used
+
+
+   .. py:attribute:: _THREAD_LOCAL_INSTANCE
+
+
+   .. py:attribute:: _instantiated_objects
+
+
+   .. py:attribute:: _prev_instance
+      :value: None
+
+
+
+   .. py:attribute:: _user_objects
+
+
+   .. py:method:: clear(clear_user_objects=True)
+
+
+   .. py:method:: __enter__()
+
+
+   .. py:method:: __exit__(exc_type, exc_val, exc_tb)
+
+
+   .. py:method:: new_context()
+      :classmethod:
+
+
+
+   .. py:method:: get_object_stats(sort_by='count')
+
+
+   .. py:method:: __getitem__(key)
+
+
+   .. py:method:: __setitem__(key, value)
+
+
+   .. py:method:: get_user_object(key)
+
+
+   .. py:method:: set_user_object(key, value)
+
+
+   .. py:method:: instance()
+      :classmethod:
+
+
+
+.. py:function:: _resolve_func_args(func)
+
+.. py:function:: normalize_arg(arg)
+
+.. py:function:: _preprocess_args(args)
+
+.. py:function:: function_full_name(f)
+
+   A utility function that can be used for implementation of function_name for csp_memoized_graph_object
+   :param f:
+   :return:
+
+
+.. py:function:: csp_memoized(func=None, *, force_memoize=False, function_name=None, is_user_data=True)
+
+   A decorator to register a function as graph object provider.
+
+   The provided object can be any object.
+
+   :param func:
+   :param force_memoize
+   :param function_name: The name of the function that should be used for error/warning logging.
+   :param is_user_data: A flag that specifies whether the memoized object is user object or graph object
+   :return:
+
+
+.. py:function:: csp_memoized_graph_object(func=None, *, force_memoize=False, function_name=None)
+

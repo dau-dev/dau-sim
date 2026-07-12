@@ -1,0 +1,25 @@
+csp.tests.adapters.conftest
+===========================
+
+.. py:module:: csp.tests.adapters.conftest
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.tests.adapters.conftest.kafkabroker
+   csp.tests.adapters.conftest.kafkaadapterkwargs
+   csp.tests.adapters.conftest.kafkaadapter
+
+
+Module Contents
+---------------
+
+.. py:function:: kafkabroker()
+
+.. py:function:: kafkaadapterkwargs(kafkabroker)
+
+.. py:function:: kafkaadapter(kafkaadapterkwargs)
+

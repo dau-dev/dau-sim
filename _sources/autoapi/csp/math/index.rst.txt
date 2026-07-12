@@ -1,0 +1,157 @@
+csp.math
+========
+
+.. py:module:: csp.math
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp.math.add
+   csp.math.sub
+   csp.math.multiply
+   csp.math.divide
+   csp.math.pow
+   csp.math.min
+   csp.math.max
+   csp.math.floordiv
+   csp.math.mod
+   csp.math.pos
+   csp.math.neg
+   csp.math.abs
+   csp.math.ln
+   csp.math.log2
+   csp.math.log10
+   csp.math.exp
+   csp.math.exp2
+   csp.math.sqrt
+   csp.math.erf
+   csp.math.sin
+   csp.math.cos
+   csp.math.tan
+   csp.math.arcsin
+   csp.math.arccos
+   csp.math.arctan
+   csp.math.sinh
+   csp.math.cosh
+   csp.math.tanh
+   csp.math.arcsinh
+   csp.math.arccosh
+   csp.math.arctanh
+   csp.math.eq
+   csp.math.ne
+   csp.math.gt
+   csp.math.lt
+   csp.math.ge
+   csp.math.le
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.math.bitwise_not
+   csp.math.not_
+   csp.math.and_
+   csp.math.or_
+
+
+Module Contents
+---------------
+
+.. py:function:: bitwise_not(x: csp.impl.types.tstype.ts[int]) -> csp.impl.types.tstype.ts[int]
+
+.. py:function:: not_(x: csp.impl.types.tstype.ts[bool]) -> csp.impl.types.tstype.ts[bool]
+
+   boolean not
+
+
+.. py:function:: and_(*inputs)
+
+   binary and of basket of ts[ bool ]. Note that all inputs must be valid
+   before any value is returned
+
+
+.. py:function:: or_(*inputs)
+
+   binary or of ts[ bool ] inputs.  Note that all inputs must be valid
+   before any value is returned
+
+
+.. py:data:: add
+
+.. py:data:: sub
+
+.. py:data:: multiply
+
+.. py:data:: divide
+
+.. py:data:: pow
+
+.. py:data:: min
+
+.. py:data:: max
+
+.. py:data:: floordiv
+
+.. py:data:: mod
+
+.. py:data:: pos
+
+.. py:data:: neg
+
+.. py:data:: abs
+
+.. py:data:: ln
+
+.. py:data:: log2
+
+.. py:data:: log10
+
+.. py:data:: exp
+
+.. py:data:: exp2
+
+.. py:data:: sqrt
+
+.. py:data:: erf
+
+.. py:data:: sin
+
+.. py:data:: cos
+
+.. py:data:: tan
+
+.. py:data:: arcsin
+
+.. py:data:: arccos
+
+.. py:data:: arctan
+
+.. py:data:: sinh
+
+.. py:data:: cosh
+
+.. py:data:: tanh
+
+.. py:data:: arcsinh
+
+.. py:data:: arccosh
+
+.. py:data:: arctanh
+
+.. py:data:: eq
+
+.. py:data:: ne
+
+.. py:data:: gt
+
+.. py:data:: lt
+
+.. py:data:: ge
+
+.. py:data:: le
+

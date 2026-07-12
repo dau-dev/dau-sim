@@ -1,0 +1,52 @@
+csp.impl.perspective_common
+===========================
+
+.. py:module:: csp.impl.perspective_common
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp.impl.perspective_common._PERSPECTIVE_3
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.impl.perspective_common.is_perspective3
+   csp.impl.perspective_common.perspective_type_map
+   csp.impl.perspective_common.datetime_to_perspective
+   csp.impl.perspective_common.date_to_perspective
+
+
+Module Contents
+---------------
+
+.. py:data:: _PERSPECTIVE_3
+   :value: True
+
+
+.. py:function:: is_perspective3()
+
+   Whether the perspective version is >= 3
+
+
+.. py:function:: perspective_type_map()
+
+   Return the mapping of standard python types to perspective types
+
+
+.. py:function:: datetime_to_perspective(dt: datetime.datetime) -> int
+
+   Convert a python datetime to an integer number of milliseconds for perspective >= 3
+
+
+.. py:function:: date_to_perspective(d: datetime.date) -> int
+
+   Convert a python date to an integer number of milliseconds for perspective >= 3
+
+

@@ -1,0 +1,30 @@
+csp.impl.outputadapter
+======================
+
+.. py:module:: csp.impl.outputadapter
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.impl.outputadapter.OutputAdapter
+
+
+Module Contents
+---------------
+
+.. py:class:: OutputAdapter
+
+   .. py:method:: on_tick(time: datetime.datetime, value: object)
+      :abstractmethod:
+
+
+
+   .. py:method:: start()
+
+
+   .. py:method:: stop()
+
+

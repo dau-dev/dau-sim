@@ -1,0 +1,881 @@
+csp.impl.pandas_ext_type
+========================
+
+.. py:module:: csp.impl.pandas_ext_type
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp.impl.pandas_ext_type.str_type
+   csp.impl.pandas_ext_type.T
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.impl.pandas_ext_type.TsDtype
+   csp.impl.pandas_ext_type._NumPyBackedExtensionArrayMixin
+   csp.impl.pandas_ext_type.TsArray
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.impl.pandas_ext_type._cast
+   csp.impl.pandas_ext_type._binary_op
+   csp.impl.pandas_ext_type._unary_op
+   csp.impl.pandas_ext_type._reduce
+   csp.impl.pandas_ext_type._reduce_float
+   csp.impl.pandas_ext_type._reduce_bool
+   csp.impl.pandas_ext_type.is_csp_type
+
+
+Module Contents
+---------------
+
+.. py:data:: str_type
+
+.. py:data:: T
+
+.. py:class:: TsDtype
+
+   Bases: :py:obj:`pandas.core.dtypes.dtypes.PandasExtensionDtype`
+
+
+   An ExtensionDtype for TsType data (based on the code for IntervalDtype)
+
+   **This is not an actual numpy dtype**, but a duck type.
+
+   :param subtype: The type of the TsType, i.e. "float" in ts[float]
+   :type subtype: str, type
+
+   .. attribute:: subtype
+
+
+
+   .. method:: None
+
+
+
+   .. rubric:: Examples
+
+   >>> TsDtype(float)
+   ts[float]
+
+
+   .. py:attribute:: kind
+      :type:  str_type
+      :value: 'O'
+
+
+      A character code (one of 'biufcmMOSUV'), default 'O'
+
+      This should match the NumPy dtype used when the array is
+      converted to an ndarray, which is probably 'O' for object if
+      the extension type cannot be represented as a built-in NumPy
+      type.
+
+      .. seealso:: :py:obj:`numpy.dtype.kind`
+
+
+   .. py:attribute:: str
+      :value: '|O08'
+
+
+
+   .. py:attribute:: base
+
+
+   .. py:attribute:: num
+      :value: 999
+
+
+
+   .. py:attribute:: _metadata
+      :value: ('subtype',)
+
+
+
+   .. py:attribute:: _match
+
+
+   .. py:attribute:: _cache_dtypes
+      :type:  dict
+
+
+   .. py:method:: construct_array_type() -> Type[pandas.core.arrays.IntervalArray]
+      :classmethod:
+
+
+      Return the array type associated with this dtype.
+
+      :rtype: type
+
+
+
+   .. py:method:: construct_from_string(string: str_type) -> TsDtype
+      :classmethod:
+
+
+      attempt to construct this type from a string, raise a TypeError
+      if its not possible
+
+
+
+   .. py:property:: type
+      :type: type
+
+
+      The scalar type for the array, e.g. ``int``
+
+      It's expected ``ExtensionArray[item]`` returns an instance
+      of ``ExtensionDtype.type`` for scalar ``item``, assuming
+      that value is valid (not NA). NA values do not need to be
+      instances of `type`.
+
+
+   .. py:property:: name
+      :type: str_type
+
+
+      A string identifying the data type.
+
+      Will be used for display in, e.g. ``Series.dtype``
+
+
+   .. py:property:: subtype
+      :type: type
+
+
+
+   .. py:property:: tstype
+
+
+   .. py:method:: __str__() -> str_type
+
+
+   .. py:property:: na_value
+      :type: float
+
+
+      Default NA value to use for this type.
+
+      This is used in e.g. ExtensionArray.take. This should be the
+      user-facing "boxed" version of the NA value, not the physical NA value
+      for storage.  e.g. for JSONArray, this is an empty dictionary.
+
+
+   .. py:method:: __hash__() -> int
+
+
+   .. py:method:: __eq__(other: Any) -> bool
+
+      Check whether 'other' is equal to self.
+
+      By default, 'other' is considered equal if either
+
+      * it's a string matching 'self.name'.
+      * it's an instance of this type and all of the attributes
+        in ``self._metadata`` are equal between `self` and `other`.
+
+      :param other:
+      :type other: Any
+
+      :rtype: bool
+
+
+
+   .. py:method:: __ne__(other: Any) -> bool
+
+
+   .. py:method:: __setstate__(state)
+
+
+   .. py:method:: is_dtype(dtype: object) -> bool
+      :classmethod:
+
+
+      Return a boolean if we if the passed type is an actual dtype that we
+      can match (via string or type)
+
+
+
+   .. py:method:: _get_common_dtype(dtypes: List[TsDtype]) -> Union[TsDtype, None]
+
+      Return the common dtype, if one exists.
+
+      Used in `find_common_type` implementation. This is for example used
+      to determine the resulting dtype in a concat operation.
+
+      If no common dtype exists, return None (which gives the other dtypes
+      the chance to determine a common dtype). If all dtypes in the list
+      return None, then the common dtype will be "object" dtype (this means
+      it is never needed to return "object" dtype from this method itself).
+
+      :param dtypes: The dtypes for which to determine a common dtype. This is a list
+                     of np.dtype or ExtensionDtype instances.
+      :type dtypes: list of dtypes
+
+      :rtype: Common dtype (np.dtype or ExtensionDtype) or None
+
+
+
+.. py:class:: _NumPyBackedExtensionArrayMixin
+
+   Bases: :py:obj:`pandas.core.arrays.ExtensionArray`, :py:obj:`pandas.core.arrays.ExtensionScalarOpsMixin`
+
+
+   Abstract base class for custom 1-D array types.
+
+   pandas will recognize instances of this class as proper arrays
+   with a custom type and will not attempt to coerce them to objects. They
+   may be stored directly inside a :class:`DataFrame` or :class:`Series`.
+
+   .. attribute:: dtype
+
+
+
+   .. attribute:: nbytes
+
+
+
+   .. attribute:: ndim
+
+
+
+   .. attribute:: shape
+
+
+
+   .. method:: argsort
+
+   .. method:: astype
+
+   .. method:: copy
+
+   .. method:: dropna
+
+   .. method:: duplicated
+
+   .. method:: factorize
+
+   .. method:: fillna
+
+   .. method:: equals
+
+   .. method:: insert
+
+   .. method:: interpolate
+
+   .. method:: isin
+
+   .. method:: isna
+
+   .. method:: item
+
+   .. method:: ravel
+
+   .. method:: repeat
+
+   .. method:: searchsorted
+
+   .. method:: shift
+
+   .. method:: take
+
+   .. method:: tolist
+
+   .. method:: unique
+
+   .. method:: view
+
+   .. method:: _accumulate
+
+   .. method:: _concat_same_type
+
+   .. method:: _explode
+
+   .. method:: _formatter
+
+   .. method:: _from_factorized
+
+   .. method:: _from_sequence
+
+   .. method:: _from_sequence_of_strings
+
+   .. method:: _hash_pandas_object
+
+   .. method:: _pad_or_backfill
+
+   .. method:: _reduce
+
+   .. method:: _values_for_argsort
+
+   .. method:: _values_for_factorize
+
+
+
+   .. seealso::
+
+      :py:obj:`api.extensions.ExtensionDtype`
+          A custom data type, to be paired with an ExtensionArray.
+
+      :py:obj:`api.extensions.ExtensionArray.dtype`
+          An instance of ExtensionDtype.
+
+   .. rubric:: Notes
+
+   The interface includes the following abstract methods that must be
+   implemented by subclasses:
+
+   * _from_sequence
+   * _from_factorized
+   * __getitem__
+   * __len__
+   * __eq__
+   * dtype
+   * nbytes
+   * isna
+   * take
+   * copy
+   * _concat_same_type
+   * interpolate
+
+   A default repr displaying the type, (truncated) data, length,
+   and dtype is provided. It can be customized or replaced by
+   by overriding:
+
+   * __repr__ : A default repr for the ExtensionArray.
+   * _formatter : Print scalars inside a Series or DataFrame.
+
+   Some methods require casting the ExtensionArray to an ndarray of Python
+   objects with ``self.astype(object)``, which may be expensive. When
+   performance is a concern, we highly recommend overriding the following
+   methods:
+
+   * fillna
+   * _pad_or_backfill
+   * dropna
+   * unique
+   * factorize / _values_for_factorize
+   * argsort, argmax, argmin / _values_for_argsort
+   * searchsorted
+   * map
+
+   The remaining methods implemented on this class should be performant,
+   as they only compose abstract methods. Still, a more efficient
+   implementation may be available, and these methods can be overridden.
+
+   One can implement methods to handle array accumulations or reductions.
+
+   * _accumulate
+   * _reduce
+
+   One can implement methods to handle parsing from strings that will be used
+   in methods such as ``pandas.io.parsers.read_csv``.
+
+   * _from_sequence_of_strings
+
+   This class does not inherit from 'abc.ABCMeta' for performance reasons.
+   Methods and properties required by the interface raise
+   ``pandas.errors.AbstractMethodError`` and no ``register`` method is
+   provided for registering virtual subclasses.
+
+   ExtensionArrays are limited to 1 dimension.
+
+   They may be backed by none, one, or many NumPy arrays. For example,
+   ``pandas.Categorical`` is an extension array backed by two arrays,
+   one for codes and one for categories. An array of IPv6 address may
+   be backed by a NumPy structured array with two fields, one for the
+   lower 64 bits and one for the upper 64 bits. Or they may be backed
+   by some other storage type, like Python lists. Pandas makes no
+   assumptions on how the data are stored, just that it can be converted
+   to a NumPy array.
+   The ExtensionArray interface does not impose any rules on how this data
+   is stored. However, currently, the backing data cannot be stored in
+   attributes called ``.values`` or ``._values`` to ensure full compatibility
+   with pandas internals. But other names as ``.data``, ``._data``,
+   ``._items``, ... can be freely used.
+
+   If implementing NumPy's ``__array_ufunc__`` interface, pandas expects
+   that
+
+   1. You defer by returning ``NotImplemented`` when any Series are present
+      in `inputs`. Pandas will extract the arrays and call the ufunc again.
+   2. You define a ``_HANDLED_TYPES`` tuple as an attribute on the class.
+      Pandas inspect this to determine whether the ufunc is valid for the
+      types present.
+
+   See :ref:`extending.extension.ufunc` for more.
+
+   By default, ExtensionArrays are not hashable.  Immutable subclasses may
+   override this behavior.
+
+   .. rubric:: Examples
+
+   Please see the following:
+
+   https://github.com/pandas-dev/pandas/blob/main/pandas/tests/extension/list/array.py
+
+
+   .. py:attribute:: _data
+      :type:  numpy.ndarray
+
+
+   .. py:attribute:: _readonly
+      :type:  bool
+      :value: False
+
+
+
+   .. py:property:: dtype
+      :type: TsDtype
+
+
+      An instance of 'TsDtype'.
+
+
+   .. py:method:: __len__() -> int
+
+      Length of this array
+      :returns: **length**
+      :rtype: int
+
+
+
+   .. py:method:: __getitem__(item) -> Any
+
+      Select a subset of self.
+      :param item:
+                   * int: The position in 'self' to get.
+                   * slice: A slice object, where 'start', 'stop', and 'step' are
+                     integers or None
+                   * ndarray: A 1-d boolean NumPy ndarray the same length as 'self'
+      :type item: int, slice, or ndarray
+
+      :returns: **item**
+      :rtype: scalar or TsArray
+
+
+
+   .. py:method:: __setitem__(key, value)
+
+      Set one or more values inplace.
+
+      This method is not required to satisfy the pandas extension array
+      interface.
+
+      :param key: When called from, e.g. ``Series.__setitem__``, ``key`` will be
+                  one of
+
+                  * scalar int
+                  * ndarray of integers.
+                  * boolean ndarray
+                  * slice object
+      :type key: int, ndarray, or slice
+      :param value: value or values to be set of ``key``.
+      :type value: ExtensionDtype.type, Sequence[ExtensionDtype.type], or object
+
+      :rtype: None
+
+      :raises ValueError: If the array is readonly and modification is attempted.
+
+
+
+   .. py:method:: isna() -> numpy.ndarray
+
+      Return a Boolean NumPy array indicating if each value is missing.
+      :returns: **missing**
+      :rtype: np.array
+
+
+
+   .. py:method:: take(indices, allow_fill=False, fill_value=None)
+
+      Take elements from an array.
+      # type: (Sequence[int], bool, Optional[Any]) -> TsArray
+      :param indices: Indices to be taken.
+      :type indices: sequence of integers
+      :param allow_fill: How to handle negative values in `indices`.
+                         * False: negative values in `indices` indicate positional indices
+                           from the right (the default). This is similar to
+                           :func:`numpy.take`.
+                         * True: negative values in `indices` indicate
+                           missing values. These values are set to `fill_value`. Any other
+                           other negative values raise a ``ValueError``.
+      :type allow_fill: bool, default False
+      :param fill_value: Fill value to use for NA-indices when `allow_fill` is True.
+                         This may be ``None``, in which case the default NA value for
+                         the type, ``self.dtype.na_value``, is used.
+      :type fill_value: any, optional
+
+      :rtype: TsArray
+
+      :raises IndexError: When the indices are out of bounds for the array.
+      :raises ValueError: When `indices` contains negative values other than ``-1``
+          and `allow_fill` is True.
+
+      .. rubric:: Notes
+
+      TsArray.take is called by ``Series.__getitem__``, ``.loc``,
+      ``iloc``, when `indices` is a sequence of values. Additionally,
+      it's called by :meth:`Series.reindex`, or any other method
+      that causes realignemnt, with a `fill_value`.
+
+      .. seealso:: :py:obj:`numpy.take`, :py:obj:`pandas.api.extensions.take`
+
+      .. rubric:: Examples
+
+
+
+   .. py:method:: copy(deep=False)
+
+      Return a copy of the array.
+
+      This method creates a copy of the `ExtensionArray` where modifying the
+      data in the copy will not affect the original array. This is useful when
+      you want to manipulate data without altering the original dataset.
+
+      :returns: A new `ExtensionArray` object that is a copy of the current instance.
+      :rtype: ExtensionArray
+
+      .. seealso::
+
+         :py:obj:`DataFrame.copy`
+             Return a copy of the DataFrame.
+
+         :py:obj:`Series.copy`
+             Return a copy of the Series.
+
+      .. rubric:: Examples
+
+      >>> arr = pd.array([1, 2, 3])
+      >>> arr2 = arr.copy()
+      >>> arr[0] = 2
+      >>> arr2
+      <IntegerArray>
+      [1, 2, 3]
+      Length: 3, dtype: Int64
+
+
+
+   .. py:method:: _from_sequence(scalars, dtype=None, copy=False)
+      :classmethod:
+
+
+      Construct a new ExtensionArray from a sequence of scalars.
+
+      :param scalars: Each element will be an instance of the scalar type for this
+                      array, ``cls.dtype.type`` or be converted into this type in this method.
+      :type scalars: Sequence
+      :param dtype: Construct for this particular dtype. This should be a Dtype
+                    compatible with the ExtensionArray.
+      :type dtype: dtype, optional
+      :param copy: If True, copy the underlying data.
+      :type copy: bool, default False
+
+      :rtype: ExtensionArray
+
+      .. seealso::
+
+         :py:obj:`api.extensions.ExtensionArray._from_sequence_of_strings`
+             Construct a new ExtensionArray from a sequence of strings.
+
+         :py:obj:`api.extensions.ExtensionArray._hash_pandas_object`
+             Hook for hash_pandas_object.
+
+      .. rubric:: Examples
+
+      >>> pd.arrays.IntegerArray._from_sequence([4, 5])
+      <IntegerArray>
+      [4, 5]
+      Length: 2, dtype: Int64
+
+
+
+   .. py:method:: _from_factorized(values, original)
+      :classmethod:
+
+
+      Reconstruct an ExtensionArray after factorization.
+
+      :param values: An integer ndarray with the factorized values.
+      :type values: ndarray
+      :param original: The original ExtensionArray that factorize was called on.
+      :type original: ExtensionArray
+
+      .. seealso::
+
+         :py:obj:`factorize`
+             Top-level factorize method that dispatches here.
+
+         :py:obj:`ExtensionArray.factorize`
+             Encode the extension array as an enumerated type.
+
+      .. rubric:: Examples
+
+      >>> interv_arr = pd.arrays.IntervalArray(
+      ...     [pd.Interval(0, 1), pd.Interval(1, 5), pd.Interval(1, 5)]
+      ... )
+      >>> codes, uniques = pd.factorize(interv_arr)
+      >>> pd.arrays.IntervalArray._from_factorized(uniques, interv_arr)
+      <IntervalArray>
+      [(0, 1], (1, 5]]
+      Length: 2, dtype: interval[int64, right]
+
+
+
+   .. py:method:: _concat_same_type(to_concat)
+      :classmethod:
+
+
+      Concatenate multiple array of this dtype.
+
+      :param to_concat: An array of the same dtype to concatenate.
+      :type to_concat: sequence of this type
+
+      :rtype: ExtensionArray
+
+      .. seealso::
+
+         :py:obj:`api.extensions.ExtensionArray._explode`
+             Transform each element of list-like to a row.
+
+         :py:obj:`api.extensions.ExtensionArray._formatter`
+             Formatting function for scalar values.
+
+         :py:obj:`api.extensions.ExtensionArray._from_factorized`
+             Reconstruct an ExtensionArray after factorization.
+
+      .. rubric:: Examples
+
+      >>> arr1 = pd.array([1, 2, 3])
+      >>> arr2 = pd.array([4, 5, 6])
+      >>> pd.arrays.IntegerArray._concat_same_type([arr1, arr2])
+      <IntegerArray>
+      [1, 2, 3, 4, 5, 6]
+      Length: 6, dtype: Int64
+
+
+
+   .. py:method:: tolist()
+
+      Return a list of the values.
+
+      These are each a scalar type, which is a Python scalar
+      (for str, int, float) or a pandas scalar
+      (for Timestamp/Timedelta/Interval/Period)
+
+      :returns: Python list of values in array.
+      :rtype: list
+
+      .. seealso::
+
+         :py:obj:`Index.to_list`
+             Return a list of the values in the Index.
+
+         :py:obj:`Series.to_list`
+             Return a list of the values in the Series.
+
+      .. rubric:: Examples
+
+      >>> arr = pd.array([1, 2, 3])
+      >>> arr.tolist()
+      [1, 2, 3]
+
+
+
+   .. py:property:: nbytes
+
+      The number of bytes needed to store this object in memory.
+
+      .. seealso::
+
+         :py:obj:`ExtensionArray.shape`
+             Return a tuple of the array dimensions.
+
+         :py:obj:`ExtensionArray.size`
+             The number of elements in the array.
+
+      .. rubric:: Examples
+
+      >>> pd.array([1, 2, 3]).nbytes
+      27
+
+
+   .. py:property:: data
+
+
+   .. py:method:: value_counts(dropna=True)
+
+      Returns a Series containing counts of each category.
+      Every category will have an entry, even those with a count of 0.
+      :param dropna: Don't include counts of NaN.
+      :type dropna: boolean, default True
+
+      :returns: **counts**
+      :rtype: Series
+
+      .. seealso:: :py:obj:`Series.value_counts`
+
+
+
+.. py:class:: TsArray(values, dtype=None, copy=False)
+
+   Bases: :py:obj:`_NumPyBackedExtensionArrayMixin`
+
+
+   Holder for CSP Ts edges.
+   It satisfies pandas' extension array interface, and so can be stored inside
+   :class:`pandas.Series` and :class:`pandas.DataFrame`.
+
+
+   .. py:attribute:: __array_priority__
+      :value: 1000
+
+
+
+   .. py:attribute:: _valuetype
+
+
+   .. py:attribute:: ndim
+      :value: 1
+
+
+      Extension Arrays are only allowed to be 1-dimensional.
+
+      .. seealso::
+
+         :py:obj:`ExtensionArray.shape`
+             Return a tuple of the array dimensions.
+
+         :py:obj:`ExtensionArray.size`
+             The number of elements in the array.
+
+      .. rubric:: Examples
+
+      >>> arr = pd.array([1, 2, 3])
+      >>> arr.ndim
+      1
+
+
+   .. py:attribute:: can_hold_na
+      :value: True
+
+
+
+   .. py:attribute:: _dtype
+
+
+   .. py:method:: _formatter(boxed=False)
+
+      Formatting function for scalar values.
+      This is used in the default '__repr__'. The returned formatting
+      function receives scalar Quantities.
+      # type: (bool) -> Callable[[Any], Optional[str]]
+      :param boxed: An indicated for whether or not your array is being printed
+                    within a Series, DataFrame, or Index (True), or just by
+                    itself (False). This may be useful if you want scalar values
+                    to appear differently within a Series versus on its own (e.g.
+                    quoted or not).
+      :type boxed: bool, default False
+
+      :returns: A callable that gets instances of the scalar type and
+                returns a string. By default, :func:`repr` is used
+                when ``boxed=False`` and :func:`str` is used when
+                ``boxed=True``.
+      :rtype: Callable[[Any], str]
+
+
+
+   .. py:method:: _reduce(name, skipna=True, keepdims: bool = False, **kwds)
+
+      Return a scalar result of performing the reduction operation.
+      :param name: Name of the function, supported values are:
+                   { any, all, min, max, sum, mean, median, prod,
+                   std, var, sem, kurt, skew }.
+      :type name: str
+      :param skipna: If True, skip NaN values (both missing Edges and nan's inside of Edges)
+      :type skipna: bool, default True
+      :param keepdims: If True, return a TsArray with shape (1,) instead of a scalar, keeping the dimensions.
+                       Used by DataFrame reductions. Required argument as of pandas 3.0: https://github.com/pandas-dev/pandas/pull/52788.
+      :type keepdims: bool, default False
+      :param \*\*kwargs: Additional keyword arguments passed to the reduction function.
+                         Currently, `ddof` is the only supported kwarg.
+
+      :rtype: scalar or TsArray
+
+      :raises TypeError : subclass does not define reductions:
+
+
+
+   .. py:method:: _create_comparison_method(op)
+      :classmethod:
+
+
+
+   .. py:method:: _create_logical_method(op)
+      :classmethod:
+
+
+
+   .. py:method:: __invert__()
+
+      Element-wise inverse of this array.
+
+
+
+   .. py:method:: astype(dtype, copy=True)
+
+      Cast to a NumPy array with 'dtype'.
+      :param dtype: Typecode or data-type to which the array is cast.
+      :type dtype: str or dtype
+      :param copy: Whether to copy the data, even if not necessary. If False,
+                   a copy is made only if the old dtype does not match the
+                   new dtype.
+      :type copy: bool, default True
+
+      :returns: **array** -- NumPy ndarray with 'dtype' for its dtype.
+      :rtype: ndarray
+
+
+
+   .. py:method:: to_numpy(dtype=None, copy=False, na_value=None)
+
+      Convert to a NumPy ndarray.
+
+      :param dtype: The dtype to pass to numpy.asarray.
+      :type dtype: str or numpy.dtype, optional
+      :param copy: Whether to ensure that the returned value is not a view on another array.
+      :type copy: bool, default False
+      :param na_value: The value to use for missing values.
+      :type na_value: Any, optional
+
+      :rtype: numpy.ndarray
+
+
+
+.. py:function:: _cast(x: csp.impl.types.tstype.ts[object], typ: T) -> csp.impl.types.tstype.ts[T]
+
+.. py:function:: _binary_op(x: csp.impl.types.tstype.ts[T], y: csp.impl.types.tstype.ts[T], op: object) -> csp.impl.types.tstype.ts[T]
+
+.. py:function:: _unary_op(x: csp.impl.types.tstype.ts[T], op: object) -> csp.impl.types.tstype.ts[T]
+
+.. py:function:: _reduce(x: List[csp.impl.types.tstype.ts[T]], typ: T, func: object, args: object = (), kwargs: object = {}) -> csp.impl.types.tstype.ts[T]
+
+.. py:function:: _reduce_float(x: List[csp.impl.types.tstype.ts[T]], typ: T, func: object, args: object = (), kwargs: object = {}) -> csp.impl.types.tstype.ts[float]
+
+.. py:function:: _reduce_bool(x: List[csp.impl.types.tstype.ts[T]], typ: T, func: object, args: object = (), kwargs: object = {}) -> csp.impl.types.tstype.ts[bool]
+
+.. py:function:: is_csp_type(arr_or_dtype) -> bool
+
+   Check whether the provided array or dtype is of a TsDtype dtype.
+
+

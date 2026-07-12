@@ -1,0 +1,1013 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>csp.baselib - dau-sim v0.17.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/custom.css?v=890fd012" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.17.0</code></div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.17.0</code></span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../_sources/autoapi/csp/baselib/index.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-csp.baselib">
+<span id="csp-baselib"></span><h1>csp.baselib<a class="headerlink" href="#module-csp.baselib" title="Link to this heading">¶</a></h1>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.const" title="csp.baselib.const"><code class="xref py py-obj docutils literal notranslate"><span class="pre">const</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.LogSettings" title="csp.baselib.LogSettings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LogSettings</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.baselib.DelayedDemultiplex" title="csp.baselib.DelayedDemultiplex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DelayedDemultiplex</span></code></a></p></td>
+<td><p>special &quot;advanced use&quot; object for delayed demultiplex.  Useful for writing APIs that susbcribe</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.DelayedCollect" title="csp.baselib.DelayedCollect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DelayedCollect</span></code></a></p></td>
+<td><p>special &quot;advanced use&quot; object for delayed collect.  Useful for writing APIs that have publish calls</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.timer" title="csp.baselib.timer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timer</span></code></a>(→ csp.impl.types.tstype.ts[T])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.baselib.print" title="csp.baselib.print"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print</span></code></a>(tag, x)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.log" title="csp.baselib.log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></a>(level, tag, x[, logger, logger_tz, use_thread])</p></td>
+<td><p>Logs a time-series value during the execution of a csp graph</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.baselib.get_basket_field" title="csp.baselib.get_basket_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_basket_field</span></code></a>(dict_basket, ...[, shape_of])</p></td>
+<td><p>Given a dict basket of Struct objects, get a dict basket of the given field of struct for the matching key</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.sample" title="csp.baselib.sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample</span></code></a>(→ csp.impl.types.tstype.ts[T])</p></td>
+<td><p>will return current value of x on trigger ticks</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.baselib.firstN" title="csp.baselib.firstN"><code class="xref py py-obj docutils literal notranslate"><span class="pre">firstN</span></code></a>(→ csp.impl.types.tstype.ts[T])</p></td>
+<td><p>return first N ticks of input and then stop</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.count" title="csp.baselib.count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code></a>(→ csp.impl.types.tstype.ts[int])</p></td>
+<td><p>return count of ticks of input</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.baselib.delay" title="csp.baselib.delay"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delay</span></code></a>(→ csp.impl.types.tstype.ts[T])</p></td>
+<td><p>delay input ticks by given delay</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.diff" title="csp.baselib.diff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diff</span></code></a>(→ csp.impl.types.tstype.ts[T])</p></td>
+<td><p>diff x against itself lag time/ticks ago</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.baselib.merge" title="csp.baselib.merge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge</span></code></a>(→ csp.impl.types.tstype.ts[T])</p></td>
+<td><p>merge two timeseries into one.  If both tick at the same time, left side wins</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.split" title="csp.baselib.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a>(flag, x[, true])</p></td>
+<td><p>based on flag tick input on true/false outputs</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.baselib.cast_int_to_float" title="csp.baselib.cast_int_to_float"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cast_int_to_float</span></code></a>(→ csp.impl.types.tstype.ts[float])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.apply" title="csp.baselib.apply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply</span></code></a>(→ csp.impl.types.tstype.ts[U])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.baselib.filter" title="csp.baselib.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span></code></a>(→ csp.impl.types.tstype.ts[T])</p></td>
+<td><p>only ticks out input if flag is true</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.drop_dups" title="csp.baselib.drop_dups"><code class="xref py py-obj docutils literal notranslate"><span class="pre">drop_dups</span></code></a>(→ csp.impl.types.tstype.ts[T])</p></td>
+<td><p>removes consecutive duplicates from the input series</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.baselib.drop_nans" title="csp.baselib.drop_nans"><code class="xref py py-obj docutils literal notranslate"><span class="pre">drop_nans</span></code></a>(→ csp.impl.types.tstype.ts[float])</p></td>
+<td><p>removes any nan values from the input series</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.unroll" title="csp.baselib.unroll"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unroll</span></code></a>(→ csp.impl.types.tstype.ts[T])</p></td>
+<td><p>&quot;unrolls&quot; timeseries of lists of type 'T' into individual ticks of type 'T'</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.baselib.collect" title="csp.baselib.collect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">collect</span></code></a>(→ csp.impl.types.tstype.ts[List[T]])</p></td>
+<td><p>convert basket of timeseries into timeseries of list of ticked values</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.flatten" title="csp.baselib.flatten"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flatten</span></code></a>(→ csp.impl.types.tstype.ts[T])</p></td>
+<td><p>flatten a basket of inputs into ts[ 'T' ]</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.baselib.gate" title="csp.baselib.gate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gate</span></code></a>(→ csp.impl.types.tstype.ts[List[T]])</p></td>
+<td><p>&quot;gate&quot; the input.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.default" title="csp.baselib.default"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default</span></code></a>() → csp.impl.types.tstype.ts[T])</p></td>
+<td><p>default a timeseries with a constant value.  Default will tick at start of engine, unless the input has</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.baselib.stop_engine" title="csp.baselib.stop_engine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stop_engine</span></code></a>(x[, dynamic])</p></td>
+<td><p>stop engine on tick of x</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.null_ts" title="csp.baselib.null_ts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">null_ts</span></code></a>(→ csp.impl.types.tstype.ts[T])</p></td>
+<td><p>An empty time series that is guaranteed to never provide any data, can be connected as stub argument of nodes/graphs that expect ts of</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.baselib.multiplex" title="csp.baselib.multiplex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">multiplex</span></code></a>(→ csp.impl.types.tstype.ts[T])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.demultiplex" title="csp.baselib.demultiplex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">demultiplex</span></code></a>(x, key, keys, raise_on_bad_key, ts[]][, shape])</p></td>
+<td><p>whenever the timeseries input ticks, output a tick on the appropriate basket output</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.baselib.dynamic_demultiplex" title="csp.baselib.dynamic_demultiplex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dynamic_demultiplex</span></code></a>(...)</p></td>
+<td><p>whenever the timeseries input ticks, output a tick on the appropriate dynamic basket output</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.dynamic_collect" title="csp.baselib.dynamic_collect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dynamic_collect</span></code></a>(→ csp.impl.types.tstype.ts[Dict[K, V]])</p></td>
+<td><p>whenever any input of the dynamic basket ticks, output the key-value pairs in a dictionary</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.baselib.accum" title="csp.baselib.accum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">accum</span></code></a>(→ csp.impl.types.tstype.ts[T])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.exprtk" title="csp.baselib.exprtk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exprtk</span></code></a>(→ csp.impl.types.tstype.ts[Union[float, ...)</p></td>
+<td><p>given a mathematical expression,</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.baselib.struct_field" title="csp.baselib.struct_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">struct_field</span></code></a>(→ csp.impl.types.tstype.ts[Y])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.struct_fromts" title="csp.baselib.struct_fromts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">struct_fromts</span></code></a>(→ csp.impl.types.tstype.ts[T])</p></td>
+<td><p>construct a ticking Struct from the given timeseries basket.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.baselib.struct_collectts" title="csp.baselib.struct_collectts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">struct_collectts</span></code></a>(→ csp.impl.types.tstype.ts[T])</p></td>
+<td><p>construct a ticking Struct from the given timeseries.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.wrap_feedback" title="csp.baselib.wrap_feedback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrap_feedback</span></code></a>(→ csp.impl.types.tstype.ts[T])</p></td>
+<td><p>A convenience function to wrap the given time series as a feedback.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.baselib.schedule_on_engine_stop" title="csp.baselib.schedule_on_engine_stop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule_on_engine_stop</span></code></a>(f)</p></td>
+<td><p>Schedules a function to be called on engine stop, useful for cleanup.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.times" title="csp.baselib.times"><code class="xref py py-obj docutils literal notranslate"><span class="pre">times</span></code></a>(→ csp.impl.types.tstype.ts[datetime.datetime])</p></td>
+<td><p>Returns a time-series of datetimes at which x ticks</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.baselib.times_ns" title="csp.baselib.times_ns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">times_ns</span></code></a>(→ csp.impl.types.tstype.ts[int])</p></td>
+<td><p>Returns a time-series of ints representing the epoch time (in nanoseconds) at which x ticks</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#csp.baselib.static_cast" title="csp.baselib.static_cast"><code class="xref py py-obj docutils literal notranslate"><span class="pre">static_cast</span></code></a>(→ csp.impl.types.tstype.ts[U])</p></td>
+<td><p>&quot;static&quot; cast of the given timeseries type to timeseries of type &quot;U&quot;</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#csp.baselib.dynamic_cast" title="csp.baselib.dynamic_cast"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dynamic_cast</span></code></a>(→ csp.impl.types.tstype.ts[U])</p></td>
+<td><p>safer version of static_Cast, dynamic_cast will run the data through a node and</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="csp.baselib.const">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">const</span></span><a class="headerlink" href="#csp.baselib.const" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.timer">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">timer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.timedelta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_deviation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#timer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.timer" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.baselib.LogSettings">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">LogSettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging_tz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#LogSettings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.LogSettings" title="Link to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="csp.baselib.LogSettings.TLS">
+<span class="sig-name descname"><span class="pre">TLS</span></span><a class="headerlink" href="#csp.baselib.LogSettings.TLS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.baselib.LogSettings.logger">
+<span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#csp.baselib.LogSettings.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.baselib.LogSettings.logging_tz">
+<span class="sig-name descname"><span class="pre">logging_tz</span></span><a class="headerlink" href="#csp.baselib.LogSettings.logging_tz" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.baselib.LogSettings.set">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'csp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging_tz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#LogSettings.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.LogSettings.set" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.baselib.LogSettings.set_queue">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_queue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#LogSettings.set_queue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.LogSettings.set_queue" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.baselib.LogSettings.get_queue">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_queue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#LogSettings.get_queue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.LogSettings.get_queue" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.baselib.LogSettings.has_queue">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_queue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#LogSettings.has_queue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.LogSettings.has_queue" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.baselib.LogSettings.join_queue">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">join_queue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#LogSettings.join_queue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.LogSettings.join_queue" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.baselib.LogSettings.with_set">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">with_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'csp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging_tz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#LogSettings.with_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.LogSettings.with_set" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.baselib.LogSettings.with_set_instance">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">with_set_instance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#LogSettings.with_set_instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.LogSettings.with_set_instance" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.baselib.LogSettings.get_instance">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#LogSettings.get_instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.LogSettings.get_instance" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.print">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.print" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.log">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsDtype.None" title="csp.impl.pandas_ext_type.TsDtype.None"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_tz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_thread</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.log" title="Link to this definition">¶</a></dt>
+<dd><p>Logs a time-series value during the execution of a csp graph</p>
+<p>Arguments:
+level: log level to use e.g. CRITICAL
+tag: label for the logged entry e.g. “x”
+x: the time-series to log
+logger: optional, the logger to use. If not set, the default csp logger is used
+logger_tz: optional, time-zone that the logger is set to.
+use_thread: whether or not to run the log node in a separate thread</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>This feature is useful for expensive log calls that will be printing large objects, such as structs</p></li>
+<li><p>NOTE: If use_thread=True and a time-series value is modified after log is called, it may log the modified version.</p></li>
+</ul>
+<p>In this case, which is rare, you must pass a copy of the time-series to the log node to ensure correct behavior.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.get_basket_field">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">get_basket_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict_basket</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">K</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">V</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#get_basket_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.get_basket_field" title="Link to this definition">¶</a></dt>
+<dd><p>Given a dict basket of Struct objects, get a dict basket of the given field of struct for the matching key</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dict_basket</strong></p></li>
+<li><p><strong>field_name</strong></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.sample">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trigger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">Y</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.sample" title="Link to this definition">¶</a></dt>
+<dd><p>will return current value of x on trigger ticks</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.firstN">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">firstN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#firstN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.firstN" title="Link to this definition">¶</a></dt>
+<dd><p>return first N ticks of input and then stop</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.count">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.count" title="Link to this definition">¶</a></dt>
+<dd><p>return count of ticks of input</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.delay">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">delay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.timedelta</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#delay"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.delay" title="Link to this definition">¶</a></dt>
+<dd><p>delay input ticks by given delay</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.diff">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">diff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.timedelta</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#diff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.diff" title="Link to this definition">¶</a></dt>
+<dd><p>diff x against itself lag time/ticks ago</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.merge">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#merge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.merge" title="Link to this definition">¶</a></dt>
+<dd><p>merge two timeseries into one.  If both tick at the same time, left side wins</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.split">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.split" title="Link to this definition">¶</a></dt>
+<dd><p>based on flag tick input on true/false outputs</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.cast_int_to_float">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">cast_int_to_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#cast_int_to_float"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.cast_int_to_float" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.apply">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">U</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">U</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">U</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.apply" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – The time series on which the function should be applied</p></li>
+<li><p><strong>f</strong> – A scalar function that will be applied on each value of x</p></li>
+<li><p><strong>result_type</strong> – The type of the values in the resulting time series</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A time series that ticks on each tick of x. Each item in the result time series is the return value of f applied on x. All values should match</p>
+</dd>
+</dl>
+<p>the specified result_type</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.filter">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.filter" title="Link to this definition">¶</a></dt>
+<dd><p>only ticks out input if flag is true</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.drop_dups">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">drop_dups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#drop_dups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.drop_dups" title="Link to this definition">¶</a></dt>
+<dd><p>removes consecutive duplicates from the input series</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.drop_nans">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">drop_nans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#drop_nans"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.drop_nans" title="Link to this definition">¶</a></dt>
+<dd><p>removes any nan values from the input series</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.unroll">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">unroll</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#unroll"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.unroll" title="Link to this definition">¶</a></dt>
+<dd><p>“unrolls” timeseries of lists of type ‘T’ into individual ticks of type ‘T’</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.collect">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">collect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#collect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.collect" title="Link to this definition">¶</a></dt>
+<dd><p>convert basket of timeseries into timeseries of list of ticked values</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.flatten">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">flatten</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#flatten"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.flatten" title="Link to this definition">¶</a></dt>
+<dd><p>flatten a basket of inputs into ts[ ‘T’ ]</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.gate">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">gate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release_on_tick</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#gate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.gate" title="Link to this definition">¶</a></dt>
+<dd><p>“gate” the input.
+if release is false, input will be held until release is true.
+when release ticks true, all gated inputs will tick in one shot
+If release_on_tick is true, release gated input only on release tick</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.default">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">default</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.timedelta</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">timedelta()</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#default"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.default" title="Link to this definition">¶</a></dt>
+<dd><p>default a timeseries with a constant value.  Default will tick at start of engine, unless the input has
+a valid startup tick</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.stop_engine">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">stop_engine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dynamic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#stop_engine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.stop_engine" title="Link to this definition">¶</a></dt>
+<dd><p>stop engine on tick of x
+:param dynamic: if True, and this is called within a dynamic graph, only shutdown the dynamic sub-graph</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.null_ts">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">null_ts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">typ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#null_ts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.null_ts" title="Link to this definition">¶</a></dt>
+<dd><p>An empty time series that is guaranteed to never provide any data, can be connected as stub argument of nodes/graphs that expect ts of
+a given type
+:param typ: The type of the time series</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.multiplex">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">multiplex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">K</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">K</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick_on_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raise_on_bad_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#multiplex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.multiplex" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – The basket of time series to multiplex</p></li>
+<li><p><strong>key</strong> – A</p></li>
+<li><p><strong>tick_on_index</strong></p></li>
+<li><p><strong>raise_on_bad_key</strong></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.demultiplex">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">demultiplex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">K</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">K</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raise_on_bad_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#demultiplex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.demultiplex" title="Link to this definition">¶</a></dt>
+<dd><p>whenever the timeseries input ticks, output a tick on the appropriate basket output</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.dynamic_demultiplex">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">dynamic_demultiplex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">K</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">K</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#dynamic_demultiplex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.dynamic_demultiplex" title="Link to this definition">¶</a></dt>
+<dd><p>whenever the timeseries input ticks, output a tick on the appropriate dynamic basket output</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.dynamic_collect">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">dynamic_collect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">K</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">V</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">K</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">V</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#dynamic_collect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.dynamic_collect" title="Link to this definition">¶</a></dt>
+<dd><p>whenever any input of the dynamic basket ticks, output the key-value pairs in a dictionary</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.accum">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">accum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#accum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.accum" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.exprtk">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">exprtk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expression_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state_vars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trigger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constants</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_ndarray</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#exprtk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.exprtk" title="Link to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>given a mathematical expression,</dt><dd><p>and a set of timeseries corresponding to variables in that expression, tick out the result (a float) of that expression,
+either every time an input ticks, or on the trigger if provided.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>expression_str</strong> – a mathematical expression as per the C++ Mathematical Expression Toolkit Library, ExprTk: <a class="reference external" href="http://www.partow.net/programming/exprtk/">http://www.partow.net/programming/exprtk/</a></p></li>
+<li><p><strong>inputs</strong> – a dict basket of timeseries.  The keys will correspond to the variables in the expression.  The timeseries can be of float or string</p></li>
+<li><p><strong>state_vars</strong> – an optional dictionary of variables to be held in state between executions, and assignable within the expression.
+Keys are the variable names and values are the starting values</p></li>
+<li><p><strong>trigger</strong> – an optional trigger for when to calculate.  If not provided, will calculate any time an input ticks</p></li>
+<li><p><strong>functions</strong> – an optional dictionary whose keys are function names that can be used in the expression, and whose values are of the form
+((“arg1”, ..), “function body”), for example {“foo”: ((“x”,”y”), “x*y”)}</p></li>
+<li><p><strong>constants</strong> – an optional dictionary of constants.  Keys are names and values are the constant values</p></li>
+<li><p><strong>output_ndarray</strong> – flag, defaults to False, if True, will output ndarray instead of float.  Must have expression use return like “return [a, b, c]”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.struct_field">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">struct_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldType</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">Y</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#struct_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.struct_field" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.struct_fromts">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">struct_fromts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trigger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#struct_fromts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.struct_fromts" title="Link to this definition">¶</a></dt>
+<dd><p>construct a ticking Struct from the given timeseries basket.
+Note structs will be created from all valid items.</p>
+<blockquote>
+<div><p>trigger - Optional timeseries to control when struct gets created ( defaults to any time a basket input ticks )</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.struct_collectts">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">struct_collectts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#struct_collectts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.struct_collectts" title="Link to this definition">¶</a></dt>
+<dd><p>construct a ticking Struct from the given timeseries.
+Note structs will be created from all ticked items</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.wrap_feedback">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">wrap_feedback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#wrap_feedback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.wrap_feedback" title="Link to this definition">¶</a></dt>
+<dd><p>A convenience function to wrap the given time series as a feedback.
+Useful when using in conjunction with some type of delayed nodes. Usually the example would be something like this:</p>
+<p># The assumption here is that fill generates somehow fills for all orders.
+# So there exists a loop of strategy -&gt; orders -&gt; fills -&gt; strategy, fills must be implemented as some kind of delayed node
+# that is instantiated at late stage after all “ordering” nodes have been created. This must create a feeback loop and as convinience
+# we mark the fills as a feedback by using a call to wrap_feedback.
+my_fills = get_fills_ts(…)
+my_orders = my_strategy(wrap_feedback(my_fills))
+publish_orders(my_orders)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>i</strong> – The input node to be wrapped as feedback</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.schedule_on_engine_stop">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">schedule_on_engine_stop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#schedule_on_engine_stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.schedule_on_engine_stop" title="Link to this definition">¶</a></dt>
+<dd><p>Schedules a function to be called on engine stop, useful for cleanup.
+:param f: The function to be called, the function is expected to take no parameters</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.times">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">times</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime.datetime</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#times"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.times" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a time-series of datetimes at which x ticks</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.times_ns">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">times_ns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#times_ns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.times_ns" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a time-series of ints representing the epoch time (in nanoseconds) at which x ticks</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.static_cast">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">static_cast</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outType</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">U</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">U</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#static_cast"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.static_cast" title="Link to this definition">¶</a></dt>
+<dd><p>“static” cast of the given timeseries type to timeseries of type “U”
+This should only be used when the caller knows with 100% certainty that the type conversion is always valid
+as there will be no runtime type checking.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="csp.baselib.dynamic_cast">
+<span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">dynamic_cast</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outType</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">U</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">U</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#dynamic_cast"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.dynamic_cast" title="Link to this definition">¶</a></dt>
+<dd><p>safer version of static_Cast, dynamic_cast will run the data through a node and
+ensure runtime type checking</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.baselib.DelayedDemultiplex">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">DelayedDemultiplex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">K</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raise_on_bad_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#DelayedDemultiplex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.DelayedDemultiplex" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../impl/wiring/delayed_node/index.html#csp.impl.wiring.delayed_node.DelayedNodeWrapperDef" title="csp.impl.wiring.delayed_node.DelayedNodeWrapperDef"><code class="xref py py-obj docutils literal notranslate"><span class="pre">csp.impl.wiring.delayed_node.DelayedNodeWrapperDef</span></code></a></p>
+<p>special “advanced use” object for delayed demultiplex.  Useful for writing APIs that susbcribe
+to a fat pipe but want to demux the pipe based on graph-time requests for keys ( subscribe calls )</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.baselib.DelayedDemultiplex._stream_ts">
+<span class="sig-name descname"><span class="pre">_stream_ts</span></span><a class="headerlink" href="#csp.baselib.DelayedDemultiplex._stream_ts" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.baselib.DelayedDemultiplex._key_ts">
+<span class="sig-name descname"><span class="pre">_key_ts</span></span><a class="headerlink" href="#csp.baselib.DelayedDemultiplex._key_ts" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.baselib.DelayedDemultiplex._raise_on_bad_key">
+<span class="sig-name descname"><span class="pre">_raise_on_bad_key</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#csp.baselib.DelayedDemultiplex._raise_on_bad_key" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.baselib.DelayedDemultiplex._demuxed_by_key">
+<span class="sig-name descname"><span class="pre">_demuxed_by_key</span></span><a class="headerlink" href="#csp.baselib.DelayedDemultiplex._demuxed_by_key" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.baselib.DelayedDemultiplex.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#DelayedDemultiplex.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.DelayedDemultiplex.copy" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.baselib.DelayedDemultiplex.demultiplex">
+<span class="sig-name descname"><span class="pre">demultiplex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#DelayedDemultiplex.demultiplex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.DelayedDemultiplex.demultiplex" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.baselib.DelayedDemultiplex._demultiplex">
+<span class="sig-name descname"><span class="pre">_demultiplex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/csp/baselib.html#DelayedDemultiplex._demultiplex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.DelayedDemultiplex._demultiplex" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.baselib.DelayedDemultiplex._instantiate">
+<span class="sig-name descname"><span class="pre">_instantiate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#DelayedDemultiplex._instantiate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.DelayedDemultiplex._instantiate" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="csp.baselib.DelayedCollect">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">csp.baselib.</span></span><span class="sig-name descname"><span class="pre">DelayedCollect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ts_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_to_null</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#DelayedCollect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.DelayedCollect" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../impl/wiring/delayed_node/index.html#csp.impl.wiring.delayed_node.DelayedNodeWrapperDef" title="csp.impl.wiring.delayed_node.DelayedNodeWrapperDef"><code class="xref py py-obj docutils literal notranslate"><span class="pre">csp.impl.wiring.delayed_node.DelayedNodeWrapperDef</span></code></a></p>
+<p>special “advanced use” object for delayed collect.  Useful for writing APIs that have publish calls
+which can be called from multiple places, but need to feed into a single sink</p>
+<dl class="field-list simple">
+<dt class="field-odd">Param<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ts_type - type of input timeseries</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.baselib.DelayedCollect._inputs">
+<span class="sig-name descname"><span class="pre">_inputs</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#csp.baselib.DelayedCollect._inputs" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="csp.baselib.DelayedCollect._output">
+<span class="sig-name descname"><span class="pre">_output</span></span><a class="headerlink" href="#csp.baselib.DelayedCollect._output" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.baselib.DelayedCollect.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#DelayedCollect.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.DelayedCollect.copy" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.baselib.DelayedCollect.add_input">
+<span class="sig-name descname"><span class="pre">add_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">csp.impl.types.tstype.ts</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#DelayedCollect.add_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.DelayedCollect.add_input" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.baselib.DelayedCollect.output">
+<span class="sig-name descname"><span class="pre">output</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#DelayedCollect.output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.DelayedCollect.output" title="Link to this definition">¶</a></dt>
+<dd><p>returns collected inputs as ts[ List[ input_ts_type] ]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="csp.baselib.DelayedCollect._instantiate">
+<span class="sig-name descname"><span class="pre">_instantiate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/csp/baselib.html#DelayedCollect._instantiate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#csp.baselib.DelayedCollect._instantiate" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; the csp authors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">csp.baselib</a><ul>
+<li><a class="reference internal" href="#attributes">Attributes</a></li>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#csp.baselib.const"><code class="docutils literal notranslate"><span class="pre">const</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.timer"><code class="docutils literal notranslate"><span class="pre">timer()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.LogSettings"><code class="docutils literal notranslate"><span class="pre">LogSettings</span></code></a><ul>
+<li><a class="reference internal" href="#csp.baselib.LogSettings.TLS"><code class="docutils literal notranslate"><span class="pre">LogSettings.TLS</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.LogSettings.logger"><code class="docutils literal notranslate"><span class="pre">LogSettings.logger</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.LogSettings.logging_tz"><code class="docutils literal notranslate"><span class="pre">LogSettings.logging_tz</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.LogSettings.set"><code class="docutils literal notranslate"><span class="pre">LogSettings.set()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.LogSettings.set_queue"><code class="docutils literal notranslate"><span class="pre">LogSettings.set_queue()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.LogSettings.get_queue"><code class="docutils literal notranslate"><span class="pre">LogSettings.get_queue()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.LogSettings.has_queue"><code class="docutils literal notranslate"><span class="pre">LogSettings.has_queue()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.LogSettings.join_queue"><code class="docutils literal notranslate"><span class="pre">LogSettings.join_queue()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.LogSettings.with_set"><code class="docutils literal notranslate"><span class="pre">LogSettings.with_set()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.LogSettings.with_set_instance"><code class="docutils literal notranslate"><span class="pre">LogSettings.with_set_instance()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.LogSettings.get_instance"><code class="docutils literal notranslate"><span class="pre">LogSettings.get_instance()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.baselib.print"><code class="docutils literal notranslate"><span class="pre">print()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.log"><code class="docutils literal notranslate"><span class="pre">log()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.get_basket_field"><code class="docutils literal notranslate"><span class="pre">get_basket_field()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.sample"><code class="docutils literal notranslate"><span class="pre">sample()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.firstN"><code class="docutils literal notranslate"><span class="pre">firstN()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.count"><code class="docutils literal notranslate"><span class="pre">count()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.delay"><code class="docutils literal notranslate"><span class="pre">delay()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.diff"><code class="docutils literal notranslate"><span class="pre">diff()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.merge"><code class="docutils literal notranslate"><span class="pre">merge()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.split"><code class="docutils literal notranslate"><span class="pre">split()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.cast_int_to_float"><code class="docutils literal notranslate"><span class="pre">cast_int_to_float()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.apply"><code class="docutils literal notranslate"><span class="pre">apply()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.filter"><code class="docutils literal notranslate"><span class="pre">filter()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.drop_dups"><code class="docutils literal notranslate"><span class="pre">drop_dups()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.drop_nans"><code class="docutils literal notranslate"><span class="pre">drop_nans()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.unroll"><code class="docutils literal notranslate"><span class="pre">unroll()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.collect"><code class="docutils literal notranslate"><span class="pre">collect()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.flatten"><code class="docutils literal notranslate"><span class="pre">flatten()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.gate"><code class="docutils literal notranslate"><span class="pre">gate()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.default"><code class="docutils literal notranslate"><span class="pre">default()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.stop_engine"><code class="docutils literal notranslate"><span class="pre">stop_engine()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.null_ts"><code class="docutils literal notranslate"><span class="pre">null_ts()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.multiplex"><code class="docutils literal notranslate"><span class="pre">multiplex()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.demultiplex"><code class="docutils literal notranslate"><span class="pre">demultiplex()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.dynamic_demultiplex"><code class="docutils literal notranslate"><span class="pre">dynamic_demultiplex()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.dynamic_collect"><code class="docutils literal notranslate"><span class="pre">dynamic_collect()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.accum"><code class="docutils literal notranslate"><span class="pre">accum()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.exprtk"><code class="docutils literal notranslate"><span class="pre">exprtk()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.struct_field"><code class="docutils literal notranslate"><span class="pre">struct_field()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.struct_fromts"><code class="docutils literal notranslate"><span class="pre">struct_fromts()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.struct_collectts"><code class="docutils literal notranslate"><span class="pre">struct_collectts()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.wrap_feedback"><code class="docutils literal notranslate"><span class="pre">wrap_feedback()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.schedule_on_engine_stop"><code class="docutils literal notranslate"><span class="pre">schedule_on_engine_stop()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.times"><code class="docutils literal notranslate"><span class="pre">times()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.times_ns"><code class="docutils literal notranslate"><span class="pre">times_ns()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.static_cast"><code class="docutils literal notranslate"><span class="pre">static_cast()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.dynamic_cast"><code class="docutils literal notranslate"><span class="pre">dynamic_cast()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.DelayedDemultiplex"><code class="docutils literal notranslate"><span class="pre">DelayedDemultiplex</span></code></a><ul>
+<li><a class="reference internal" href="#csp.baselib.DelayedDemultiplex._stream_ts"><code class="docutils literal notranslate"><span class="pre">DelayedDemultiplex._stream_ts</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.DelayedDemultiplex._key_ts"><code class="docutils literal notranslate"><span class="pre">DelayedDemultiplex._key_ts</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.DelayedDemultiplex._raise_on_bad_key"><code class="docutils literal notranslate"><span class="pre">DelayedDemultiplex._raise_on_bad_key</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.DelayedDemultiplex._demuxed_by_key"><code class="docutils literal notranslate"><span class="pre">DelayedDemultiplex._demuxed_by_key</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.DelayedDemultiplex.copy"><code class="docutils literal notranslate"><span class="pre">DelayedDemultiplex.copy()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.DelayedDemultiplex.demultiplex"><code class="docutils literal notranslate"><span class="pre">DelayedDemultiplex.demultiplex()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.DelayedDemultiplex._demultiplex"><code class="docutils literal notranslate"><span class="pre">DelayedDemultiplex._demultiplex()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.DelayedDemultiplex._instantiate"><code class="docutils literal notranslate"><span class="pre">DelayedDemultiplex._instantiate()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csp.baselib.DelayedCollect"><code class="docutils literal notranslate"><span class="pre">DelayedCollect</span></code></a><ul>
+<li><a class="reference internal" href="#csp.baselib.DelayedCollect._inputs"><code class="docutils literal notranslate"><span class="pre">DelayedCollect._inputs</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.DelayedCollect._output"><code class="docutils literal notranslate"><span class="pre">DelayedCollect._output</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.DelayedCollect.copy"><code class="docutils literal notranslate"><span class="pre">DelayedCollect.copy()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.DelayedCollect.add_input"><code class="docutils literal notranslate"><span class="pre">DelayedCollect.add_input()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.DelayedCollect.output"><code class="docutils literal notranslate"><span class="pre">DelayedCollect.output()</span></code></a></li>
+<li><a class="reference internal" href="#csp.baselib.DelayedCollect._instantiate"><code class="docutils literal notranslate"><span class="pre">DelayedCollect._instantiate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=0c3dd48d"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../../_static/js/custom.js?v=956e5d78"></script>
+    </body>
+</html>

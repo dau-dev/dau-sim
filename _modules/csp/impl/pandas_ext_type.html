@@ -1,0 +1,1573 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>csp.impl.pandas_ext_type - dau-sim v0.17.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/custom.css?v=890fd012" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.17.0</code></div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.17.0</code></span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for csp.impl.pandas_ext_type</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">operator</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydoc</span><span class="w"> </span><span class="kn">import</span> <span class="n">locate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">cast</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pandas.api.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_integer</span><span class="p">,</span> <span class="n">is_list_like</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pandas.core.arrays</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExtensionArray</span><span class="p">,</span> <span class="n">ExtensionScalarOpsMixin</span><span class="p">,</span> <span class="n">IntervalArray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pandas.core.dtypes.dtypes</span><span class="w"> </span><span class="kn">import</span> <span class="n">PandasExtensionDtype</span><span class="p">,</span> <span class="n">register_extension_dtype</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pandas.core.indexers</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_array_indexer</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">csp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">csp.impl.types.tstype</span><span class="w"> </span><span class="kn">import</span> <span class="n">TsType</span><span class="p">,</span> <span class="n">isTsType</span><span class="p">,</span> <span class="n">ts</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">csp.impl.wiring.edge</span><span class="w"> </span><span class="kn">import</span> <span class="n">Edge</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">csp.impl.wiring.node</span><span class="w"> </span><span class="kn">import</span> <span class="n">node</span>
+
+<span class="n">str_type</span> <span class="o">=</span> <span class="nb">str</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="TsDtype">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsDtype">[docs]</a>
+<span class="nd">@register_extension_dtype</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TsDtype</span><span class="p">(</span><span class="n">PandasExtensionDtype</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An ExtensionDtype for TsType data (based on the code for IntervalDtype)</span>
+
+<span class="sd">    **This is not an actual numpy dtype**, but a duck type.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    subtype : str, type</span>
+<span class="sd">        The type of the TsType, i.e. &quot;float&quot; in ts[float]</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    subtype</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; TsDtype(float)</span>
+<span class="sd">    ts[float]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">kind</span><span class="p">:</span> <span class="n">str_type</span> <span class="o">=</span> <span class="s2">&quot;O&quot;</span>
+    <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;|O08&quot;</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;O&quot;</span><span class="p">)</span>
+    <span class="n">num</span> <span class="o">=</span> <span class="mi">999</span>  <span class="c1"># Not sure what to put here</span>
+    <span class="n">_metadata</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;subtype&quot;</span><span class="p">,)</span>
+    <span class="n">_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;ts\[(?P&lt;subtype&gt;.+)\]&quot;</span><span class="p">)</span>
+    <span class="n">_cache_dtypes</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">subtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pandas.core.dtypes.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">pandas_dtype</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">subtype</span><span class="p">,</span> <span class="n">TsDtype</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">subtype</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">subtype</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+            <span class="n">subtype</span> <span class="o">=</span> <span class="n">subtype</span>
+        <span class="k">elif</span> <span class="n">isTsType</span><span class="p">(</span><span class="n">subtype</span><span class="p">):</span>
+            <span class="n">subtype</span> <span class="o">=</span> <span class="n">subtype</span><span class="o">.</span><span class="n">typ</span>
+        <span class="k">elif</span> <span class="n">subtype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># we are called as an empty constructor</span>
+            <span class="c1"># generally for pickle compat</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+            <span class="n">u</span><span class="o">.</span><span class="n">_subtype</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="n">u</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">subtype</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_match</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">subtype</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">gd</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+                    <span class="n">subtype</span> <span class="o">=</span> <span class="n">gd</span><span class="p">[</span><span class="s2">&quot;subtype&quot;</span><span class="p">]</span>
+            <span class="c1"># Turn string into type object</span>
+            <span class="n">subtype</span> <span class="o">=</span> <span class="n">locate</span><span class="p">(</span><span class="n">subtype</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">subtype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">subtype</span> <span class="o">=</span> <span class="n">pandas_dtype</span><span class="p">(</span><span class="n">subtype</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;could not construct TsDtype&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">err</span>
+
+        <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">subtype</span><span class="si">}</span><span class="s2">+</span><span class="si">{</span><span class="nb">id</span><span class="p">(</span><span class="n">subtype</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_cache_dtypes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+            <span class="n">u</span><span class="o">.</span><span class="n">_subtype</span> <span class="o">=</span> <span class="n">subtype</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_cache_dtypes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span>
+            <span class="k">return</span> <span class="n">u</span>
+
+<div class="viewcode-block" id="TsDtype.construct_array_type">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsDtype.construct_array_type">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">construct_array_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;IntervalArray&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the array type associated with this dtype.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">TsArray</span></div>
+
+
+<div class="viewcode-block" id="TsDtype.construct_from_string">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsDtype.construct_from_string">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">construct_from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">string</span><span class="p">:</span> <span class="n">str_type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TsDtype&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        attempt to construct this type from a string, raise a TypeError</span>
+<span class="sd">        if its not possible</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;construct_from_string&#39; expects a string, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_match</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Cannot construct a &#39;TsDtype&#39; from &#39;</span><span class="si">{</span><span class="n">string</span><span class="si">}</span><span class="s2">&#39;.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Incorrectly formatted string passed to constructor. &quot;</span>
+            <span class="s2">&quot;Valid formats include ts[typ] &quot;</span>
+            <span class="s2">&quot;where typ is any type&quot;</span>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TsType</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">str_type</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;ts[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_subtype</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">]&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">subtype</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subtype</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tstype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">TsType</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">subtype</span><span class="p">]</span>
+
+<div class="viewcode-block" id="TsDtype.__str__">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsDtype.__str__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">str_type</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">na_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+<div class="viewcode-block" id="TsDtype.__hash__">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsDtype.__hash__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="c1"># make myself hashable</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="TsDtype.__eq__">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsDtype.__eq__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">TsDtype</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">subtype</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">subtype</span></div>
+
+
+<div class="viewcode-block" id="TsDtype.__ne__">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsDtype.__ne__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TsDtype.__setstate__">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsDtype.__setstate__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="c1"># for pickle compat. __get_state__ is defined in the</span>
+        <span class="c1"># PandasExtensionDtype superclass and uses the public properties to</span>
+        <span class="c1"># pickle -&gt; need to set the settable private ones here (see GH26067)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_subtype</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;subtype&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="TsDtype.is_dtype">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsDtype.is_dtype">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_dtype</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a boolean if we if the passed type is an actual dtype that we</span>
+<span class="sd">        can match (via string or type)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_match</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">construct_from_string</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="kc">True</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="kc">False</span>
+                <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">is_dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TsDtype._get_common_dtype">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsDtype._get_common_dtype">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_common_dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;TsDtype&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;TsDtype&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">TsDtype</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dtypes</span><span class="p">):</span>
+            <span class="n">subtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;TsDtype&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">subtype</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dtypes</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">subtypes</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+</div>
+
+
+
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="c1"># Extension Container</span>
+<span class="c1"># -----------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="_NumPyBackedExtensionArrayMixin">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type._NumPyBackedExtensionArrayMixin">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">_NumPyBackedExtensionArrayMixin</span><span class="p">(</span><span class="n">ExtensionArray</span><span class="p">,</span> <span class="n">ExtensionScalarOpsMixin</span><span class="p">):</span>
+    <span class="c1"># Code inspired by https://github.com/hgrecco/pint-pandas/blob/master/pint_pandas/pint_array.py</span>
+    <span class="c1"># and https://github.com/ContinuumIO/cyberpandas/blob/master/cyberpandas/ip_array.py</span>
+    <span class="n">_data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">_readonly</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TsDtype&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;An instance of &#39;TsDtype&#39;.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span>
+
+<div class="viewcode-block" id="_NumPyBackedExtensionArrayMixin.__len__">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type._NumPyBackedExtensionArrayMixin.__len__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Length of this array</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        length : int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_NumPyBackedExtensionArrayMixin.__getitem__">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type._NumPyBackedExtensionArrayMixin.__getitem__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Select a subset of self.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        item : int, slice, or ndarray</span>
+<span class="sd">            * int: The position in &#39;self&#39; to get.</span>
+<span class="sd">            * slice: A slice object, where &#39;start&#39;, &#39;stop&#39;, and &#39;step&#39; are</span>
+<span class="sd">              integers or None</span>
+<span class="sd">            * ndarray: A 1-d boolean NumPy ndarray the same length as &#39;self&#39;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        item : scalar or TsArray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">is_integer</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="n">check_array_indexer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+
+        <span class="bp">cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">item</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_readonly</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readonly</span>
+        <span class="k">return</span> <span class="bp">cls</span></div>
+
+
+<div class="viewcode-block" id="_NumPyBackedExtensionArrayMixin.__setitem__">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type._NumPyBackedExtensionArrayMixin.__setitem__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readonly</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot modify read-only array&quot;</span><span class="p">)</span>
+
+        <span class="c1"># need to not use `not value` on numpy arrays</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">value</span><span class="p">):</span>
+            <span class="c1"># doing nothing here seems to be ok</span>
+            <span class="k">return</span>
+
+        <span class="n">key</span> <span class="o">=</span> <span class="n">check_array_indexer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_integer</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_list_like</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Value length does not match key.&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">except</span> <span class="ne">IndexError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Mask is wrong length. </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_NumPyBackedExtensionArrayMixin.isna">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type._NumPyBackedExtensionArrayMixin.isna">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">isna</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a Boolean NumPy array indicating if each value is missing.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        missing : np.array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">Edge</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_NumPyBackedExtensionArrayMixin.take">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type._NumPyBackedExtensionArrayMixin.take">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">take</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">allow_fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Take elements from an array.</span>
+<span class="sd">        # type: (Sequence[int], bool, Optional[Any]) -&gt; TsArray</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        indices : sequence of integers</span>
+<span class="sd">            Indices to be taken.</span>
+<span class="sd">        allow_fill : bool, default False</span>
+<span class="sd">            How to handle negative values in `indices`.</span>
+<span class="sd">            * False: negative values in `indices` indicate positional indices</span>
+<span class="sd">              from the right (the default). This is similar to</span>
+<span class="sd">              :func:`numpy.take`.</span>
+<span class="sd">            * True: negative values in `indices` indicate</span>
+<span class="sd">              missing values. These values are set to `fill_value`. Any other</span>
+<span class="sd">              other negative values raise a ``ValueError``.</span>
+<span class="sd">        fill_value : any, optional</span>
+<span class="sd">            Fill value to use for NA-indices when `allow_fill` is True.</span>
+<span class="sd">            This may be ``None``, in which case the default NA value for</span>
+<span class="sd">            the type, ``self.dtype.na_value``, is used.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        TsArray</span>
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        IndexError</span>
+<span class="sd">            When the indices are out of bounds for the array.</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            When `indices` contains negative values other than ``-1``</span>
+<span class="sd">            and `allow_fill` is True.</span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        TsArray.take is called by ``Series.__getitem__``, ``.loc``,</span>
+<span class="sd">        ``iloc``, when `indices` is a sequence of values. Additionally,</span>
+<span class="sd">        it&#39;s called by :meth:`Series.reindex`, or any other method</span>
+<span class="sd">        that causes realignemnt, with a `fill_value`.</span>
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        numpy.take</span>
+<span class="sd">        pandas.api.extensions.take</span>
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pandas.core.algorithms</span><span class="w"> </span><span class="kn">import</span> <span class="n">take</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+        <span class="k">if</span> <span class="n">allow_fill</span> <span class="ow">and</span> <span class="n">fill_value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fill_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">na_value</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">take</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">fill_value</span><span class="p">,</span> <span class="n">allow_fill</span><span class="o">=</span><span class="n">allow_fill</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="n">result</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_NumPyBackedExtensionArrayMixin.copy">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type._NumPyBackedExtensionArrayMixin.copy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+        <span class="k">if</span> <span class="n">deep</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_NumPyBackedExtensionArrayMixin._from_sequence">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type._NumPyBackedExtensionArrayMixin._from_sequence">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_from_sequence</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">scalars</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">scalars</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_NumPyBackedExtensionArrayMixin._from_factorized">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type._NumPyBackedExtensionArrayMixin._from_factorized">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_from_factorized</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">original</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">original</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_NumPyBackedExtensionArrayMixin._concat_same_type">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type._NumPyBackedExtensionArrayMixin._concat_same_type">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_concat_same_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">to_concat</span><span class="p">):</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">to_concat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span>  <span class="c1"># Know there will be at least one argument</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">array</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">to_concat</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_NumPyBackedExtensionArrayMixin.tolist">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type._NumPyBackedExtensionArrayMixin.tolist">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tolist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">nbytes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">nbytes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+
+<div class="viewcode-block" id="_NumPyBackedExtensionArrayMixin.value_counts">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type._NumPyBackedExtensionArrayMixin.value_counts">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">value_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dropna</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a Series containing counts of each category.</span>
+<span class="sd">        Every category will have an entry, even those with a count of 0.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dropna : boolean, default True</span>
+<span class="sd">            Don&#39;t include counts of NaN.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        counts : Series</span>
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        Series.value_counts</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+        <span class="k">if</span> <span class="n">dropna</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="o">~</span><span class="bp">self</span><span class="o">.</span><span class="n">isna</span><span class="p">()]</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">Counter</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="TsArray">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsArray">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TsArray</span><span class="p">(</span><span class="n">_NumPyBackedExtensionArrayMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Holder for CSP Ts edges.</span>
+<span class="sd">    It satisfies pandas&#39; extension array interface, and so can be stored inside</span>
+<span class="sd">    :class:`pandas.Series` and :class:`pandas.DataFrame`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__array_priority__</span> <span class="o">=</span> <span class="mi">1000</span>
+    <span class="n">_valuetype</span> <span class="o">=</span> <span class="n">Edge</span>  <span class="c1"># Actual value type for isinstance checks</span>
+    <span class="n">ndim</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">can_hold_na</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">copy</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">TsArray</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">_data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;O&quot;</span><span class="p">))</span>
+            <span class="c1"># Ensure the array is writeable (may be read-only in pandas 3.x)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">writeable</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">dtype</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">tstype</span><span class="o">.</span><span class="n">typ</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">Edge</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either a csp.Edge must be provided or a dtype&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span> <span class="o">=</span> <span class="n">TsDtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="c1"># Validation</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">tstype</span><span class="o">.</span><span class="n">typ</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">subtype</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All edges not of type </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">type</span><span class="p">))</span>
+        <span class="c1"># All other values should be set to self._dtype.na_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">na_value</span>
+
+<div class="viewcode-block" id="TsArray._formatter">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsArray._formatter">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_formatter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boxed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Formatting function for scalar values.</span>
+<span class="sd">        This is used in the default &#39;__repr__&#39;. The returned formatting</span>
+<span class="sd">        function receives scalar Quantities.</span>
+<span class="sd">        # type: (bool) -&gt; Callable[[Any], Optional[str]]</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        boxed: bool, default False</span>
+<span class="sd">            An indicated for whether or not your array is being printed</span>
+<span class="sd">            within a Series, DataFrame, or Index (True), or just by</span>
+<span class="sd">            itself (False). This may be useful if you want scalar values</span>
+<span class="sd">            to appear differently within a Series versus on its own (e.g.</span>
+<span class="sd">            quoted or not).</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Callable[[Any], str]</span>
+<span class="sd">            A callable that gets instances of the scalar type and</span>
+<span class="sd">            returns a string. By default, :func:`repr` is used</span>
+<span class="sd">            when ``boxed=False`` and :func:`str` is used when</span>
+<span class="sd">            ``boxed=True``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">formatting_function</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_valuetype</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">{}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">nodedef</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># The below throws some other weird error if hit</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unexpected value for format: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">formatting_function</span></div>
+
+
+<div class="viewcode-block" id="TsArray._reduce">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsArray._reduce">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">keepdims</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a scalar result of performing the reduction operation.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            Name of the function, supported values are:</span>
+<span class="sd">            { any, all, min, max, sum, mean, median, prod,</span>
+<span class="sd">            std, var, sem, kurt, skew }.</span>
+<span class="sd">        skipna : bool, default True</span>
+<span class="sd">            If True, skip NaN values (both missing Edges and nan&#39;s inside of Edges)</span>
+<span class="sd">        keepdims : bool, default False</span>
+<span class="sd">            If True, return a TsArray with shape (1,) instead of a scalar, keeping the dimensions.</span>
+<span class="sd">            Used by DataFrame reductions. Required argument as of pandas 3.0: https://github.com/pandas-dev/pandas/pull/52788.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Additional keyword arguments passed to the reduction function.</span>
+<span class="sd">            Currently, `ddof` is the only supported kwarg.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        scalar or TsArray</span>
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        TypeError : subclass does not define reductions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pandas.core.nanops</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nanops</span>
+
+        <span class="n">functions</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;all&quot;</span><span class="p">:</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_reduce_bool</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="n">nanops</span><span class="o">.</span><span class="n">nanall</span><span class="p">),</span>
+            <span class="s2">&quot;any&quot;</span><span class="p">:</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_reduce_bool</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="n">nanops</span><span class="o">.</span><span class="n">nanany</span><span class="p">),</span>
+            <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_reduce</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="n">nanops</span><span class="o">.</span><span class="n">nanmin</span><span class="p">),</span>
+            <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_reduce</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="n">nanops</span><span class="o">.</span><span class="n">nanmax</span><span class="p">),</span>
+            <span class="s2">&quot;sum&quot;</span><span class="p">:</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_reduce</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="n">nanops</span><span class="o">.</span><span class="n">nansum</span><span class="p">),</span>
+            <span class="s2">&quot;prod&quot;</span><span class="p">:</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_reduce</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="n">nanops</span><span class="o">.</span><span class="n">nanprod</span><span class="p">),</span>
+            <span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_reduce_float</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="n">nanops</span><span class="o">.</span><span class="n">nanmean</span><span class="p">),</span>
+            <span class="s2">&quot;median&quot;</span><span class="p">:</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_reduce_float</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="n">nanops</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">),</span>
+            <span class="s2">&quot;std&quot;</span><span class="p">:</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_reduce_float</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="n">nanops</span><span class="o">.</span><span class="n">nanstd</span><span class="p">),</span>
+            <span class="s2">&quot;var&quot;</span><span class="p">:</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_reduce_float</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="n">nanops</span><span class="o">.</span><span class="n">nanvar</span><span class="p">),</span>
+            <span class="s2">&quot;sem&quot;</span><span class="p">:</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_reduce_float</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="n">nanops</span><span class="o">.</span><span class="n">nansem</span><span class="p">),</span>
+            <span class="s2">&quot;skew&quot;</span><span class="p">:</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_reduce_float</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="n">nanops</span><span class="o">.</span><span class="n">nanskew</span><span class="p">),</span>
+            <span class="s2">&quot;kurt&quot;</span><span class="p">:</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_reduce_float</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="n">nanops</span><span class="o">.</span><span class="n">nankurt</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">functions</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cannot perform </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> with type </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">skipna</span><span class="p">:</span>
+            <span class="n">quantity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">_data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">quantity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">quantity</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">functions</span><span class="p">[</span><span class="n">name</span><span class="p">](</span><span class="n">quantity</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">subtype</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">skipna</span><span class="o">=</span><span class="n">skipna</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">keepdims</span><span class="p">:</span>
+            <span class="c1"># Determine the output dtype based on the reduction operation</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;any&quot;</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">):</span>
+                <span class="n">result_dtype</span> <span class="o">=</span> <span class="n">TsDtype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;median&quot;</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">,</span> <span class="s2">&quot;var&quot;</span><span class="p">,</span> <span class="s2">&quot;sem&quot;</span><span class="p">,</span> <span class="s2">&quot;skew&quot;</span><span class="p">,</span> <span class="s2">&quot;kurt&quot;</span><span class="p">):</span>
+                <span class="n">result_dtype</span> <span class="o">=</span> <span class="n">TsDtype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result_dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+
+            <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">TsArray</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">result_dtype</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">TsArray</span><span class="p">([</span><span class="n">result</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">result_dtype</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="TsArray._create_comparison_method">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsArray._create_comparison_method">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_comparison_method</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">op</span><span class="p">):</span>
+        <span class="c1"># Override from base class to make sure result dtype is correct</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_create_method</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">coerce_to_dtype</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">result_dtype</span><span class="o">=</span><span class="n">TsDtype</span><span class="p">(</span><span class="nb">bool</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="TsArray._create_logical_method">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsArray._create_logical_method">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_logical_method</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">op</span><span class="p">):</span>
+        <span class="c1"># Override from base class to make sure result dtype is correct</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_binary_op</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="n">op</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_create_method</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">coerce_to_dtype</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">result_dtype</span><span class="o">=</span><span class="n">TsDtype</span><span class="p">(</span><span class="nb">bool</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="TsArray.__invert__">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsArray.__invert__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__invert__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Element-wise inverse of this array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">_unary_op</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">invert</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TsArray.astype">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsArray.astype">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">astype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Cast to a NumPy array with &#39;dtype&#39;.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dtype : str or dtype</span>
+<span class="sd">            Typecode or data-type to which the array is cast.</span>
+<span class="sd">        copy : bool, default True</span>
+<span class="sd">            Whether to copy the data, even if not necessary. If False,</span>
+<span class="sd">            a copy is made only if the old dtype does not match the</span>
+<span class="sd">            new dtype.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        array : ndarray</span>
+<span class="sd">            NumPy ndarray with &#39;dtype&#39; for its dtype.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">dtype</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;ts[&quot;</span><span class="p">):</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="n">TsDtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">TsDtype</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">copy</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">_cast</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="n">dtype</span><span class="o">.</span><span class="n">subtype</span><span class="p">)</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">])</span>
+                <span class="k">return</span> <span class="n">TsArray</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">TsArray</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TsArray.to_numpy">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.TsArray.to_numpy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_numpy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">na_value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert to a NumPy ndarray.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dtype : str or numpy.dtype, optional</span>
+<span class="sd">            The dtype to pass to numpy.asarray.</span>
+<span class="sd">        copy : bool, default False</span>
+<span class="sd">            Whether to ensure that the returned value is not a view on another array.</span>
+<span class="sd">        na_value : Any, optional</span>
+<span class="sd">            The value to use for missing values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">copy</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readonly</span><span class="p">:</span>
+            <span class="c1"># Need to make array not writeable if this TsArray is read-only</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">may_share_memory</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">):</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">view</span><span class="p">()</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">writeable</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">na_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">isna</span><span class="p">()]</span> <span class="o">=</span> <span class="n">na_value</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="_cast">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type._cast">[docs]</a>
+<span class="nd">@node</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_cast</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="nb">object</span><span class="p">],</span> <span class="n">typ</span><span class="p">:</span> <span class="s2">&quot;T&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ts</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">ticked</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="_binary_op">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type._binary_op">[docs]</a>
+<span class="nd">@node</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_binary_op</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">],</span> <span class="n">y</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">],</span> <span class="n">op</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ts</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">ticked</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">and</span> <span class="n">csp</span><span class="o">.</span><span class="n">valid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">op</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="_unary_op">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type._unary_op">[docs]</a>
+<span class="nd">@node</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_unary_op</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">],</span> <span class="n">op</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ts</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">ticked</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">op</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="_reduce">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type._reduce">[docs]</a>
+<span class="nd">@node</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_reduce</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ts</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">]],</span> <span class="n">typ</span><span class="p">:</span> <span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">kwargs</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="p">{})</span> <span class="o">-&gt;</span> <span class="n">ts</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">]:</span>
+    <span class="c1"># The choice was made to only emit values if all basket elements are valid.</span>
+    <span class="c1"># If one wanted to reduce only over valid elements, then in many cases you could pre-apply csp.default</span>
+    <span class="c1"># with a nan/sentinal value, and then apply a function which ignores these values</span>
+    <span class="c1"># (as many of the common reduce functions do).</span>
+    <span class="c1"># However, if it was implemented over valid elements by default, it would be significantly more difficult to</span>
+    <span class="c1"># get it to wait for everything to be valid.</span>
+
+    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">valid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromiter</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">validvalues</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">typ</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="s2">&quot;U&quot;</span><span class="p">):</span>
+            <span class="c1"># Because pd.core.nanops functions on strings throw &quot;TypeError: cannot perform reduce with flexible type&quot;,</span>
+            <span class="c1"># but work just find on object type...</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;O&quot;</span><span class="p">)</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+
+<div class="viewcode-block" id="_reduce_float">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type._reduce_float">[docs]</a>
+<span class="nd">@node</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_reduce_float</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ts</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">]],</span> <span class="n">typ</span><span class="p">:</span> <span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">kwargs</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="p">{})</span> <span class="o">-&gt;</span> <span class="n">ts</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">valid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromiter</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">validvalues</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">typ</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="_reduce_bool">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type._reduce_bool">[docs]</a>
+<span class="nd">@node</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_reduce_bool</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ts</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">]],</span> <span class="n">typ</span><span class="p">:</span> <span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">kwargs</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="p">{})</span> <span class="o">-&gt;</span> <span class="n">ts</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">valid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromiter</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">validvalues</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">typ</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="is_csp_type">
+<a class="viewcode-back" href="../../../autoapi/csp/impl/pandas_ext_type/index.html#csp.impl.pandas_ext_type.is_csp_type">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_csp_type</span><span class="p">(</span><span class="n">arr_or_dtype</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check whether the provided array or dtype is of a TsDtype dtype.&quot;&quot;&quot;</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">arr_or_dtype</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">,</span> <span class="n">arr_or_dtype</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">TsDtype</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">TsDtype</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+
+<span class="n">TsArray</span><span class="o">.</span><span class="n">_add_arithmetic_ops</span><span class="p">()</span>
+<span class="n">TsArray</span><span class="o">.</span><span class="n">_add_comparison_ops</span><span class="p">()</span>
+<span class="n">TsArray</span><span class="o">.</span><span class="n">_add_logical_ops</span><span class="p">()</span>
+<span class="nb">setattr</span><span class="p">(</span><span class="n">TsArray</span><span class="p">,</span> <span class="s2">&quot;__pos__&quot;</span><span class="p">,</span> <span class="n">TsArray</span><span class="o">.</span><span class="n">_create_arithmetic_method</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">pos</span><span class="p">))</span>
+<span class="nb">setattr</span><span class="p">(</span><span class="n">TsArray</span><span class="p">,</span> <span class="s2">&quot;__neg__&quot;</span><span class="p">,</span> <span class="n">TsArray</span><span class="o">.</span><span class="n">_create_arithmetic_method</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">neg</span><span class="p">))</span>
+<span class="nb">setattr</span><span class="p">(</span><span class="n">TsArray</span><span class="p">,</span> <span class="s2">&quot;__abs__&quot;</span><span class="p">,</span> <span class="n">TsArray</span><span class="o">.</span><span class="n">_create_arithmetic_method</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">abs</span><span class="p">))</span>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; the csp authors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=0c3dd48d"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
+import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.0/dist/mermaid-layout-elk.esm.min.mjs"
+
+
+
+import zenumlLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/mermaid-zenuml@0.2.2/dist/mermaid-zenuml.esm.min.mjs"
+
+
+const initStyles = () => {
+    const defaultStyle = document.createElement('style');
+    defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}`;
+    document.head.appendChild(defaultStyle);
+
+    const fullscreenStyle = document.createElement('style');
+    fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+    document.head.appendChild(fullscreenStyle);
+}
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    // We use a set of heuristics:
+    // 1. Check for common dark mode classes or attributes
+    // 2. Check computed background color brightness
+    if (document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.body.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark') {
+        // console.log("Dark theme detected via class/attribute");
+        return true;
+    }
+    if (document.documentElement.classList.contains('light') ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('light') ||
+        document.body.getAttribute('data-theme') === 'light') {
+        // console.log("Light theme detected via class/attribute");
+        return false;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // console.log("Dark theme detected via prefers-color-scheme");
+        return true;
+    }
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // console.log("Background color brightness:", brightness);
+        return brightness < 128;
+    }
+    // console.log("No dark or light theme detected, defaulting to light theme");
+    return false;
+};
+
+let darkTheme = isDarkTheme();
+let modal = null;
+let modalContent = null;
+let previousScrollOffset = [window.scrollX, window.scrollY];
+let _lazyObserver = null;
+let _renderQueue = Promise.resolve();
+
+// Apply d3 zoom to each SVG. Idempotent: an SVG already wrapped is skipped,
+// so this is safe to call both for the initial batch and for diagrams that
+// render lazily once they become visible.
+const addZoomToSvgs = (svgs) => {
+    svgs.each(function() {
+        if (this.getAttribute('data-zoom-applied') === 'true') return;
+        var svg = d3.select(this);
+        svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+        var inner = svg.select("g");
+        var zoom = d3.zoom().on("zoom", function(event) {
+            inner.attr("transform", event.transform);
+        });
+        svg.call(zoom);
+        this.setAttribute('data-zoom-applied', 'true');
+    });
+};
+
+const runMermaid = async (rerun) => {
+    console.log("Running mermaid diagrams, rerun =", rerun);
+    // clear all existing mermaid charts
+    let all_mermaids = document.querySelectorAll(".mermaid");
+
+    if (rerun) {
+        // Disconnect any previous lazy rendering observer
+        if (_lazyObserver) {
+            _lazyObserver.disconnect();
+            _lazyObserver = null;
+        }
+
+        all_mermaids.forEach((el) => {
+            el.removeAttribute('data-mermaid-deferred');
+            el.removeAttribute('data-mermaid-render-failed');
+            if(!el.hasAttribute("data-original-code")) {
+                // store original code
+                // console.log(`Storing original code for first run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+            if(el.getAttribute("data-processed") === "true") {
+                // remove and restore original
+                el.removeAttribute("data-processed");
+                // console.log(`Restoring original code for re-run: `, el.getAttribute('data-original-code'));
+                el.innerHTML = el.getAttribute('data-original-code');
+            } else {
+                // store original code
+                // console.log(`Storing original code for re-run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+        });
+
+        // Separate visible and hidden elements. Mermaid's layout engine measures
+        // text dimensions via the DOM, which fails for elements hidden by a parent
+        // (e.g., Reveal.js non-active slides, sphinx-design unopened tabs),
+        // producing broken SVGs. Render visible elements now, defer hidden ones.
+        const visible = [];
+        const hidden = [];
+        all_mermaids.forEach((el) => {
+            // offsetParent is null for display:none ancestors.
+            // getClientRects().length > 0 catches position:fixed elements
+            // (which also have null offsetParent but are still visible).
+            if (el.offsetParent !== null || el.getClientRects().length > 0) {
+                visible.push(el);
+            } else {
+                hidden.push(el);
+                el.setAttribute('data-mermaid-deferred', 'true');
+            }
+        });
+
+        if (visible.length > 0) {
+            try {
+                await mermaid.run({ nodes: visible });
+            } catch (e) {
+                console.error("Mermaid rendering failed:", e);
+            }
+        }
+
+        // Lazily render hidden elements when they become visible.
+        // Uses a promise chain (_renderQueue) to serialize rendering,
+        // since IntersectionObserver may report multiple entries at once
+        // and mermaid.run() is not safe to call concurrently.
+        if (hidden.length > 0) {
+            if (typeof IntersectionObserver === 'undefined') {
+                console.warn("IntersectionObserver not available; hidden mermaid diagrams will not render.");
+            } else {
+                _renderQueue = Promise.resolve();
+                _lazyObserver = new IntersectionObserver((entries) => {
+                    for (const entry of entries) {
+                        if (entry.isIntersecting && entry.target.getAttribute("data-processed") !== "true") {
+                            _lazyObserver.unobserve(entry.target);
+                            const el = entry.target;
+                            _renderQueue = _renderQueue.then(async () => {
+                                try {
+                                    await mermaid.run({ nodes: [el] });
+                                    el.removeAttribute('data-mermaid-deferred');
+                                    // Apply zoom to the now-rendered diagram, matching
+                                    // the decoration visible diagrams receive.
+                                    if ("True" === "True") {
+                                        addZoomToSvgs(d3.selectAll(".mermaid svg"));
+                                    }
+                                } catch (e) {
+                                    console.error("Mermaid deferred rendering failed:", e);
+                                    el.removeAttribute('data-mermaid-deferred');
+                                    el.setAttribute('data-mermaid-render-failed', 'true');
+                                }
+                            });
+                        }
+                    }
+                });
+                hidden.forEach((el) => _lazyObserver.observe(el));
+            }
+        }
+    }
+
+    all_mermaids = document.querySelectorAll(".mermaid");
+    // Exclude deferred (hidden) and render-failed elements from completion checks
+    const mermaids_active = document.querySelectorAll(".mermaid:not([data-mermaid-deferred]):not([data-mermaid-render-failed])");
+    const mermaids_processed = document.querySelectorAll(".mermaid:not([data-mermaid-deferred]):not([data-mermaid-render-failed])[data-processed='true']");
+
+    if ("True" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? mermaids_active.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll(".mermaid svg");
+            // Wait until every active (visible) diagram has rendered. Deferred
+            // diagrams are excluded, so a fixed d3_node_count that counts a
+            // hidden diagram no longer loops forever waiting for its SVG.
+            if(mermaids_active.length !== mermaids_processed.length) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            }
+            addZoomToSvgs(svgs);
+        }
+    } else if(mermaids_active.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(() => runMermaid(false), 200);
+        return;
+    }
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    if (modal !== null ) {
+        // Destroy existing modal
+        modal.remove();
+        modal = null;
+        modalContent = null;
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            // Already processed, adjust button class if needed
+            const existingBtn = mermaidDiv.parentNode.querySelector('.mermaid-fullscreen-btn');
+            if (existingBtn) {
+                existingBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+            }
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("True" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        container.appendChild(fullscreenBtn);
+    });
+};
+
+const load = async () => {
+    initStyles();
+
+    await runMermaid(true);
+
+    const reRunIfThemeChanges = async () => {
+        const newDarkTheme = isDarkTheme();
+        if (newDarkTheme !== darkTheme) {
+            darkTheme = newDarkTheme;
+            console.log("Theme change detected, re-running mermaid with", darkTheme ? "dark" : "default", "theme");
+            await mermaid.initialize(
+                {...JSON.parse(
+                    `{"startOnLoad": false}`
+                ),
+                ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+                }
+            );
+            await runMermaid(true);
+        }
+    };
+
+    // Update theme classes when theme changes
+    const themeObserver = new MutationObserver(reRunIfThemeChanges);
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    themeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+};
+
+
+mermaid.registerLayoutLoaders(elkLayouts);
+
+
+
+mermaid.registerExternalDiagrams([zenumlLayouts]);
+
+
+console.log("Initializing mermaid with", darkTheme ? "dark" : "default", "theme");
+mermaid.initialize(
+    {...JSON.parse(
+        `{"startOnLoad": false}`
+    ),
+    ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+    }
+);
+
+window.addEventListener("load", load);
+window.runMermaid = runMermaid;</script>
+    <script src="../../../_static/js/custom.js?v=956e5d78"></script>
+    </body>
+</html>

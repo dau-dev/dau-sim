@@ -1,0 +1,29 @@
+csp.impl.types.numpy_type_util
+==============================
+
+.. py:module:: csp.impl.types.numpy_type_util
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp.impl.types.numpy_type_util._TYPE_MAPPING
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.impl.types.numpy_type_util.map_numpy_dtype_to_python_type
+
+
+Module Contents
+---------------
+
+.. py:data:: _TYPE_MAPPING
+
+.. py:function:: map_numpy_dtype_to_python_type(numpy_dtype)
+

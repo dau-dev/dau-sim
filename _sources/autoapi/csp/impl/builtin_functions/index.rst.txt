@@ -1,0 +1,74 @@
+csp.impl.builtin_functions
+==========================
+
+.. py:module:: csp.impl.builtin_functions
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp.impl.builtin_functions.UNSET
+   csp.impl.builtin_functions.ALL_CSP_BUILTIN_FUNCS
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   csp.impl.builtin_functions.TimeIndexPolicy
+   csp.impl.builtin_functions.DuplicatePolicy
+
+
+Module Contents
+---------------
+
+.. py:data:: UNSET
+
+.. py:class:: TimeIndexPolicy
+
+   Bases: :py:obj:`csp.impl.enum.Enum`
+
+
+   An enum that specifies the policy for handling the start and end values in functions like values_at.
+
+
+   .. py:attribute:: INCLUSIVE
+      :value: 1
+
+
+
+   .. py:attribute:: EXCLUSIVE
+      :value: 2
+
+
+
+   .. py:attribute:: EXTRAPOLATE
+      :value: 3
+
+
+
+.. py:class:: DuplicatePolicy
+
+   Bases: :py:obj:`enum.IntEnum`
+
+
+   An 'enum' that specifies the policy for handling the last value in functions like value_at.
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+   .. py:attribute:: LAST_VALUE
+      :value: 1
+
+
+
+   .. py:attribute:: FIRST_VALUE
+      :value: 2
+
+
+
+.. py:data:: ALL_CSP_BUILTIN_FUNCS
+

@@ -1,0 +1,40 @@
+csp.impl.wiring.numba_utils.csp_string_extension
+================================================
+
+.. py:module:: csp.impl.wiring.numba_utils.csp_string_extension
+
+.. autoapi-nested-parse::
+
+   An implementation of utility functions to work with numba strings
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   csp.impl.wiring.numba_utils.csp_string_extension._BYTES_TYPE
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   csp.impl.wiring.numba_utils.csp_string_extension._csp_make_constant_bytes
+   csp.impl.wiring.numba_utils.csp_string_extension.csp_unicode_to_bytes_cast
+   csp.impl.wiring.numba_utils.csp_string_extension.csp_unicode_to_bytes
+
+
+Module Contents
+---------------
+
+.. py:data:: _BYTES_TYPE
+
+.. py:function:: _csp_make_constant_bytes(context, builder, nbytes)
+
+.. py:function:: csp_unicode_to_bytes_cast(context, builder, fromty, toty, val)
+
+.. py:function:: csp_unicode_to_bytes(typingctx, s)
+

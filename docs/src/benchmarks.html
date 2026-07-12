@@ -1,0 +1,519 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>Benchmarks - dau-sim v0.17.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/custom.css?v=890fd012" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.17.0</code></div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.17.0</code></span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../_sources/docs/src/benchmarks.md.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="benchmarks">
+<h1>Benchmarks<a class="headerlink" href="#benchmarks" title="Link to this heading">¶</a></h1>
+<p>dau-sim includes a benchmark suite under <code class="docutils literal notranslate"><span class="pre">dau_sim/benchmarks/</span></code> that tracks simulation throughput across backends and measures internal compilation and evaluation performance. All numbers below were collected on an Apple M1 Pro (arm64, CPython 3.12) unless noted otherwise.</p>
+<section id="benchmark-suite">
+<h2>Benchmark suite<a class="headerlink" href="#benchmark-suite" title="Link to this heading">¶</a></h2>
+<section id="cross-simulator-comparison-bench-cross-simulators-py">
+<h3>Cross-simulator comparison (<code class="docutils literal notranslate"><span class="pre">bench_cross_simulators.py</span></code>)<a class="headerlink" href="#cross-simulator-comparison-bench-cross-simulators-py" title="Link to this heading">¶</a></h3>
+<p>Compares dau-sim against Amaranth’s native pysim simulator and Verilator on the same design: a 32-bit enabled counter running for a configurable number of cycles (set via <code class="docutils literal notranslate"><span class="pre">DAU_BENCH_CYCLES</span></code>, default 5,000).</p>
+<p>Backends under test:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>What it measures</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>dau-sim</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">from_amaranth</span></code> → <code class="docutils literal notranslate"><span class="pre">compile_module</span></code> → <code class="docutils literal notranslate"><span class="pre">cm.run(return_traces=False)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>amaranth-sim</strong></p></td>
+<td><p>Amaranth’s built-in Python simulator (<code class="docutils literal notranslate"><span class="pre">Simulator</span></code> + generator process)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>cxxsim</strong></p></td>
+<td><p>Amaranth’s optional CXXRTL-backed simulator (skipped when unavailable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>verilator-compile-run</strong></p></td>
+<td><p>Full pipeline: write Verilog → <code class="docutils literal notranslate"><span class="pre">verilator</span> <span class="pre">--binary</span></code> → run executable</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>verilator-runtime</strong></p></td>
+<td><p>Pre-compiled Verilator binary execution only (compile cost excluded)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Run the benchmark:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">DAU_BENCH_CYCLES</span><span class="o">=</span><span class="m">100000</span><span class="w"> </span>pytest<span class="w"> </span>dau_sim/benchmarks/bench_cross_simulators.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--benchmark-only<span class="w"> </span>--benchmark-columns<span class="o">=</span>mean,stddev,median
+</pre></div>
+</div>
+<section id="results-500k-cycles">
+<h4>Results — 500k cycles<a class="headerlink" href="#results-500k-cycles" title="Link to this heading">¶</a></h4>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>Mean</p></th>
+<th class="head"><p>vs Verilator runtime</p></th>
+<th class="head"><p>vs Amaranth</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>verilator-runtime</p></td>
+<td><p>93 ms</p></td>
+<td><p>1.0×</p></td>
+<td><p>87× faster</p></td>
+</tr>
+<tr class="row-odd"><td><p>dau-sim</p></td>
+<td><p>2.49 s</p></td>
+<td><p>27× slower</p></td>
+<td><p>3.2× faster</p></td>
+</tr>
+<tr class="row-even"><td><p>verilator-compile-run</p></td>
+<td><p>4.85 s</p></td>
+<td><p>52× slower</p></td>
+<td><p>1.7× faster</p></td>
+</tr>
+<tr class="row-odd"><td><p>amaranth-sim</p></td>
+<td><p>8.08 s</p></td>
+<td><p>87× slower</p></td>
+<td><p>1.0×</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="results-100k-cycles">
+<h4>Results — 100k cycles<a class="headerlink" href="#results-100k-cycles" title="Link to this heading">¶</a></h4>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>Mean</p></th>
+<th class="head"><p>vs Verilator runtime</p></th>
+<th class="head"><p>vs Amaranth</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>verilator-runtime</p></td>
+<td><p>22.5 ms</p></td>
+<td><p>1.0×</p></td>
+<td><p>70× faster</p></td>
+</tr>
+<tr class="row-odd"><td><p>dau-sim</p></td>
+<td><p>154 ms</p></td>
+<td><p>6.8× slower</p></td>
+<td><p>10× faster</p></td>
+</tr>
+<tr class="row-even"><td><p>amaranth-sim</p></td>
+<td><p>1,568 ms</p></td>
+<td><p>70× slower</p></td>
+<td><p>1.0×</p></td>
+</tr>
+<tr class="row-odd"><td><p>verilator-compile-run</p></td>
+<td><p>4,509 ms</p></td>
+<td><p>200× slower</p></td>
+<td><p>2.9× faster</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Key observations:</p>
+<ul class="simple">
+<li><p><strong>dau-sim is 3–10× faster than Amaranth’s pysim</strong> across cycle counts, with the gap widening at higher counts due to lower per-tick overhead.</p></li>
+<li><p><strong>Verilator runtime is the throughput ceiling</strong> — compiled C++ executing a simple counter at ~5M cycles/sec. dau-sim is 7–27× behind depending on cycle count.</p></li>
+<li><p><strong>Verilator compile+run is slower than dau-sim</strong> for small-to-medium workloads because compilation dominates. dau-sim’s zero-compile-step workflow gives it a significant advantage for iterative development.</p></li>
+<li><p>The Amaranth counter includes a reset signal (<code class="docutils literal notranslate"><span class="pre">rst</span></code>), which prevents dau-sim from using its fastest batch execution path. For reset-free IR designs, dau-sim achieves ~30 ms for 100k cycles (only 1.3× slower than Verilator runtime).</p></li>
+</ul>
+</section>
+</section>
+<section id="compile-partitioning-bench-compile-partitioning-py">
+<h3>Compile partitioning (<code class="docutils literal notranslate"><span class="pre">bench_compile_partitioning.py</span></code>)<a class="headerlink" href="#compile-partitioning-bench-compile-partitioning-py" title="Link to this heading">¶</a></h3>
+<p>Measures <code class="docutils literal notranslate"><span class="pre">compile_module</span></code> time as a function of the number of independent combinational blocks in a design. Tests N = 16, 64, 256, 1024 blocks, each a simple <code class="docutils literal notranslate"><span class="pre">assign</span> <span class="pre">o</span> <span class="pre">=</span> <span class="pre">a</span> <span class="pre">+</span> <span class="pre">const</span></code>. This benchmark validates that the dependency-analysis and block-partitioning phase scales well.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>dau_sim/benchmarks/bench_compile_partitioning.py<span class="w"> </span>--benchmark-only
+</pre></div>
+</div>
+</section>
+<section id="selective-settle-bench-selective-settle-py">
+<h3>Selective settle (<code class="docutils literal notranslate"><span class="pre">bench_selective_settle.py</span></code>)<a class="headerlink" href="#selective-settle-bench-selective-settle-py" title="Link to this heading">¶</a></h3>
+<p>Measures runtime of a sequential design with N independent combinational components and configurable statements per component (1, 8, 32). Verifies that the selective-settle optimization — only re-evaluating combinational blocks whose inputs actually changed — keeps per-tick cost proportional to active components rather than total design size.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>dau_sim/benchmarks/bench_selective_settle.py<span class="w"> </span>--benchmark-only
+</pre></div>
+</div>
+</section>
+</section>
+<section id="execution-modes-and-optimization-tiers">
+<h2>Execution modes and optimization tiers<a class="headerlink" href="#execution-modes-and-optimization-tiers" title="Link to this heading">¶</a></h2>
+<p>dau-sim uses several execution strategies depending on the design and whether trace output is needed:</p>
+<section id="csp-compiled-path-default">
+<h3>CSP compiled path (default)<a class="headerlink" href="#csp-compiled-path-default" title="Link to this heading">¶</a></h3>
+<p>The compiler generates flat Python functions from the IR statement/expression trees (<code class="docutils literal notranslate"><span class="pre">dau_sim/compiler/codegen.py</span></code>) and executes them inside a single CSP node. Per-tick work:</p>
+<ol class="arabic simple">
+<li><p>Toggle clock signals at the correct half-period</p></li>
+<li><p>Detect rising/falling edges via inlined comparisons</p></li>
+<li><p>Execute the compiled sequential block for each fired domain</p></li>
+<li><p>Re-evaluate affected combinational blocks (selective settle)</p></li>
+<li><p>Optionally emit trace output</p></li>
+</ol>
+<p>This path supports all designs including those with resets, combinational logic, and memories.</p>
+</section>
+<section id="fast-tick-path">
+<h3>Fast-tick path<a class="headerlink" href="#fast-tick-path" title="Link to this heading">¶</a></h3>
+<p>For designs with <strong>no combinational logic, no memories, and no resets</strong>, the compiler generates a single <code class="docutils literal notranslate"><span class="pre">_fast_tick(S,</span> <span class="pre">clock_arr,</span> <span class="pre">tc)</span></code> function that inlines the clock toggle, edge detection, and sequential block body. This eliminates function-call overhead and changed-set tracking.</p>
+</section>
+<section id="batch-no-trace-path">
+<h3>Batch no-trace path<a class="headerlink" href="#batch-no-trace-path" title="Link to this heading">¶</a></h3>
+<p>When <code class="docutils literal notranslate"><span class="pre">return_traces=False</span></code> and the design qualifies for fast-tick, dau-sim bypasses the CSP engine entirely and runs all ticks in a pure Python <code class="docutils literal notranslate"><span class="pre">for</span></code> loop. This eliminates ~400k CSP scheduling events for a 200k-tick simulation.</p>
+</section>
+<section id="performance-by-execution-mode-100k-cycle-counter">
+<h3>Performance by execution mode (100k-cycle counter)<a class="headerlink" href="#performance-by-execution-mode-100k-cycle-counter" title="Link to this heading">¶</a></h3>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Mode</p></th>
+<th class="head"><p>Time</p></th>
+<th class="head"><p>Speedup vs interpreter</p></th>
+<th class="head"><p>Throughput</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Interpreter (pre-optimization baseline)</p></td>
+<td><p>420 ms</p></td>
+<td><p>1.0×</p></td>
+<td><p>238k cycles/sec</p></td>
+</tr>
+<tr class="row-odd"><td><p>CSP compiled (with fast-tick)</p></td>
+<td><p>71 ms</p></td>
+<td><p>5.9×</p></td>
+<td><p>1.4M cycles/sec</p></td>
+</tr>
+<tr class="row-even"><td><p>Batch no-trace</p></td>
+<td><p>30 ms</p></td>
+<td><p>13.9×</p></td>
+<td><p>3.3M cycles/sec</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="running-benchmarks">
+<h2>Running benchmarks<a class="headerlink" href="#running-benchmarks" title="Link to this heading">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run all benchmarks</span>
+pytest<span class="w"> </span>dau_sim/benchmarks/<span class="w"> </span>--benchmark-only
+
+<span class="c1"># Cross-simulator comparison with custom cycle count</span>
+<span class="nv">DAU_BENCH_CYCLES</span><span class="o">=</span><span class="m">100000</span><span class="w"> </span>pytest<span class="w"> </span>dau_sim/benchmarks/bench_cross_simulators.py<span class="w"> </span>--benchmark-only
+
+<span class="c1"># Save results to JSON for tracking</span>
+pytest<span class="w"> </span>dau_sim/benchmarks/bench_cross_simulators.py<span class="w"> </span>--benchmark-only<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--benchmark-save<span class="o">=</span>cross-runtime<span class="w"> </span>--benchmark-storage<span class="o">=</span>dau_sim/benchmarks/results
+</pre></div>
+</div>
+<p>Stored results live in <code class="docutils literal notranslate"><span class="pre">dau_sim/benchmarks/results/</span></code> for historical comparison.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; the csp authors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Benchmarks</a><ul>
+<li><a class="reference internal" href="#benchmark-suite">Benchmark suite</a><ul>
+<li><a class="reference internal" href="#cross-simulator-comparison-bench-cross-simulators-py">Cross-simulator comparison (<code class="docutils literal notranslate"><span class="pre">bench_cross_simulators.py</span></code>)</a><ul>
+<li><a class="reference internal" href="#results-500k-cycles">Results — 500k cycles</a></li>
+<li><a class="reference internal" href="#results-100k-cycles">Results — 100k cycles</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#compile-partitioning-bench-compile-partitioning-py">Compile partitioning (<code class="docutils literal notranslate"><span class="pre">bench_compile_partitioning.py</span></code>)</a></li>
+<li><a class="reference internal" href="#selective-settle-bench-selective-settle-py">Selective settle (<code class="docutils literal notranslate"><span class="pre">bench_selective_settle.py</span></code>)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#execution-modes-and-optimization-tiers">Execution modes and optimization tiers</a><ul>
+<li><a class="reference internal" href="#csp-compiled-path-default">CSP compiled path (default)</a></li>
+<li><a class="reference internal" href="#fast-tick-path">Fast-tick path</a></li>
+<li><a class="reference internal" href="#batch-no-trace-path">Batch no-trace path</a></li>
+<li><a class="reference internal" href="#performance-by-execution-mode-100k-cycle-counter">Performance by execution mode (100k-cycle counter)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#running-benchmarks">Running benchmarks</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=0c3dd48d"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../_static/js/custom.js?v=956e5d78"></script>
+    </body>
+</html>
