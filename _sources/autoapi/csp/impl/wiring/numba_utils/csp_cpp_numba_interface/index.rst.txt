@@ -1,6 +1,0 @@
-csp.impl.wiring.numba_utils.csp_cpp_numba_interface
-===================================================
-
-.. py:module:: csp.impl.wiring.numba_utils.csp_cpp_numba_interface
-
-

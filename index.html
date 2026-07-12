@@ -3,10 +3,10 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Architecture" href="docs/src/architecture.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
-        <title>dau-sim v0.17.0</title>
+        <title>dau sim v0.2.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
@@ -167,7 +167,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="#"><div class="brand">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.17.0</code></div></a>
+      <a href="#"><div class="brand">dau sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.2.0</code></div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -188,7 +188,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="#">
   
-  <span class="sidebar-brand-text">dau-sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.17.0</code></span>
+  <span class="sidebar-brand-text">dau sim <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.2.0</code></span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -196,7 +196,15 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="docs/src/architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/src/cli.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/src/api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/src/amaranth.html">Amaranth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/src/verilog.html">Verilog / SystemVerilog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/src/cocotb.html">cocotb</a></li>
+</ul>
+
 </div>
 </div>
 
@@ -235,73 +243,102 @@
         <article role="main" id="furo-main-content">
           <div class="toctree-wrapper compound">
 </div>
-<br />
-<a href="https://github.com/point72/csp#gh-light-mode-only">
-  <img src="https://github.com/point72/csp/raw/main/docs/img/csp-light.png?raw=true#gh-light-mode-only" alt="csp" width="400"></a>
-</a>
-<a href="https://github.com/point72/csp#gh-dark-mode-only">
-  <img src="https://github.com/point72/csp/raw/main/docs/img/csp-dark.png?raw=true#gh-dark-mode-only" alt="csp" width="400"></a>
-</a>
-<br/>
-<p><a class="reference external" href="https://pypi.python.org/pypi/csp"><img alt="PyPI" src="https://img.shields.io/pypi/v/csp.svg?style=flat" /></a>
-<a class="reference external" href="https://github.com/Point72/csp/LICENSE"><img alt="License" src="https://img.shields.io/badge/license-Apache--2.0-green" /></a>
-<a class="reference external" href="https://github.com/Point72/csp/actions/workflows/build.yml"><img alt="Build Status" src="https://github.com/Point72/csp/actions/workflows/build.yml/badge.svg" /></a>
-<a class="reference external" href="https://github.com/Point72/csp/blob/main/pyproject.toml"><img alt="Python Versions" src="https://img.shields.io/badge/python-3.10_%7C_3.11_%7C_3.12_%7C_3.13-blue" /></a></p>
-<br/>
-<p><code class="docutils literal notranslate"><span class="pre">csp</span></code> is a high performance reactive stream processing library. The main engine is a C++ complex event graph processor, with bindings exposed into Python. Its key features include switchable simulation/realtime timesteps for both offline and online processing, custom input and output adapters for integration with static and streaming data sources and sinks, and extensible acceleration via customizable C++ nodes for calculations.</p>
-<p>The high level goal of <code class="docutils literal notranslate"><span class="pre">csp</span></code> is to make writing realtime code simple and performant. Write event driven code once, test it in simulation, then deploy as realtime without any code changes.</p>
-<p>Here is a very simple example of a small <code class="docutils literal notranslate"><span class="pre">csp</span></code> program to calculate a <a class="reference external" href="https://en.wikipedia.org/wiki/Bid%E2%80%93ask_spread">bid-ask spread</a>. In this example, we use a constant bid and ask, but in the real world you might pipe these directly in from your live streaming data source, or in from your historical data source, without modifications to your core logic.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">csp</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">csp</span><span class="w"> </span><span class="kn">import</span> <span class="n">ts</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
-
-
-<span class="nd">@csp</span><span class="o">.</span><span class="n">node</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">spread</span><span class="p">(</span><span class="n">bid</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">ask</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ts</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-    <span class="k">if</span> <span class="n">csp</span><span class="o">.</span><span class="n">valid</span><span class="p">(</span><span class="n">bid</span><span class="p">,</span> <span class="n">ask</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">ask</span> <span class="o">-</span> <span class="n">bid</span>
-
-
-<span class="nd">@csp</span><span class="o">.</span><span class="n">graph</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">my_graph</span><span class="p">():</span>
-    <span class="n">bid</span> <span class="o">=</span> <span class="n">csp</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
-    <span class="n">ask</span> <span class="o">=</span> <span class="n">csp</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">spread</span><span class="p">(</span><span class="n">bid</span><span class="p">,</span> <span class="n">ask</span><span class="p">)</span>
-
-    <span class="n">csp</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;spread&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
-    <span class="n">csp</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;bid&#39;</span><span class="p">,</span> <span class="n">bid</span><span class="p">)</span>
-    <span class="n">csp</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;ask&#39;</span><span class="p">,</span> <span class="n">ask</span><span class="p">)</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">csp</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">my_graph</span><span class="p">,</span> <span class="n">starttime</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">())</span>
+<section class="tex2jax_ignore mathjax_ignore" id="dau-sim">
+<h1>dau sim<a class="headerlink" href="#dau-sim" title="Link to this heading">¶</a></h1>
+<p>dau simulator</p>
+<p><a class="reference external" href="https://github.com/dau-dev/dau-sim/actions/workflows/build.yaml"><img alt="Build Status" src="https://github.com/dau-dev/dau-sim/actions/workflows/build.yaml/badge.svg?branch=main&amp;event=push" /></a>
+<a class="reference external" href="https://codecov.io/gh/dau-dev/dau-sim"><img alt="codecov" src="https://codecov.io/gh/dau-dev/dau-sim/branch/main/graph/badge.svg" /></a>
+<a class="reference external" href="https://github.com/dau-dev/dau-sim"><img alt="License" src="https://img.shields.io/github/license/dau-dev/dau-sim" /></a>
+<a class="reference external" href="https://pypi.python.org/pypi/dau-sim"><img alt="PyPI" src="https://img.shields.io/pypi/v/dau-sim.svg" /></a></p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>dau-sim simulates digital hardware designs using <a class="reference external" href="https://github.com/Point72/csp">csp</a>’s reactive stream processing engine. Hardware signals become CSP time-series edges, combinational logic becomes CSP nodes, and clock domains become CSP clock processes — giving you cycle-accurate simulation with deterministic event scheduling and multi-clock support.</p>
+<p><strong>Supported inputs:</strong></p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://amaranth-lang.org/">Amaranth HDL</a> — Python-native hardware description</p></li>
+<li><p><a class="reference external" href="https://www.systemverilog.io/">SystemVerilog / Verilog</a> — via <a class="reference external" href="https://github.com/MikePopoloski/pyslang">pyslang</a></p></li>
+<li><p>Hand-constructed IR — for programmatic design generation</p></li>
+</ul>
+<p><strong>Output formats:</strong> VCD (IEEE 1364-2001) waveform files, with FST and live streaming planned.</p>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>dau-sim
 </pre></div>
 </div>
-<p>Running this, our output should look like (with some slight variations for current time):</p>
-<div class="highlight-raw notranslate"><div class="highlight"><pre><span></span>2024-02-07 04:37:13.446548 bid:1.0
-2024-02-07 04:37:13.446548 ask:2.0
-2024-02-07 04:37:13.446548 spread:1.0
+<p>For development:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/dau-dev/dau-sim.git
+<span class="nb">cd</span><span class="w"> </span>dau-sim
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[develop]&quot;</span>
 </pre></div>
 </div>
-<section id="getting-started">
-<h1>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading">¶</a></h1>
-<p>See <a class="reference external" href="https://github.com/Point72/csp/wiki">our wiki!</a></p>
 </section>
-<section id="development">
-<h1>Development<a class="headerlink" href="#development" title="Link to this heading">¶</a></h1>
-<p>Check out the <a class="reference external" href="https://github.com/Point72/csp/wiki/Contribute">contribution guide</a> and <a class="reference external" href="https://github.com/Point72/csp/wiki/Local-Development-Setup">local development instructions</a>.</p>
+<section id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amaranth.lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">wiring</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">amaranth.lib.wiring</span><span class="w"> </span><span class="kn">import</span> <span class="n">In</span><span class="p">,</span> <span class="n">Out</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">amaranth.hdl</span><span class="w"> </span><span class="kn">import</span> <span class="n">Module</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.frontends</span><span class="w"> </span><span class="kn">import</span> <span class="n">from_amaranth</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.compiler</span><span class="w"> </span><span class="kn">import</span> <span class="n">compile_module</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Counter</span><span class="p">(</span><span class="n">wiring</span><span class="o">.</span><span class="n">Component</span><span class="p">):</span>
+    <span class="n">en</span><span class="p">:</span> <span class="n">In</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">count</span><span class="p">:</span> <span class="n">Out</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">elaborate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">platform</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">Module</span><span class="p">()</span>
+        <span class="k">with</span> <span class="n">m</span><span class="o">.</span><span class="n">If</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">en</span><span class="p">):</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">d</span><span class="o">.</span><span class="n">sync</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">m</span>
+
+
+<span class="n">cm</span> <span class="o">=</span> <span class="n">compile_module</span><span class="p">(</span><span class="n">from_amaranth</span><span class="p">(</span><span class="n">Counter</span><span class="p">()))</span>
+<span class="n">traces</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cycles</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="n">cm</span><span class="o">.</span><span class="n">write_vcd</span><span class="p">(</span><span class="s2">&quot;counter.vcd&quot;</span><span class="p">,</span> <span class="n">traces</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
-<section id="authors">
-<h1>Authors<a class="headerlink" href="#authors" title="Link to this heading">¶</a></h1>
-<p><code class="docutils literal notranslate"><span class="pre">csp</span></code> was developed at Point72 by the High Frequency Algo team, with contributions from users across the firm.</p>
-<p><a class="reference external" href="https://github.com/robambalu"><img alt="robambalu" src="https://avatars.githubusercontent.com/u/28680700" style="width: 50px; height: 50px;" /></a>
-<a class="reference external" href="https://github.com/jacarr4"><img alt="jacarr4" src="https://avatars.githubusercontent.com/u/35146413" style="width: 50px; height: 50px;" /></a>
-<a class="reference external" href="https://github.com/AdamGlustein"><img alt="AdamGlustein" src="https://avatars.githubusercontent.com/u/55991383" style="width: 50px; height: 50px;" /></a>
-<a class="reference external" href="https://github.com/stephenmarkacs"><img alt="stephenmarkacs" src="https://avatars.githubusercontent.com/u/18348081" style="width: 50px; height: 50px;" /></a></p>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Topic</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="docs/src/amaranth.html"><span class="std std-doc">Amaranth</span></a></p></td>
+<td><p>Simulating Amaranth HDL designs</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="docs/src/verilog.html"><span class="std std-doc">Verilog / SystemVerilog</span></a></p></td>
+<td><p>Simulating SV/V designs and hand-built IR</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="docs/src/cocotb.html"><span class="std std-doc">cocotb</span></a></p></td>
+<td><p>Running cocotb testbenches against dau-sim</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="docs/src/cli.html"><span class="std std-doc">CLI</span></a></p></td>
+<td><p>Command-line interface reference</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="docs/src/architecture.html"><span class="std std-doc">Architecture</span></a></p></td>
+<td><p>Pipeline and internal design</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="docs/src/api.html"><span class="std std-doc">API Reference</span></a></p></td>
+<td><p>Full API tables</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="docs/src/benchmarks.html"><span class="std std-doc">Benchmarks</span></a></p></td>
+<td><p>Performance numbers and execution modes</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 <section id="license">
-<h1>License<a class="headerlink" href="#license" title="Link to this heading">¶</a></h1>
-<p>This software is licensed under the Apache 2.0 license. See the <a class="reference download internal" download="" href="_downloads/9879d6db96fd29134fc802214163b95a/LICENSE"><span class="xref download myst">LICENSE</span></a> file for details.</p>
+<h2>License<a class="headerlink" href="#license" title="Link to this heading">¶</a></h2>
+<p>This project is licensed under the Apache 2.0 License — see <a class="reference download internal" download="" href="_downloads/9879d6db96fd29134fc802214163b95a/LICENSE"><span class="xref download myst">LICENSE</span></a> for details.</p>
+</section>
 </section>
 
         </article>
@@ -309,13 +346,21 @@
       <footer>
         
         <div class="related-pages">
-          
+          <a class="next-page" href="docs/src/architecture.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Architecture</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
           
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; the csp authors
+                Copyright &#169; the dau authors
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -335,7 +380,7 @@
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=0c3dd48d"></script>
+</div><script src="_static/documentation_options.js?v=938c9ccc"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
