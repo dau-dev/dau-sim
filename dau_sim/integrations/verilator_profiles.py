@@ -1,11 +1,13 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 from pathlib import Path
 
+from pydantic import BaseModel, ConfigDict
 
-@dataclass(frozen=True)
-class VerilatorProfile:
+
+class VerilatorProfile(BaseModel):
+    model_config = ConfigDict(frozen=True)
+
     name: str
     sources: tuple[Path, ...]
     top_module: str
