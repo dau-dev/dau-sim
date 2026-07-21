@@ -185,7 +185,7 @@ def topological_sort(assignments: list[Assignment]) -> list[Assignment]:
 
     if len(order) != n:
         # Find the cycle for reporting
-        cycle = _find_cycle(assignments, sig_to_producer)
+        cycle = _find_cycle(assignments)
         raise CombLoopError(cycle=cycle)
 
     return [assignments[i] for i in order]
@@ -290,7 +290,6 @@ def affected_component_ids(
 
 def _find_cycle(
     assignments: list[Assignment],
-    sig_to_producer: dict[str, list[int]],
 ) -> list[str]:
     """Find a signal-level cycle for error reporting."""
     # Build signal-level graph: signal → signals it depends on

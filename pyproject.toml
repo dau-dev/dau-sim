@@ -153,8 +153,10 @@ line-length = 150
 
 [tool.ruff.lint]
 extend-select = [
+    "ARG",  # accepted-but-unused parameters are defects (GUIDELINES Review Rules)
     "I",
 ]
+
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
@@ -179,6 +181,8 @@ section-order = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
+# test doubles conform to real interfaces and legitimately ignore arguments
+"**/tests/**" = ["ARG"]
 "__init__.py" = [
     "F401",
     "F403",

@@ -311,7 +311,6 @@ def _exec_mem_writes(
     mem_state: dict[str, list[int]],
     memories: tuple,
     signals: dict[str, int],
-    shapes: dict[str, Shape],
     fired_domains: list[str],
 ) -> None:
     """Execute memory write ports for fired clock domains."""
@@ -658,7 +657,7 @@ def _sim_engine_seq(
 
             # Memory writes (after seq blocks, before comb settle)
             if s_memories and fired_domains:
-                _exec_mem_writes(s_mem_state, s_memories, s_signals, s_shapes, fired_domains)
+                _exec_mem_writes(s_mem_state, s_memories, s_signals, fired_domains)
 
             # Memory reads (synchronous reads on fired domains, combinational reads always)
             if s_memories:
@@ -791,7 +790,7 @@ def _sim_engine_seq_4(
 
             # Memory writes (after seq blocks, before comb settle)
             if s_memories and fired_domains:
-                _exec_mem_writes(s_mem_state, s_memories, s_signals, s_shapes, fired_domains)
+                _exec_mem_writes(s_mem_state, s_memories, s_signals, fired_domains)
 
             # Memory reads (synchronous reads on fired domains, combinational reads always)
             if s_memories:
@@ -1045,7 +1044,7 @@ def _sim_engine_compiled(
                 if s_has_memories and fired:
                     sig_dict = {s_sig_names[i]: S[i] for i in range(s_n_signals)}
                     fired_names = [s_domain_names[d_i] for d_i in fired]
-                    _exec_mem_writes(s_mem_state, s_memories, sig_dict, s_shapes, fired_names)
+                    _exec_mem_writes(s_mem_state, s_memories, sig_dict, fired_names)
                     _exec_mem_reads(s_mem_state, s_memories, sig_dict, fired_names)
                     for name, idx in s_sig_index.items():
                         new_val = sig_dict.get(name, S[idx])

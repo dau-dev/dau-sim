@@ -58,10 +58,10 @@ def match_signals(
     result = list(names)
 
     if include is not None:
-        result = _apply_patterns(result, include, regex, mode="include")
+        result = _apply_patterns(result, include, regex)
 
     if exclude is not None:
-        excluded = set(_apply_patterns(result, exclude, regex, mode="include"))
+        excluded = set(_apply_patterns(result, exclude, regex))
         result = [n for n in result if n not in excluded]
 
     return result
@@ -105,7 +105,6 @@ def _apply_patterns(
     names: list[str],
     patterns: list[str],
     regex: bool,
-    mode: str,
 ) -> list[str]:
     """Return names that match any of the given patterns."""
     matched = []

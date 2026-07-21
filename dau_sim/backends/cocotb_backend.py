@@ -175,7 +175,7 @@ class DauSimHandle:
             return (self._shape.width - 1, 0, RANGE_DOWN)
         return (0, 0, RANGE_NO_DIR)
 
-    def get_handle_by_name(self, name: str, discovery_method: Any = None) -> DauSimHandle | None:
+    def get_handle_by_name(self, name: str, discovery_method: Any = None) -> DauSimHandle | None:  # noqa: ARG002 (cocotb simulator API)
         return self._children.get(name)
 
     def get_handle_by_index(self, index: int) -> DauSimHandle:
@@ -195,7 +195,7 @@ class DauSimHandle:
             return self._children[bit_name]
         raise IndexError(f"Cannot index {self._name}")
 
-    def iterate(self, mode: int) -> DauSimIterator:
+    def iterate(self, mode: int) -> DauSimIterator:  # noqa: ARG002 (cocotb simulator API)
         return DauSimIterator(list(self._children.values()))
 
     def get_signal_val_long(self) -> int:
@@ -215,7 +215,7 @@ class DauSimHandle:
     def get_signal_val_str(self) -> bytes:
         return str(self.get_signal_val_long()).encode()
 
-    def set_signal_val_int(self, action: int, value: int) -> None:
+    def set_signal_val_int(self, action: int, value: int) -> None:  # noqa: ARG002 (cocotb simulator API)
         if self._parent_signal is not None:
             parent_val = self._engine.get_signal(self._parent_signal)
             bit = self._bit_index
@@ -526,7 +526,6 @@ class SimulationEngine:
                     self._mem_state,
                     self._module.memories,
                     self._signals,
-                    self._shapes,
                     fired_domains,
                 )
 
@@ -750,7 +749,7 @@ def _create_simulator_module(engine: SimulationEngine) -> types.ModuleType:
     def register_value_change_callback(signal: DauSimHandle, func: Callable, edge: int, *args: Any) -> DauSimCallback:
         return engine.register_value_change_callback(signal, func, edge, *args)
 
-    def get_root_handle(name: str | None = None) -> DauSimHandle:
+    def get_root_handle(name: str | None = None) -> DauSimHandle:  # noqa: ARG001 (cocotb simulator API)
         return engine._root_handle
 
     def get_sim_time() -> tuple[int, int]:

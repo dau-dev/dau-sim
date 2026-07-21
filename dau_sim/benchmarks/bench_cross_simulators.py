@@ -38,7 +38,7 @@ def _make_counter():
             self.en = Signal(1)
             self.count = Signal(32)
 
-        def elaborate(self, platform):
+        def elaborate(self, platform):  # noqa: ARG002 (Amaranth interface)
             m = AModule()
             with m.If(self.en):
                 m.d.sync += self.count.eq(self.count + 1)

@@ -319,12 +319,11 @@ def _map_edge(edge_kind) -> EdgePolarity:
 
 def _infer_reset_from_events(
     events: list[tuple[str, EdgePolarity]],
-    stmts: list[Stmt],
 ) -> tuple[str | None, ResetStyle, bool]:
-    """Infer reset signal, style, and polarity from event list and statements.
+    """Infer reset signal, style, and polarity from the event list.
 
-    For async reset: the event list has 2+ entries; the first if-condition
-    tests the reset signal.
+    For async reset: the event list has 2+ entries; the first non-clock
+    event is taken as the reset.
     """
     if len(events) < 2:
         return None, ResetStyle.SYNC, True
@@ -404,7 +403,7 @@ def _lower_module_instance(inst) -> Module:
 
                     if events:
                         clk_sig, clk_edge = events[0]
-                        rst_sig, rst_style, rst_active_high = _infer_reset_from_events(events, stmts)
+                        rst_sig, rst_style, rst_active_high = _infer_reset_from_events(events)
 
                         domain_name = clk_sig
                         # Deduplicate: if domain already exists with same config, reuse
