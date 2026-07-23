@@ -60,6 +60,20 @@ traces = cm.run(cycles=20, inputs={"en": 1})
 cm.write_vcd("counter.vcd", traces)
 ```
 
+## In the DAU stack
+
+`dau-sim` is intentionally generic — it knows nothing about DAU
+contracts or tiles. The wider stack consumes it through composition:
+`dau-build`'s simulate task drives it from the same declarative build
+spec as synthesis, so a design simulates and builds from one description:
+
+```bash
+dau-build task=tasks/sim/simulate model.module=dau_identity_top   model.spec_path=examples/identity/dau-build.yaml
+```
+
+Design-specific verification (golden-equal cocotb benches for the DAU
+operator tiles) lives with the tiles in `dau-core`, not here.
+
 ## Documentation
 
 | Topic                                          | Description                                |
