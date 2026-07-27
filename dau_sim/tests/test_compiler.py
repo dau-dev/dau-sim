@@ -60,7 +60,7 @@ class TestDependencyAnalysis:
         assignments = build_assignments(stmts)
         ordered = topological_sort(assignments)
         # a first, then b, then c
-        names = [list(a.writes)[0] for a in ordered]
+        names = [next(iter(a.writes)) for a in ordered]
         assert names.index("a") < names.index("b") < names.index("c")
 
     def test_topological_sort_parallel(self):
@@ -128,7 +128,7 @@ class TestDependencyAnalysis:
         ]
         assignments = build_assignments(stmts)
         ordered = topological_sort(assignments)
-        names = [list(a.writes)[0] for a in ordered]
+        names = [next(iter(a.writes)) for a in ordered]
         assert names.index("b") < names.index("d")
         assert names.index("c") < names.index("d")
 

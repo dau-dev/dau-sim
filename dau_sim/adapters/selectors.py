@@ -26,7 +26,7 @@ from __future__ import annotations
 import fnmatch
 import re
 
-__all__ = ["select_signals", "match_signals"]
+__all__ = ["match_signals", "select_signals"]
 
 
 def match_signals(

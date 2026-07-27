@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import timedelta
 from pathlib import Path
+from typing import Annotated
 
 import typer
 from rich.console import Console
@@ -32,12 +33,12 @@ def _parse_kv_pairs(items: list[str]) -> dict[str, int]:
 
 @app.command("run-sv")
 def run_sv(
-    path: Path = typer.Argument(..., exists=True, dir_okay=False, readable=True, help="SystemVerilog or Verilog source file."),
+    path: Annotated[Path, typer.Argument(exists=True, dir_okay=False, readable=True, help="SystemVerilog or Verilog source file.")],
     top: str | None = typer.Option(None, "--top", help="Top module name."),
     cycles: int = typer.Option(10, min=1, help="Number of cycles."),
     clock_period_us: float = typer.Option(1.0, "--clock-us", min=0.001, help="Clock period in microseconds."),
-    inputs: list[str] = typer.Option([], "--input", "-i", help="Signal assignments, e.g. -i en=1 -i a=0x10."),
-    vcd: Path | None = typer.Option(None, "--vcd", help="Optional output VCD path."),
+    inputs: Annotated[list[str], typer.Option("--input", "-i", help="Signal assignments, e.g. -i en=1 -i a=0x10.")] = [],  # noqa: B006  # typer owns this default; body never mutates it
+    vcd: Annotated[Path | None, typer.Option("--vcd", help="Optional output VCD path.")] = None,
     timescale: str = typer.Option("1ns", help="VCD timescale."),
 ) -> None:
     parsed_inputs = _parse_kv_pairs(inputs)
@@ -64,12 +65,12 @@ def run_sv(
 
 @app.command("perf-sv")
 def perf_sv(
-    path: Path = typer.Argument(..., exists=True, dir_okay=False, readable=True, help="SystemVerilog or Verilog source file."),
+    path: Annotated[Path, typer.Argument(exists=True, dir_okay=False, readable=True, help="SystemVerilog or Verilog source file.")],
     top: str | None = typer.Option(None, "--top", help="Top module name."),
     cycles: int = typer.Option(30000, min=1, help="Cycles per measured run."),
     repeats: int = typer.Option(3, min=1, help="Measured repetitions."),
     warmup: int = typer.Option(1, min=0, help="Warmup runs per repetition."),
-    inputs: list[str] = typer.Option([], "--input", "-i", help="Signal assignments, e.g. -i en=1."),
+    inputs: Annotated[list[str], typer.Option("--input", "-i", help="Signal assignments, e.g. -i en=1.")] = [],  # noqa: B006  # typer owns this default; body never mutates it
     amaranth_cps: float | None = typer.Option(None, "--amaranth-cps", min=0.0, help="Optional Amaranth baseline cycles/sec."),
     verilator_cps: float | None = typer.Option(None, "--verilator-cps", min=0.0, help="Optional Verilator baseline cycles/sec."),
 ) -> None:
