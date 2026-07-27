@@ -1397,7 +1397,7 @@ class CompiledModule:
                 # $finish in init block → return single-point traces
                 if not return_traces:
                     return {}
-                starttime = datetime(2000, 1, 1)
+                starttime = datetime(2000, 1, 1)  # noqa: DTZ001  # naive simulation epoch anchor, not a real timestamp
                 return {name: [(starttime, init.get(name, 0))] for name in out_names}
 
         # Persist any $readmemh/$readmemb changes back to mem_init
@@ -1473,7 +1473,7 @@ class CompiledModule:
                 else:
                     csp.add_graph_output("__sink__", _trace_sink(all_signals))
 
-        starttime = datetime(2000, 1, 1)
+        starttime = datetime(2000, 1, 1)  # noqa: DTZ001  # naive simulation epoch anchor, not a real timestamp
         endtime = starttime + clock_period * cycles
 
         raw = csp.run(sim_graph, starttime=starttime, endtime=endtime, output_numpy=output_numpy)
@@ -1600,7 +1600,7 @@ class CompiledModule:
                 else:
                     csp.add_graph_output("__sink__", _trace_sink(all_signals))
 
-        starttime = datetime(2000, 1, 1)
+        starttime = datetime(2000, 1, 1)  # noqa: DTZ001  # naive simulation epoch anchor, not a real timestamp
         endtime = starttime + tick_period * total_ticks
 
         raw = csp.run(sim_graph, starttime=starttime, endtime=endtime, output_numpy=output_numpy)

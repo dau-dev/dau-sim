@@ -6,7 +6,7 @@ from datetime import datetime
 from dau_sim.adapters.selectors import match_signals, select_signals
 
 SAMPLE_NAMES = ["clk", "rst", "en", "count", "data_0", "data_1", "data_2", "internal_reg"]
-SAMPLE_TRACES = {name: [(datetime(2000, 1, 1), i)] for i, name in enumerate(SAMPLE_NAMES)}
+SAMPLE_TRACES = {name: [(datetime(2000, 1, 1), i)] for i, name in enumerate(SAMPLE_NAMES)}  # noqa: DTZ001  # naive simulation-epoch trace timestamp
 
 
 class TestMatchSignals(unittest.TestCase):

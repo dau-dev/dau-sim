@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import typer
 from typer.testing import CliRunner
 
 from dau_sim.cli import _parse_kv_pairs, app
@@ -13,7 +14,7 @@ def test_parse_kv_pairs_supports_base_prefixes() -> None:
 def test_parse_kv_pairs_rejects_bad_items() -> None:
     try:
         _parse_kv_pairs(["broken"])
-    except Exception as ex:  # typer.BadParameter
+    except typer.BadParameter as ex:
         assert "Expected NAME=VALUE" in str(ex)
     else:
         raise AssertionError("Expected parse failure")

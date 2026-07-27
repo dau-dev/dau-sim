@@ -154,7 +154,7 @@ def _compile_verilator_binary(cycles: int, *, persist: bool = False) -> tuple[Pa
 
 
 def _run_verilator_compiled(exe: Path) -> None:
-    rp = subprocess.run([str(exe)], cwd=exe.parent.parent, capture_output=True, text=True)
+    rp = subprocess.run([str(exe)], cwd=exe.parent.parent, capture_output=True, text=True, check=False)
     if rp.returncode != 0:
         raise RuntimeError("verilator run failed")
 
@@ -190,7 +190,7 @@ def _ensure_backend_available(backend: str) -> None:
 
                 if "cxxsim" not in inspect.getsource(Simulator.__init__):
                     pytest.skip("cxxsim unavailable: this Amaranth build exposes only pysim")
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001  # any backend-probe failure means the backend is unavailable -> skip
             pytest.skip(f"{backend} unavailable: {exc}")
 
     if backend in {"verilator-compile-run", "verilator-runtime"} and shutil.which("verilator") is None:

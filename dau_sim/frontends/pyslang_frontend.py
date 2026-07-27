@@ -29,9 +29,9 @@ _ps_ast = getattr(ps, "ast", ps)
 _ps_syntax = getattr(ps, "syntax", ps)
 
 __all__ = (
+    "from_dau_build",
     "parse_sv",
     "parse_sv_file",
-    "from_dau_build",
 )
 
 _BINOP_MAP: dict[_ps_ast.BinaryOperator, BinaryOp] = {
@@ -367,14 +367,7 @@ def _lower_module_instance(inst) -> Module:
             ports.append(Port(signal=sig, direction=direction))
             seen_signals.add(sig_name)
 
-        elif sym_kind == _ps_ast.SymbolKind.Net:
-            sig_name = child.name
-            if sig_name not in seen_signals:
-                shape = Shape(width=child.type.bitWidth, signed=child.type.isSigned)
-                signals.append(Signal(name=sig_name, shape=shape))
-                seen_signals.add(sig_name)
-
-        elif sym_kind == _ps_ast.SymbolKind.Variable:
+        elif sym_kind == _ps_ast.SymbolKind.Net or sym_kind == _ps_ast.SymbolKind.Variable:
             sig_name = child.name
             if sig_name not in seen_signals:
                 shape = Shape(width=child.type.bitWidth, signed=child.type.isSigned)

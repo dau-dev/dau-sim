@@ -289,7 +289,7 @@ def _collect_all_signals(frag: Fragment) -> dict[int, ASignal]:
     with the parent in Amaranth's Fragment tree).
     """
     signals: dict[int, ASignal] = {}
-    for _domain, stmts in frag.statements.items():
+    for stmts in frag.statements.values():
         for stmt in stmts:
             _collect_signals_from_stmt(stmt, signals)
     # Collect signals from subfragments

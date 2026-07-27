@@ -24,7 +24,8 @@ import random
 import sys
 import time
 import types
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 from dau_sim.compiler.compile import (
     _build_domain_info,
