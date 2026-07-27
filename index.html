@@ -300,6 +300,18 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 </pre></div>
 </div>
 </section>
+<section id="in-the-dau-stack">
+<h2>In the DAU stack<a class="headerlink" href="#in-the-dau-stack" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">dau-sim</span></code> is intentionally generic — it knows nothing about DAU
+contracts or tiles. The wider stack consumes it through composition:
+<code class="docutils literal notranslate"><span class="pre">dau-build</span></code>’s simulate task drives it from the same declarative build
+spec as synthesis, so a design simulates and builds from one description:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dau-build<span class="w"> </span><span class="nv">task</span><span class="o">=</span>tasks/sim/simulate<span class="w"> </span>model.module<span class="o">=</span>dau_identity_top<span class="w">   </span>model.spec_path<span class="o">=</span>examples/identity/dau-build.yaml
+</pre></div>
+</div>
+<p>Design-specific verification (golden-equal cocotb benches for the DAU
+operator tiles) lives with the tiles in <code class="docutils literal notranslate"><span class="pre">dau-core</span></code>, not here.</p>
+</section>
 <section id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h2>
 <div class="table-wrapper colwidths-auto docutils container">
