@@ -114,8 +114,7 @@ def _write_header(
 
     # Scope
     out.write(f"$scope module {module_name} $end\n")
-    for sig_name, (vcd_id, width, var_type) in signals.items():
-        out.write(f"$var {var_type} {width} {vcd_id} {sig_name} $end\n")
+    out.writelines(f"$var {var_type} {width} {vcd_id} {sig_name} $end\n" for sig_name, (vcd_id, width, var_type) in signals.items())
     out.write("$upscope $end\n")
 
     out.write("$enddefinitions $end\n")
@@ -270,12 +269,10 @@ def _traces_to_vcd_stream(
 
     # Build VCD signal table: name → (id, width, type)
     signal_table: dict[str, tuple[str, int, str]] = {}
-    idx = 0
-    for sig_name in sorted(traces.keys()):
+    for idx, sig_name in enumerate(sorted(traces.keys())):
         shape = shapes.get(sig_name, Shape(1, False))
         vtype = var_types.get(sig_name, "wire")
         signal_table[sig_name] = (_make_id(idx), shape.width, vtype)
-        idx += 1
 
     # Write header
     _write_header(out, scope_name, signal_table, timescale=timescale)

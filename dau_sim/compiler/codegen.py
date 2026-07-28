@@ -836,6 +836,5 @@ def _collect_rw_expr(expr: Expr, reads: set[str]) -> None:
             _collect_rw_expr(p, reads)
     elif et is Slice:
         _collect_rw_expr(expr.value, reads)
-    elif et is SysRandom:
-        if expr.seed is not None:
-            _collect_rw_expr(expr.seed, reads)
+    elif et is SysRandom and expr.seed is not None:
+        _collect_rw_expr(expr.seed, reads)

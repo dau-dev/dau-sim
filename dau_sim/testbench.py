@@ -314,7 +314,7 @@ def run_parallel_testbenches(
     def _worker(fn, view):
         try:
             fn(view)
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001  # capture any worker-thread failure to re-raise on the main thread
             with errors_lock:
                 errors.append((view._index, e))
             # Abort the barrier so other threads don't hang forever

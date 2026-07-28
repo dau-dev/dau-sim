@@ -324,7 +324,7 @@ class TestVCDEndToEnd:
 
     def test_no_module_fallback(self):
         """Without module metadata, signals default to 1-bit wire."""
-        t0 = datetime(2000, 1, 1)
+        t0 = datetime(2000, 1, 1)  # noqa: DTZ001  # naive simulation-epoch trace timestamp
         traces = {
             "x": [(t0, 0), (t0 + timedelta(microseconds=1), 1)],
         }
@@ -335,7 +335,7 @@ class TestVCDEndToEnd:
         assert "$scope module top $end" in vcd
 
     def test_custom_scope(self):
-        t0 = datetime(2000, 1, 1)
+        t0 = datetime(2000, 1, 1)  # noqa: DTZ001  # naive simulation-epoch trace timestamp
         traces = {"x": [(t0, 0)]}
         vcd = traces_to_vcd(traces, scope="my_dut")
         assert "$scope module my_dut $end" in vcd
@@ -363,7 +363,8 @@ class TestVCDFileIO:
         try:
             cm.write_vcd(path, traces)
             assert os.path.exists(path)
-            contents = open(path).read()
+            with open(path) as fh:
+                contents = fh.read()
             assert "$version" in contents
             assert "$var" in contents
             assert "$dumpvars" in contents
@@ -372,7 +373,7 @@ class TestVCDFileIO:
 
     def test_standalone_write_vcd(self):
         """write_vcd standalone function should work."""
-        t0 = datetime(2000, 1, 1)
+        t0 = datetime(2000, 1, 1)  # noqa: DTZ001  # naive simulation-epoch trace timestamp
         traces = {"sig": [(t0, 1), (t0 + timedelta(microseconds=1), 0)]}
 
         with tempfile.NamedTemporaryFile(suffix=".vcd", delete=False) as f:
@@ -380,7 +381,8 @@ class TestVCDFileIO:
 
         try:
             write_vcd(path, traces)
-            contents = open(path).read()
+            with open(path) as fh:
+                contents = fh.read()
             assert "$dumpvars" in contents
         finally:
             os.unlink(path)
@@ -478,7 +480,8 @@ class TestAmaranthVCD:
 
         try:
             cm.write_vcd(path, traces)
-            contents = open(path).read()
+            with open(path) as fh:
+                contents = fh.read()
             sigs = _parse_vcd_signals(contents)
             assert "count" in sigs
             assert sigs["count"]["width"] == 4

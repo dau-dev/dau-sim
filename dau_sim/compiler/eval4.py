@@ -124,7 +124,7 @@ def _eval_unary_4(op: UnaryOp, a: FourState, out: Shape) -> FourState:
         return FourState.from_int(1 if v else 0, out)
     if op == UnaryOp.RED_XOR:
         val = v & ((1 << a.shape.width) - 1)
-        return FourState.from_int(bin(val).count("1") & 1, out)
+        return FourState.from_int(val.bit_count() & 1, out)
     raise ValueError(f"Unknown unary op: {op}")
 
 

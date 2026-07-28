@@ -45,7 +45,7 @@ def test_shape_frozen():
     s = Shape(4)
     try:
         s.width = 5
-        raise Exception("Should have raised")
+        raise AssertionError("Should have raised")
     except AttributeError:
         pass
 

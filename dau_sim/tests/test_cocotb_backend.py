@@ -245,7 +245,7 @@ class TestDauSimHandle:
         h1 = DauSimHandle(engine, "a")
         h2 = DauSimHandle(engine, "a")
         assert h1 != h2  # identity-based
-        assert h1 == h1
+        assert h1 == h1  # noqa: PLR0124  # reflexivity of identity-based __eq__ is under test
         assert hash(h1) != hash(h2)
 
 
