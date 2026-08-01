@@ -84,5 +84,5 @@ The default payload is `data` plus `last`. A stalled `valid` and its payload mus
 | -------------------------------------- | ----------------------------------------------------------- |
 | `run_cocotb(design, test_module, ...)` | Run cocotb testbench against Amaranth design or IR `Module` |
 | `SimulationEngine(module)`             | Low-level engine with NBA-correct event scheduling          |
-| `StreamContractMonitor(...)`           | Check a prefixed valid/ready/data/last stream                |
+| `StreamContractMonitor(...)`           | Check a prefixed valid/ready/data/last stream               |
 | `StatusContractMonitor(...)`           | Check terminal or mid-lane status handshakes                |
