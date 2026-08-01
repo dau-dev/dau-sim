@@ -9,7 +9,6 @@ from rich.console import Console
 from rich.table import Table
 
 from dau_sim.api import Simulator
-from dau_sim.perf import analyze_node_separation, benchmark_module, evaluate_delta
 
 app = typer.Typer(help="dau-sim command line interface")
 console = Console()
@@ -75,21 +74,25 @@ def perf_sv(
     verilator_cps: float | None = typer.Option(None, "--verilator-cps", min=0.0, help="Optional Verilator baseline cycles/sec."),
 ) -> None:
     parsed_inputs = _parse_kv_pairs(inputs)
-    sim = Simulator.from_sv_file(str(path), top=top)
+    from dau_sim.config import run_request_config
 
-    bench = benchmark_module(
-        sim.module,
-        cycles=cycles,
-        repeats=repeats,
-        warmup=warmup,
-        inputs=parsed_inputs,
+    result = run_request_config(
+        "task",
+        "tasks/analysis/perf-sv",
+        model_values={
+            "path": path,
+            "top": top,
+            "cycles": cycles,
+            "repeats": repeats,
+            "warmup": warmup,
+            "inputs": parsed_inputs,
+            "amaranth_cycles_per_second": amaranth_cps,
+            "verilator_cycles_per_second": verilator_cps,
+        },
     )
-    sep = analyze_node_separation(sim.module)
-    delta = evaluate_delta(
-        bench.cycles_per_second,
-        amaranth_cycles_per_second=amaranth_cps,
-        verilator_cycles_per_second=verilator_cps,
-    )
+    bench = result.benchmark
+    sep = result.node_separation
+    delta = result.delta
 
     perf_table = Table(title="Performance")
     perf_table.add_column("Metric")

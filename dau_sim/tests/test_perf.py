@@ -1,10 +1,13 @@
+from ccflow import CallableModel, ModelRegistry, ResultBase
+from ccflow.utils.hydra import cfg_run
+
 from dau_sim.benchmarks.compile_partitioning import compile_partitioned_module
 from dau_sim.benchmarks.selective_settle import run_partitioned_seq
 from dau_sim.ir.expr import Binary, BinaryOp, SignalRef
 from dau_sim.ir.module import CombBlock, Module, Port, Signal
 from dau_sim.ir.stmt import Assign
 from dau_sim.ir.types import PortDirection, Shape
-from dau_sim.perf import analyze_node_separation, benchmark_module
+from dau_sim.perf import BenchmarkResult, NodeSeparationStats, PerformanceDelta, PerfSvResult, PerfSvTask, analyze_node_separation, benchmark_module
 
 
 def _make_two_cluster_module() -> Module:
@@ -90,6 +93,39 @@ def test_benchmark_module_returns_positive_metrics() -> None:
     assert result.compile_seconds_median >= 0
     assert result.run_seconds_median >= 0
     assert result.cycles_per_second > 0
+
+
+def test_performance_outputs_are_ccflow_results() -> None:
+    assert issubclass(BenchmarkResult, ResultBase)
+    assert issubclass(NodeSeparationStats, ResultBase)
+    assert issubclass(PerformanceDelta, ResultBase)
+    assert issubclass(PerfSvResult, ResultBase)
+
+
+def test_perf_sv_task_is_composed_callable(tmp_path) -> None:
+    from dau_sim.config import compose_config
+
+    source = tmp_path / "adder.sv"
+    source.write_text(
+        "module adder(input logic a, output logic y); assign y = a; endmodule\n",
+        encoding="utf-8",
+    )
+    config = compose_config(
+        [
+            "task=tasks/analysis/perf-sv",
+            f"model.path={source}",
+            "model.top=adder",
+            "model.cycles=2",
+            "model.repeats=1",
+            "model.warmup=0",
+        ],
+    )
+    result = cfg_run(config.cfg)
+    task = ModelRegistry.root()["model"]
+
+    assert isinstance(task, PerfSvTask)
+    assert isinstance(task, CallableModel)
+    assert isinstance(result, PerfSvResult)
 
 
 def test_benchmark_compile_partitioning_smoke() -> None:

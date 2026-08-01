@@ -12,19 +12,15 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 
-from pydantic import BaseModel, ConfigDict
+from dau_sim.integrations.profiles import SimulationProfile
 
 DEFAULT_BUILD_ARGS = ("--timing", "-Wno-fatal")
 
 
-class CocotbProfile(BaseModel):
+class CocotbProfile(SimulationProfile):
     """A registered cocotb bench: HDL sources, the toplevel they build,
     and the cocotb test module that drives it."""
 
-    model_config = ConfigDict(frozen=True)
-
-    name: str
-    sources: tuple[Path, ...]
     hdl_toplevel: str
     test_module: str
 
