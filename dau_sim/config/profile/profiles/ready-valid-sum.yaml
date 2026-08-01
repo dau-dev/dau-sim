@@ -1,0 +1,9 @@
+# @package profile
+
+_target_: dau_sim.integrations.verilator_profiles.VerilatorProfile
+name: ready-valid-sum
+sources:
+  - package://dau_sim/tests/sv/ready_valid_sum.sv
+  - package://dau_sim/tests/sv/ready_valid_sum_tb.sv
+top_module: ready_valid_sum_tb
+expect_stdout: READY_VALID_SUM_TB_OK

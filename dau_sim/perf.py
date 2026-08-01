@@ -1,24 +1,22 @@
-from __future__ import annotations
-
-from dataclasses import dataclass
 from datetime import timedelta
+from pathlib import Path
 from statistics import median
 from time import perf_counter
+
+from ccflow import CallableModel, Flow, NullContext, ResultBase
 
 from dau_sim.compiler import compile_module
 from dau_sim.compiler.depanalysis import build_assignments
 from dau_sim.ir.module import Module
 
 
-@dataclass(frozen=True)
-class BenchmarkResult:
+class BenchmarkResult(ResultBase):
     compile_seconds_median: float
     run_seconds_median: float
     cycles_per_second: float
 
 
-@dataclass(frozen=True)
-class NodeSeparationStats:
+class NodeSeparationStats(ResultBase):
     comb_blocks: int
     dependency_edges: int
     connected_components: int
@@ -26,12 +24,52 @@ class NodeSeparationStats:
     singleton_components: int
 
 
-@dataclass(frozen=True)
-class PerformanceDelta:
+class PerformanceDelta(ResultBase):
     dau_cycles_per_second: float
     vs_amaranth_ratio: float | None
     vs_verilator_ratio: float | None
     multiplier_to_10x_current: float
+
+
+class PerfSvResult(ResultBase):
+    benchmark: BenchmarkResult
+    node_separation: NodeSeparationStats
+    delta: PerformanceDelta
+
+
+class PerfSvTask(CallableModel):
+    path: Path
+    top: str | None = None
+    cycles: int = 30000
+    repeats: int = 3
+    warmup: int = 1
+    inputs: dict[str, int] | None = None
+    clock_period_us: float = 1.0
+    amaranth_cycles_per_second: float | None = None
+    verilator_cycles_per_second: float | None = None
+
+    @Flow.call
+    def __call__(self, context: NullContext) -> PerfSvResult:  # noqa: ARG002 (ccflow requires the name `context`)
+        from dau_sim.api import Simulator
+
+        module = Simulator.from_sv_file(str(self.path), top=self.top).module
+        benchmark = benchmark_module(
+            module,
+            cycles=self.cycles,
+            repeats=self.repeats,
+            warmup=self.warmup,
+            inputs=self.inputs,
+            clock_period=timedelta(microseconds=self.clock_period_us),
+        )
+        return PerfSvResult(
+            benchmark=benchmark,
+            node_separation=analyze_node_separation(module),
+            delta=evaluate_delta(
+                benchmark.cycles_per_second,
+                amaranth_cycles_per_second=self.amaranth_cycles_per_second,
+                verilator_cycles_per_second=self.verilator_cycles_per_second,
+            ),
+        )
 
 
 def benchmark_module(

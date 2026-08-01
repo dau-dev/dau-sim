@@ -1,0 +1,12 @@
+# @package model
+
+_target_: dau_sim.perf.PerfSvTask
+path: ???
+top: null
+cycles: 30000
+repeats: 3
+warmup: 1
+inputs: null
+clock_period_us: 1.0
+amaranth_cycles_per_second: null
+verilator_cycles_per_second: null
