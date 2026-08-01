@@ -304,6 +304,19 @@
 <li><p><strong>Multi-domain edge semantics</strong> — posedge and negedge domains can share clocks and progress with correct edge-firing behavior.</p></li>
 </ul>
 </section>
+<section id="stream-contract-monitoring">
+<h2>Stream contract monitoring<a class="headerlink" href="#stream-contract-monitoring" title="Link to this heading">¶</a></h2>
+<p>Attach the additive checker as an async context manager around existing bench stimulus. It samples only clock edges outside reset and reports the interface prefix, cycle, and rule name on failure.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.integrations.protocol</span><span class="w"> </span><span class="kn">import</span> <span class="n">StreamContractMonitor</span>
+
+
+<span class="k">async</span> <span class="k">with</span> <span class="n">StreamContractMonitor</span><span class="p">(</span><span class="n">dut</span><span class="p">,</span> <span class="n">dut</span><span class="o">.</span><span class="n">clk</span><span class="p">,</span> <span class="s2">&quot;output_&quot;</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="n">dut</span><span class="o">.</span><span class="n">rst</span><span class="p">,</span> <span class="n">expected_batches</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">drive_and_drain_one_batch</span><span class="p">(</span><span class="n">dut</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The default payload is <code class="docutils literal notranslate"><span class="pre">data</span></code> plus <code class="docutils literal notranslate"><span class="pre">last</span></code>. A stalled <code class="docutils literal notranslate"><span class="pre">valid</span></code> and its payload must remain stable until <code class="docutils literal notranslate"><span class="pre">ready</span></code>; transfers are counted only when both are high. <code class="docutils literal notranslate"><span class="pre">expected_batches</span></code> makes duplicate or missing <code class="docutils literal notranslate"><span class="pre">last</span></code> assertions decidable and rejects transfers after the final <code class="docutils literal notranslate"><span class="pre">last</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">StatusContractMonitor</span></code> applies the same hold rule to <code class="docutils literal notranslate"><span class="pre">status_valid</span></code>, <code class="docutils literal notranslate"><span class="pre">status_error</span></code>, and <code class="docutils literal notranslate"><span class="pre">status_error_code</span></code>. Set <code class="docutils literal notranslate"><span class="pre">mode=&quot;terminal&quot;</span></code> to require one status per expected batch or <code class="docutils literal notranslate"><span class="pre">mode=&quot;mid_lane&quot;</span></code> to reject success statuses. Both monitors are simulator-neutral cocotb code, so the same bench can use them with dau-sim or Verilator. Neither monitor changes launcher or backend defaults.</p>
+</section>
 <section id="api">
 <h2>API<a class="headerlink" href="#api" title="Link to this heading">¶</a></h2>
 <div class="table-wrapper colwidths-auto docutils container">
@@ -319,6 +332,12 @@
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SimulationEngine(module)</span></code></p></td>
 <td><p>Low-level engine with NBA-correct event scheduling</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">StreamContractMonitor(...)</span></code></p></td>
+<td><p>Check a prefixed valid/ready/data/last stream</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">StatusContractMonitor(...)</span></code></p></td>
+<td><p>Check terminal or mid-lane status handshakes</p></td>
 </tr>
 </tbody>
 </table>
@@ -377,6 +396,7 @@
 <li><a class="reference internal" href="#running-a-testbench">Running a testbench</a></li>
 <li><a class="reference internal" href="#writing-the-cocotb-test">Writing the cocotb test</a></li>
 <li><a class="reference internal" href="#semantic-contracts">Semantic contracts</a></li>
+<li><a class="reference internal" href="#stream-contract-monitoring">Stream contract monitoring</a></li>
 <li><a class="reference internal" href="#api">API</a></li>
 </ul>
 </li>

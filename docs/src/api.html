@@ -328,6 +328,11 @@
 </table>
 </div>
 </section>
+<section id="composed-configuration">
+<h2>Composed configuration<a class="headerlink" href="#composed-configuration" title="Link to this heading">¶</a></h2>
+<p>Simulation profiles live in the Hydra <code class="docutils literal notranslate"><span class="pre">profile</span></code> group and instantiate ccflow models in <code class="docutils literal notranslate"><span class="pre">ModelRegistry</span></code>. The packaged profile selects as <code class="docutils literal notranslate"><span class="pre">profile=profiles/ready-valid-sum</span></code>; packages and user config directories can contribute more <code class="docutils literal notranslate"><span class="pre">profile/profiles/*.yaml</span></code> entries without importing registration code.</p>
+<p><code class="docutils literal notranslate"><span class="pre">PerfSvTask</span></code> is a ccflow <code class="docutils literal notranslate"><span class="pre">CallableModel</span></code>, selected with <code class="docutils literal notranslate"><span class="pre">task=tasks/analysis/perf-sv</span></code>. It returns <code class="docutils literal notranslate"><span class="pre">PerfSvResult</span></code>, whose benchmark, node-separation, and comparison metrics are <code class="docutils literal notranslate"><span class="pre">ResultBase</span></code> models.</p>
+</section>
 <section id="ir-types">
 <h2>IR types<a class="headerlink" href="#ir-types" title="Link to this heading">¶</a></h2>
 <div class="table-wrapper colwidths-auto docutils container">
@@ -428,6 +433,7 @@
 <li><a class="reference internal" href="#frontends">Frontends</a></li>
 <li><a class="reference internal" href="#compiler">Compiler</a></li>
 <li><a class="reference internal" href="#backends">Backends</a></li>
+<li><a class="reference internal" href="#composed-configuration">Composed configuration</a></li>
 <li><a class="reference internal" href="#ir-types">IR types</a></li>
 </ul>
 </li>

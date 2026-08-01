@@ -251,7 +251,18 @@ dau-sim<span class="w"> </span>perf-sv<span class="w"> </span>design.sv<span cla
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">run-sv</span></code> executes a SystemVerilog design and prints the latest value of each signal after the requested number of cycles. Use <code class="docutils literal notranslate"><span class="pre">--vcd</span></code> to additionally write a VCD waveform file.</p>
-<p><code class="docutils literal notranslate"><span class="pre">perf-sv</span></code> runs the same pipeline but reports compile-time and simulation-time separately, along with node-separation diagnostics. This helps identify where non-C++ optimization effort should be focused.</p>
+<p><code class="docutils literal notranslate"><span class="pre">perf-sv</span></code> composes and invokes the <code class="docutils literal notranslate"><span class="pre">task=tasks/analysis/perf-sv</span></code> ccflow task. It reports compile-time and simulation-time separately, along with node-separation diagnostics. CLI options populate the same task model fields that Hydra callers can override, so programmatic and command-line runs share configuration and result provenance.</p>
+<p>The packaged task can also be composed directly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_request_config</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">run_request_config</span><span class="p">(</span>
+    <span class="s2">&quot;task&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;tasks/analysis/perf-sv&quot;</span><span class="p">,</span>
+    <span class="n">model_values</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;design.sv&quot;</span><span class="p">,</span> <span class="s2">&quot;top&quot;</span><span class="p">:</span> <span class="s2">&quot;top_module&quot;</span><span class="p">,</span> <span class="s2">&quot;cycles&quot;</span><span class="p">:</span> <span class="mi">30000</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">benchmark</span><span class="o">.</span><span class="n">cycles_per_second</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 </section>
 

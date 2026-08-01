@@ -38,6 +38,12 @@ sim.write_vcd("out.vcd", result)
 | `run_cocotb(design, test_module, ...)` | Run cocotb testbench against Amaranth design or IR `Module` |
 | `SimulationEngine(module)`             | Low-level engine with NBA-correct event scheduling          |
 
+## Composed configuration
+
+Simulation profiles live in the Hydra `profile` group and instantiate ccflow models in `ModelRegistry`. The packaged profile selects as `profile=profiles/ready-valid-sum`; packages and user config directories can contribute more `profile/profiles/*.yaml` entries without importing registration code.
+
+`PerfSvTask` is a ccflow `CallableModel`, selected with `task=tasks/analysis/perf-sv`. It returns `PerfSvResult`, whose benchmark, node-separation, and comparison metrics are `ResultBase` models.
+
 ## IR types
 
 | Type                                                              | Description                                                    |
