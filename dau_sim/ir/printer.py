@@ -169,7 +169,7 @@ def fmt_module(m: Module) -> str:
         for inst in m.instances:
             params = ""
             if inst.parameters:
-                ps = ", ".join(f"{k}={v}" for k, v in inst.parameters.items())
+                ps = ", ".join(f"{k}={v}" for k, v in inst.parameters)
                 params = f" #({ps})"
             lines.append(f"    {inst.module_name}{params} {inst.name}")
             for b in inst.bindings:

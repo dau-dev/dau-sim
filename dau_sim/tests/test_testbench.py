@@ -28,35 +28,35 @@ from dau_sim.testbench import TestbenchContext, TestbenchTimeout, run_parallel_t
 
 def _make_counter_module(width=8, name="counter"):
     """8-bit counter with 'en' input, 'count' output, sync domain."""
-    en = Signal("en", Shape(1))
-    count = Signal("count", Shape(width))
-    clk = Signal("clk", Shape(1))
-    rst = Signal("rst", Shape(1))
+    en = Signal(name="en", shape=Shape(1))
+    count = Signal(name="count", shape=Shape(width))
+    clk = Signal(name="clk", shape=Shape(1))
+    rst = Signal(name="rst", shape=Shape(1))
     return Module(
         name=name,
         ports=(
-            Port(en, PortDirection.INPUT),
-            Port(count, PortDirection.OUTPUT),
-            Port(clk, PortDirection.INPUT),
-            Port(rst, PortDirection.INPUT),
+            Port(signal=en, direction=PortDirection.INPUT),
+            Port(signal=count, direction=PortDirection.OUTPUT),
+            Port(signal=clk, direction=PortDirection.INPUT),
+            Port(signal=rst, direction=PortDirection.INPUT),
         ),
         signals=(),
-        clock_domains=(ClockDomain("sync", clk="clk", edge=EdgePolarity.POSEDGE, rst="rst"),),
+        clock_domains=(ClockDomain(name="sync", clk="clk", edge=EdgePolarity.POSEDGE, rst="rst"),),
         comb_blocks=(),
         seq_blocks=(
             SeqBlock(
                 domain="sync",
                 stmts=(
                     IfElse(
-                        cond=SignalRef(Shape(1), "en"),
+                        cond=SignalRef(shape=Shape(1), name="en"),
                         then_body=(
                             Assign(
-                                "count",
-                                Binary(
-                                    Shape(width),
-                                    BinaryOp.ADD,
-                                    SignalRef(Shape(width), "count"),
-                                    Const(Shape(width), 1),
+                                target="count",
+                                value=Binary(
+                                    shape=Shape(width),
+                                    op=BinaryOp.ADD,
+                                    left=SignalRef(shape=Shape(width), name="count"),
+                                    right=Const(shape=Shape(width), value=1),
                                 ),
                             ),
                         ),
@@ -69,15 +69,15 @@ def _make_counter_module(width=8, name="counter"):
 
 def _make_adder_module():
     """Combinational 8-bit adder: y = a + b."""
-    a = Signal("a", Shape(8))
-    b = Signal("b", Shape(8))
-    y = Signal("y", Shape(8))
+    a = Signal(name="a", shape=Shape(8))
+    b = Signal(name="b", shape=Shape(8))
+    y = Signal(name="y", shape=Shape(8))
     return Module(
         name="adder",
         ports=(
-            Port(a, PortDirection.INPUT),
-            Port(b, PortDirection.INPUT),
-            Port(y, PortDirection.OUTPUT),
+            Port(signal=a, direction=PortDirection.INPUT),
+            Port(signal=b, direction=PortDirection.INPUT),
+            Port(signal=y, direction=PortDirection.OUTPUT),
         ),
         signals=(),
         clock_domains=(),
@@ -85,12 +85,12 @@ def _make_adder_module():
             CombBlock(
                 stmts=(
                     Assign(
-                        "y",
-                        Binary(
-                            Shape(8),
-                            BinaryOp.ADD,
-                            SignalRef(Shape(8), "a"),
-                            SignalRef(Shape(8), "b"),
+                        target="y",
+                        value=Binary(
+                            shape=Shape(8),
+                            op=BinaryOp.ADD,
+                            left=SignalRef(shape=Shape(8), name="a"),
+                            right=SignalRef(shape=Shape(8), name="b"),
                         ),
                     ),
                 )
@@ -102,51 +102,51 @@ def _make_adder_module():
 
 def _make_updown_counter():
     """Counter with en, dir (0=up, 1=down), 8-bit count."""
-    en = Signal("en", Shape(1))
-    dir_ = Signal("dir", Shape(1))
-    count = Signal("count", Shape(8))
-    clk = Signal("clk", Shape(1))
-    rst = Signal("rst", Shape(1))
+    en = Signal(name="en", shape=Shape(1))
+    dir_ = Signal(name="dir", shape=Shape(1))
+    count = Signal(name="count", shape=Shape(8))
+    clk = Signal(name="clk", shape=Shape(1))
+    rst = Signal(name="rst", shape=Shape(1))
     return Module(
         name="updown",
         ports=(
-            Port(en, PortDirection.INPUT),
-            Port(dir_, PortDirection.INPUT),
-            Port(count, PortDirection.OUTPUT),
-            Port(clk, PortDirection.INPUT),
-            Port(rst, PortDirection.INPUT),
+            Port(signal=en, direction=PortDirection.INPUT),
+            Port(signal=dir_, direction=PortDirection.INPUT),
+            Port(signal=count, direction=PortDirection.OUTPUT),
+            Port(signal=clk, direction=PortDirection.INPUT),
+            Port(signal=rst, direction=PortDirection.INPUT),
         ),
         signals=(),
-        clock_domains=(ClockDomain("sync", clk="clk", edge=EdgePolarity.POSEDGE, rst="rst"),),
+        clock_domains=(ClockDomain(name="sync", clk="clk", edge=EdgePolarity.POSEDGE, rst="rst"),),
         comb_blocks=(),
         seq_blocks=(
             SeqBlock(
                 domain="sync",
                 stmts=(
                     IfElse(
-                        cond=SignalRef(Shape(1), "en"),
+                        cond=SignalRef(shape=Shape(1), name="en"),
                         then_body=(
                             IfElse(
-                                cond=SignalRef(Shape(1), "dir"),
+                                cond=SignalRef(shape=Shape(1), name="dir"),
                                 then_body=(
                                     Assign(
-                                        "count",
-                                        Binary(
-                                            Shape(8),
-                                            BinaryOp.SUB,
-                                            SignalRef(Shape(8), "count"),
-                                            Const(Shape(8), 1),
+                                        target="count",
+                                        value=Binary(
+                                            shape=Shape(8),
+                                            op=BinaryOp.SUB,
+                                            left=SignalRef(shape=Shape(8), name="count"),
+                                            right=Const(shape=Shape(8), value=1),
                                         ),
                                     ),
                                 ),
                                 else_body=(
                                     Assign(
-                                        "count",
-                                        Binary(
-                                            Shape(8),
-                                            BinaryOp.ADD,
-                                            SignalRef(Shape(8), "count"),
-                                            Const(Shape(8), 1),
+                                        target="count",
+                                        value=Binary(
+                                            shape=Shape(8),
+                                            op=BinaryOp.ADD,
+                                            left=SignalRef(shape=Shape(8), name="count"),
+                                            right=Const(shape=Shape(8), value=1),
                                         ),
                                     ),
                                 ),

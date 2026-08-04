@@ -47,11 +47,11 @@ def _make_dff():
     return Module(
         name="dff",
         ports=(
-            Port(Signal("clk", Shape(1)), PortDirection.INPUT),
-            Port(Signal("d", Shape(1)), PortDirection.INPUT),
-            Port(Signal("q", Shape(1)), PortDirection.OUTPUT),
+            Port(signal=Signal(name="clk", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="d", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="q", shape=Shape(1)), direction=PortDirection.OUTPUT),
         ),
-        clock_domains=(ClockDomain("sync", clk="clk", edge=EdgePolarity.POSEDGE),),
+        clock_domains=(ClockDomain(name="sync", clk="clk", edge=EdgePolarity.POSEDGE),),
         seq_blocks=(
             SeqBlock(
                 domain="sync",
@@ -69,9 +69,9 @@ def _make_adder(width=4):
     return Module(
         name="adder",
         ports=(
-            Port(Signal("A", Shape(width)), PortDirection.INPUT),
-            Port(Signal("B", Shape(width)), PortDirection.INPUT),
-            Port(Signal("X", Shape(width + 1)), PortDirection.OUTPUT),
+            Port(signal=Signal(name="A", shape=Shape(width)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="B", shape=Shape(width)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="X", shape=Shape(width + 1)), direction=PortDirection.OUTPUT),
         ),
         comb_blocks=(
             CombBlock(
@@ -107,14 +107,14 @@ def _make_simple_counter():
     return Module(
         name="simple_counter",
         ports=(
-            Port(Signal("clk", Shape(1)), PortDirection.INPUT),
-            Port(Signal("rst", Shape(1)), PortDirection.INPUT),
-            Port(Signal("ena", Shape(1)), PortDirection.INPUT),
-            Port(Signal("set", Shape(1)), PortDirection.INPUT),
-            Port(Signal("din", Shape(w)), PortDirection.INPUT),
-            Port(Signal("counter", Shape(w)), PortDirection.OUTPUT),
+            Port(signal=Signal(name="clk", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="rst", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="ena", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="set", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="din", shape=Shape(w)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="counter", shape=Shape(w)), direction=PortDirection.OUTPUT),
         ),
-        clock_domains=(ClockDomain("sync", clk="clk", edge=EdgePolarity.POSEDGE, rst="rst"),),
+        clock_domains=(ClockDomain(name="sync", clk="clk", edge=EdgePolarity.POSEDGE, rst="rst"),),
         seq_blocks=(
             SeqBlock(
                 domain="sync",

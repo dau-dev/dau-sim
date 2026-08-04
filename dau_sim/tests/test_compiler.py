@@ -246,11 +246,11 @@ class TestCombLoopDetection:
         m = Module(
             name="loopy",
             ports=(
-                Port(Signal("a", Shape(8)), PortDirection.INPUT),
-                Port(Signal("b", Shape(8)), PortDirection.OUTPUT),
-                Port(Signal("c", Shape(8)), PortDirection.OUTPUT),
+                Port(signal=Signal(name="a", shape=Shape(8)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="b", shape=Shape(8)), direction=PortDirection.OUTPUT),
+                Port(signal=Signal(name="c", shape=Shape(8)), direction=PortDirection.OUTPUT),
             ),
-            clock_domains=(ClockDomain("sync", clk="a"),),
+            clock_domains=(ClockDomain(name="sync", clk="a"),),
             comb_blocks=(
                 CombBlock(stmts=(Assign(target="b", value=SignalRef(shape=Shape(8), name="c")),)),
                 CombBlock(stmts=(Assign(target="c", value=SignalRef(shape=Shape(8), name="b")),)),
@@ -262,55 +262,60 @@ class TestCombLoopDetection:
 
 class TestRewriter:
     def test_rewrite_signalref(self):
-        expr = SignalRef(Shape(8), "count")
+        expr = SignalRef(shape=Shape(8), name="count")
         result = prefix_expr(expr, "child")
         assert result.name == "child.count"
 
     def test_rewrite_const_unchanged(self):
-        expr = Const(Shape(8), 42)
+        expr = Const(shape=Shape(8), value=42)
         result = prefix_expr(expr, "child")
         assert result is expr
 
     def test_rewrite_binary_expr(self):
-        expr = Binary(Shape(8), BinaryOp.ADD, SignalRef(Shape(8), "a"), SignalRef(Shape(8), "b"))
+        expr = Binary(shape=Shape(8), op=BinaryOp.ADD, left=SignalRef(shape=Shape(8), name="a"), right=SignalRef(shape=Shape(8), name="b"))
         result = prefix_expr(expr, "sub")
         assert result.left.name == "sub.a"
         assert result.right.name == "sub.b"
 
     def test_rewrite_unary_expr(self):
-        expr = Unary(Shape(8), UnaryOp.NOT, SignalRef(Shape(8), "x"))
+        expr = Unary(shape=Shape(8), op=UnaryOp.NOT, operand=SignalRef(shape=Shape(8), name="x"))
         result = prefix_expr(expr, "p")
         assert result.operand.name == "p.x"
 
     def test_rewrite_mux_expr(self):
-        expr = Mux(Shape(8), SignalRef(Shape(1), "sel"), SignalRef(Shape(8), "a"), SignalRef(Shape(8), "b"))
+        expr = Mux(
+            shape=Shape(8),
+            sel=SignalRef(shape=Shape(1), name="sel"),
+            if_true=SignalRef(shape=Shape(8), name="a"),
+            if_false=SignalRef(shape=Shape(8), name="b"),
+        )
         result = prefix_expr(expr, "m")
         assert result.sel.name == "m.sel"
         assert result.if_true.name == "m.a"
         assert result.if_false.name == "m.b"
 
     def test_rewrite_concat_expr(self):
-        expr = Concat(Shape(16), (SignalRef(Shape(8), "hi"), SignalRef(Shape(8), "lo")))
+        expr = Concat(shape=Shape(16), parts=(SignalRef(shape=Shape(8), name="hi"), SignalRef(shape=Shape(8), name="lo")))
         result = prefix_expr(expr, "c")
         assert result.parts[0].name == "c.hi"
         assert result.parts[1].name == "c.lo"
 
     def test_rewrite_slice_expr(self):
-        expr = Slice(Shape(4), SignalRef(Shape(8), "val"), 0, 4)
+        expr = Slice(shape=Shape(4), value=SignalRef(shape=Shape(8), name="val"), low=0, high=4)
         result = prefix_expr(expr, "s")
         assert result.value.name == "s.val"
 
     def test_rewrite_assign_stmt(self):
-        stmt = Assign(target="out", value=SignalRef(Shape(1), "in_sig"))
+        stmt = Assign(target="out", value=SignalRef(shape=Shape(1), name="in_sig"))
         result = prefix_stmt(stmt, "child")
         assert result.target == "child.out"
         assert result.value.name == "child.in_sig"
 
     def test_rewrite_ifelse_stmt(self):
         stmt = IfElse(
-            cond=SignalRef(Shape(1), "en"),
-            then_body=(Assign(target="o", value=SignalRef(Shape(1), "a")),),
-            else_body=(Assign(target="o", value=Const(Shape(1), 0)),),
+            cond=SignalRef(shape=Shape(1), name="en"),
+            then_body=(Assign(target="o", value=SignalRef(shape=Shape(1), name="a")),),
+            else_body=(Assign(target="o", value=Const(shape=Shape(1), value=0)),),
         )
         result = prefix_stmt(stmt, "x")
         assert result.cond.name == "x.en"
@@ -318,8 +323,8 @@ class TestRewriter:
 
     def test_rewrite_switch_stmt(self):
         stmt = IrSwitch(
-            test=SignalRef(Shape(2), "sel"),
-            cases=((0, (Assign(target="y", value=Const(Shape(1), 0)),)),),
+            test=SignalRef(shape=Shape(2), name="sel"),
+            cases=((0, (Assign(target="y", value=Const(shape=Shape(1), value=0)),)),),
         )
         result = prefix_stmt(stmt, "p")
         assert result.test.name == "p.sel"
@@ -327,8 +332,8 @@ class TestRewriter:
 
     def test_prefix_stmts_batch(self):
         stmts = (
-            Assign(target="a", value=Const(Shape(1), 0)),
-            Assign(target="b", value=SignalRef(Shape(1), "c")),
+            Assign(target="a", value=Const(shape=Shape(1), value=0)),
+            Assign(target="b", value=SignalRef(shape=Shape(1), name="c")),
         )
         result = prefix_stmts(stmts, "mod")
         assert result[0].target == "mod.a"
@@ -344,25 +349,25 @@ class TestFlatten:
         child = Module(
             name="child",
             ports=(
-                Port(Signal("in1", Shape(8)), PortDirection.INPUT),
-                Port(Signal("out1", Shape(8)), PortDirection.OUTPUT),
+                Port(signal=Signal(name="in1", shape=Shape(8)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="out1", shape=Shape(8)), direction=PortDirection.OUTPUT),
             ),
-            signals=(Signal("internal", Shape(8)),),
-            comb_blocks=(CombBlock(stmts=(Assign(target="out1", value=SignalRef(Shape(8), "in1")),)),),
+            signals=(Signal(name="internal", shape=Shape(8)),),
+            comb_blocks=(CombBlock(stmts=(Assign(target="out1", value=SignalRef(shape=Shape(8), name="in1")),)),),
         )
         parent = Module(
             name="top",
             ports=(
-                Port(Signal("top_in", Shape(8)), PortDirection.INPUT),
-                Port(Signal("top_out", Shape(8)), PortDirection.OUTPUT),
+                Port(signal=Signal(name="top_in", shape=Shape(8)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="top_out", shape=Shape(8)), direction=PortDirection.OUTPUT),
             ),
             instances=(
                 Instance(
-                    "u0",
-                    "child",
-                    (
-                        PortBinding("in1", SignalRef(Shape(8), "top_in")),
-                        PortBinding("out1", SignalRef(Shape(8), "top_out")),
+                    name="u0",
+                    module_name="child",
+                    bindings=(
+                        PortBinding(port_name="in1", expr=SignalRef(shape=Shape(8), name="top_in")),
+                        PortBinding(port_name="out1", expr=SignalRef(shape=Shape(8), name="top_out")),
                     ),
                 ),
             ),
@@ -382,7 +387,7 @@ class TestFlatten:
 
         m = Module(
             name="simple",
-            ports=(Port(Signal("x", Shape(1)), PortDirection.INPUT),),
+            ports=(Port(signal=Signal(name="x", shape=Shape(1)), direction=PortDirection.INPUT),),
         )
         flat = flatten_module(m)
         assert flat.name == "simple"
@@ -394,11 +399,11 @@ class TestFlatten:
 
         child = Module(
             name="mem_child",
-            memories=(Memory("ram", Shape(8), 16, (), ()),),
+            memories=(Memory(name="ram", shape=Shape(8), depth=16, read_ports=(), write_ports=()),),
         )
         parent = Module(
             name="top",
-            instances=(Instance("u_mem", "mem_child", ()),),
+            instances=(Instance(name="u_mem", module_name="mem_child", bindings=()),),
             submodules=(child,),
         )
         flat = flatten_module(parent)
@@ -411,16 +416,16 @@ class TestFlatten:
 
         grandchild = Module(
             name="gc",
-            signals=(Signal("s", Shape(4)),),
+            signals=(Signal(name="s", shape=Shape(4)),),
         )
         child = Module(
             name="child",
-            instances=(Instance("gc0", "gc", ()),),
+            instances=(Instance(name="gc0", module_name="gc", bindings=()),),
             submodules=(grandchild,),
         )
         parent = Module(
             name="top",
-            instances=(Instance("c0", "child", ()),),
+            instances=(Instance(name="c0", module_name="child", bindings=()),),
             submodules=(child,),
         )
         flat = flatten_module(parent)
@@ -434,24 +439,24 @@ class TestFlatten:
         child = Module(
             name="passthru",
             ports=(
-                Port(Signal("a", Shape(8)), PortDirection.INPUT),
-                Port(Signal("b", Shape(8)), PortDirection.OUTPUT),
+                Port(signal=Signal(name="a", shape=Shape(8)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="b", shape=Shape(8)), direction=PortDirection.OUTPUT),
             ),
-            comb_blocks=(CombBlock(stmts=(Assign(target="b", value=SignalRef(Shape(8), "a")),)),),
+            comb_blocks=(CombBlock(stmts=(Assign(target="b", value=SignalRef(shape=Shape(8), name="a")),)),),
         )
         parent = Module(
             name="top",
             ports=(
-                Port(Signal("x", Shape(8)), PortDirection.INPUT),
-                Port(Signal("y", Shape(8)), PortDirection.OUTPUT),
+                Port(signal=Signal(name="x", shape=Shape(8)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="y", shape=Shape(8)), direction=PortDirection.OUTPUT),
             ),
             instances=(
                 Instance(
-                    "u0",
-                    "passthru",
-                    (
-                        PortBinding("a", SignalRef(Shape(8), "x")),
-                        PortBinding("b", SignalRef(Shape(8), "y")),
+                    name="u0",
+                    module_name="passthru",
+                    bindings=(
+                        PortBinding(port_name="a", expr=SignalRef(shape=Shape(8), name="x")),
+                        PortBinding(port_name="b", expr=SignalRef(shape=Shape(8), name="y")),
                     ),
                 ),
             ),
@@ -497,14 +502,14 @@ class TestMemoryExecution:
         return Module(
             name="mem_test",
             ports=(
-                Port(Signal("wr_addr", Shape(2)), PortDirection.INPUT),
-                Port(Signal("wr_data", Shape(8)), PortDirection.INPUT),
-                Port(Signal("wr_en", Shape(1)), PortDirection.INPUT),
-                Port(Signal("rd_addr", Shape(2)), PortDirection.INPUT),
-                Port(Signal("rd_data", Shape(8)), PortDirection.OUTPUT),
+                Port(signal=Signal(name="wr_addr", shape=Shape(2)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="wr_data", shape=Shape(8)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="wr_en", shape=Shape(1)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="rd_addr", shape=Shape(2)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="rd_data", shape=Shape(8)), direction=PortDirection.OUTPUT),
             ),
-            clock_domains=(ClockDomain("sync", clk="clk"),),
-            signals=(Signal("clk", Shape(1)),),
+            clock_domains=(ClockDomain(name="sync", clk="clk"),),
+            signals=(Signal(name="clk", shape=Shape(1)),),
             memories=(mem,),
         )
 
@@ -587,14 +592,14 @@ class TestMemoryExecution:
         mod = Module(
             name="gran_test",
             ports=(
-                Port(Signal("wr_addr", Shape(1)), PortDirection.INPUT),
-                Port(Signal("wr_data", Shape(16)), PortDirection.INPUT),
-                Port(Signal("wr_en", Shape(2)), PortDirection.INPUT),
-                Port(Signal("rd_addr", Shape(1)), PortDirection.INPUT),
-                Port(Signal("rd_data", Shape(16)), PortDirection.OUTPUT),
+                Port(signal=Signal(name="wr_addr", shape=Shape(1)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="wr_data", shape=Shape(16)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="wr_en", shape=Shape(2)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="rd_addr", shape=Shape(1)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="rd_data", shape=Shape(16)), direction=PortDirection.OUTPUT),
             ),
-            clock_domains=(ClockDomain("sync", clk="clk"),),
-            signals=(Signal("clk", Shape(1)),),
+            clock_domains=(ClockDomain(name="sync", clk="clk"),),
+            signals=(Signal(name="clk", shape=Shape(1)),),
             memories=(mem,),
         )
         cm = compile_module(mod)

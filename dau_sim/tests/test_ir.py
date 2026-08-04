@@ -2,6 +2,8 @@
 
 import unittest
 
+from pydantic import ValidationError
+
 from dau_sim.ir import (
     Assign,
     Binary,
@@ -93,12 +95,12 @@ def test_slice_expr():
 class TestIRNodes(unittest.TestCase):
     def test_delay_frozen(self):
         d = Delay(ticks=5)
-        with self.assertRaises(AttributeError):
+        with self.assertRaises(ValidationError):
             d.ticks = 10
 
     def test_finish_frozen(self):
         f = Finish(exit_code=1)
-        with self.assertRaises(AttributeError):
+        with self.assertRaises(ValidationError):
             f.exit_code = 2
 
     def test_finish_default_exit_code(self):
@@ -107,7 +109,7 @@ class TestIRNodes(unittest.TestCase):
 
     def test_init_block_frozen(self):
         ib = InitBlock(stmts=())
-        with self.assertRaises(AttributeError):
+        with self.assertRaises(ValidationError):
             ib.stmts = ()
 
 
@@ -124,11 +126,11 @@ def _make_counter_module() -> Module:
     return Module(
         name="counter",
         ports=(
-            Port(Signal("clk", Shape(1)), PortDirection.INPUT),
-            Port(Signal("rst", Shape(1)), PortDirection.INPUT),
-            Port(Signal("count", Shape(4)), PortDirection.OUTPUT),
+            Port(signal=Signal(name="clk", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="rst", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="count", shape=Shape(4)), direction=PortDirection.OUTPUT),
         ),
-        clock_domains=(ClockDomain("sync", clk="clk", edge=EdgePolarity.POSEDGE, rst="rst"),),
+        clock_domains=(ClockDomain(name="sync", clk="clk", edge=EdgePolarity.POSEDGE, rst="rst"),),
         seq_blocks=(
             SeqBlock(
                 domain="sync",
@@ -182,7 +184,7 @@ def test_validate_valid_module():
 def test_validate_unknown_signal_in_stmt():
     m = Module(
         name="bad",
-        ports=(Port(Signal("x", Shape(8)), PortDirection.INPUT),),
+        ports=(Port(signal=Signal(name="x", shape=Shape(8)), direction=PortDirection.INPUT),),
         comb_blocks=(
             CombBlock(
                 stmts=(
@@ -202,7 +204,7 @@ def test_validate_unknown_signal_in_stmt():
 def test_validate_unknown_clock_domain():
     m = Module(
         name="bad",
-        ports=(Port(Signal("x", Shape(8)), PortDirection.INPUT),),
+        ports=(Port(signal=Signal(name="x", shape=Shape(8)), direction=PortDirection.INPUT),),
         seq_blocks=(
             SeqBlock(
                 domain="nonexistent",
@@ -223,8 +225,8 @@ def test_validate_unknown_clock_domain():
 def test_validate_duplicate_signal():
     m = Module(
         name="dup",
-        ports=(Port(Signal("x", Shape(8)), PortDirection.INPUT),),
-        signals=(Signal("x", Shape(8)),),  # duplicate
+        ports=(Port(signal=Signal(name="x", shape=Shape(8)), direction=PortDirection.INPUT),),
+        signals=(Signal(name="x", shape=Shape(8)),),  # duplicate
     )
     result = validate_module(m)
     assert not result.ok
@@ -258,7 +260,7 @@ def test_fmt_module():
 
 def test_module_submodules():
     """Module can hold child module definitions."""
-    child = Module(name="child", ports=(Port(Signal("a", Shape(1)), PortDirection.INPUT),))
+    child = Module(name="child", ports=(Port(signal=Signal(name="a", shape=Shape(1)), direction=PortDirection.INPUT),))
     parent = Module(name="parent", submodules=(child,))
     assert len(parent.submodules) == 1
     assert parent.submodules[0].name == "child"
@@ -301,13 +303,13 @@ def test_instance_construction():
     inst = Instance(
         name="u0",
         module_name="counter",
-        bindings=(PortBinding("clk", SignalRef(Shape(1), "top_clk")),),
-        parameters={"WIDTH": 8},
+        bindings=(PortBinding(port_name="clk", expr=SignalRef(shape=Shape(1), name="top_clk")),),
+        parameters=(("WIDTH", 8),),
     )
     assert inst.name == "u0"
     assert inst.module_name == "counter"
     assert len(inst.bindings) == 1
-    assert inst.parameters["WIDTH"] == 8
+    assert dict(inst.parameters)["WIDTH"] == 8
 
 
 def test_memory_construction():

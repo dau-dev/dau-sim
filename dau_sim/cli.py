@@ -51,7 +51,7 @@ def run_sv(
     latest_table.add_column("Signal")
     latest_table.add_column("Value", justify="right")
 
-    for signal in sorted(result.traces.keys()):
+    for signal, _ in sorted(result.traces):
         latest = result.latest(signal)
         if latest is not None:
             latest_table.add_row(signal, str(latest))

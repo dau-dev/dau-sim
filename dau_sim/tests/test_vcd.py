@@ -179,11 +179,22 @@ class TestVCDStructure:
         return Module(
             name="adder",
             ports=(
-                Port(Signal("a", Shape(8)), PortDirection.INPUT),
-                Port(Signal("b", Shape(8)), PortDirection.INPUT),
-                Port(Signal("y", Shape(8)), PortDirection.OUTPUT),
+                Port(signal=Signal(name="a", shape=Shape(8)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="b", shape=Shape(8)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="y", shape=Shape(8)), direction=PortDirection.OUTPUT),
             ),
-            comb_blocks=(CombBlock(stmts=(Assign("y", Binary(Shape(9), BinaryOp.ADD, SignalRef(Shape(8), "a"), SignalRef(Shape(8), "b"))),)),),
+            comb_blocks=(
+                CombBlock(
+                    stmts=(
+                        Assign(
+                            target="y",
+                            value=Binary(
+                                shape=Shape(9), op=BinaryOp.ADD, left=SignalRef(shape=Shape(8), name="a"), right=SignalRef(shape=Shape(8), name="b")
+                            ),
+                        ),
+                    )
+                ),
+            ),
         )
 
     def test_header_sections(self):
@@ -225,10 +236,10 @@ class TestVCDStructure:
         mod = Module(
             name="buf",
             ports=(
-                Port(Signal("a", Shape(1)), PortDirection.INPUT),
-                Port(Signal("y", Shape(1)), PortDirection.OUTPUT),
+                Port(signal=Signal(name="a", shape=Shape(1)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="y", shape=Shape(1)), direction=PortDirection.OUTPUT),
             ),
-            comb_blocks=(CombBlock(stmts=(Assign("y", SignalRef(Shape(1), "a")),)),),
+            comb_blocks=(CombBlock(stmts=(Assign(target="y", value=SignalRef(shape=Shape(1), name="a")),)),),
         )
         cm = compile_module(mod)
         traces = cm.run(cycles=1, inputs={"a": 1})
@@ -246,11 +257,22 @@ class TestVCDEndToEnd:
         mod = Module(
             name="adder",
             ports=(
-                Port(Signal("a", Shape(8)), PortDirection.INPUT),
-                Port(Signal("b", Shape(8)), PortDirection.INPUT),
-                Port(Signal("y", Shape(8)), PortDirection.OUTPUT),
+                Port(signal=Signal(name="a", shape=Shape(8)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="b", shape=Shape(8)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="y", shape=Shape(8)), direction=PortDirection.OUTPUT),
             ),
-            comb_blocks=(CombBlock(stmts=(Assign("y", Binary(Shape(9), BinaryOp.ADD, SignalRef(Shape(8), "a"), SignalRef(Shape(8), "b"))),)),),
+            comb_blocks=(
+                CombBlock(
+                    stmts=(
+                        Assign(
+                            target="y",
+                            value=Binary(
+                                shape=Shape(9), op=BinaryOp.ADD, left=SignalRef(shape=Shape(8), name="a"), right=SignalRef(shape=Shape(8), name="b")
+                            ),
+                        ),
+                    )
+                ),
+            ),
         )
         cm = compile_module(mod)
         traces = cm.run(cycles=3, inputs={"a": 10, "b": 20})
@@ -268,13 +290,23 @@ class TestVCDEndToEnd:
         mod = Module(
             name="counter",
             ports=(
-                Port(Signal("clk", Shape(1)), PortDirection.INPUT),
-                Port(Signal("rst", Shape(1)), PortDirection.INPUT),
-                Port(Signal("count", Shape(8)), PortDirection.OUTPUT),
+                Port(signal=Signal(name="clk", shape=Shape(1)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="rst", shape=Shape(1)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="count", shape=Shape(8)), direction=PortDirection.OUTPUT),
             ),
-            clock_domains=(ClockDomain("sync", clk="clk", edge=EdgePolarity.POSEDGE, rst="rst", rst_style=ResetStyle.SYNC),),
+            clock_domains=(ClockDomain(name="sync", clk="clk", edge=EdgePolarity.POSEDGE, rst="rst", rst_style=ResetStyle.SYNC),),
             seq_blocks=(
-                SeqBlock("sync", stmts=(Assign("count", Binary(Shape(9), BinaryOp.ADD, SignalRef(Shape(8), "count"), Const(Shape(8), 1))),)),
+                SeqBlock(
+                    domain="sync",
+                    stmts=(
+                        Assign(
+                            target="count",
+                            value=Binary(
+                                shape=Shape(9), op=BinaryOp.ADD, left=SignalRef(shape=Shape(8), name="count"), right=Const(shape=Shape(8), value=1)
+                            ),
+                        ),
+                    ),
+                ),
             ),
         )
         cm = compile_module(mod)
@@ -302,13 +334,23 @@ class TestVCDEndToEnd:
         mod = Module(
             name="counter",
             ports=(
-                Port(Signal("clk", Shape(1)), PortDirection.INPUT),
-                Port(Signal("rst", Shape(1)), PortDirection.INPUT),
-                Port(Signal("count", Shape(8)), PortDirection.OUTPUT),
+                Port(signal=Signal(name="clk", shape=Shape(1)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="rst", shape=Shape(1)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="count", shape=Shape(8)), direction=PortDirection.OUTPUT),
             ),
-            clock_domains=(ClockDomain("sync", clk="clk", edge=EdgePolarity.POSEDGE, rst="rst", rst_style=ResetStyle.SYNC),),
+            clock_domains=(ClockDomain(name="sync", clk="clk", edge=EdgePolarity.POSEDGE, rst="rst", rst_style=ResetStyle.SYNC),),
             seq_blocks=(
-                SeqBlock("sync", stmts=(Assign("count", Binary(Shape(9), BinaryOp.ADD, SignalRef(Shape(8), "count"), Const(Shape(8), 1))),)),
+                SeqBlock(
+                    domain="sync",
+                    stmts=(
+                        Assign(
+                            target="count",
+                            value=Binary(
+                                shape=Shape(9), op=BinaryOp.ADD, left=SignalRef(shape=Shape(8), name="count"), right=Const(shape=Shape(8), value=1)
+                            ),
+                        ),
+                    ),
+                ),
             ),
         )
         cm = compile_module(mod)
@@ -349,10 +391,10 @@ class TestVCDFileIO:
         mod = Module(
             name="test_mod",
             ports=(
-                Port(Signal("a", Shape(4)), PortDirection.INPUT),
-                Port(Signal("y", Shape(4)), PortDirection.OUTPUT),
+                Port(signal=Signal(name="a", shape=Shape(4)), direction=PortDirection.INPUT),
+                Port(signal=Signal(name="y", shape=Shape(4)), direction=PortDirection.OUTPUT),
             ),
-            comb_blocks=(CombBlock(stmts=(Assign("y", SignalRef(Shape(4), "a")),)),),
+            comb_blocks=(CombBlock(stmts=(Assign(target="y", value=SignalRef(shape=Shape(4), name="a")),)),),
         )
         cm = compile_module(mod)
         traces = cm.run(cycles=2, inputs={"a": 5})
