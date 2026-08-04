@@ -1,15 +1,15 @@
-from __future__ import annotations
-
-from dataclasses import dataclass, field
+from ccflow import BaseModel
+from pydantic import ConfigDict
 
 from dau_sim.ir.expr import Expr
 from dau_sim.ir.stmt import Stmt
 from dau_sim.ir.types import EdgePolarity, NetKind, PortDirection, ResetStyle, Shape
 
 
-@dataclass(frozen=True)
-class Signal:
+class Signal(BaseModel):
     """A named net within a module."""
+
+    model_config = ConfigDict(frozen=True)
 
     name: str
     shape: Shape
@@ -17,9 +17,10 @@ class Signal:
     net_kind: NetKind = NetKind.WIRE  # resolution semantics for multi-driver
 
 
-@dataclass(frozen=True)
-class Port:
+class Port(BaseModel):
     """A module port — a signal with direction."""
+
+    model_config = ConfigDict(frozen=True)
 
     signal: Signal
     direction: PortDirection
@@ -33,9 +34,10 @@ class Port:
         return self.signal.shape
 
 
-@dataclass(frozen=True)
-class ClockDomain:
+class ClockDomain(BaseModel):
     """A clock domain with clock signal, edge, and optional reset."""
+
+    model_config = ConfigDict(frozen=True)
 
     name: str
     clk: str  # signal name of the clock
@@ -45,58 +47,64 @@ class ClockDomain:
     rst_active_high: bool = True
 
 
-@dataclass(frozen=True)
-class CombBlock:
+class CombBlock(BaseModel):
     """Combinational logic block (always_comb / assign).
 
     All statements execute whenever any referenced input signal changes.
     """
 
+    model_config = ConfigDict(frozen=True)
+
     stmts: tuple[Stmt, ...]
 
 
-@dataclass(frozen=True)
-class SeqBlock:
+class SeqBlock(BaseModel):
     """Sequential logic block (always_ff).
 
     Statements execute on the clock edge of the specified domain.
     """
 
+    model_config = ConfigDict(frozen=True)
+
     domain: str  # clock domain name
     stmts: tuple[Stmt, ...]
 
 
-@dataclass(frozen=True)
-class InitBlock:
+class InitBlock(BaseModel):
     """Initial block (non-synthesizable).
 
     Runs once at simulation start.
     """
 
+    model_config = ConfigDict(frozen=True)
+
     stmts: tuple[Stmt, ...]
 
 
-@dataclass(frozen=True)
-class PortBinding:
+class PortBinding(BaseModel):
     """Binds an instance port to a signal expression in the parent module."""
+
+    model_config = ConfigDict(frozen=True)
 
     port_name: str
     expr: Expr
 
 
-@dataclass(frozen=True)
-class Instance:
+class Instance(BaseModel):
     """Hierarchical instantiation of another module."""
+
+    model_config = ConfigDict(frozen=True)
 
     name: str  # instance name
     module_name: str  # name of the module being instantiated
     bindings: tuple[PortBinding, ...]
-    parameters: dict[str, int] = field(default_factory=dict)
+    parameters: tuple[tuple[str, int], ...] = ()
 
 
-@dataclass(frozen=True)
-class ReadPort:
+class ReadPort(BaseModel):
     """Memory read port descriptor."""
+
+    model_config = ConfigDict(frozen=True)
 
     addr: str  # signal name for address
     data: str  # signal name for read data
@@ -105,9 +113,10 @@ class ReadPort:
     transparent_for: tuple[int, ...] = ()  # write port indices for transparency
 
 
-@dataclass(frozen=True)
-class WritePort:
+class WritePort(BaseModel):
     """Memory write port descriptor."""
+
+    model_config = ConfigDict(frozen=True)
 
     addr: str  # signal name for address
     data: str  # signal name for write data
@@ -116,9 +125,10 @@ class WritePort:
     granularity: int = 0  # 0 = full-width write, >0 = per-granule write enable
 
 
-@dataclass(frozen=True)
-class Memory:
+class Memory(BaseModel):
     """Memory array with read and write ports."""
+
+    model_config = ConfigDict(frozen=True)
 
     name: str
     shape: Shape  # shape of each element
@@ -128,13 +138,14 @@ class Memory:
     init: tuple[int, ...] = ()  # initial contents
 
 
-@dataclass(frozen=True)
-class Module:
+class Module(BaseModel):
     """Top-level module definition.
 
     A named container with ports, internal signals, clock domains,
     logic blocks, submodule instances, and memories.
     """
+
+    model_config = ConfigDict(frozen=True)
 
     name: str
     ports: tuple[Port, ...] = ()
@@ -145,7 +156,7 @@ class Module:
     init_blocks: tuple[InitBlock, ...] = ()
     instances: tuple[Instance, ...] = ()
     memories: tuple[Memory, ...] = ()
-    submodules: tuple[Module, ...] = ()
+    submodules: tuple["Module", ...] = ()
 
     def port_by_name(self, name: str) -> Port | None:
         for p in self.ports:
@@ -170,3 +181,6 @@ class Module:
         for s in self.signals:
             names.add(s.name)
         return names
+
+
+Module.model_rebuild()

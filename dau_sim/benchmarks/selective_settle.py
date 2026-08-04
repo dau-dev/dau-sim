@@ -8,8 +8,8 @@ from dau_sim.ir.types import Shape
 
 
 def _make_partitioned_seq_module(n: int, stmts_per_component: int) -> Module:
-    source_signals = tuple(Signal(f"s{i}", Shape(8)) for i in range(n))
-    derived_signals = tuple(Signal(f"o{i}_{j}", Shape(8)) for i in range(n) for j in range(stmts_per_component))
+    source_signals = tuple(Signal(name=f"s{i}", shape=Shape(8)) for i in range(n))
+    derived_signals = tuple(Signal(name=f"o{i}_{j}", shape=Shape(8)) for i in range(n) for j in range(stmts_per_component))
 
     comb_blocks = []
     for i in range(n):
@@ -30,7 +30,7 @@ def _make_partitioned_seq_module(n: int, stmts_per_component: int) -> Module:
 
     seq_blocks = (
         SeqBlock(
-            "sync",
+            domain="sync",
             stmts=(
                 Assign(
                     target="s0",
@@ -50,7 +50,7 @@ def _make_partitioned_seq_module(n: int, stmts_per_component: int) -> Module:
         signals=source_signals + derived_signals,
         comb_blocks=tuple(comb_blocks),
         seq_blocks=seq_blocks,
-        clock_domains=(ClockDomain("sync", clk="clk"),),
+        clock_domains=(ClockDomain(name="sync", clk="clk"),),
     )
 
 

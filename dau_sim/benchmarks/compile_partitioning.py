@@ -8,9 +8,9 @@ from dau_sim.ir.types import PortDirection, Shape
 
 
 def _make_partitioned_comb_module(n: int) -> Module:
-    a = Signal("a", Shape(8))
-    internal_signals = tuple(Signal(f"s{i}", Shape(8)) for i in range(n))
-    output_signals = tuple(Signal(f"o{i}", Shape(8)) for i in range(n))
+    a = Signal(name="a", shape=Shape(8))
+    internal_signals = tuple(Signal(name=f"s{i}", shape=Shape(8)) for i in range(n))
+    output_signals = tuple(Signal(name=f"o{i}", shape=Shape(8)) for i in range(n))
 
     comb_blocks = tuple(
         CombBlock(
@@ -31,10 +31,10 @@ def _make_partitioned_comb_module(n: int) -> Module:
 
     return Module(
         name=f"partition_compile_{n}",
-        ports=(Port(a, PortDirection.INPUT),),
+        ports=(Port(signal=a, direction=PortDirection.INPUT),),
         signals=internal_signals + output_signals,
         comb_blocks=comb_blocks,
-        clock_domains=(ClockDomain("sync", clk="clk"),),
+        clock_domains=(ClockDomain(name="sync", clk="clk"),),
     )
 
 

@@ -36,11 +36,11 @@ from dau_sim.ir.stmt import Delay, Finish, ReadMem
 
 
 def _make_signal(name, width=8, init=0):
-    return Signal(name, Shape(width), init=init)
+    return Signal(name=name, shape=Shape(width), init=init)
 
 
 def _make_port(name, width=8, direction=PortDirection.INPUT, init=0):
-    return Port(Signal(name, Shape(width), init=init), direction)
+    return Port(signal=Signal(name=name, shape=Shape(width), init=init), direction=direction)
 
 
 class TestInitBlock(unittest.TestCase):
@@ -51,11 +51,11 @@ class TestInitBlock(unittest.TestCase):
         mod = Module(
             name="init_test",
             ports=(
-                Port(a, PortDirection.INPUT),
-                Port(y, PortDirection.OUTPUT),
+                Port(signal=a, direction=PortDirection.INPUT),
+                Port(signal=y, direction=PortDirection.OUTPUT),
             ),
-            comb_blocks=(CombBlock(stmts=(Assign("y", SignalRef(Shape(8), "a")),)),),
-            init_blocks=(InitBlock(stmts=(Assign("a", Const(Shape(8), 42)),)),),
+            comb_blocks=(CombBlock(stmts=(Assign(target="y", value=SignalRef(shape=Shape(8), name="a")),)),),
+            init_blocks=(InitBlock(stmts=(Assign(target="a", value=Const(shape=Shape(8), value=42)),)),),
         )
         cm = compile_module(mod)
         traces = cm.run(cycles=1)
@@ -71,16 +71,27 @@ class TestInitBlock(unittest.TestCase):
         mod = Module(
             name="multi_init",
             ports=(
-                Port(a, PortDirection.INPUT),
-                Port(b, PortDirection.INPUT),
-                Port(y, PortDirection.OUTPUT),
+                Port(signal=a, direction=PortDirection.INPUT),
+                Port(signal=b, direction=PortDirection.INPUT),
+                Port(signal=y, direction=PortDirection.OUTPUT),
             ),
-            comb_blocks=(CombBlock(stmts=(Assign("y", Binary(Shape(8), BinaryOp.ADD, SignalRef(Shape(8), "a"), SignalRef(Shape(8), "b"))),)),),
+            comb_blocks=(
+                CombBlock(
+                    stmts=(
+                        Assign(
+                            target="y",
+                            value=Binary(
+                                shape=Shape(8), op=BinaryOp.ADD, left=SignalRef(shape=Shape(8), name="a"), right=SignalRef(shape=Shape(8), name="b")
+                            ),
+                        ),
+                    )
+                ),
+            ),
             init_blocks=(
                 InitBlock(
                     stmts=(
-                        Assign("a", Const(Shape(8), 10)),
-                        Assign("b", Const(Shape(8), 20)),
+                        Assign(target="a", value=Const(shape=Shape(8), value=10)),
+                        Assign(target="b", value=Const(shape=Shape(8), value=20)),
                     )
                 ),
             ),
@@ -94,8 +105,8 @@ class TestInitBlock(unittest.TestCase):
         a = _make_signal("a", 8, init=5)
         mod = Module(
             name="override_init",
-            ports=(Port(a, PortDirection.INPUT),),
-            init_blocks=(InitBlock(stmts=(Assign("a", Const(Shape(8), 99)),)),),
+            ports=(Port(signal=a, direction=PortDirection.INPUT),),
+            init_blocks=(InitBlock(stmts=(Assign(target="a", value=Const(shape=Shape(8), value=99)),)),),
         )
         cm = compile_module(mod)
         traces = cm.run(cycles=1)
@@ -107,10 +118,10 @@ class TestInitBlock(unittest.TestCase):
         a = _make_signal("a", 8)
         mod = Module(
             name="multi_block",
-            ports=(Port(a, PortDirection.OUTPUT),),
+            ports=(Port(signal=a, direction=PortDirection.OUTPUT),),
             init_blocks=(
-                InitBlock(stmts=(Assign("a", Const(Shape(8), 10)),)),
-                InitBlock(stmts=(Assign("a", Const(Shape(8), 20)),)),
+                InitBlock(stmts=(Assign(target="a", value=Const(shape=Shape(8), value=10)),)),
+                InitBlock(stmts=(Assign(target="a", value=Const(shape=Shape(8), value=20)),)),
             ),
         )
         cm = compile_module(mod)
@@ -125,17 +136,24 @@ class TestInitBlock(unittest.TestCase):
         mod = Module(
             name="init_seq",
             ports=(
-                Port(clk, PortDirection.INPUT),
-                Port(count, PortDirection.OUTPUT),
+                Port(signal=clk, direction=PortDirection.INPUT),
+                Port(signal=count, direction=PortDirection.OUTPUT),
             ),
-            clock_domains=(ClockDomain("sync", "clk"),),
+            clock_domains=(ClockDomain(name="sync", clk="clk"),),
             seq_blocks=(
                 SeqBlock(
                     domain="sync",
-                    stmts=(Assign("count", Binary(Shape(8), BinaryOp.ADD, SignalRef(Shape(8), "count"), Const(Shape(8), 1))),),
+                    stmts=(
+                        Assign(
+                            target="count",
+                            value=Binary(
+                                shape=Shape(8), op=BinaryOp.ADD, left=SignalRef(shape=Shape(8), name="count"), right=Const(shape=Shape(8), value=1)
+                            ),
+                        ),
+                    ),
                 ),
             ),
-            init_blocks=(InitBlock(stmts=(Assign("count", Const(Shape(8), 100)),)),),
+            init_blocks=(InitBlock(stmts=(Assign(target="count", value=Const(shape=Shape(8), value=100)),)),),
         )
         cm = compile_module(mod)
         traces = cm.run(cycles=3)
@@ -152,8 +170,8 @@ class TestPrintStmt(unittest.TestCase):
         a = _make_signal("a", 8, init=42)
         mod = Module(
             name="display_test",
-            ports=(Port(a, PortDirection.INPUT),),
-            comb_blocks=(CombBlock(stmts=(Print("a = {}", (SignalRef(Shape(8), "a"),)),)),),
+            ports=(Port(signal=a, direction=PortDirection.INPUT),),
+            comb_blocks=(CombBlock(stmts=(Print(format_str="a = {}", args=(SignalRef(shape=Shape(8), name="a"),)),)),),
         )
         cm = compile_module(mod)
         buf = io.StringIO()
@@ -168,10 +186,12 @@ class TestPrintStmt(unittest.TestCase):
         mod = Module(
             name="display_multi",
             ports=(
-                Port(a, PortDirection.INPUT),
-                Port(b, PortDirection.INPUT),
+                Port(signal=a, direction=PortDirection.INPUT),
+                Port(signal=b, direction=PortDirection.INPUT),
             ),
-            comb_blocks=(CombBlock(stmts=(Print("a={} b={}", (SignalRef(Shape(8), "a"), SignalRef(Shape(8), "b"))),)),),
+            comb_blocks=(
+                CombBlock(stmts=(Print(format_str="a={} b={}", args=(SignalRef(shape=Shape(8), name="a"), SignalRef(shape=Shape(8), name="b"))),)),
+            ),
         )
         cm = compile_module(mod)
         buf = io.StringIO()
@@ -184,8 +204,8 @@ class TestPrintStmt(unittest.TestCase):
         a = _make_signal("a", 8, init=7)
         mod = Module(
             name="display_init",
-            ports=(Port(a, PortDirection.INPUT),),
-            init_blocks=(InitBlock(stmts=(Print("init: a={}", (SignalRef(Shape(8), "a"),)),)),),
+            ports=(Port(signal=a, direction=PortDirection.INPUT),),
+            init_blocks=(InitBlock(stmts=(Print(format_str="init: a={}", args=(SignalRef(shape=Shape(8), name="a"),)),)),),
         )
         cm = compile_module(mod)
         buf = io.StringIO()
@@ -200,8 +220,8 @@ class TestAssertStmt(unittest.TestCase):
         a = _make_signal("a", 8, init=1)
         mod = Module(
             name="assert_pass",
-            ports=(Port(a, PortDirection.INPUT),),
-            comb_blocks=(CombBlock(stmts=(Assert(cond=SignalRef(Shape(8), "a"), message="a should be nonzero"),)),),
+            ports=(Port(signal=a, direction=PortDirection.INPUT),),
+            comb_blocks=(CombBlock(stmts=(Assert(cond=SignalRef(shape=Shape(8), name="a"), message="a should be nonzero"),)),),
         )
         cm = compile_module(mod)
         # Should not raise
@@ -212,8 +232,8 @@ class TestAssertStmt(unittest.TestCase):
         a = _make_signal("a", 8, init=0)
         mod = Module(
             name="assert_fail",
-            ports=(Port(a, PortDirection.INPUT),),
-            comb_blocks=(CombBlock(stmts=(Assert(cond=SignalRef(Shape(8), "a"), message="a must be nonzero"),)),),
+            ports=(Port(signal=a, direction=PortDirection.INPUT),),
+            comb_blocks=(CombBlock(stmts=(Assert(cond=SignalRef(shape=Shape(8), name="a"), message="a must be nonzero"),)),),
         )
         cm = compile_module(mod)
         with self.assertRaises(AssertionError) as ctx:
@@ -225,8 +245,8 @@ class TestAssertStmt(unittest.TestCase):
         a = _make_signal("a", 8, init=0)
         mod = Module(
             name="assert_default",
-            ports=(Port(a, PortDirection.INPUT),),
-            comb_blocks=(CombBlock(stmts=(Assert(cond=SignalRef(Shape(8), "a")),)),),
+            ports=(Port(signal=a, direction=PortDirection.INPUT),),
+            comb_blocks=(CombBlock(stmts=(Assert(cond=SignalRef(shape=Shape(8), name="a")),)),),
         )
         cm = compile_module(mod)
         with self.assertRaises(AssertionError) as ctx:
@@ -238,8 +258,8 @@ class TestAssertStmt(unittest.TestCase):
         a = _make_signal("a", 8, init=0)
         mod = Module(
             name="assert_init",
-            ports=(Port(a, PortDirection.INPUT),),
-            init_blocks=(InitBlock(stmts=(Assert(cond=SignalRef(Shape(8), "a"), message="init assert failed"),)),),
+            ports=(Port(signal=a, direction=PortDirection.INPUT),),
+            init_blocks=(InitBlock(stmts=(Assert(cond=SignalRef(shape=Shape(8), name="a"), message="init assert failed"),)),),
         )
         cm = compile_module(mod)
         with self.assertRaises(AssertionError) as ctx:
@@ -253,7 +273,7 @@ class TestFinishStmt(unittest.TestCase):
         a = _make_signal("a", 8, init=42)
         mod = Module(
             name="finish_init",
-            ports=(Port(a, PortDirection.INPUT),),
+            ports=(Port(signal=a, direction=PortDirection.INPUT),),
             init_blocks=(InitBlock(stmts=(Finish(exit_code=0),)),),
         )
         cm = compile_module(mod)
@@ -267,7 +287,7 @@ class TestFinishStmt(unittest.TestCase):
         a = _make_signal("a", 8, init=5)
         mod = Module(
             name="finish_comb",
-            ports=(Port(a, PortDirection.INPUT),),
+            ports=(Port(signal=a, direction=PortDirection.INPUT),),
             comb_blocks=(CombBlock(stmts=(Finish(exit_code=1),)),),
         )
         cm = compile_module(mod)
@@ -282,17 +302,24 @@ class TestFinishStmt(unittest.TestCase):
         mod = Module(
             name="finish_cond",
             ports=(
-                Port(clk, PortDirection.INPUT),
-                Port(count, PortDirection.OUTPUT),
+                Port(signal=clk, direction=PortDirection.INPUT),
+                Port(signal=count, direction=PortDirection.OUTPUT),
             ),
-            clock_domains=(ClockDomain("sync", "clk"),),
+            clock_domains=(ClockDomain(name="sync", clk="clk"),),
             seq_blocks=(
                 SeqBlock(
                     domain="sync",
                     stmts=(
-                        Assign("count", Binary(Shape(8), BinaryOp.ADD, SignalRef(Shape(8), "count"), Const(Shape(8), 1))),
+                        Assign(
+                            target="count",
+                            value=Binary(
+                                shape=Shape(8), op=BinaryOp.ADD, left=SignalRef(shape=Shape(8), name="count"), right=Const(shape=Shape(8), value=1)
+                            ),
+                        ),
                         IfElse(
-                            cond=Binary(Shape(1), BinaryOp.EQ, SignalRef(Shape(8), "count"), Const(Shape(8), 3)),
+                            cond=Binary(
+                                shape=Shape(1), op=BinaryOp.EQ, left=SignalRef(shape=Shape(8), name="count"), right=Const(shape=Shape(8), value=3)
+                            ),
                             then_body=(Finish(),),
                         ),
                     ),
@@ -325,12 +352,12 @@ class TestDelayStmt(unittest.TestCase):
         a = _make_signal("a", 8, init=0)
         mod = Module(
             name="delay_test",
-            ports=(Port(a, PortDirection.INPUT),),
+            ports=(Port(signal=a, direction=PortDirection.INPUT),),
             init_blocks=(
                 InitBlock(
                     stmts=(
                         Delay(ticks=5),
-                        Assign("a", Const(Shape(8), 99)),
+                        Assign(target="a", value=Const(shape=Shape(8), value=99)),
                     )
                 ),
             ),
@@ -347,14 +374,14 @@ class TestDelayStmt(unittest.TestCase):
         mod = Module(
             name="delay_comb",
             ports=(
-                Port(a, PortDirection.INPUT),
-                Port(y, PortDirection.OUTPUT),
+                Port(signal=a, direction=PortDirection.INPUT),
+                Port(signal=y, direction=PortDirection.OUTPUT),
             ),
             comb_blocks=(
                 CombBlock(
                     stmts=(
                         Delay(ticks=10),
-                        Assign("y", SignalRef(Shape(8), "a")),
+                        Assign(target="y", value=SignalRef(shape=Shape(8), name="a")),
                     )
                 ),
             ),
@@ -373,24 +400,34 @@ class TestIntegration(unittest.TestCase):
         mod = Module(
             name="integration",
             ports=(
-                Port(a, PortDirection.INPUT),
-                Port(b, PortDirection.INPUT),
-                Port(y, PortDirection.OUTPUT),
+                Port(signal=a, direction=PortDirection.INPUT),
+                Port(signal=b, direction=PortDirection.INPUT),
+                Port(signal=y, direction=PortDirection.OUTPUT),
             ),
             comb_blocks=(
                 CombBlock(
                     stmts=(
-                        Assign("y", Binary(Shape(8), BinaryOp.ADD, SignalRef(Shape(8), "a"), SignalRef(Shape(8), "b"))),
-                        Assert(cond=Binary(Shape(1), BinaryOp.EQ, SignalRef(Shape(8), "y"), Const(Shape(8), 30)), message="y should be 30"),
-                        Print("Result: y={}", (SignalRef(Shape(8), "y"),)),
+                        Assign(
+                            target="y",
+                            value=Binary(
+                                shape=Shape(8), op=BinaryOp.ADD, left=SignalRef(shape=Shape(8), name="a"), right=SignalRef(shape=Shape(8), name="b")
+                            ),
+                        ),
+                        Assert(
+                            cond=Binary(
+                                shape=Shape(1), op=BinaryOp.EQ, left=SignalRef(shape=Shape(8), name="y"), right=Const(shape=Shape(8), value=30)
+                            ),
+                            message="y should be 30",
+                        ),
+                        Print(format_str="Result: y={}", args=(SignalRef(shape=Shape(8), name="y"),)),
                     )
                 ),
             ),
             init_blocks=(
                 InitBlock(
                     stmts=(
-                        Assign("a", Const(Shape(8), 10)),
-                        Assign("b", Const(Shape(8), 20)),
+                        Assign(target="a", value=Const(shape=Shape(8), value=10)),
+                        Assign(target="b", value=Const(shape=Shape(8), value=20)),
                     )
                 ),
             ),
@@ -410,23 +447,33 @@ class TestIntegration(unittest.TestCase):
         mod = Module(
             name="seq_init_counter",
             ports=(
-                Port(clk, PortDirection.INPUT),
-                Port(en, PortDirection.INPUT),
-                Port(count, PortDirection.OUTPUT),
+                Port(signal=clk, direction=PortDirection.INPUT),
+                Port(signal=en, direction=PortDirection.INPUT),
+                Port(signal=count, direction=PortDirection.OUTPUT),
             ),
-            clock_domains=(ClockDomain("sync", "clk"),),
+            clock_domains=(ClockDomain(name="sync", clk="clk"),),
             seq_blocks=(
                 SeqBlock(
                     domain="sync",
                     stmts=(
                         IfElse(
-                            cond=SignalRef(Shape(1), "en"),
-                            then_body=(Assign("count", Binary(Shape(8), BinaryOp.ADD, SignalRef(Shape(8), "count"), Const(Shape(8), 1))),),
+                            cond=SignalRef(shape=Shape(1), name="en"),
+                            then_body=(
+                                Assign(
+                                    target="count",
+                                    value=Binary(
+                                        shape=Shape(8),
+                                        op=BinaryOp.ADD,
+                                        left=SignalRef(shape=Shape(8), name="count"),
+                                        right=Const(shape=Shape(8), value=1),
+                                    ),
+                                ),
+                            ),
                         ),
                     ),
                 ),
             ),
-            init_blocks=(InitBlock(stmts=(Assign("count", Const(Shape(8), 50)),)),),
+            init_blocks=(InitBlock(stmts=(Assign(target="count", value=Const(shape=Shape(8), value=50)),)),),
         )
         cm = compile_module(mod)
         traces = cm.run(cycles=5)
@@ -445,10 +492,10 @@ class TestSysRandom(unittest.TestCase):
         y = _make_signal("y", 8, init=0)
         mod = Module(
             name="random_test",
-            ports=(Port(y, PortDirection.OUTPUT),),
+            ports=(Port(signal=y, direction=PortDirection.OUTPUT),),
             signals=(),
             clock_domains=(),
-            comb_blocks=(CombBlock(stmts=(Assign("y", SysRandom(Shape(8))),)),),
+            comb_blocks=(CombBlock(stmts=(Assign(target="y", value=SysRandom(shape=Shape(8))),)),),
             seq_blocks=(),
         )
         cm = compile_module(mod)
@@ -464,11 +511,11 @@ class TestSysRandom(unittest.TestCase):
         clk = _make_port("clk", 1)
         mod = Module(
             name="random_seq",
-            ports=(clk, Port(y, PortDirection.OUTPUT)),
+            ports=(clk, Port(signal=y, direction=PortDirection.OUTPUT)),
             signals=(),
-            clock_domains=(ClockDomain("sync", "clk"),),
+            clock_domains=(ClockDomain(name="sync", clk="clk"),),
             comb_blocks=(),
-            seq_blocks=(SeqBlock(domain="sync", stmts=(Assign("y", SysRandom(Shape(32))),)),),
+            seq_blocks=(SeqBlock(domain="sync", stmts=(Assign(target="y", value=SysRandom(shape=Shape(32))),)),),
         )
         cm = compile_module(mod)
         traces = cm.run(cycles=10)
@@ -481,10 +528,10 @@ class TestSysRandom(unittest.TestCase):
         y = _make_signal("y", 16, init=0)
         mod = Module(
             name="random_seeded",
-            ports=(Port(y, PortDirection.OUTPUT),),
+            ports=(Port(signal=y, direction=PortDirection.OUTPUT),),
             signals=(),
             clock_domains=(),
-            comb_blocks=(CombBlock(stmts=(Assign("y", SysRandom(Shape(16), seed=Const(Shape(32), 12345))),)),),
+            comb_blocks=(CombBlock(stmts=(Assign(target="y", value=SysRandom(shape=Shape(16), seed=Const(shape=Shape(32), value=12345))),)),),
             seq_blocks=(),
         )
         cm1 = compile_module(mod)
@@ -502,12 +549,12 @@ class TestSysRandom(unittest.TestCase):
         y = _make_signal("y", 8, init=0)
         mod = Module(
             name="random_init",
-            ports=(Port(y, PortDirection.OUTPUT),),
+            ports=(Port(signal=y, direction=PortDirection.OUTPUT),),
             signals=(),
             clock_domains=(),
             comb_blocks=(),
             seq_blocks=(),
-            init_blocks=(InitBlock(stmts=(Assign("y", SysRandom(Shape(8))),)),),
+            init_blocks=(InitBlock(stmts=(Assign(target="y", value=SysRandom(shape=Shape(8))),)),),
         )
         cm = compile_module(mod)
         traces = cm.run(cycles=1)
@@ -517,13 +564,13 @@ class TestSysRandom(unittest.TestCase):
 
     def test_random_signed_shape(self):
         """$random with signed shape can produce negative values (over many runs)."""
-        y = Signal("y", Shape(8, signed=True), init=0)
+        y = Signal(name="y", shape=Shape(8, signed=True), init=0)
         mod = Module(
             name="random_signed",
-            ports=(Port(y, PortDirection.OUTPUT),),
+            ports=(Port(signal=y, direction=PortDirection.OUTPUT),),
             signals=(),
             clock_domains=(),
-            comb_blocks=(CombBlock(stmts=(Assign("y", SysRandom(Shape(8, signed=True))),)),),
+            comb_blocks=(CombBlock(stmts=(Assign(target="y", value=SysRandom(shape=Shape(8, signed=True))),)),),
             seq_blocks=(),
         )
         # Run multiple times to check at least one negative
@@ -558,8 +605,8 @@ class TestReadMem(unittest.TestCase):
         return Module(
             name="readmem_test",
             ports=(
-                Port(addr_sig, PortDirection.INPUT),
-                Port(data_sig, PortDirection.OUTPUT),
+                Port(signal=addr_sig, direction=PortDirection.INPUT),
+                Port(signal=data_sig, direction=PortDirection.OUTPUT),
             ),
             signals=(re_sig,),
             clock_domains=(),

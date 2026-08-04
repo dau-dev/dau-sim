@@ -26,22 +26,22 @@ def _broken_stream_module(failure: str) -> Module:
     return Module(
         name=f"broken_stream_{failure}",
         ports=(
-            Port(Signal("clk", Shape(1)), PortDirection.INPUT),
-            Port(Signal("output_ready", Shape(1)), PortDirection.INPUT),
-            Port(Signal("output_valid", Shape(1)), PortDirection.OUTPUT),
-            Port(Signal("output_data", Shape(8)), PortDirection.OUTPUT),
-            Port(Signal("output_last", Shape(1)), PortDirection.OUTPUT),
+            Port(signal=Signal(name="clk", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="output_ready", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="output_valid", shape=Shape(1)), direction=PortDirection.OUTPUT),
+            Port(signal=Signal(name="output_data", shape=Shape(8)), direction=PortDirection.OUTPUT),
+            Port(signal=Signal(name="output_last", shape=Shape(1)), direction=PortDirection.OUTPUT),
         ),
-        signals=(Signal("count", Shape(4)),),
-        clock_domains=(ClockDomain("sync", clk="clk", edge=EdgePolarity.POSEDGE),),
+        signals=(Signal(name="count", shape=Shape(4)),),
+        clock_domains=(ClockDomain(name="sync", clk="clk", edge=EdgePolarity.POSEDGE),),
         seq_blocks=(
             SeqBlock(
                 domain="sync",
                 stmts=(
-                    Assign("output_valid", valid),
-                    Assign("output_data", data),
-                    Assign("output_last", last),
-                    Assign("count", Binary(shape=Shape(4), op=BinaryOp.ADD, left=count, right=Const(shape=Shape(4), value=1))),
+                    Assign(target="output_valid", value=valid),
+                    Assign(target="output_data", value=data),
+                    Assign(target="output_last", value=last),
+                    Assign(target="count", value=Binary(shape=Shape(4), op=BinaryOp.ADD, left=count, right=Const(shape=Shape(4), value=1))),
                 ),
             ),
         ),

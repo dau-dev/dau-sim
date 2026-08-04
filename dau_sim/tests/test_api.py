@@ -6,22 +6,22 @@ from dau_sim.ir.types import PortDirection, Shape
 
 
 def _make_adder_module() -> Module:
-    a = Signal("a", Shape(8))
-    b = Signal("b", Shape(8))
-    y = Signal("y", Shape(8))
+    a = Signal(name="a", shape=Shape(8))
+    b = Signal(name="b", shape=Shape(8))
+    y = Signal(name="y", shape=Shape(8))
     return Module(
         name="adder",
         ports=(
-            Port(a, PortDirection.INPUT),
-            Port(b, PortDirection.INPUT),
-            Port(y, PortDirection.OUTPUT),
+            Port(signal=a, direction=PortDirection.INPUT),
+            Port(signal=b, direction=PortDirection.INPUT),
+            Port(signal=y, direction=PortDirection.OUTPUT),
         ),
         comb_blocks=(
             CombBlock(
                 stmts=(
                     Assign(
-                        "y",
-                        Binary(
+                        target="y",
+                        value=Binary(
                             shape=Shape(8),
                             op=BinaryOp.ADD,
                             left=SignalRef(shape=Shape(8), name="a"),

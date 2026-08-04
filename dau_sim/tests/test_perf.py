@@ -11,30 +11,30 @@ from dau_sim.perf import BenchmarkResult, NodeSeparationStats, PerformanceDelta,
 
 
 def _make_two_cluster_module() -> Module:
-    a = Signal("a", Shape(8))
-    b = Signal("b", Shape(8))
-    c = Signal("c", Shape(8))
-    d = Signal("d", Shape(8))
-    y1 = Signal("y1", Shape(8))
-    y2 = Signal("y2", Shape(8))
-    y3 = Signal("y3", Shape(8))
+    a = Signal(name="a", shape=Shape(8))
+    b = Signal(name="b", shape=Shape(8))
+    c = Signal(name="c", shape=Shape(8))
+    d = Signal(name="d", shape=Shape(8))
+    y1 = Signal(name="y1", shape=Shape(8))
+    y2 = Signal(name="y2", shape=Shape(8))
+    y3 = Signal(name="y3", shape=Shape(8))
 
     return Module(
         name="clusters",
         ports=(
-            Port(a, PortDirection.INPUT),
-            Port(b, PortDirection.INPUT),
-            Port(c, PortDirection.INPUT),
-            Port(d, PortDirection.INPUT),
-            Port(y3, PortDirection.OUTPUT),
+            Port(signal=a, direction=PortDirection.INPUT),
+            Port(signal=b, direction=PortDirection.INPUT),
+            Port(signal=c, direction=PortDirection.INPUT),
+            Port(signal=d, direction=PortDirection.INPUT),
+            Port(signal=y3, direction=PortDirection.OUTPUT),
         ),
         signals=(y1, y2),
         comb_blocks=(
             CombBlock(
                 stmts=(
                     Assign(
-                        "y1",
-                        Binary(
+                        target="y1",
+                        value=Binary(
                             shape=Shape(8),
                             op=BinaryOp.ADD,
                             left=SignalRef(shape=Shape(8), name="a"),
@@ -46,8 +46,8 @@ def _make_two_cluster_module() -> Module:
             CombBlock(
                 stmts=(
                     Assign(
-                        "y2",
-                        Binary(
+                        target="y2",
+                        value=Binary(
                             shape=Shape(8),
                             op=BinaryOp.ADD,
                             left=SignalRef(shape=Shape(8), name="c"),
@@ -59,8 +59,8 @@ def _make_two_cluster_module() -> Module:
             CombBlock(
                 stmts=(
                     Assign(
-                        "y3",
-                        Binary(
+                        target="y3",
+                        value=Binary(
                             shape=Shape(8),
                             op=BinaryOp.ADD,
                             left=SignalRef(shape=Shape(8), name="y1"),

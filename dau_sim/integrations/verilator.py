@@ -1,10 +1,10 @@
-from __future__ import annotations
-
 import subprocess
 from collections.abc import Sequence
-from dataclasses import dataclass
 from pathlib import Path
 from shutil import which
+
+from ccflow import BaseModel
+from pydantic import ConfigDict
 
 
 class VerilatorUnavailableError(RuntimeError):
@@ -15,8 +15,9 @@ class VerilatorExecutionError(RuntimeError):
     pass
 
 
-@dataclass(frozen=True)
-class VerilatorTestbenchResult:
+class VerilatorTestbenchResult(BaseModel):
+    model_config = ConfigDict(frozen=True)
+
     compile_command: tuple[str, ...]
     run_command: tuple[str, ...]
     executable_path: Path

@@ -53,11 +53,11 @@ def _make_counter_module(width=4, name="counter"):
     return Module(
         name=name,
         ports=(
-            Port(Signal("clk", Shape(1)), PortDirection.INPUT),
-            Port(Signal("rst", Shape(1)), PortDirection.INPUT),
-            Port(Signal("count", Shape(width)), PortDirection.OUTPUT),
+            Port(signal=Signal(name="clk", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="rst", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="count", shape=Shape(width)), direction=PortDirection.OUTPUT),
         ),
-        clock_domains=(ClockDomain("sync", clk="clk", edge=EdgePolarity.POSEDGE, rst="rst"),),
+        clock_domains=(ClockDomain(name="sync", clk="clk", edge=EdgePolarity.POSEDGE, rst="rst"),),
         seq_blocks=(
             SeqBlock(
                 domain="sync",
@@ -88,9 +88,9 @@ def _make_comb_module():
     return Module(
         name="comb_and",
         ports=(
-            Port(Signal("a", Shape(1)), PortDirection.INPUT),
-            Port(Signal("b", Shape(1)), PortDirection.INPUT),
-            Port(Signal("out", Shape(1)), PortDirection.OUTPUT),
+            Port(signal=Signal(name="a", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="b", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="out", shape=Shape(1)), direction=PortDirection.OUTPUT),
         ),
         comb_blocks=(
             CombBlock(

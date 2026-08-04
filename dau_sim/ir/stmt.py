@@ -1,16 +1,15 @@
-from __future__ import annotations
-
-from dataclasses import dataclass, field
+from ccflow import BaseModel
+from pydantic import ConfigDict
 
 from dau_sim.ir.expr import Expr
 
 
-@dataclass(frozen=True)
-class Stmt:
+class Stmt(BaseModel):
     """Base class for all IR statements."""
 
+    model_config = ConfigDict(frozen=True)
 
-@dataclass(frozen=True)
+
 class Assign(Stmt):
     """Assign expression value to a signal.
 
@@ -21,7 +20,6 @@ class Assign(Stmt):
     value: Expr
 
 
-@dataclass(frozen=True)
 class IfElse(Stmt):
     """Conditional statement.
 
@@ -33,7 +31,6 @@ class IfElse(Stmt):
     else_body: tuple[Stmt, ...] = ()
 
 
-@dataclass(frozen=True)
 class Switch(Stmt):
     """Multi-way branch (case/casez/casex).
 
@@ -45,7 +42,6 @@ class Switch(Stmt):
     cases: tuple[tuple[int | None, tuple[Stmt, ...]], ...]
 
 
-@dataclass(frozen=True)
 class Assert(Stmt):
     """Assertion statement.
 
@@ -56,7 +52,6 @@ class Assert(Stmt):
     message: str = ""
 
 
-@dataclass(frozen=True)
 class Print(Stmt):
     """Print statement ($display equivalent).
 
@@ -64,10 +59,9 @@ class Print(Stmt):
     """
 
     format_str: str
-    args: tuple[Expr, ...] = field(default_factory=tuple)
+    args: tuple[Expr, ...] = ()
 
 
-@dataclass(frozen=True)
 class Delay(Stmt):
     """Delay statement (#N equivalent).
 
@@ -78,7 +72,6 @@ class Delay(Stmt):
     ticks: int
 
 
-@dataclass(frozen=True)
 class Finish(Stmt):
     """Halt simulation ($finish equivalent).
 
@@ -88,7 +81,6 @@ class Finish(Stmt):
     exit_code: int = 0
 
 
-@dataclass(frozen=True)
 class ReadMem(Stmt):
     """Load memory contents from a file (``$readmemh``/``$readmemb``).
 

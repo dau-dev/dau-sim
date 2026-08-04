@@ -35,12 +35,12 @@ def test_compile_combinational_adder():
     m = Module(
         name="adder",
         ports=(
-            Port(Signal("a", Shape(8)), PortDirection.INPUT),
-            Port(Signal("b", Shape(8)), PortDirection.INPUT),
-            Port(Signal("sum", Shape(8)), PortDirection.OUTPUT),
+            Port(signal=Signal(name="a", shape=Shape(8)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="b", shape=Shape(8)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="sum", shape=Shape(8)), direction=PortDirection.OUTPUT),
         ),
         clock_domains=(
-            ClockDomain("sync", clk="a"),  # need a clock domain for ticking
+            ClockDomain(name="sync", clk="a"),  # need a clock domain for ticking
         ),
         comb_blocks=(
             CombBlock(
@@ -71,12 +71,12 @@ def test_compile_mux_module():
     m = Module(
         name="mux2",
         ports=(
-            Port(Signal("sel", Shape(1)), PortDirection.INPUT),
-            Port(Signal("a", Shape(8)), PortDirection.INPUT),
-            Port(Signal("b", Shape(8)), PortDirection.INPUT),
-            Port(Signal("out", Shape(8)), PortDirection.OUTPUT),
+            Port(signal=Signal(name="sel", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="a", shape=Shape(8)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="b", shape=Shape(8)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="out", shape=Shape(8)), direction=PortDirection.OUTPUT),
         ),
-        clock_domains=(ClockDomain("sync", clk="sel"),),
+        clock_domains=(ClockDomain(name="sync", clk="sel"),),
         comb_blocks=(
             CombBlock(
                 stmts=(
@@ -115,15 +115,15 @@ def _make_ripple_carry_adder() -> Module:
     return Module(
         name="adder4",
         ports=(
-            Port(Signal("a", Shape(4)), PortDirection.INPUT),
-            Port(Signal("b", Shape(4)), PortDirection.INPUT),
-            Port(Signal("sum", Shape(4)), PortDirection.OUTPUT),
-            Port(Signal("cout", Shape(1)), PortDirection.OUTPUT),
+            Port(signal=Signal(name="a", shape=Shape(4)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="b", shape=Shape(4)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="sum", shape=Shape(4)), direction=PortDirection.OUTPUT),
+            Port(signal=Signal(name="cout", shape=Shape(1)), direction=PortDirection.OUTPUT),
         ),
         signals=(
-            Signal("wide_sum", Shape(5)),  # 5-bit intermediate to capture carry
+            Signal(name="wide_sum", shape=Shape(5)),  # 5-bit intermediate to capture carry
         ),
-        clock_domains=(ClockDomain("sync", clk="a"),),
+        clock_domains=(ClockDomain(name="sync", clk="a"),),
         comb_blocks=(
             # Block 0: wide_sum = a + b (5-bit)
             CombBlock(
@@ -214,18 +214,18 @@ def _make_mux_tree() -> Module:
     return Module(
         name="mux4",
         ports=(
-            Port(Signal("in0", Shape(8)), PortDirection.INPUT),
-            Port(Signal("in1", Shape(8)), PortDirection.INPUT),
-            Port(Signal("in2", Shape(8)), PortDirection.INPUT),
-            Port(Signal("in3", Shape(8)), PortDirection.INPUT),
-            Port(Signal("sel", Shape(2)), PortDirection.INPUT),
-            Port(Signal("out", Shape(8)), PortDirection.OUTPUT),
+            Port(signal=Signal(name="in0", shape=Shape(8)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="in1", shape=Shape(8)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="in2", shape=Shape(8)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="in3", shape=Shape(8)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="sel", shape=Shape(2)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="out", shape=Shape(8)), direction=PortDirection.OUTPUT),
         ),
         signals=(
-            Signal("mux_lo", Shape(8)),  # mux of in0/in1
-            Signal("mux_hi", Shape(8)),  # mux of in2/in3
+            Signal(name="mux_lo", shape=Shape(8)),  # mux of in0/in1
+            Signal(name="mux_hi", shape=Shape(8)),  # mux of in2/in3
         ),
-        clock_domains=(ClockDomain("sync", clk="in0"),),
+        clock_domains=(ClockDomain(name="sync", clk="in0"),),
         comb_blocks=(
             # Stage 1a: mux_lo = sel[0] ? in1 : in0
             CombBlock(
@@ -307,13 +307,13 @@ def _make_alu() -> Module:
     return Module(
         name="alu",
         ports=(
-            Port(Signal("a", Shape(8)), PortDirection.INPUT),
-            Port(Signal("b", Shape(8)), PortDirection.INPUT),
-            Port(Signal("op", Shape(2)), PortDirection.INPUT),
-            Port(Signal("result", Shape(8)), PortDirection.OUTPUT),
-            Port(Signal("zero", Shape(1)), PortDirection.OUTPUT),
+            Port(signal=Signal(name="a", shape=Shape(8)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="b", shape=Shape(8)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="op", shape=Shape(2)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="result", shape=Shape(8)), direction=PortDirection.OUTPUT),
+            Port(signal=Signal(name="zero", shape=Shape(1)), direction=PortDirection.OUTPUT),
         ),
-        clock_domains=(ClockDomain("sync", clk="a"),),
+        clock_domains=(ClockDomain(name="sync", clk="a"),),
         comb_blocks=(
             CombBlock(
                 stmts=(
@@ -447,11 +447,11 @@ def _make_priority_encoder() -> Module:
     return Module(
         name="prienc",
         ports=(
-            Port(Signal("inp", Shape(8)), PortDirection.INPUT),
-            Port(Signal("idx", Shape(3)), PortDirection.OUTPUT),
-            Port(Signal("valid", Shape(1)), PortDirection.OUTPUT),
+            Port(signal=Signal(name="inp", shape=Shape(8)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="idx", shape=Shape(3)), direction=PortDirection.OUTPUT),
+            Port(signal=Signal(name="valid", shape=Shape(1)), direction=PortDirection.OUTPUT),
         ),
-        clock_domains=(ClockDomain("sync", clk="inp"),),
+        clock_domains=(ClockDomain(name="sync", clk="inp"),),
         comb_blocks=(
             CombBlock(
                 stmts=(

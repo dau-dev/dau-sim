@@ -44,11 +44,11 @@ def _make_counter_module() -> Module:
     return Module(
         name="counter",
         ports=(
-            Port(Signal("clk", Shape(1)), PortDirection.INPUT),
-            Port(Signal("rst", Shape(1)), PortDirection.INPUT),
-            Port(Signal("count", Shape(4)), PortDirection.OUTPUT),
+            Port(signal=Signal(name="clk", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="rst", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="count", shape=Shape(4)), direction=PortDirection.OUTPUT),
         ),
-        clock_domains=(ClockDomain("sync", clk="clk", edge=EdgePolarity.POSEDGE, rst="rst"),),
+        clock_domains=(ClockDomain(name="sync", clk="clk", edge=EdgePolarity.POSEDGE, rst="rst"),),
         seq_blocks=(
             SeqBlock(
                 domain="sync",
@@ -108,12 +108,12 @@ def _make_dff() -> Module:
     return Module(
         name="dff",
         ports=(
-            Port(Signal("clk", Shape(1)), PortDirection.INPUT),
-            Port(Signal("d", Shape(8)), PortDirection.INPUT),
-            Port(Signal("q", Shape(8)), PortDirection.OUTPUT),
+            Port(signal=Signal(name="clk", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="d", shape=Shape(8)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="q", shape=Shape(8)), direction=PortDirection.OUTPUT),
         ),
-        clock_domains=(ClockDomain("sync", clk="clk", edge=EdgePolarity.POSEDGE),),
-        seq_blocks=(SeqBlock("sync", stmts=(Assign("q", SignalRef(Shape(8), "d")),)),),
+        clock_domains=(ClockDomain(name="sync", clk="clk", edge=EdgePolarity.POSEDGE),),
+        seq_blocks=(SeqBlock(domain="sync", stmts=(Assign(target="q", value=SignalRef(shape=Shape(8), name="d")),)),),
     )
 
 
@@ -141,24 +141,24 @@ def _make_shift_register() -> Module:
     return Module(
         name="shift_reg",
         ports=(
-            Port(Signal("clk", Shape(1)), PortDirection.INPUT),
-            Port(Signal("sin", Shape(1)), PortDirection.INPUT),
-            Port(Signal("q", Shape(4)), PortDirection.OUTPUT),
+            Port(signal=Signal(name="clk", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="sin", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="q", shape=Shape(4)), direction=PortDirection.OUTPUT),
         ),
-        clock_domains=(ClockDomain("sync", clk="clk", edge=EdgePolarity.POSEDGE),),
+        clock_domains=(ClockDomain(name="sync", clk="clk", edge=EdgePolarity.POSEDGE),),
         seq_blocks=(
             SeqBlock(
-                "sync",
+                domain="sync",
                 stmts=(
                     Assign(
-                        "q",
-                        Concat(
-                            Shape(4),
+                        target="q",
+                        value=Concat(
+                            shape=Shape(4),
                             parts=(
                                 # Upper 3 bits: q[2:0] shifted left
-                                Slice(Shape(3), SignalRef(Shape(4), "q"), low=0, high=3),
+                                Slice(shape=Shape(3), value=SignalRef(shape=Shape(4), name="q"), low=0, high=3),
                                 # LSB: serial input
-                                SignalRef(Shape(1), "sin"),
+                                SignalRef(shape=Shape(1), name="sin"),
                             ),
                         ),
                     ),
@@ -191,13 +191,13 @@ def _make_counter_sync_reset() -> Module:
     return Module(
         name="counter_srst",
         ports=(
-            Port(Signal("clk", Shape(1)), PortDirection.INPUT),
-            Port(Signal("rst", Shape(1)), PortDirection.INPUT),
-            Port(Signal("count", Shape(4), init=0), PortDirection.OUTPUT),
+            Port(signal=Signal(name="clk", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="rst", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="count", shape=Shape(4), init=0), direction=PortDirection.OUTPUT),
         ),
         clock_domains=(
             ClockDomain(
-                "sync",
+                name="sync",
                 clk="clk",
                 edge=EdgePolarity.POSEDGE,
                 rst="rst",
@@ -207,15 +207,15 @@ def _make_counter_sync_reset() -> Module:
         ),
         seq_blocks=(
             SeqBlock(
-                "sync",
+                domain="sync",
                 stmts=(
                     Assign(
-                        "count",
-                        Binary(
-                            Shape(4),
-                            BinaryOp.ADD,
-                            SignalRef(Shape(4), "count"),
-                            Const(Shape(4), 1),
+                        target="count",
+                        value=Binary(
+                            shape=Shape(4),
+                            op=BinaryOp.ADD,
+                            left=SignalRef(shape=Shape(4), name="count"),
+                            right=Const(shape=Shape(4), value=1),
                         ),
                     ),
                 ),
@@ -254,23 +254,23 @@ def _make_partitioned_seq_module() -> Module:
     return Module(
         name="partitioned_seq",
         ports=(
-            Port(Signal("clk", Shape(1)), PortDirection.INPUT),
-            Port(Signal("stable", Shape(8), init=7), PortDirection.INPUT),
-            Port(Signal("count", Shape(8), init=0), PortDirection.OUTPUT),
-            Port(Signal("y", Shape(8), init=0), PortDirection.OUTPUT),
+            Port(signal=Signal(name="clk", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="stable", shape=Shape(8), init=7), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="count", shape=Shape(8), init=0), direction=PortDirection.OUTPUT),
+            Port(signal=Signal(name="y", shape=Shape(8), init=0), direction=PortDirection.OUTPUT),
         ),
-        clock_domains=(ClockDomain("sync", clk="clk", edge=EdgePolarity.POSEDGE),),
+        clock_domains=(ClockDomain(name="sync", clk="clk", edge=EdgePolarity.POSEDGE),),
         seq_blocks=(
             SeqBlock(
-                "sync",
+                domain="sync",
                 stmts=(
                     Assign(
-                        "count",
-                        Binary(
-                            Shape(8),
-                            BinaryOp.ADD,
-                            SignalRef(Shape(8), "count"),
-                            Const(Shape(8), 1),
+                        target="count",
+                        value=Binary(
+                            shape=Shape(8),
+                            op=BinaryOp.ADD,
+                            left=SignalRef(shape=Shape(8), name="count"),
+                            right=Const(shape=Shape(8), value=1),
                         ),
                     ),
                 ),
@@ -280,18 +280,18 @@ def _make_partitioned_seq_module() -> Module:
             CombBlock(
                 stmts=(
                     Assign(
-                        "y",
-                        Binary(
-                            Shape(8),
-                            BinaryOp.ADD,
-                            SignalRef(Shape(8), "count"),
-                            Const(Shape(8), 1),
+                        target="y",
+                        value=Binary(
+                            shape=Shape(8),
+                            op=BinaryOp.ADD,
+                            left=SignalRef(shape=Shape(8), name="count"),
+                            right=Const(shape=Shape(8), value=1),
                         ),
                     ),
                 ),
             ),
             CombBlock(
-                stmts=(Print("stable={}", (SignalRef(Shape(8), "stable"),)),),
+                stmts=(Print(format_str="stable={}", args=(SignalRef(shape=Shape(8), name="stable"),)),),
             ),
         ),
     )
@@ -314,13 +314,13 @@ def _make_counter_async_reset() -> Module:
     return Module(
         name="counter_arst",
         ports=(
-            Port(Signal("clk", Shape(1)), PortDirection.INPUT),
-            Port(Signal("rst", Shape(1)), PortDirection.INPUT),
-            Port(Signal("count", Shape(4), init=0), PortDirection.OUTPUT),
+            Port(signal=Signal(name="clk", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="rst", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="count", shape=Shape(4), init=0), direction=PortDirection.OUTPUT),
         ),
         clock_domains=(
             ClockDomain(
-                "sync",
+                name="sync",
                 clk="clk",
                 edge=EdgePolarity.POSEDGE,
                 rst="rst",
@@ -330,15 +330,15 @@ def _make_counter_async_reset() -> Module:
         ),
         seq_blocks=(
             SeqBlock(
-                "sync",
+                domain="sync",
                 stmts=(
                     Assign(
-                        "count",
-                        Binary(
-                            Shape(4),
-                            BinaryOp.ADD,
-                            SignalRef(Shape(4), "count"),
-                            Const(Shape(4), 1),
+                        target="count",
+                        value=Binary(
+                            shape=Shape(4),
+                            op=BinaryOp.ADD,
+                            left=SignalRef(shape=Shape(4), name="count"),
+                            right=Const(shape=Shape(4), value=1),
                         ),
                     ),
                 ),
@@ -371,21 +371,21 @@ def _make_negedge_counter() -> Module:
     return Module(
         name="neg_counter",
         ports=(
-            Port(Signal("clk", Shape(1)), PortDirection.INPUT),
-            Port(Signal("count", Shape(4), init=0), PortDirection.OUTPUT),
+            Port(signal=Signal(name="clk", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="count", shape=Shape(4), init=0), direction=PortDirection.OUTPUT),
         ),
-        clock_domains=(ClockDomain("sync", clk="clk", edge=EdgePolarity.NEGEDGE),),
+        clock_domains=(ClockDomain(name="sync", clk="clk", edge=EdgePolarity.NEGEDGE),),
         seq_blocks=(
             SeqBlock(
-                "sync",
+                domain="sync",
                 stmts=(
                     Assign(
-                        "count",
-                        Binary(
-                            Shape(4),
-                            BinaryOp.ADD,
-                            SignalRef(Shape(4), "count"),
-                            Const(Shape(4), 1),
+                        target="count",
+                        value=Binary(
+                            shape=Shape(4),
+                            op=BinaryOp.ADD,
+                            left=SignalRef(shape=Shape(4), name="count"),
+                            right=Const(shape=Shape(4), value=1),
                         ),
                     ),
                 ),
@@ -411,23 +411,23 @@ def _make_counter_with_decode() -> Module:
     return Module(
         name="counter_decode",
         ports=(
-            Port(Signal("clk", Shape(1)), PortDirection.INPUT),
-            Port(Signal("count", Shape(4), init=0), PortDirection.OUTPUT),
-            Port(Signal("is_zero", Shape(1), init=1), PortDirection.OUTPUT),
-            Port(Signal("is_max", Shape(1), init=0), PortDirection.OUTPUT),
+            Port(signal=Signal(name="clk", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="count", shape=Shape(4), init=0), direction=PortDirection.OUTPUT),
+            Port(signal=Signal(name="is_zero", shape=Shape(1), init=1), direction=PortDirection.OUTPUT),
+            Port(signal=Signal(name="is_max", shape=Shape(1), init=0), direction=PortDirection.OUTPUT),
         ),
-        clock_domains=(ClockDomain("sync", clk="clk", edge=EdgePolarity.POSEDGE),),
+        clock_domains=(ClockDomain(name="sync", clk="clk", edge=EdgePolarity.POSEDGE),),
         seq_blocks=(
             SeqBlock(
-                "sync",
+                domain="sync",
                 stmts=(
                     Assign(
-                        "count",
-                        Binary(
-                            Shape(4),
-                            BinaryOp.ADD,
-                            SignalRef(Shape(4), "count"),
-                            Const(Shape(4), 1),
+                        target="count",
+                        value=Binary(
+                            shape=Shape(4),
+                            op=BinaryOp.ADD,
+                            left=SignalRef(shape=Shape(4), name="count"),
+                            right=Const(shape=Shape(4), value=1),
                         ),
                     ),
                 ),
@@ -437,12 +437,12 @@ def _make_counter_with_decode() -> Module:
             CombBlock(
                 stmts=(
                     Assign(
-                        "is_zero",
-                        Binary(
-                            Shape(1),
-                            BinaryOp.EQ,
-                            SignalRef(Shape(4), "count"),
-                            Const(Shape(4), 0),
+                        target="is_zero",
+                        value=Binary(
+                            shape=Shape(1),
+                            op=BinaryOp.EQ,
+                            left=SignalRef(shape=Shape(4), name="count"),
+                            right=Const(shape=Shape(4), value=0),
                         ),
                     ),
                 )
@@ -450,12 +450,12 @@ def _make_counter_with_decode() -> Module:
             CombBlock(
                 stmts=(
                     Assign(
-                        "is_max",
-                        Binary(
-                            Shape(1),
-                            BinaryOp.EQ,
-                            SignalRef(Shape(4), "count"),
-                            Const(Shape(4), 15),
+                        target="is_max",
+                        value=Binary(
+                            shape=Shape(1),
+                            op=BinaryOp.EQ,
+                            left=SignalRef(shape=Shape(4), name="count"),
+                            right=Const(shape=Shape(4), value=15),
                         ),
                     ),
                 )
@@ -491,40 +491,40 @@ def _make_dual_clock() -> Module:
     return Module(
         name="dual_clock",
         ports=(
-            Port(Signal("fast_clk", Shape(1)), PortDirection.INPUT),
-            Port(Signal("slow_clk", Shape(1)), PortDirection.INPUT),
-            Port(Signal("fast_count", Shape(8), init=0), PortDirection.OUTPUT),
-            Port(Signal("slow_count", Shape(8), init=0), PortDirection.OUTPUT),
+            Port(signal=Signal(name="fast_clk", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="slow_clk", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="fast_count", shape=Shape(8), init=0), direction=PortDirection.OUTPUT),
+            Port(signal=Signal(name="slow_count", shape=Shape(8), init=0), direction=PortDirection.OUTPUT),
         ),
         clock_domains=(
-            ClockDomain("fast", clk="fast_clk", edge=EdgePolarity.POSEDGE),
-            ClockDomain("slow", clk="slow_clk", edge=EdgePolarity.POSEDGE),
+            ClockDomain(name="fast", clk="fast_clk", edge=EdgePolarity.POSEDGE),
+            ClockDomain(name="slow", clk="slow_clk", edge=EdgePolarity.POSEDGE),
         ),
         seq_blocks=(
             SeqBlock(
-                "fast",
+                domain="fast",
                 stmts=(
                     Assign(
-                        "fast_count",
-                        Binary(
-                            Shape(8),
-                            BinaryOp.ADD,
-                            SignalRef(Shape(8), "fast_count"),
-                            Const(Shape(8), 1),
+                        target="fast_count",
+                        value=Binary(
+                            shape=Shape(8),
+                            op=BinaryOp.ADD,
+                            left=SignalRef(shape=Shape(8), name="fast_count"),
+                            right=Const(shape=Shape(8), value=1),
                         ),
                     ),
                 ),
             ),
             SeqBlock(
-                "slow",
+                domain="slow",
                 stmts=(
                     Assign(
-                        "slow_count",
-                        Binary(
-                            Shape(8),
-                            BinaryOp.ADD,
-                            SignalRef(Shape(8), "slow_count"),
-                            Const(Shape(8), 1),
+                        target="slow_count",
+                        value=Binary(
+                            shape=Shape(8),
+                            op=BinaryOp.ADD,
+                            left=SignalRef(shape=Shape(8), name="slow_count"),
+                            right=Const(shape=Shape(8), value=1),
                         ),
                     ),
                 ),
@@ -558,39 +558,39 @@ def _make_mixed_edge_single_clock() -> Module:
     return Module(
         name="mixed_edge",
         ports=(
-            Port(Signal("clk", Shape(1)), PortDirection.INPUT),
-            Port(Signal("pos_count", Shape(8), init=0), PortDirection.OUTPUT),
-            Port(Signal("neg_count", Shape(8), init=0), PortDirection.OUTPUT),
+            Port(signal=Signal(name="clk", shape=Shape(1)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="pos_count", shape=Shape(8), init=0), direction=PortDirection.OUTPUT),
+            Port(signal=Signal(name="neg_count", shape=Shape(8), init=0), direction=PortDirection.OUTPUT),
         ),
         clock_domains=(
-            ClockDomain("pos", clk="clk", edge=EdgePolarity.POSEDGE),
-            ClockDomain("neg", clk="clk", edge=EdgePolarity.NEGEDGE),
+            ClockDomain(name="pos", clk="clk", edge=EdgePolarity.POSEDGE),
+            ClockDomain(name="neg", clk="clk", edge=EdgePolarity.NEGEDGE),
         ),
         seq_blocks=(
             SeqBlock(
-                "pos",
+                domain="pos",
                 stmts=(
                     Assign(
-                        "pos_count",
-                        Binary(
-                            Shape(8),
-                            BinaryOp.ADD,
-                            SignalRef(Shape(8), "pos_count"),
-                            Const(Shape(8), 1),
+                        target="pos_count",
+                        value=Binary(
+                            shape=Shape(8),
+                            op=BinaryOp.ADD,
+                            left=SignalRef(shape=Shape(8), name="pos_count"),
+                            right=Const(shape=Shape(8), value=1),
                         ),
                     ),
                 ),
             ),
             SeqBlock(
-                "neg",
+                domain="neg",
                 stmts=(
                     Assign(
-                        "neg_count",
-                        Binary(
-                            Shape(8),
-                            BinaryOp.ADD,
-                            SignalRef(Shape(8), "neg_count"),
-                            Const(Shape(8), 1),
+                        target="neg_count",
+                        value=Binary(
+                            shape=Shape(8),
+                            op=BinaryOp.ADD,
+                            left=SignalRef(shape=Shape(8), name="neg_count"),
+                            right=Const(shape=Shape(8), value=1),
                         ),
                     ),
                 ),

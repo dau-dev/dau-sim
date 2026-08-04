@@ -1,7 +1,7 @@
-from __future__ import annotations
-
-from dataclasses import dataclass
 from enum import Enum, auto
+
+from ccflow import BaseModel
+from pydantic import ConfigDict, model_validator
 
 from dau_sim.ir.types import Shape
 
@@ -50,14 +50,14 @@ class BinaryOp(Enum):
     LOGIC_OR = auto()
 
 
-@dataclass(frozen=True)
-class Expr:
+class Expr(BaseModel):
     """Base class for all IR expressions."""
+
+    model_config = ConfigDict(frozen=True)
 
     shape: Shape
 
 
-@dataclass(frozen=True)
 class Const(Expr):
     """Constant integer value.
 
@@ -71,7 +71,6 @@ class Const(Expr):
         return f"{self.shape.width}'{'s' if self.shape.signed else ''}d{self.value}"
 
 
-@dataclass(frozen=True)
 class SignalRef(Expr):
     """Reference to a named signal.
 
@@ -84,7 +83,6 @@ class SignalRef(Expr):
         return self.name
 
 
-@dataclass(frozen=True)
 class Unary(Expr):
     """Unary operation."""
 
@@ -92,7 +90,6 @@ class Unary(Expr):
     operand: Expr
 
 
-@dataclass(frozen=True)
 class Binary(Expr):
     """Binary operation."""
 
@@ -101,7 +98,6 @@ class Binary(Expr):
     right: Expr
 
 
-@dataclass(frozen=True)
 class Mux(Expr):
     """Two-input multiplexer (ternary operator).
 
@@ -113,7 +109,6 @@ class Mux(Expr):
     if_false: Expr
 
 
-@dataclass(frozen=True)
 class Concat(Expr):
     """Bit concatenation.
 
@@ -123,7 +118,6 @@ class Concat(Expr):
     parts: tuple[Expr, ...]
 
 
-@dataclass(frozen=True)
 class Slice(Expr):
     """Bit slice extraction.
 
@@ -134,14 +128,15 @@ class Slice(Expr):
     low: int
     high: int
 
-    def __post_init__(self):
+    @model_validator(mode="after")
+    def _validate_bounds(self):
         if self.low < 0 or self.high < self.low:
             raise ValueError(f"Invalid slice bounds: [{self.low}:{self.high})")
         if self.shape.width != self.high - self.low:
             raise ValueError(f"Slice shape width {self.shape.width} doesn't match bounds [{self.low}:{self.high})")
+        return self
 
 
-@dataclass(frozen=True)
 class SysRandom(Expr):
     """``$random`` system function.
 
