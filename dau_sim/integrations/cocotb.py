@@ -60,6 +60,14 @@ def run_cocotb_testbench(
     build_root = Path(build_dir)
     results_path = Path(results_xml) if results_xml is not None else build_root.parent / f"{hdl_toplevel}-cocotb-results.xml"
 
+    # Verilator does not search an including file's own directory, so a source
+    # that includes a header sitting beside it fails to compile unless the
+    # directory is passed explicitly. Every directory that contributes a source
+    # is an include path: that is what a caller listing those sources means,
+    # and it lets a header be added to a tile without every bench that compiles
+    # the tile learning that headers exist.
+    include_dirs = sorted({source_path.parent for source_path in source_paths})
+
     runner = get_runner("verilator")
     build_kwargs = {"parameters": dict(parameters)} if parameters else {}
     runner.build(
@@ -68,6 +76,7 @@ def run_cocotb_testbench(
         build_dir=build_root,
         always=always,
         build_args=tuple(build_args),
+        includes=include_dirs,
         **build_kwargs,
     )
     runner.test(
