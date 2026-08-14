@@ -54,6 +54,38 @@ async def increments(dut):
 """
 
 
+def test_every_source_directory_is_offered_to_the_build(tmp_path: Path, monkeypatch) -> None:
+    """The include paths reach the runner, without needing a toolchain.
+
+    The end-to-end test below is the real proof but it needs verilator, which
+    CI does not have, so it skips exactly where a regression would land
+    unnoticed. This one runs everywhere: it stands in for the runner and
+    checks what the build was actually asked for.
+    """
+    import cocotb_tools.runner
+
+    first, second = tmp_path / "a", tmp_path / "b"
+    for directory in (first, second):
+        directory.mkdir()
+    sources = [first / "one.sv", second / "two.sv", first / "three.sv"]
+    for source in sources:
+        source.write_text("module m; endmodule\n")
+
+    captured: dict[str, object] = {}
+
+    class _Runner:
+        def build(self, **kwargs) -> None:
+            captured.update(kwargs)
+
+        def test(self, **kwargs) -> None:
+            captured["tested"] = True
+
+    monkeypatch.setattr(cocotb_tools.runner, "get_runner", lambda _name: _Runner())
+    run_cocotb_testbench(sources=sources, hdl_toplevel="m", test_module="x", build_dir=tmp_path / "build")
+
+    assert captured["includes"] == [first, second], "one include per directory, deduplicated and ordered"
+
+
 @pytest.mark.skipif(which("verilator") is None, reason="verilator not found")
 def test_a_header_beside_its_source_is_found(tmp_path: Path, monkeypatch) -> None:
     """Without the include path this raises CalledProcessError from verilator."""
