@@ -100,7 +100,8 @@ ignore-words-list = ["inout"]
 [tool.coverage.run]
 branch = true
 omit = [
-    "dau_sim/tests/integration/",
+    # a bare directory path matches no file; coverage omit takes globs
+    "dau_sim/tests/integration/*",
 ]
 
 [tool.coverage.report]
