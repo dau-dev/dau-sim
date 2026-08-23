@@ -247,12 +247,12 @@
 <h2>High-level interactive API<a class="headerlink" href="#high-level-interactive-api" title="Link to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simulator</span>
 
-<span class="n">sim</span> <span class="o">=</span> <span class="n">Simulator</span><span class="o">.</span><span class="n">from_sv_file</span><span class="p">(</span><span class="s2">&quot;design.sv&quot;</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="s2">&quot;top_module&quot;</span><span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cycles</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="n">sim</span> <span class="o">=</span> <span class="n">Simulator</span><span class="o">.</span><span class="n">from_sv_file</span><span class="p">(</span><span class="s2">"design.sv"</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="s2">"top_module"</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cycles</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">"en"</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">latest</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">))</span>
-<span class="n">rows</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_rows</span><span class="p">(</span><span class="n">signals</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">])</span>
-<span class="n">sim</span><span class="o">.</span><span class="n">write_vcd</span><span class="p">(</span><span class="s2">&quot;out.vcd&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">latest</span><span class="p">(</span><span class="s2">"count"</span><span class="p">))</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_rows</span><span class="p">(</span><span class="n">signals</span><span class="o">=</span><span class="p">[</span><span class="s2">"count"</span><span class="p">])</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">write_vcd</span><span class="p">(</span><span class="s2">"out.vcd"</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>

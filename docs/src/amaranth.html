@@ -268,10 +268,10 @@
 <span class="c1"># Lower to IR, compile, and simulate</span>
 <span class="n">ir_module</span> <span class="o">=</span> <span class="n">from_amaranth</span><span class="p">(</span><span class="n">Counter</span><span class="p">())</span>
 <span class="n">cm</span> <span class="o">=</span> <span class="n">compile_module</span><span class="p">(</span><span class="n">ir_module</span><span class="p">)</span>
-<span class="n">traces</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cycles</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="n">traces</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cycles</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">"en"</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
 
 <span class="c1"># Write VCD waveform file</span>
-<span class="n">cm</span><span class="o">.</span><span class="n">write_vcd</span><span class="p">(</span><span class="s2">&quot;counter.vcd&quot;</span><span class="p">,</span> <span class="n">traces</span><span class="p">)</span>
+<span class="n">cm</span><span class="o">.</span><span class="n">write_vcd</span><span class="p">(</span><span class="s2">"counter.vcd"</span><span class="p">,</span> <span class="n">traces</span><span class="p">)</span>
 
 <span class="c1"># Or get the VCD as a string</span>
 <span class="n">vcd_str</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">traces_to_vcd</span><span class="p">(</span><span class="n">traces</span><span class="p">)</span>
@@ -308,10 +308,10 @@
 <span class="n">traces</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
     <span class="n">cycles</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
     <span class="n">clock_period</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">microseconds</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
-    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;d_in&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">"d_in"</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
 <span class="p">)</span>
 
-<span class="n">cm</span><span class="o">.</span><span class="n">write_vcd</span><span class="p">(</span><span class="s2">&quot;shift_reg.vcd&quot;</span><span class="p">,</span> <span class="n">traces</span><span class="p">,</span> <span class="n">timescale</span><span class="o">=</span><span class="s2">&quot;1ns&quot;</span><span class="p">)</span>
+<span class="n">cm</span><span class="o">.</span><span class="n">write_vcd</span><span class="p">(</span><span class="s2">"shift_reg.vcd"</span><span class="p">,</span> <span class="n">traces</span><span class="p">,</span> <span class="n">timescale</span><span class="o">=</span><span class="s2">"1ns"</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>

@@ -256,9 +256,9 @@ dau-sim<span class="w"> </span>perf-sv<span class="w"> </span>design.sv<span cla
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_request_config</span>
 
 <span class="n">result</span> <span class="o">=</span> <span class="n">run_request_config</span><span class="p">(</span>
-    <span class="s2">&quot;task&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;tasks/analysis/perf-sv&quot;</span><span class="p">,</span>
-    <span class="n">model_values</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;design.sv&quot;</span><span class="p">,</span> <span class="s2">&quot;top&quot;</span><span class="p">:</span> <span class="s2">&quot;top_module&quot;</span><span class="p">,</span> <span class="s2">&quot;cycles&quot;</span><span class="p">:</span> <span class="mi">30000</span><span class="p">},</span>
+    <span class="s2">"task"</span><span class="p">,</span>
+    <span class="s2">"tasks/analysis/perf-sv"</span><span class="p">,</span>
+    <span class="n">model_values</span><span class="o">=</span><span class="p">{</span><span class="s2">"path"</span><span class="p">:</span> <span class="s2">"design.sv"</span><span class="p">,</span> <span class="s2">"top"</span><span class="p">:</span> <span class="s2">"top_module"</span><span class="p">,</span> <span class="s2">"cycles"</span><span class="p">:</span> <span class="mi">30000</span><span class="p">},</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">benchmark</span><span class="o">.</span><span class="n">cycles_per_second</span><span class="p">)</span>
 </pre></div>

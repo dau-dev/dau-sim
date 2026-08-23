@@ -249,19 +249,19 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.frontends</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_sv</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.compiler</span><span class="w"> </span><span class="kn">import</span> <span class="n">compile_module</span>
 
-<span class="n">ir_module</span> <span class="o">=</span> <span class="n">parse_sv</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="n">ir_module</span> <span class="o">=</span> <span class="n">parse_sv</span><span class="p">(</span><span class="s2">"""</span>
 <span class="s2">    module adder(</span>
 <span class="s2">        input  logic [7:0] a, b,</span>
 <span class="s2">        output logic [7:0] y</span>
 <span class="s2">    );</span>
 <span class="s2">        assign y = a + b;</span>
 <span class="s2">    endmodule</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">top_module</span><span class="o">=</span><span class="s2">&quot;adder&quot;</span><span class="p">)</span>
+<span class="s2">"""</span><span class="p">,</span> <span class="n">top_module</span><span class="o">=</span><span class="s2">"adder"</span><span class="p">)</span>
 
 <span class="n">cm</span> <span class="o">=</span> <span class="n">compile_module</span><span class="p">(</span><span class="n">ir_module</span><span class="p">)</span>
-<span class="n">traces</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cycles</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mi">55</span><span class="p">})</span>
+<span class="n">traces</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cycles</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">"a"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">:</span> <span class="mi">55</span><span class="p">})</span>
 
-<span class="c1"># traces[&quot;y&quot;] contains [(timestamp, 155)]</span>
+<span class="c1"># traces["y"] contains [(timestamp, 155)]</span>
 </pre></div>
 </div>
 </section>
@@ -270,9 +270,9 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.frontends</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_sv_file</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.compiler</span><span class="w"> </span><span class="kn">import</span> <span class="n">compile_module</span>
 
-<span class="n">ir_module</span> <span class="o">=</span> <span class="n">parse_sv_file</span><span class="p">(</span><span class="s2">&quot;design.sv&quot;</span><span class="p">,</span> <span class="n">top_module</span><span class="o">=</span><span class="s2">&quot;adder&quot;</span><span class="p">)</span>
+<span class="n">ir_module</span> <span class="o">=</span> <span class="n">parse_sv_file</span><span class="p">(</span><span class="s2">"design.sv"</span><span class="p">,</span> <span class="n">top_module</span><span class="o">=</span><span class="s2">"adder"</span><span class="p">)</span>
 <span class="n">cm</span> <span class="o">=</span> <span class="n">compile_module</span><span class="p">(</span><span class="n">ir_module</span><span class="p">)</span>
-<span class="n">traces</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cycles</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
+<span class="n">traces</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cycles</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">"a"</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
 </pre></div>
 </div>
 </section>
@@ -283,12 +283,12 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.compiler</span><span class="w"> </span><span class="kn">import</span> <span class="n">compile_module</span>
 
 <span class="c1"># Build a 4-bit AND gate from IR primitives</span>
-<span class="n">a</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">Shape</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">Shape</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">Shape</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="s2">"a"</span><span class="p">,</span> <span class="n">Shape</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="s2">"b"</span><span class="p">,</span> <span class="n">Shape</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="s2">"y"</span><span class="p">,</span> <span class="n">Shape</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
 
 <span class="n">mod</span> <span class="o">=</span> <span class="n">Module</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;and_gate&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">"and_gate"</span><span class="p">,</span>
     <span class="n">ports</span><span class="o">=</span><span class="p">(</span>
         <span class="n">Port</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">PortDirection</span><span class="o">.</span><span class="n">INPUT</span><span class="p">),</span>
         <span class="n">Port</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">PortDirection</span><span class="o">.</span><span class="n">INPUT</span><span class="p">),</span>
@@ -298,15 +298,15 @@
     <span class="n">clock_domains</span><span class="o">=</span><span class="p">(),</span>
     <span class="n">comb_blocks</span><span class="o">=</span><span class="p">(</span>
         <span class="n">CombBlock</span><span class="p">(</span><span class="n">stmts</span><span class="o">=</span><span class="p">(</span>
-            <span class="n">Assign</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">Binary</span><span class="p">(</span><span class="n">Shape</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">BinaryOp</span><span class="o">.</span><span class="n">AND</span><span class="p">,</span> <span class="n">SignalRef</span><span class="p">(</span><span class="n">Shape</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="s2">&quot;a&quot;</span><span class="p">),</span> <span class="n">SignalRef</span><span class="p">(</span><span class="n">Shape</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="s2">&quot;b&quot;</span><span class="p">))),</span>
+            <span class="n">Assign</span><span class="p">(</span><span class="s2">"y"</span><span class="p">,</span> <span class="n">Binary</span><span class="p">(</span><span class="n">Shape</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">BinaryOp</span><span class="o">.</span><span class="n">AND</span><span class="p">,</span> <span class="n">SignalRef</span><span class="p">(</span><span class="n">Shape</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="s2">"a"</span><span class="p">),</span> <span class="n">SignalRef</span><span class="p">(</span><span class="n">Shape</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="s2">"b"</span><span class="p">))),</span>
         <span class="p">)),</span>
     <span class="p">),</span>
     <span class="n">seq_blocks</span><span class="o">=</span><span class="p">(),</span>
 <span class="p">)</span>
 
 <span class="n">cm</span> <span class="o">=</span> <span class="n">compile_module</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
-<span class="n">traces</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cycles</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mb">0b1100</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mb">0b1010</span><span class="p">})</span>
-<span class="c1"># traces[&quot;y&quot;] -&gt; [(timestamp, 0b1000)]</span>
+<span class="n">traces</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cycles</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">"a"</span><span class="p">:</span> <span class="mb">0b1100</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">:</span> <span class="mb">0b1010</span><span class="p">})</span>
+<span class="c1"># traces["y"] -&gt; [(timestamp, 0b1000)]</span>
 </pre></div>
 </div>
 <p>See the <a class="reference internal" href="api.html"><span class="std std-doc">API reference</span></a> for all IR node types.</p>

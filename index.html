@@ -269,7 +269,7 @@
 <p>For development:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/dau-dev/dau-sim.git
 <span class="nb">cd</span><span class="w"> </span>dau-sim
-pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[develop]&quot;</span>
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[develop]"</span>
 </pre></div>
 </div>
 </section>
@@ -295,8 +295,8 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 
 
 <span class="n">cm</span> <span class="o">=</span> <span class="n">compile_module</span><span class="p">(</span><span class="n">from_amaranth</span><span class="p">(</span><span class="n">Counter</span><span class="p">()))</span>
-<span class="n">traces</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cycles</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
-<span class="n">cm</span><span class="o">.</span><span class="n">write_vcd</span><span class="p">(</span><span class="s2">&quot;counter.vcd&quot;</span><span class="p">,</span> <span class="n">traces</span><span class="p">)</span>
+<span class="n">traces</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cycles</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">"en"</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="n">cm</span><span class="o">.</span><span class="n">write_vcd</span><span class="p">(</span><span class="s2">"counter.vcd"</span><span class="p">,</span> <span class="n">traces</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
