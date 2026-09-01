@@ -170,7 +170,9 @@ class CocotbExampleTestBase:
         # isort: off
         import cocotb
         import cocotb.handle  # must precede cocotb._gpi_triggers (circular import)
+        import cocotb._event_loop
         import cocotb._gpi_triggers
+        import cocotb._test_manager
         import cocotb.simtime
         # isort: on
 
@@ -186,8 +188,7 @@ class CocotbExampleTestBase:
         self._orig_simtime_sim = getattr(cocotb.simtime, "simulator", None)
         self._orig_is_sim = getattr(cocotb, "is_simulation", False)
         self._orig_top = getattr(cocotb, "top", None)
-        self._orig_sched = getattr(cocotb, "_scheduler_inst", None)
-        self._orig_regression = getattr(cocotb, "_regression_manager", None)
+        self._orig_test = getattr(cocotb._test_manager, "_current_test", None)
 
         # Patch
         sys.modules["cocotb.simulator"] = sim_module
@@ -209,18 +210,22 @@ class CocotbExampleTestBase:
         cocotb.top = cocotb.handle._make_sim_object(engine._root_handle)
         cocotb.simtime._init()
 
-        from cocotb._scheduler import Scheduler
+        cocotb._event_loop._inst = cocotb._event_loop.EventLoop()
 
-        cocotb._scheduler_inst = Scheduler()
+        # Minimal test manager stub so start_soon/create_task works
+        from cocotb._base_triggers import Event
+        from cocotb._test_manager import TestManager
 
-        # Minimal regression manager stub for start_soon/create_task
-        from cocotb._test import RunningTest
-        from cocotb.regression import RegressionManager
-
-        cocotb._regression_manager = RegressionManager.__new__(RegressionManager)
-        cocotb._regression_manager._running_test = RunningTest.__new__(RunningTest)
-        cocotb._regression_manager._running_test.tasks = []
-        cocotb._regression_manager._running_test._main_task = None
+        test = TestManager.__new__(TestManager)
+        test._tasks = {}
+        test._excs = []
+        test._finishing = False
+        test._complete = False
+        test._timeout_cb = None
+        test._main_task = None
+        test._test_complete_cb = lambda: None
+        test._done = Event()
+        cocotb._test_manager._current_test = test
 
         self._engine = engine
         return engine
@@ -230,6 +235,7 @@ class CocotbExampleTestBase:
         import cocotb
         import cocotb.handle  # must precede cocotb._gpi_triggers (circular import)
         import cocotb._gpi_triggers
+        import cocotb._test_manager
         import cocotb.simtime
         # isort: on
 
@@ -244,23 +250,19 @@ class CocotbExampleTestBase:
         cocotb.simtime.simulator = self._orig_simtime_sim
         cocotb.is_simulation = self._orig_is_sim
         cocotb.top = self._orig_top
-        cocotb._scheduler_inst = self._orig_sched
-        cocotb._regression_manager = self._orig_regression
+        cocotb._test_manager._current_test = self._orig_test
 
     def _run_coroutine(self, coro, max_steps=10_000_000):
-        """Schedule *coro*, start the write scheduler, and run the engine."""
+        """Schedule *coro* and run the engine."""
         import cocotb
         from cocotb.task import Task
 
         task = Task(coro)
-        cocotb._scheduler_inst._schedule_task_internal(task)
-        cocotb.handle._start_write_scheduler()
-        cocotb._scheduler_inst._event_loop()
+        task._start_soon()
+        cocotb._event_loop._inst.run()
 
         self._engine._running = True
         self._engine.run(max_steps=max_steps)
-
-        cocotb.handle._stop_write_scheduler()
 
 
 # Example 1: Simple DFF (cocotb/examples/simple_dff)
