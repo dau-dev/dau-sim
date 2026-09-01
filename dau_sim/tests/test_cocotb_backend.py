@@ -672,7 +672,9 @@ class TestCocotbIntegration:
 
         # isort: off
         import cocotb.handle  # must precede cocotb._gpi_triggers (circular import)
+        import cocotb._event_loop
         import cocotb._gpi_triggers
+        import cocotb._test_manager
         import cocotb.simtime
         # isort: on
 
@@ -688,8 +690,7 @@ class TestCocotbIntegration:
         self._orig_simtime_sim = getattr(cocotb.simtime, "simulator", None)
         self._orig_is_sim = getattr(cocotb, "is_simulation", False)
         self._orig_top = getattr(cocotb, "top", None)
-        self._orig_sched = getattr(cocotb, "_scheduler_inst", None)
-        self._orig_regression = getattr(cocotb, "_regression_manager", None)
+        self._orig_test = getattr(cocotb._test_manager, "_current_test", None)
 
         # Patch
         sys.modules["cocotb.simulator"] = sim_module
@@ -711,18 +712,22 @@ class TestCocotbIntegration:
         cocotb.top = cocotb.handle._make_sim_object(engine._root_handle)
         cocotb.simtime._init()
 
-        from cocotb._scheduler import Scheduler
+        cocotb._event_loop._inst = cocotb._event_loop.EventLoop()
 
-        cocotb._scheduler_inst = Scheduler()
+        # Minimal test manager stub so start_soon/create_task works
+        from cocotb._base_triggers import Event
+        from cocotb._test_manager import TestManager
 
-        # Minimal regression manager stub so start_soon/create_task works
-        from cocotb._test import RunningTest
-        from cocotb.regression import RegressionManager
-
-        cocotb._regression_manager = RegressionManager.__new__(RegressionManager)
-        cocotb._regression_manager._running_test = RunningTest.__new__(RunningTest)
-        cocotb._regression_manager._running_test.tasks = []
-        cocotb._regression_manager._running_test._main_task = None
+        test = TestManager.__new__(TestManager)
+        test._tasks = {}
+        test._excs = []
+        test._finishing = False
+        test._complete = False
+        test._timeout_cb = None
+        test._main_task = None
+        test._test_complete_cb = lambda: None
+        test._done = Event()
+        cocotb._test_manager._current_test = test
 
         return engine
 
@@ -734,6 +739,7 @@ class TestCocotbIntegration:
         # isort: off
         import cocotb.handle  # must precede cocotb._gpi_triggers (circular import)
         import cocotb._gpi_triggers
+        import cocotb._test_manager
         import cocotb.simtime
         # isort: on
 
@@ -748,8 +754,7 @@ class TestCocotbIntegration:
         cocotb.simtime.simulator = self._orig_simtime_sim
         cocotb.is_simulation = self._orig_is_sim
         cocotb.top = self._orig_top
-        cocotb._scheduler_inst = self._orig_sched
-        cocotb._regression_manager = self._orig_regression
+        cocotb._test_manager._current_test = self._orig_test
 
     def test_timer_trigger(self):
         """A Timer(100) trigger should fire after 100 sim time steps."""
@@ -767,8 +772,8 @@ class TestCocotbIntegration:
                 result.append(engine._sim_time)
 
             task = Task(test_coro())
-            cocotb._scheduler_inst._schedule_task_internal(task)
-            cocotb._scheduler_inst._event_loop()
+            task._start_soon()
+            cocotb._event_loop._inst.run()
 
             # After event_loop, the task is suspended waiting for Timer(100)
             # The engine has a callback at time 100
@@ -807,18 +812,13 @@ class TestCocotbIntegration:
 
             t1 = Task(clock_driver())
             t2 = Task(test_coro())
-            cocotb._scheduler_inst._schedule_task_internal(t1)
-            cocotb._scheduler_inst._schedule_task_internal(t2)
+            t1._start_soon()
+            t2._start_soon()
 
-            # Start write scheduler (needed for signal writes)
-            cocotb.handle._start_write_scheduler()
-
-            cocotb._scheduler_inst._event_loop()
+            cocotb._event_loop._inst.run()
 
             engine._running = True
             engine.run(max_steps=100_000)
-
-            cocotb.handle._stop_write_scheduler()
 
             # RisingEdge fires *before* NBA — test sees pre-NBA value
             assert len(result) == 1
@@ -850,14 +850,11 @@ class TestCocotbIntegration:
                 engine.stop()
 
             task = Task(test_coro())
-            cocotb._scheduler_inst._schedule_task_internal(task)
-            cocotb.handle._start_write_scheduler()
-            cocotb._scheduler_inst._event_loop()
+            task._start_soon()
+            cocotb._event_loop._inst.run()
 
             engine._running = True
             engine.run(max_steps=10_000_000)
-
-            cocotb.handle._stop_write_scheduler()
 
             assert len(results) == 5
             # RisingEdge fires *before* NBA — values lag by one cycle
@@ -889,14 +886,11 @@ class TestCocotbIntegration:
                 engine.stop()
 
             task = Task(test_coro())
-            cocotb._scheduler_inst._schedule_task_internal(task)
-            cocotb.handle._start_write_scheduler()
-            cocotb._scheduler_inst._event_loop()
+            task._start_soon()
+            cocotb._event_loop._inst.run()
 
             engine._running = True
             engine.run(max_steps=100_000)
-
-            cocotb.handle._stop_write_scheduler()
 
             assert results == [1, 0]
         finally:
@@ -929,15 +923,12 @@ class TestCocotbIntegration:
 
             t1 = Task(driver())
             t2 = Task(waiter())
-            cocotb._scheduler_inst._schedule_task_internal(t1)
-            cocotb._scheduler_inst._schedule_task_internal(t2)
-            cocotb.handle._start_write_scheduler()
-            cocotb._scheduler_inst._event_loop()
+            t1._start_soon()
+            t2._start_soon()
+            cocotb._event_loop._inst.run()
 
             engine._running = True
             engine.run(max_steps=100_000)
-
-            cocotb.handle._stop_write_scheduler()
 
             assert len(result) == 1
             assert result[0] == 100
