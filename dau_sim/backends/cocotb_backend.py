@@ -47,19 +47,20 @@ _log = logging.getLogger(__name__)
 # NOTE: GPI constants — must match cocotb.simulator
 # Signal types (must match cocotb.simulator C extension)
 MODULE = 2
-LOGIC = 15
-LOGIC_ARRAY = 16
+LOGIC = 16
+LOGIC_ARRAY = 17
 INTEGER = 10
 REAL = 9
 ENUM = 7
 STRING = 11
-GENARRAY = 12
+FIXED_STRING = 12
+GENARRAY = 13
 STRUCTURE = 8
 NETARRAY = 6
 MEMORY = 1
-PACKED_STRUCTURE = 14
+PACKED = 15
 UNKNOWN = 0
-PACKAGE = 13
+PACKAGE = 14
 
 # Discovery modes
 OBJECTS = 1
@@ -67,9 +68,9 @@ DRIVERS = 2
 LOADS = 3
 
 # Edge types
-RISING = 0
-FALLING = 1
-VALUE_CHANGE = 2
+RISING = 1
+FALLING = 2
+VALUE_CHANGE = 0
 
 # Range directions
 RANGE_UP = 1
@@ -712,11 +713,12 @@ def _create_simulator_module(engine: SimulationEngine) -> types.ModuleType:
     mod.REAL = REAL
     mod.ENUM = ENUM
     mod.STRING = STRING
+    mod.FIXED_STRING = FIXED_STRING
     mod.GENARRAY = GENARRAY
     mod.STRUCTURE = STRUCTURE
     mod.NETARRAY = NETARRAY
     mod.MEMORY = MEMORY
-    mod.PACKED_STRUCTURE = PACKED_STRUCTURE
+    mod.PACKED = PACKED
     mod.UNKNOWN = UNKNOWN
     mod.PACKAGE = PACKAGE
     mod.OBJECTS = OBJECTS
@@ -859,6 +861,7 @@ def _run_with_patched_simulator(
     # isort: off
     import cocotb
     import cocotb.handle  # must precede cocotb._gpi_triggers (circular import)
+    import cocotb._event_loop
     import cocotb._gpi_triggers
     import cocotb.simtime
     # isort: on
@@ -871,7 +874,6 @@ def _run_with_patched_simulator(
     orig_simtime_sim = getattr(cocotb.simtime, "simulator", None)
     orig_is_simulation = getattr(cocotb, "is_simulation", False)
     orig_top = getattr(cocotb, "top", None)
-    orig_scheduler = getattr(cocotb, "_scheduler_inst", None)
     orig_regression = getattr(cocotb, "_regression_manager", None)
     orig_env_modules = os.environ.get("COCOTB_TEST_MODULES")
 
@@ -905,10 +907,9 @@ def _run_with_patched_simulator(
         # Init simtime precision
         cocotb.simtime._init()
 
-        # Create scheduler
-        from cocotb._scheduler import Scheduler
-
-        cocotb._scheduler_inst = Scheduler()
+        # Reset the event loop's callback queue so a previous run's
+        # leftovers don't leak into this one.
+        cocotb._event_loop._inst = cocotb._event_loop.EventLoop()
 
         # Discover and run tests
         from cocotb.regression import RegressionManager
@@ -947,7 +948,6 @@ def _run_with_patched_simulator(
         cocotb.simtime.simulator = orig_simtime_sim
         cocotb.is_simulation = orig_is_simulation
         cocotb.top = orig_top
-        cocotb._scheduler_inst = orig_scheduler
         cocotb._regression_manager = orig_regression
         if orig_env_modules is not None:
             os.environ["COCOTB_TEST_MODULES"] = orig_env_modules
