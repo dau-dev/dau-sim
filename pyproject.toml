@@ -59,7 +59,7 @@ develop = [
     "uv",
     "wheel",
     # integrations
-    "cocotb",
+    "cocotb>=2.1",
     "dau-build",
 ]
 
