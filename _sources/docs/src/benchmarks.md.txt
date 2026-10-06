@@ -1,22 +1,22 @@
 # Benchmarks
 
-dau-sim includes a benchmark suite under `dau_sim/benchmarks/` that tracks simulation throughput across backends and measures internal compilation and evaluation performance. All numbers below were collected on an Apple M1 Pro (arm64, CPython 3.12) unless noted otherwise.
+The benchmark suite under `dau_sim/benchmarks/` tracks simulation throughput across backends and measures compile and evaluation cost inside dau-sim. All numbers below were collected on an Apple M1 Pro (arm64, CPython 3.12) unless noted otherwise.
 
 ## Benchmark suite
 
 ### Cross-simulator comparison (`bench_cross_simulators.py`)
 
-Compares dau-sim against Amaranth's native pysim simulator and Verilator on the same design: a 32-bit enabled counter running for a configurable number of cycles (set via `DAU_BENCH_CYCLES`, default 5,000).
+Compares dau-sim with Amaranth's pysim simulator and with Verilator on the same design: a 32-bit counter with an enable, run for a configurable number of cycles (`DAU_BENCH_CYCLES`, default 5,000).
 
 Backends under test:
 
-| Backend                   | What it measures                                                       |
-| ------------------------- | ---------------------------------------------------------------------- |
-| **dau-sim**               | `from_amaranth` → `compile_module` → `cm.run(return_traces=False)`     |
-| **amaranth-sim**          | Amaranth's built-in Python simulator (`Simulator` + generator process) |
-| **cxxsim**                | Amaranth's optional CXXRTL-backed simulator (skipped when unavailable) |
-| **verilator-compile-run** | Full pipeline: write Verilog → `verilator --binary` → run executable   |
-| **verilator-runtime**     | Pre-compiled Verilator binary execution only (compile cost excluded)   |
+| Backend                   | What it measures                                                           |
+| ------------------------- | -------------------------------------------------------------------------- |
+| **dau-sim**               | `from_amaranth`, then `compile_module`, then `cm.run(return_traces=False)` |
+| **amaranth-sim**          | Amaranth's built-in Python simulator (`Simulator` + generator process)     |
+| **cxxsim**                | Amaranth's optional CXXRTL-backed simulator (skipped when unavailable)     |
+| **verilator-compile-run** | Full pipeline: write Verilog, `verilator --binary`, run the executable     |
+| **verilator-runtime**     | Pre-compiled Verilator binary execution only (compile cost excluded)       |
 
 Run the benchmark:
 
@@ -25,7 +25,7 @@ DAU_BENCH_CYCLES=100000 pytest dau_sim/benchmarks/bench_cross_simulators.py \
     --benchmark-only --benchmark-columns=mean,stddev,median
 ```
 
-#### Results — 500k cycles
+#### Results at 500k cycles
 
 | Backend               | Mean   | vs Verilator runtime | vs Amaranth |
 | --------------------- | ------ | -------------------- | ----------- |
@@ -34,7 +34,7 @@ DAU_BENCH_CYCLES=100000 pytest dau_sim/benchmarks/bench_cross_simulators.py \
 | verilator-compile-run | 4.85 s | 52× slower           | 1.7× faster |
 | amaranth-sim          | 8.08 s | 87× slower           | 1.0×        |
 
-#### Results — 100k cycles
+#### Results at 100k cycles
 
 | Backend               | Mean     | vs Verilator runtime | vs Amaranth |
 | --------------------- | -------- | -------------------- | ----------- |
@@ -45,14 +45,14 @@ DAU_BENCH_CYCLES=100000 pytest dau_sim/benchmarks/bench_cross_simulators.py \
 
 Key observations:
 
-- **dau-sim is 3–10× faster than Amaranth's pysim** across cycle counts, with the gap widening at higher counts due to lower per-tick overhead.
-- **Verilator runtime is the throughput ceiling** — compiled C++ executing a simple counter at ~5M cycles/sec. dau-sim is 7–27× behind depending on cycle count.
-- **Verilator compile+run is slower than dau-sim** for small-to-medium workloads because compilation dominates. dau-sim's zero-compile-step workflow gives it a significant advantage for iterative development.
-- The Amaranth counter includes a reset signal (`rst`), which prevents dau-sim from using its fastest batch execution path. For reset-free IR designs, dau-sim achieves ~30 ms for 100k cycles (only 1.3× slower than Verilator runtime).
+- **dau-sim is 3–10× faster than Amaranth's pysim** at every cycle count, and the gap widens at higher counts because dau-sim's per-tick overhead is lower.
+- **Verilator's runtime sets the upper bound**: compiled C++ runs the counter at about 5M cycles/sec. dau-sim is 7–27× behind, depending on cycle count.
+- **Verilator compile+run is slower than dau-sim** for small and medium workloads because compilation dominates. dau-sim has no compile step, which matters when you are iterating on a design.
+- The Amaranth counter has a reset signal (`rst`), which keeps dau-sim off its fastest batch path. For IR designs without a reset, dau-sim takes about 30 ms for 100k cycles, 1.3× slower than Verilator's runtime.
 
 ### Compile partitioning (`bench_compile_partitioning.py`)
 
-Measures `compile_module` time as a function of the number of independent combinational blocks in a design. Tests N = 16, 64, 256, 1024 blocks, each a simple `assign o = a + const`. This benchmark validates that the dependency-analysis and block-partitioning phase scales well.
+Measures `compile_module` time against the number of independent combinational blocks in a design, for N = 16, 64, 256 and 1024 blocks, each a simple `assign o = a + const`. It checks that dependency analysis and block partitioning scale.
 
 ```bash
 pytest dau_sim/benchmarks/bench_compile_partitioning.py --benchmark-only
@@ -60,7 +60,7 @@ pytest dau_sim/benchmarks/bench_compile_partitioning.py --benchmark-only
 
 ### Selective settle (`bench_selective_settle.py`)
 
-Measures runtime of a sequential design with N independent combinational components and configurable statements per component (1, 8, 32). Verifies that the selective-settle optimization — only re-evaluating combinational blocks whose inputs actually changed — keeps per-tick cost proportional to active components rather than total design size.
+Measures the runtime of a sequential design with N independent combinational components and a configurable number of statements per component (1, 8, 32). It checks that selective settle, which re-evaluates only the combinational blocks whose inputs changed, keeps per-tick cost proportional to the number of active components rather than the size of the design.
 
 ```bash
 pytest dau_sim/benchmarks/bench_selective_settle.py --benchmark-only
@@ -68,27 +68,27 @@ pytest dau_sim/benchmarks/bench_selective_settle.py --benchmark-only
 
 ## Execution modes and optimization tiers
 
-dau-sim uses several execution strategies depending on the design and whether trace output is needed:
+dau-sim picks an execution strategy from the design and from whether you asked for traces:
 
 ### CSP compiled path (default)
 
-The compiler generates flat Python functions from the IR statement/expression trees (`dau_sim/compiler/codegen.py`) and executes them inside a single CSP node. Per-tick work:
+The compiler generates flat Python functions from the IR statement and expression trees (`dau_sim/compiler/codegen.py`) and runs them inside a single CSP node. Each tick:
 
-1. Toggle clock signals at the correct half-period
-1. Detect rising/falling edges via inlined comparisons
-1. Execute the compiled sequential block for each fired domain
-1. Re-evaluate affected combinational blocks (selective settle)
-1. Optionally emit trace output
+1. Toggles clock signals at their half-period
+1. Detects rising and falling edges with inlined comparisons
+1. Runs the compiled sequential block for each domain that fired
+1. Re-evaluates the affected combinational blocks (selective settle)
+1. Emits trace output if requested
 
-This path supports all designs including those with resets, combinational logic, and memories.
+This path handles every design, including those with resets, combinational logic and memories.
 
 ### Fast-tick path
 
-For designs with **no combinational logic, no memories, and no resets**, the compiler generates a single `_fast_tick(S, clock_arr, tc)` function that inlines the clock toggle, edge detection, and sequential block body. This eliminates function-call overhead and changed-set tracking.
+For designs with **no combinational logic, no memories and no resets**, the compiler generates a single `_fast_tick(S, clock_arr, tc)` function that inlines the clock toggle, edge detection and sequential block body. There is no function-call overhead and no changed-set tracking.
 
 ### Batch no-trace path
 
-When `return_traces=False` and the design qualifies for fast-tick, dau-sim bypasses the CSP engine entirely and runs all ticks in a pure Python `for` loop. This eliminates ~400k CSP scheduling events for a 200k-tick simulation.
+When `return_traces=False` and the design qualifies for fast-tick, dau-sim skips the CSP engine and runs every tick in a plain Python `for` loop. For a 200k-tick simulation that removes about 400k CSP scheduling events.
 
 ### Performance by execution mode (100k-cycle counter)
 
@@ -112,4 +112,4 @@ pytest dau_sim/benchmarks/bench_cross_simulators.py --benchmark-only \
     --benchmark-save=cross-runtime --benchmark-storage=dau_sim/benchmarks/results
 ```
 
-Stored results live in `dau_sim/benchmarks/results/` for historical comparison.
+Saved results are kept in `dau_sim/benchmarks/results/` for comparison over time.

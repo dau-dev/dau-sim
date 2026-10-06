@@ -244,7 +244,7 @@
         <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="verilog-systemverilog">
 <h1>Verilog / SystemVerilog<a class="headerlink" href="#verilog-systemverilog" title="Link to this heading">¶</a></h1>
-<p>dau-sim parses SystemVerilog and Verilog source via <a class="reference external" href="https://github.com/MikePopoloski/pyslang">pyslang</a>, then lowers the AST to the dau-sim IR.</p>
+<p>dau-sim parses SystemVerilog and Verilog source with <a class="reference external" href="https://github.com/MikePopoloski/pyslang">pyslang</a>, then lowers the AST to the dau-sim IR.</p>
 <section id="simulate-from-source-string">
 <h2>Simulate from source string<a class="headerlink" href="#simulate-from-source-string" title="Link to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.frontends</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_sv</span>
@@ -279,7 +279,7 @@
 </section>
 <section id="hand-constructed-ir">
 <h2>Hand-constructed IR<a class="headerlink" href="#hand-constructed-ir" title="Link to this heading">¶</a></h2>
-<p>For programmatic design generation you can build the IR directly without a frontend:</p>
+<p>For programmatic design generation, build the IR directly and skip the frontend:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.ir</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.compiler</span><span class="w"> </span><span class="kn">import</span> <span class="n">compile_module</span>
 

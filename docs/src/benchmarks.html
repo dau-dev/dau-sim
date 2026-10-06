@@ -244,12 +244,12 @@
         <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="benchmarks">
 <h1>Benchmarks<a class="headerlink" href="#benchmarks" title="Link to this heading">¶</a></h1>
-<p>dau-sim includes a benchmark suite under <code class="docutils literal notranslate"><span class="pre">dau_sim/benchmarks/</span></code> that tracks simulation throughput across backends and measures internal compilation and evaluation performance. All numbers below were collected on an Apple M1 Pro (arm64, CPython 3.12) unless noted otherwise.</p>
+<p>The benchmark suite under <code class="docutils literal notranslate"><span class="pre">dau_sim/benchmarks/</span></code> tracks simulation throughput across backends and measures compile and evaluation cost inside dau-sim. All numbers below were collected on an Apple M1 Pro (arm64, CPython 3.12) unless noted otherwise.</p>
 <section id="benchmark-suite">
 <h2>Benchmark suite<a class="headerlink" href="#benchmark-suite" title="Link to this heading">¶</a></h2>
 <section id="cross-simulator-comparison-bench-cross-simulators-py">
 <h3>Cross-simulator comparison (<code class="docutils literal notranslate"><span class="pre">bench_cross_simulators.py</span></code>)<a class="headerlink" href="#cross-simulator-comparison-bench-cross-simulators-py" title="Link to this heading">¶</a></h3>
-<p>Compares dau-sim against Amaranth’s native pysim simulator and Verilator on the same design: a 32-bit enabled counter running for a configurable number of cycles (set via <code class="docutils literal notranslate"><span class="pre">DAU_BENCH_CYCLES</span></code>, default 5,000).</p>
+<p>Compares dau-sim with Amaranth’s pysim simulator and with Verilator on the same design: a 32-bit counter with an enable, run for a configurable number of cycles (<code class="docutils literal notranslate"><span class="pre">DAU_BENCH_CYCLES</span></code>, default 5,000).</p>
 <p>Backends under test:</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
@@ -260,7 +260,7 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>dau-sim</strong></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">from_amaranth</span></code> → <code class="docutils literal notranslate"><span class="pre">compile_module</span></code> → <code class="docutils literal notranslate"><span class="pre">cm.run(return_traces=False)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">from_amaranth</span></code>, then <code class="docutils literal notranslate"><span class="pre">compile_module</span></code>, then <code class="docutils literal notranslate"><span class="pre">cm.run(return_traces=False)</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>amaranth-sim</strong></p></td>
 <td><p>Amaranth’s built-in Python simulator (<code class="docutils literal notranslate"><span class="pre">Simulator</span></code> + generator process)</p></td>
@@ -269,7 +269,7 @@
 <td><p>Amaranth’s optional CXXRTL-backed simulator (skipped when unavailable)</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>verilator-compile-run</strong></p></td>
-<td><p>Full pipeline: write Verilog → <code class="docutils literal notranslate"><span class="pre">verilator</span> <span class="pre">--binary</span></code> → run executable</p></td>
+<td><p>Full pipeline: write Verilog, <code class="docutils literal notranslate"><span class="pre">verilator</span> <span class="pre">--binary</span></code>, run the executable</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>verilator-runtime</strong></p></td>
 <td><p>Pre-compiled Verilator binary execution only (compile cost excluded)</p></td>
@@ -282,8 +282,8 @@
 <span class="w">    </span>--benchmark-only<span class="w"> </span>--benchmark-columns<span class="o">=</span>mean,stddev,median
 </pre></div>
 </div>
-<section id="results-500k-cycles">
-<h4>Results — 500k cycles<a class="headerlink" href="#results-500k-cycles" title="Link to this heading">¶</a></h4>
+<section id="results-at-500k-cycles">
+<h4>Results at 500k cycles<a class="headerlink" href="#results-at-500k-cycles" title="Link to this heading">¶</a></h4>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -318,8 +318,8 @@
 </table>
 </div>
 </section>
-<section id="results-100k-cycles">
-<h4>Results — 100k cycles<a class="headerlink" href="#results-100k-cycles" title="Link to this heading">¶</a></h4>
+<section id="results-at-100k-cycles">
+<h4>Results at 100k cycles<a class="headerlink" href="#results-at-100k-cycles" title="Link to this heading">¶</a></h4>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -355,23 +355,23 @@
 </div>
 <p>Key observations:</p>
 <ul class="simple">
-<li><p><strong>dau-sim is 3–10× faster than Amaranth’s pysim</strong> across cycle counts, with the gap widening at higher counts due to lower per-tick overhead.</p></li>
-<li><p><strong>Verilator runtime is the throughput ceiling</strong> — compiled C++ executing a simple counter at ~5M cycles/sec. dau-sim is 7–27× behind depending on cycle count.</p></li>
-<li><p><strong>Verilator compile+run is slower than dau-sim</strong> for small-to-medium workloads because compilation dominates. dau-sim’s zero-compile-step workflow gives it a significant advantage for iterative development.</p></li>
-<li><p>The Amaranth counter includes a reset signal (<code class="docutils literal notranslate"><span class="pre">rst</span></code>), which prevents dau-sim from using its fastest batch execution path. For reset-free IR designs, dau-sim achieves ~30 ms for 100k cycles (only 1.3× slower than Verilator runtime).</p></li>
+<li><p><strong>dau-sim is 3–10× faster than Amaranth’s pysim</strong> at every cycle count, and the gap widens at higher counts because dau-sim’s per-tick overhead is lower.</p></li>
+<li><p><strong>Verilator’s runtime sets the upper bound</strong>: compiled C++ runs the counter at about 5M cycles/sec. dau-sim is 7–27× behind, depending on cycle count.</p></li>
+<li><p><strong>Verilator compile+run is slower than dau-sim</strong> for small and medium workloads because compilation dominates. dau-sim has no compile step, which matters when you are iterating on a design.</p></li>
+<li><p>The Amaranth counter has a reset signal (<code class="docutils literal notranslate"><span class="pre">rst</span></code>), which keeps dau-sim off its fastest batch path. For IR designs without a reset, dau-sim takes about 30 ms for 100k cycles, 1.3× slower than Verilator’s runtime.</p></li>
 </ul>
 </section>
 </section>
 <section id="compile-partitioning-bench-compile-partitioning-py">
 <h3>Compile partitioning (<code class="docutils literal notranslate"><span class="pre">bench_compile_partitioning.py</span></code>)<a class="headerlink" href="#compile-partitioning-bench-compile-partitioning-py" title="Link to this heading">¶</a></h3>
-<p>Measures <code class="docutils literal notranslate"><span class="pre">compile_module</span></code> time as a function of the number of independent combinational blocks in a design. Tests N = 16, 64, 256, 1024 blocks, each a simple <code class="docutils literal notranslate"><span class="pre">assign</span> <span class="pre">o</span> <span class="pre">=</span> <span class="pre">a</span> <span class="pre">+</span> <span class="pre">const</span></code>. This benchmark validates that the dependency-analysis and block-partitioning phase scales well.</p>
+<p>Measures <code class="docutils literal notranslate"><span class="pre">compile_module</span></code> time against the number of independent combinational blocks in a design, for N = 16, 64, 256 and 1024 blocks, each a simple <code class="docutils literal notranslate"><span class="pre">assign</span> <span class="pre">o</span> <span class="pre">=</span> <span class="pre">a</span> <span class="pre">+</span> <span class="pre">const</span></code>. It checks that dependency analysis and block partitioning scale.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>dau_sim/benchmarks/bench_compile_partitioning.py<span class="w"> </span>--benchmark-only
 </pre></div>
 </div>
 </section>
 <section id="selective-settle-bench-selective-settle-py">
 <h3>Selective settle (<code class="docutils literal notranslate"><span class="pre">bench_selective_settle.py</span></code>)<a class="headerlink" href="#selective-settle-bench-selective-settle-py" title="Link to this heading">¶</a></h3>
-<p>Measures runtime of a sequential design with N independent combinational components and configurable statements per component (1, 8, 32). Verifies that the selective-settle optimization — only re-evaluating combinational blocks whose inputs actually changed — keeps per-tick cost proportional to active components rather than total design size.</p>
+<p>Measures the runtime of a sequential design with N independent combinational components and a configurable number of statements per component (1, 8, 32). It checks that selective settle, which re-evaluates only the combinational blocks whose inputs changed, keeps per-tick cost proportional to the number of active components rather than the size of the design.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>dau_sim/benchmarks/bench_selective_settle.py<span class="w"> </span>--benchmark-only
 </pre></div>
 </div>
@@ -379,26 +379,26 @@
 </section>
 <section id="execution-modes-and-optimization-tiers">
 <h2>Execution modes and optimization tiers<a class="headerlink" href="#execution-modes-and-optimization-tiers" title="Link to this heading">¶</a></h2>
-<p>dau-sim uses several execution strategies depending on the design and whether trace output is needed:</p>
+<p>dau-sim picks an execution strategy from the design and from whether you asked for traces:</p>
 <section id="csp-compiled-path-default">
 <h3>CSP compiled path (default)<a class="headerlink" href="#csp-compiled-path-default" title="Link to this heading">¶</a></h3>
-<p>The compiler generates flat Python functions from the IR statement/expression trees (<code class="docutils literal notranslate"><span class="pre">dau_sim/compiler/codegen.py</span></code>) and executes them inside a single CSP node. Per-tick work:</p>
+<p>The compiler generates flat Python functions from the IR statement and expression trees (<code class="docutils literal notranslate"><span class="pre">dau_sim/compiler/codegen.py</span></code>) and runs them inside a single CSP node. Each tick:</p>
 <ol class="arabic simple">
-<li><p>Toggle clock signals at the correct half-period</p></li>
-<li><p>Detect rising/falling edges via inlined comparisons</p></li>
-<li><p>Execute the compiled sequential block for each fired domain</p></li>
-<li><p>Re-evaluate affected combinational blocks (selective settle)</p></li>
-<li><p>Optionally emit trace output</p></li>
+<li><p>Toggles clock signals at their half-period</p></li>
+<li><p>Detects rising and falling edges with inlined comparisons</p></li>
+<li><p>Runs the compiled sequential block for each domain that fired</p></li>
+<li><p>Re-evaluates the affected combinational blocks (selective settle)</p></li>
+<li><p>Emits trace output if requested</p></li>
 </ol>
-<p>This path supports all designs including those with resets, combinational logic, and memories.</p>
+<p>This path handles every design, including those with resets, combinational logic and memories.</p>
 </section>
 <section id="fast-tick-path">
 <h3>Fast-tick path<a class="headerlink" href="#fast-tick-path" title="Link to this heading">¶</a></h3>
-<p>For designs with <strong>no combinational logic, no memories, and no resets</strong>, the compiler generates a single <code class="docutils literal notranslate"><span class="pre">_fast_tick(S,</span> <span class="pre">clock_arr,</span> <span class="pre">tc)</span></code> function that inlines the clock toggle, edge detection, and sequential block body. This eliminates function-call overhead and changed-set tracking.</p>
+<p>For designs with <strong>no combinational logic, no memories and no resets</strong>, the compiler generates a single <code class="docutils literal notranslate"><span class="pre">_fast_tick(S,</span> <span class="pre">clock_arr,</span> <span class="pre">tc)</span></code> function that inlines the clock toggle, edge detection and sequential block body. There is no function-call overhead and no changed-set tracking.</p>
 </section>
 <section id="batch-no-trace-path">
 <h3>Batch no-trace path<a class="headerlink" href="#batch-no-trace-path" title="Link to this heading">¶</a></h3>
-<p>When <code class="docutils literal notranslate"><span class="pre">return_traces=False</span></code> and the design qualifies for fast-tick, dau-sim bypasses the CSP engine entirely and runs all ticks in a pure Python <code class="docutils literal notranslate"><span class="pre">for</span></code> loop. This eliminates ~400k CSP scheduling events for a 200k-tick simulation.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">return_traces=False</span></code> and the design qualifies for fast-tick, dau-sim skips the CSP engine and runs every tick in a plain Python <code class="docutils literal notranslate"><span class="pre">for</span></code> loop. For a 200k-tick simulation that removes about 400k CSP scheduling events.</p>
 </section>
 <section id="performance-by-execution-mode-100k-cycle-counter">
 <h3>Performance by execution mode (100k-cycle counter)<a class="headerlink" href="#performance-by-execution-mode-100k-cycle-counter" title="Link to this heading">¶</a></h3>
@@ -445,7 +445,7 @@ pytest<span class="w"> </span>dau_sim/benchmarks/bench_cross_simulators.py<span 
 <span class="w">    </span>--benchmark-save<span class="o">=</span>cross-runtime<span class="w"> </span>--benchmark-storage<span class="o">=</span>dau_sim/benchmarks/results
 </pre></div>
 </div>
-<p>Stored results live in <code class="docutils literal notranslate"><span class="pre">dau_sim/benchmarks/results/</span></code> for historical comparison.</p>
+<p>Saved results are kept in <code class="docutils literal notranslate"><span class="pre">dau_sim/benchmarks/results/</span></code> for comparison over time.</p>
 </section>
 </section>
 
@@ -489,8 +489,8 @@ pytest<span class="w"> </span>dau_sim/benchmarks/bench_cross_simulators.py<span 
 <li><a class="reference internal" href="#">Benchmarks</a><ul>
 <li><a class="reference internal" href="#benchmark-suite">Benchmark suite</a><ul>
 <li><a class="reference internal" href="#cross-simulator-comparison-bench-cross-simulators-py">Cross-simulator comparison (<code class="docutils literal notranslate"><span class="pre">bench_cross_simulators.py</span></code>)</a><ul>
-<li><a class="reference internal" href="#results-500k-cycles">Results — 500k cycles</a></li>
-<li><a class="reference internal" href="#results-100k-cycles">Results — 100k cycles</a></li>
+<li><a class="reference internal" href="#results-at-500k-cycles">Results at 500k cycles</a></li>
+<li><a class="reference internal" href="#results-at-100k-cycles">Results at 100k cycles</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#compile-partitioning-bench-compile-partitioning-py">Compile partitioning (<code class="docutils literal notranslate"><span class="pre">bench_compile_partitioning.py</span></code>)</a></li>

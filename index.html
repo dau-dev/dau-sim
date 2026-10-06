@@ -253,14 +253,14 @@
 <a class="reference external" href="https://pypi.python.org/pypi/dau-sim"><img alt="PyPI" src="https://img.shields.io/pypi/v/dau-sim.svg" /></a></p>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
-<p>dau-sim simulates digital hardware designs using <a class="reference external" href="https://github.com/Point72/csp">csp</a>’s reactive stream processing engine. Hardware signals become CSP time-series edges, combinational logic becomes CSP nodes, and clock domains become CSP clock processes — giving you cycle-accurate simulation with deterministic event scheduling and multi-clock support.</p>
+<p>dau-sim simulates digital hardware designs on <a class="reference external" href="https://github.com/Point72/csp">csp</a>’s reactive stream processing engine. Hardware signals become CSP time-series edges, combinational logic becomes CSP nodes, and clock domains become CSP clock processes. The result is a cycle-accurate simulator with deterministic event scheduling and multi-clock support.</p>
 <p><strong>Supported inputs:</strong></p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://amaranth-lang.org/">Amaranth HDL</a> — Python-native hardware description</p></li>
-<li><p><a class="reference external" href="https://www.systemverilog.io/">SystemVerilog / Verilog</a> — via <a class="reference external" href="https://github.com/MikePopoloski/pyslang">pyslang</a></p></li>
-<li><p>Hand-constructed IR — for programmatic design generation</p></li>
+<li><p><a class="reference external" href="https://amaranth-lang.org/">Amaranth HDL</a>, Python-native hardware description</p></li>
+<li><p><a class="reference external" href="https://www.systemverilog.io/">SystemVerilog / Verilog</a>, parsed with <a class="reference external" href="https://github.com/MikePopoloski/pyslang">pyslang</a></p></li>
+<li><p>Hand-constructed IR, for programmatic design generation</p></li>
 </ul>
-<p><strong>Output formats:</strong> VCD (IEEE 1364-2001) waveform files, with FST and live streaming planned.</p>
+<p><strong>Output formats:</strong> VCD (IEEE 1364-2001) waveform files. FST and live streaming are planned.</p>
 </section>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
@@ -303,15 +303,15 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 </section>
 <section id="in-the-dau-stack">
 <h2>In the DAU stack<a class="headerlink" href="#in-the-dau-stack" title="Link to this heading">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">dau-sim</span></code> is intentionally generic — it knows nothing about DAU
-contracts or tiles. The wider stack consumes it through composition:
-<code class="docutils literal notranslate"><span class="pre">dau-build</span></code>’s simulate task drives it from the same declarative build
-spec as synthesis, so a design simulates and builds from one description:</p>
+<p><code class="docutils literal notranslate"><span class="pre">dau-sim</span></code> is a general simulator. It knows nothing about DAU contracts or
+tiles. The rest of the stack uses it through composition: the simulate task
+in <code class="docutils literal notranslate"><span class="pre">dau-build</span></code> drives it from the same declarative build spec as synthesis,
+so one description both simulates and builds:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dau-build<span class="w"> </span><span class="nv">task</span><span class="o">=</span>tasks/sim/simulate<span class="w"> </span>model.module<span class="o">=</span>dau_identity_top<span class="w">   </span>model.spec_path<span class="o">=</span>examples/identity/dau-build.yaml
 </pre></div>
 </div>
-<p>Design-specific verification (golden-equal cocotb benches for the DAU
-operator tiles) lives with the tiles in <code class="docutils literal notranslate"><span class="pre">dau-core</span></code>, not here.</p>
+<p>Design-specific verification, such as the golden-equal cocotb benches for
+the DAU operator tiles, lives with the tiles in <code class="docutils literal notranslate"><span class="pre">dau-core</span></code>.</p>
 </section>
 <section id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h2>
@@ -350,7 +350,7 @@ operator tiles) lives with the tiles in <code class="docutils literal notranslat
 </section>
 <section id="license">
 <h2>License<a class="headerlink" href="#license" title="Link to this heading">¶</a></h2>
-<p>This project is licensed under the Apache 2.0 License — see <a class="reference download internal" download="" href="_downloads/9879d6db96fd29134fc802214163b95a/LICENSE"><span class="xref download myst">LICENSE</span></a> for details.</p>
+<p>This project is licensed under the Apache 2.0 License. See <a class="reference download internal" download="" href="_downloads/9879d6db96fd29134fc802214163b95a/LICENSE"><span class="xref download myst">LICENSE</span></a> for details.</p>
 </section>
 </section>
 

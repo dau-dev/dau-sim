@@ -32,15 +32,15 @@ dau simulator
 
 ## Overview
 
-dau-sim simulates digital hardware designs using [csp](https://github.com/Point72/csp)'s reactive stream processing engine. Hardware signals become CSP time-series edges, combinational logic becomes CSP nodes, and clock domains become CSP clock processes — giving you cycle-accurate simulation with deterministic event scheduling and multi-clock support.
+dau-sim simulates digital hardware designs on [csp](https://github.com/Point72/csp)'s reactive stream processing engine. Hardware signals become CSP time-series edges, combinational logic becomes CSP nodes, and clock domains become CSP clock processes. The result is a cycle-accurate simulator with deterministic event scheduling and multi-clock support.
 
 **Supported inputs:**
 
-- [Amaranth HDL](https://amaranth-lang.org/) — Python-native hardware description
-- [SystemVerilog / Verilog](https://www.systemverilog.io/) — via [pyslang](https://github.com/MikePopoloski/pyslang)
-- Hand-constructed IR — for programmatic design generation
+- [Amaranth HDL](https://amaranth-lang.org/), Python-native hardware description
+- [SystemVerilog / Verilog](https://www.systemverilog.io/), parsed with [pyslang](https://github.com/MikePopoloski/pyslang)
+- Hand-constructed IR, for programmatic design generation
 
-**Output formats:** VCD (IEEE 1364-2001) waveform files, with FST and live streaming planned.
+**Output formats:** VCD (IEEE 1364-2001) waveform files. FST and live streaming are planned.
 
 ## Installation
 
@@ -85,17 +85,17 @@ cm.write_vcd("counter.vcd", traces)
 
 ## In the DAU stack
 
-`dau-sim` is intentionally generic — it knows nothing about DAU
-contracts or tiles. The wider stack consumes it through composition:
-`dau-build`'s simulate task drives it from the same declarative build
-spec as synthesis, so a design simulates and builds from one description:
+`dau-sim` is a general simulator. It knows nothing about DAU contracts or
+tiles. The rest of the stack uses it through composition: the simulate task
+in `dau-build` drives it from the same declarative build spec as synthesis,
+so one description both simulates and builds:
 
 ```bash
 dau-build task=tasks/sim/simulate model.module=dau_identity_top   model.spec_path=examples/identity/dau-build.yaml
 ```
 
-Design-specific verification (golden-equal cocotb benches for the DAU
-operator tiles) lives with the tiles in `dau-core`, not here.
+Design-specific verification, such as the golden-equal cocotb benches for
+the DAU operator tiles, lives with the tiles in `dau-core`.
 
 ## Documentation
 
@@ -111,4 +111,4 @@ operator tiles) lives with the tiles in `dau-core`, not here.
 
 ## License
 
-This project is licensed under the Apache 2.0 License — see [LICENSE](LICENSE) for details.
+This project is licensed under the Apache 2.0 License. See [LICENSE](LICENSE) for details.

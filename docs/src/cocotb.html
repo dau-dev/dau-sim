@@ -244,8 +244,8 @@
         <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="cocotb">
 <h1>cocotb<a class="headerlink" href="#cocotb" title="Link to this heading">¶</a></h1>
-<p>dau-sim includes a pure-Python <a class="reference external" href="https://www.cocotb.org/">cocotb</a> backend that lets you run existing cocotb testbenches directly — no Verilog compilation or external simulator required.</p>
-<p>The backend implements Verilog-style non-blocking assignment (NBA) semantics so that <code class="docutils literal notranslate"><span class="pre">RisingEdge</span></code> callbacks see pre-NBA values, matching real HDL simulator behavior.</p>
+<p>dau-sim has a pure-Python <a class="reference external" href="https://www.cocotb.org/">cocotb</a> backend, so existing cocotb testbenches run against it with no Verilog compilation and no external simulator.</p>
+<p>The backend implements Verilog non-blocking assignment (NBA) semantics, so <code class="docutils literal notranslate"><span class="pre">RisingEdge</span></code> callbacks see pre-NBA values, as they would in an HDL simulator.</p>
 <section id="running-a-testbench">
 <h2>Running a testbench<a class="headerlink" href="#running-a-testbench" title="Link to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.frontends</span><span class="w"> </span><span class="kn">import</span> <span class="n">from_amaranth</span>
@@ -300,14 +300,14 @@
 <section id="semantic-contracts">
 <h2>Semantic contracts<a class="headerlink" href="#semantic-contracts" title="Link to this heading">¶</a></h2>
 <ul class="simple">
-<li><p><strong>NBA-correct ordering</strong> — value-change callbacks (<code class="docutils literal notranslate"><span class="pre">RisingEdge</span></code>/<code class="docutils literal notranslate"><span class="pre">FallingEdge</span></code>) observe pre-NBA values; sequential updates are staged then applied.</p></li>
-<li><p><strong>Import order</strong> — <code class="docutils literal notranslate"><span class="pre">cocotb.handle</span></code> must be imported before <code class="docutils literal notranslate"><span class="pre">cocotb._gpi_triggers</span></code> in patched simulator contexts. <code class="docutils literal notranslate"><span class="pre">run_cocotb</span></code> handles this automatically.</p></li>
-<li><p><strong>Multi-domain edge semantics</strong> — posedge and negedge domains can share clocks and progress with correct edge-firing behavior.</p></li>
+<li><p><strong>NBA ordering.</strong> Value-change callbacks (<code class="docutils literal notranslate"><span class="pre">RisingEdge</span></code>, <code class="docutils literal notranslate"><span class="pre">FallingEdge</span></code>) observe pre-NBA values; sequential updates are staged, then applied.</p></li>
+<li><p><strong>Import order.</strong> <code class="docutils literal notranslate"><span class="pre">cocotb.handle</span></code> must be imported before <code class="docutils literal notranslate"><span class="pre">cocotb._gpi_triggers</span></code> in patched simulator contexts. <code class="docutils literal notranslate"><span class="pre">run_cocotb</span></code> does this for you.</p></li>
+<li><p><strong>Multi-domain edges.</strong> Posedge and negedge domains can share a clock and fire on the right edges.</p></li>
 </ul>
 </section>
 <section id="stream-contract-monitoring">
 <h2>Stream contract monitoring<a class="headerlink" href="#stream-contract-monitoring" title="Link to this heading">¶</a></h2>
-<p>Attach the additive checker as an async context manager around existing bench stimulus. It samples only clock edges outside reset and reports the interface prefix, cycle, and rule name on failure.</p>
+<p>Wrap existing bench stimulus in the checker as an async context manager. It samples only clock edges outside reset, and on failure reports the interface prefix, the cycle and the rule that failed.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.integrations.protocol</span><span class="w"> </span><span class="kn">import</span> <span class="n">StreamContractMonitor</span>
 
 
@@ -315,8 +315,8 @@
     <span class="k">await</span> <span class="n">drive_and_drain_one_batch</span><span class="p">(</span><span class="n">dut</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The default payload is <code class="docutils literal notranslate"><span class="pre">data</span></code> plus <code class="docutils literal notranslate"><span class="pre">last</span></code>. A stalled <code class="docutils literal notranslate"><span class="pre">valid</span></code> and its payload must remain stable until <code class="docutils literal notranslate"><span class="pre">ready</span></code>; transfers are counted only when both are high. <code class="docutils literal notranslate"><span class="pre">expected_batches</span></code> makes duplicate or missing <code class="docutils literal notranslate"><span class="pre">last</span></code> assertions decidable and rejects transfers after the final <code class="docutils literal notranslate"><span class="pre">last</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">StatusContractMonitor</span></code> applies the same hold rule to <code class="docutils literal notranslate"><span class="pre">status_valid</span></code>, <code class="docutils literal notranslate"><span class="pre">status_error</span></code>, and <code class="docutils literal notranslate"><span class="pre">status_error_code</span></code>. Set <code class="docutils literal notranslate"><span class="pre">mode=&quot;terminal&quot;</span></code> to require one status per expected batch or <code class="docutils literal notranslate"><span class="pre">mode=&quot;mid_lane&quot;</span></code> to reject success statuses. Both monitors are simulator-neutral cocotb code, so the same bench can use them with dau-sim or Verilator. Neither monitor changes launcher or backend defaults.</p>
+<p>The default payload is <code class="docutils literal notranslate"><span class="pre">data</span></code> plus <code class="docutils literal notranslate"><span class="pre">last</span></code>. A stalled <code class="docutils literal notranslate"><span class="pre">valid</span></code> and its payload must stay stable until <code class="docutils literal notranslate"><span class="pre">ready</span></code>; a transfer is counted only when both are high. <code class="docutils literal notranslate"><span class="pre">expected_batches</span></code> lets the monitor decide whether a <code class="docutils literal notranslate"><span class="pre">last</span></code> is duplicated or missing, and rejects transfers after the final <code class="docutils literal notranslate"><span class="pre">last</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">StatusContractMonitor</span></code> applies the same hold rule to <code class="docutils literal notranslate"><span class="pre">status_valid</span></code>, <code class="docutils literal notranslate"><span class="pre">status_error</span></code> and <code class="docutils literal notranslate"><span class="pre">status_error_code</span></code>. <code class="docutils literal notranslate"><span class="pre">mode=&quot;terminal&quot;</span></code> requires one status per expected batch; <code class="docutils literal notranslate"><span class="pre">mode=&quot;mid_lane&quot;</span></code> rejects success statuses. Both monitors are plain cocotb code with no simulator dependency, so one bench can use them under dau-sim or Verilator. Neither changes launcher or backend defaults.</p>
 </section>
 <section id="api">
 <h2>API<a class="headerlink" href="#api" title="Link to this heading">¶</a></h2>

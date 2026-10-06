@@ -281,40 +281,40 @@
 <h3>Frontends<a class="headerlink" href="#frontends" title="Link to this heading">¶</a></h3>
 <p>Convert external design representations into the dau-sim IR:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">from_amaranth()</span></code> — walks the Amaranth elaboration graph, lowering <code class="docutils literal notranslate"><span class="pre">Module</span></code>, <code class="docutils literal notranslate"><span class="pre">Signal</span></code>, and clock-domain assignments to IR nodes.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">parse_sv()</span></code> / <code class="docutils literal notranslate"><span class="pre">parse_sv_file()</span></code> — uses pyslang to parse SystemVerilog/Verilog source and maps the resulting AST to IR nodes.</p></li>
-<li><p>IR can also be constructed directly for programmatic design generation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">from_amaranth()</span></code> walks the Amaranth elaboration graph and lowers <code class="docutils literal notranslate"><span class="pre">Module</span></code>, <code class="docutils literal notranslate"><span class="pre">Signal</span></code> and clock-domain assignments to IR nodes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">parse_sv()</span></code> and <code class="docutils literal notranslate"><span class="pre">parse_sv_file()</span></code> parse SystemVerilog or Verilog source with pyslang and map the resulting AST to IR nodes.</p></li>
+<li><p>The IR can also be built directly, for programmatic design generation.</p></li>
 </ul>
 </section>
 <section id="intermediate-representation-ir">
 <h3>Intermediate Representation (IR)<a class="headerlink" href="#intermediate-representation-ir" title="Link to this heading">¶</a></h3>
-<p>A flat, typed graph of <code class="docutils literal notranslate"><span class="pre">Module</span></code>, <code class="docutils literal notranslate"><span class="pre">Signal</span></code>, <code class="docutils literal notranslate"><span class="pre">Port</span></code>, <code class="docutils literal notranslate"><span class="pre">ClockDomain</span></code>, <code class="docutils literal notranslate"><span class="pre">CombBlock</span></code>, <code class="docutils literal notranslate"><span class="pre">SeqBlock</span></code>, and expression/statement nodes. The IR is the single canonical form that all frontends target and all compiler passes consume.</p>
+<p>A flat, typed graph of <code class="docutils literal notranslate"><span class="pre">Module</span></code>, <code class="docutils literal notranslate"><span class="pre">Signal</span></code>, <code class="docutils literal notranslate"><span class="pre">Port</span></code>, <code class="docutils literal notranslate"><span class="pre">ClockDomain</span></code>, <code class="docutils literal notranslate"><span class="pre">CombBlock</span></code>, <code class="docutils literal notranslate"><span class="pre">SeqBlock</span></code> and expression and statement nodes. Every frontend produces this form and every compiler pass consumes it.</p>
 <p>Key files: <code class="docutils literal notranslate"><span class="pre">dau_sim/ir/module.py</span></code>, <code class="docutils literal notranslate"><span class="pre">dau_sim/ir/expr.py</span></code>, <code class="docutils literal notranslate"><span class="pre">dau_sim/ir/stmt.py</span></code>, <code class="docutils literal notranslate"><span class="pre">dau_sim/ir/types.py</span></code>.</p>
 </section>
 <section id="compiler">
 <h3>Compiler<a class="headerlink" href="#compiler" title="Link to this heading">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">compile_module()</span></code> performs:</p>
 <ol class="arabic simple">
-<li><p><strong>Dependency analysis</strong> — determines which combinational blocks depend on which signals (<code class="docutils literal notranslate"><span class="pre">depanalysis.py</span></code>).</p></li>
-<li><p><strong>Code generation</strong> — emits flat Python functions from IR statement/expression trees (<code class="docutils literal notranslate"><span class="pre">codegen.py</span></code>).</p></li>
-<li><p><strong>Optimization</strong> — selects the appropriate execution tier (interpreter, fast-tick, or batch no-trace) based on design characteristics.</p></li>
+<li><p><strong>Dependency analysis</strong> works out which combinational blocks depend on which signals (<code class="docutils literal notranslate"><span class="pre">depanalysis.py</span></code>).</p></li>
+<li><p><strong>Code generation</strong> emits flat Python functions from the IR statement and expression trees (<code class="docutils literal notranslate"><span class="pre">codegen.py</span></code>).</p></li>
+<li><p><strong>Optimization</strong> picks the execution tier (interpreter, fast-tick, or batch no-trace) that the design qualifies for.</p></li>
 </ol>
 </section>
 <section id="csp-engine">
 <h3>CSP Engine<a class="headerlink" href="#csp-engine" title="Link to this heading">¶</a></h3>
 <p>The compiled design runs inside a <a class="reference external" href="https://github.com/Point72/csp">csp</a> graph:</p>
 <ul class="simple">
-<li><p>Hardware signals → CSP time-series edges</p></li>
-<li><p>Combinational logic → CSP nodes (selective-settle: only re-evaluated when inputs change)</p></li>
-<li><p>Clock domains → CSP clock processes with correct posedge/negedge semantics</p></li>
+<li><p>Hardware signals are CSP time-series edges.</p></li>
+<li><p>Combinational logic is a set of CSP nodes, re-evaluated only when an input changes (selective settle).</p></li>
+<li><p>Clock domains are CSP clock processes with posedge and negedge semantics.</p></li>
 </ul>
 </section>
 <section id="adapters">
 <h3>Adapters<a class="headerlink" href="#adapters" title="Link to this heading">¶</a></h3>
 <p>Post-simulation output:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">write_vcd()</span></code> / <code class="docutils literal notranslate"><span class="pre">traces_to_vcd()</span></code> — IEEE 1364-2001 VCD waveform files</p></li>
-<li><p>FST and live streaming are planned</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">write_vcd()</span></code> and <code class="docutils literal notranslate"><span class="pre">traces_to_vcd()</span></code> produce IEEE 1364-2001 VCD waveform files.</p></li>
+<li><p>FST and live streaming are planned.</p></li>
 </ul>
 </section>
 </section>

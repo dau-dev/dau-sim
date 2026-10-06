@@ -244,15 +244,15 @@
         <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="cli">
 <h1>CLI<a class="headerlink" href="#cli" title="Link to this heading">¶</a></h1>
-<p>dau-sim ships a <a class="reference external" href="https://typer.tiangolo.com/">Typer</a>-based CLI for quick simulation and performance checks.</p>
+<p>dau-sim has a <a class="reference external" href="https://typer.tiangolo.com/">Typer</a> CLI for quick simulations and performance checks.</p>
 <section id="commands">
 <h2>Commands<a class="headerlink" href="#commands" title="Link to this heading">¶</a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dau-sim<span class="w"> </span>run-sv<span class="w"> </span>design.sv<span class="w"> </span>--top<span class="w"> </span>top_module<span class="w"> </span>--cycles<span class="w"> </span><span class="m">1000</span><span class="w"> </span>--vcd<span class="w"> </span>out.vcd
 dau-sim<span class="w"> </span>perf-sv<span class="w"> </span>design.sv<span class="w"> </span>--top<span class="w"> </span>top_module<span class="w"> </span>--cycles<span class="w"> </span><span class="m">30000</span><span class="w"> </span>--repeats<span class="w"> </span><span class="m">3</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">run-sv</span></code> executes a SystemVerilog design and prints the latest value of each signal after the requested number of cycles. Use <code class="docutils literal notranslate"><span class="pre">--vcd</span></code> to additionally write a VCD waveform file.</p>
-<p><code class="docutils literal notranslate"><span class="pre">perf-sv</span></code> composes and invokes the <code class="docutils literal notranslate"><span class="pre">task=tasks/analysis/perf-sv</span></code> ccflow task. It reports compile-time and simulation-time separately, along with node-separation diagnostics. CLI options populate the same task model fields that Hydra callers can override, so programmatic and command-line runs share configuration and result provenance.</p>
+<p><code class="docutils literal notranslate"><span class="pre">run-sv</span></code> runs a SystemVerilog design and prints the final value of each signal after the requested number of cycles. Add <code class="docutils literal notranslate"><span class="pre">--vcd</span></code> to write a VCD waveform file as well.</p>
+<p><code class="docutils literal notranslate"><span class="pre">perf-sv</span></code> composes and runs the <code class="docutils literal notranslate"><span class="pre">task=tasks/analysis/perf-sv</span></code> ccflow task. It reports compile time and simulation time separately, plus node-separation diagnostics. The CLI options fill the same task model fields that Hydra callers override, so command-line and programmatic runs share one configuration and one result type.</p>
 <p>The packaged task can also be composed directly:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_request_config</span>
 
