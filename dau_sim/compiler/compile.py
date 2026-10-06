@@ -1116,7 +1116,7 @@ class CompiledModule:
         for s in module.signals:
             self._shapes[s.name] = s.shape
             self._net_kinds[s.name] = s.net_kind
-        # Phase 2: precompute domain info and init values
+        # precompute domain info and init values
         self._domain_info = _build_domain_info(module)
         self._init_values = _collect_init_values(module)
         self._has_seq = (
@@ -1318,8 +1318,8 @@ class CompiledModule:
         ``cycles`` means full clock cycles.  The simulation timer runs at
         half-period resolution so clock edges are modeled correctly.
 
-        For purely combinational modules, ``cycles`` means evaluation ticks
-        (backward compatible with Phase 0/1).
+        For purely combinational modules there are no clock edges, so
+        ``cycles`` means evaluation ticks.
 
         ``clocks`` optionally maps domain names to their clock period.  If
         omitted, all domains use ``clock_period``.
@@ -1443,7 +1443,7 @@ class CompiledModule:
         return_traces: bool,
         output_numpy: bool,
     ) -> dict[str, list[tuple[datetime, int]]]:
-        """Phase 0/1 mode: one evaluation per timer tick, no edge semantics."""
+        """Combinational tick mode: one evaluation per timer tick, no edge semantics."""
         seq_blocks = self.module.seq_blocks
 
         @csp.graph
@@ -1495,7 +1495,7 @@ class CompiledModule:
         return_traces: bool,
         output_numpy: bool,
     ) -> dict[str, list[tuple[datetime, int]]]:
-        """Phase 2 mode: clock-edge-driven sequential simulation."""
+        """Clock-edge mode: edge-driven sequential simulation."""
         # Compute per-domain half-period in ticks (mutates domain_info dicts)
         gcd_ns = _compute_half_period_ticks(clock_period, clocks, domain_info)
 
