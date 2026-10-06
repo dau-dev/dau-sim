@@ -1,6 +1,6 @@
 # Verilog / SystemVerilog
 
-dau-sim parses SystemVerilog and Verilog source via [pyslang](https://github.com/MikePopoloski/pyslang), then lowers the AST to the dau-sim IR.
+dau-sim parses SystemVerilog and Verilog source with [pyslang](https://github.com/MikePopoloski/pyslang), then lowers the AST to the dau-sim IR.
 
 ## Simulate from source string
 
@@ -36,7 +36,7 @@ traces = cm.run(cycles=10, inputs={"a": 42, "b": 10})
 
 ## Hand-constructed IR
 
-For programmatic design generation you can build the IR directly without a frontend:
+For programmatic design generation, build the IR directly and skip the frontend:
 
 ```python
 from dau_sim.ir import *

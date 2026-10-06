@@ -24,12 +24,12 @@ sim.write_vcd("out.vcd", result)
 
 ## Compiler
 
-| Function / Method                              | Description                            |
-| ---------------------------------------------- | -------------------------------------- |
-| `compile_module(module, four_state=False)`     | Compile IR `Module` → `CompiledModule` |
-| `cm.run(cycles, clock_period, inputs, clocks)` | Simulate and return traces             |
-| `cm.write_vcd(path, traces, timescale="1ns")`  | Write traces to VCD file               |
-| `cm.traces_to_vcd(traces, timescale="1ns")`    | Convert traces to VCD string           |
+| Function / Method                              | Description                                  |
+| ---------------------------------------------- | -------------------------------------------- |
+| `compile_module(module, four_state=False)`     | Compile an IR `Module` to a `CompiledModule` |
+| `cm.run(cycles, clock_period, inputs, clocks)` | Simulate and return traces                   |
+| `cm.write_vcd(path, traces, timescale="1ns")`  | Write traces to VCD file                     |
+| `cm.traces_to_vcd(traces, timescale="1ns")`    | Convert traces to VCD string                 |
 
 ## Backends
 
@@ -40,9 +40,9 @@ sim.write_vcd("out.vcd", result)
 
 ## Composed configuration
 
-Simulation profiles live in the Hydra `profile` group and instantiate ccflow models in `ModelRegistry`. The packaged profile selects as `profile=profiles/ready-valid-sum`; packages and user config directories can contribute more `profile/profiles/*.yaml` entries without importing registration code.
+Simulation profiles are options in the Hydra `profile` group and instantiate ccflow models in `ModelRegistry`. The packaged profile is selected with `profile=profiles/ready-valid-sum`. Other packages and user config directories can add `profile/profiles/*.yaml` entries of their own; no registration code is needed.
 
-`PerfSvTask` is a ccflow `CallableModel`, selected with `task=tasks/analysis/perf-sv`. It returns `PerfSvResult`, whose benchmark, node-separation, and comparison metrics are `ResultBase` models.
+`PerfSvTask` is a ccflow `CallableModel`, selected with `task=tasks/analysis/perf-sv`. It returns a `PerfSvResult` whose benchmark, node-separation and comparison metrics are `ResultBase` models.
 
 ## IR types
 
