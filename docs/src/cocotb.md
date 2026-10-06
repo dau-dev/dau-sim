@@ -1,8 +1,8 @@
 # cocotb
 
-dau-sim includes a pure-Python [cocotb](https://www.cocotb.org/) backend that lets you run existing cocotb testbenches directly — no Verilog compilation or external simulator required.
+dau-sim has a pure-Python [cocotb](https://www.cocotb.org/) backend, so existing cocotb testbenches run against it with no Verilog compilation and no external simulator.
 
-The backend implements Verilog-style non-blocking assignment (NBA) semantics so that `RisingEdge` callbacks see pre-NBA values, matching real HDL simulator behavior.
+The backend implements Verilog non-blocking assignment (NBA) semantics, so `RisingEdge` callbacks see pre-NBA values, as they would in an HDL simulator.
 
 ## Running a testbench
 
@@ -58,13 +58,13 @@ async def test_counting(dut):
 
 ## Semantic contracts
 
-- **NBA-correct ordering** — value-change callbacks (`RisingEdge`/`FallingEdge`) observe pre-NBA values; sequential updates are staged then applied.
-- **Import order** — `cocotb.handle` must be imported before `cocotb._gpi_triggers` in patched simulator contexts. `run_cocotb` handles this automatically.
-- **Multi-domain edge semantics** — posedge and negedge domains can share clocks and progress with correct edge-firing behavior.
+- **NBA ordering.** Value-change callbacks (`RisingEdge`, `FallingEdge`) observe pre-NBA values; sequential updates are staged, then applied.
+- **Import order.** `cocotb.handle` must be imported before `cocotb._gpi_triggers` in patched simulator contexts. `run_cocotb` does this for you.
+- **Multi-domain edges.** Posedge and negedge domains can share a clock and fire on the right edges.
 
 ## Stream contract monitoring
 
-Attach the additive checker as an async context manager around existing bench stimulus. It samples only clock edges outside reset and reports the interface prefix, cycle, and rule name on failure.
+Wrap existing bench stimulus in the checker as an async context manager. It samples only clock edges outside reset, and on failure reports the interface prefix, the cycle and the rule that failed.
 
 ```python
 from dau_sim.integrations.protocol import StreamContractMonitor
@@ -74,9 +74,9 @@ async with StreamContractMonitor(dut, dut.clk, "output_", reset=dut.rst, expecte
     await drive_and_drain_one_batch(dut)
 ```
 
-The default payload is `data` plus `last`. A stalled `valid` and its payload must remain stable until `ready`; transfers are counted only when both are high. `expected_batches` makes duplicate or missing `last` assertions decidable and rejects transfers after the final `last`.
+The default payload is `data` plus `last`. A stalled `valid` and its payload must stay stable until `ready`; a transfer is counted only when both are high. `expected_batches` lets the monitor decide whether a `last` is duplicated or missing, and rejects transfers after the final `last`.
 
-`StatusContractMonitor` applies the same hold rule to `status_valid`, `status_error`, and `status_error_code`. Set `mode="terminal"` to require one status per expected batch or `mode="mid_lane"` to reject success statuses. Both monitors are simulator-neutral cocotb code, so the same bench can use them with dau-sim or Verilator. Neither monitor changes launcher or backend defaults.
+`StatusContractMonitor` applies the same hold rule to `status_valid`, `status_error` and `status_error_code`. `mode="terminal"` requires one status per expected batch; `mode="mid_lane"` rejects success statuses. Both monitors are plain cocotb code with no simulator dependency, so one bench can use them under dau-sim or Verilator. Neither changes launcher or backend defaults.
 
 ## API
 

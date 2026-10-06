@@ -1,8 +1,8 @@
 # Amaranth
 
-dau-sim accepts any [Amaranth HDL](https://amaranth-lang.org/) `Elaboratable` or `Component` via `from_amaranth()`, which lowers it to the dau-sim IR before compilation.
+dau-sim accepts any [Amaranth HDL](https://amaranth-lang.org/) `Elaboratable` or `Component` through `from_amaranth()`, which lowers it to the dau-sim IR before compilation.
 
-## Basic example — counter
+## Basic example: a counter
 
 ```python
 from amaranth.hdl import Module
@@ -76,5 +76,5 @@ cm.write_vcd("shift_reg.vcd", traces, timescale="1ns")
 ## Notes
 
 - Any Amaranth `wiring.Component` or plain `Elaboratable` is accepted.
-- Clock domains are inferred from `m.d.<domain>` usage; `sync` maps to a default 1 MHz clock that can be overridden with `clock_period`.
+- Clock domains are inferred from `m.d.<domain>` usage. `sync` maps to a default 1 MHz clock; override it with `clock_period`.
 - See the [API reference](api.md) for the full `from_amaranth` signature.

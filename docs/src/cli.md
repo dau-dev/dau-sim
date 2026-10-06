@@ -1,6 +1,6 @@
 # CLI
 
-dau-sim ships a [Typer](https://typer.tiangolo.com/)-based CLI for quick simulation and performance checks.
+dau-sim has a [Typer](https://typer.tiangolo.com/) CLI for quick simulations and performance checks.
 
 ## Commands
 
@@ -9,9 +9,9 @@ dau-sim run-sv design.sv --top top_module --cycles 1000 --vcd out.vcd
 dau-sim perf-sv design.sv --top top_module --cycles 30000 --repeats 3
 ```
 
-`run-sv` executes a SystemVerilog design and prints the latest value of each signal after the requested number of cycles. Use `--vcd` to additionally write a VCD waveform file.
+`run-sv` runs a SystemVerilog design and prints the final value of each signal after the requested number of cycles. Add `--vcd` to write a VCD waveform file as well.
 
-`perf-sv` composes and invokes the `task=tasks/analysis/perf-sv` ccflow task. It reports compile-time and simulation-time separately, along with node-separation diagnostics. CLI options populate the same task model fields that Hydra callers can override, so programmatic and command-line runs share configuration and result provenance.
+`perf-sv` composes and runs the `task=tasks/analysis/perf-sv` ccflow task. It reports compile time and simulation time separately, plus node-separation diagnostics. The CLI options fill the same task model fields that Hydra callers override, so command-line and programmatic runs share one configuration and one result type.
 
 The packaged task can also be composed directly:
 
