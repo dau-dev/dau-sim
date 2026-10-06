@@ -251,15 +251,15 @@ class _ParallelView:
         All other threads wait at the barrier.
         """
         for _ in range(n):
-            # Phase 1: all threads arrive at the barrier
+            # all threads arrive at the barrier
             idx = self._barrier.wait()
 
-            # Phase 2: exactly one thread (the one that gets index 0 from barrier)
+            # exactly one thread (the one that gets index 0 from the barrier)
             # performs the tick
             if idx == 0:
                 self._ctx.tick(1)
 
-            # Phase 3: wait until tick is complete before any thread proceeds
+            # wait until the tick is complete before any thread proceeds
             self._barrier.wait()
 
     def assert_eq(self, signal: str, expected: int, msg: str = "") -> None:
