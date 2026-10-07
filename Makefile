@@ -1,33 +1,26 @@
 #########
 # BUILD #
 #########
-.PHONY: develop-py develop
-develop-py:
+.PHONY: develop build install
+
+develop:  ## install dependencies and build library
 	uv pip install -e .[develop]
 
-develop: develop-py  ## setup project for development
-
-.PHONY: requirements-py requirements
-requirements-py:  ## install prerequisite python build requirements
+requirements:  ## install prerequisite python build requirements
 	uv pip install -r pyproject.toml --extra develop
 
-requirements: requirements-py  ## setup project for development
+build:  ## build the python library
+	python -m build -n
 
-.PHONY: build-py build
-build-py:
-	python -m build -w -n
-
-build: build-py  ## build the project
-
-.PHONY: install
-install:  ## install python library
+install:  ## install library
 	uv pip install .
 
 #########
 # LINTS #
 #########
-.PHONY: lint-py lint-docs lint lints
-lint-py:  ## run python linter with ruff
+.PHONY: lint-py lint-docs fix-py fix-docs lint lints fix format
+
+lint-py:  ## lint python with ruff
 	python -m ruff check dau_sim
 	python -m ruff format --check dau_sim
 
@@ -35,13 +28,7 @@ lint-docs:  ## lint docs with mdformat and codespell
 	python -m mdformat --check README.md docs/src
 	python -m codespell_lib README.md docs/src
 
-lint: lint-py lint-docs  ## run project linters
-
-# alias
-lints: lint
-
-.PHONY: fix-py fix-docs fix format
-fix-py:  ## fix python formatting with ruff
+fix-py:  ## autoformat python code with ruff
 	python -m ruff check --fix dau_sim
 	python -m ruff format dau_sim
 
@@ -49,9 +36,9 @@ fix-docs:  ## autoformat docs with mdformat and codespell
 	python -m mdformat README.md docs/src
 	python -m codespell_lib --write README.md docs/src
 
-fix: fix-py fix-docs  ## run project autoformatters
-
-# alias
+lint: lint-py lint-docs  ## run all linters
+lints: lint
+fix: fix-py fix-docs  ## run all autoformatters
 format: fix
 
 ################
@@ -67,29 +54,21 @@ check-types:  ## check python types with ty
 
 checks: check-dist
 
-# alias
+# Alias
 check: checks
 
 #########
 # TESTS #
 #########
-.PHONY: test-py tests-py coverage-py
-test-py:  ## run python tests
+.PHONY: test coverage tests
+
+test:  ## run python tests
 	python -m pytest -v dau_sim/tests
 
-# alias
-tests-py: test-py
-
-coverage-py:  ## run python tests and collect test coverage
+coverage:  ## run tests and collect test coverage
 	python -m pytest -v dau_sim/tests --cov=dau_sim --cov-report term-missing --cov-report xml
 
-# alias
-
-.PHONY: test coverage tests
-test: test-py  ## run all tests
-coverage: coverage-py  ## run all tests and collect test coverage
-
-# alias
+# Alias
 tests: test
 
 ##############
@@ -142,15 +121,15 @@ major:  ## bump a major version
 ########
 # DIST #
 ########
-.PHONY: dist dist-py dist-check publish
+.PHONY: dist dist-build dist-sdist dist-local-wheel publish
 
-dist-py:  ## build python dists
+dist-build:  # build python dists
 	python -m build -w -s
 
 dist-check:  ## run python dist checker with twine
 	python -m twine check dist/*
 
-dist: clean build dist-py dist-check  ## build all dists
+dist: clean dist-build dist-check  ## build all dists
 
 publish: dist  ## publish python assets
 
