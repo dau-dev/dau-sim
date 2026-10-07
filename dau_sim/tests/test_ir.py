@@ -327,3 +327,12 @@ def test_memory_construction():
     assert len(mem.read_ports) == 1
     assert len(mem.write_ports) == 1
     assert mem.init == (0, 1, 2, 3)
+
+
+def test_port_by_name_finds_a_port_that_is_not_first():
+    a = Port(signal=Signal(name="a", shape=Shape(1)), direction=PortDirection.INPUT)
+    b = Port(signal=Signal(name="b", shape=Shape(1)), direction=PortDirection.OUTPUT)
+    m = Module(name="m", ports=(a, b))
+    assert m.port_by_name("a") is a
+    assert m.port_by_name("b") is b
+    assert m.port_by_name("c") is None

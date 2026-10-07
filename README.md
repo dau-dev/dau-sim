@@ -68,7 +68,8 @@ in `dau-build` drives it from the same declarative build spec as synthesis,
 so one description both simulates and builds:
 
 ```bash
-dau-build task=tasks/sim/simulate model.module=dau_identity_top   model.spec_path=examples/identity/dau-build.yaml
+# in a dau-build checkout, which carries the identity example
+dau-build task=tasks/sim/simulate model.module=dau_identity_top model.spec_path=examples/identity/dau-build.yaml
 ```
 
 Design-specific verification, such as the golden-equal cocotb benches for

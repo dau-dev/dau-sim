@@ -34,21 +34,10 @@ DAU_BENCH_CYCLES=100000 pytest dau_sim/benchmarks/bench_cross_simulators.py \
 | verilator-compile-run | 4.85 s | 52× slower           | 1.7× faster |
 | amaranth-sim          | 8.08 s | 87× slower           | 1.0×        |
 
-#### Results at 100k cycles
-
-| Backend               | Mean     | vs Verilator runtime | vs Amaranth |
-| --------------------- | -------- | -------------------- | ----------- |
-| verilator-runtime     | 22.5 ms  | 1.0×                 | 70× faster  |
-| dau-sim               | 154 ms   | 6.8× slower          | 10× faster  |
-| amaranth-sim          | 1,568 ms | 70× slower           | 1.0×        |
-| verilator-compile-run | 4,509 ms | 200× slower          | 2.9× faster |
-
-Key observations:
-
-- **dau-sim is 3–10× faster than Amaranth's pysim** at every cycle count, and the gap widens at higher counts because dau-sim's per-tick overhead is lower.
-- **Verilator's runtime sets the upper bound**: compiled C++ runs the counter at about 5M cycles/sec. dau-sim is 7–27× behind, depending on cycle count.
-- **Verilator compile+run is slower than dau-sim** for small and medium workloads because compilation dominates. dau-sim has no compile step, which matters when you are iterating on a design.
-- The Amaranth counter has a reset signal (`rst`), which keeps dau-sim off its fastest batch path. For IR designs without a reset, dau-sim takes about 30 ms for 100k cycles, 1.3× slower than Verilator's runtime.
+The 500k-cycle table is the run recorded in
+`dau_sim/benchmarks/results/cross-runtime-500k.json` (2026-04-03, one laptop,
+machine details in the file). Rerun the suite on your machine before comparing
+against it; the ratios move with the host.
 
 ### Compile partitioning (`bench_compile_partitioning.py`)
 
@@ -80,7 +69,7 @@ The compiler generates flat Python functions from the IR statement and expressio
 1. Re-evaluates the affected combinational blocks (selective settle)
 1. Emits trace output if requested
 
-This path handles every design, including those with resets, combinational logic and memories.
+This path handles the designs the frontends lower, including those with resets, combinational logic and memories.
 
 ### Fast-tick path
 
@@ -90,13 +79,10 @@ For designs with **no combinational logic, no memories and no resets**, the comp
 
 When `return_traces=False` and the design qualifies for fast-tick, dau-sim skips the CSP engine and runs every tick in a plain Python `for` loop. For a 200k-tick simulation that removes about 400k CSP scheduling events.
 
-### Performance by execution mode (100k-cycle counter)
-
-| Mode                                    | Time   | Speedup vs interpreter | Throughput      |
-| --------------------------------------- | ------ | ---------------------- | --------------- |
-| Interpreter (pre-optimization baseline) | 420 ms | 1.0×                   | 238k cycles/sec |
-| CSP compiled (with fast-tick)           | 71 ms  | 5.9×                   | 1.4M cycles/sec |
-| Batch no-trace                          | 30 ms  | 13.9×                  | 3.3M cycles/sec |
+The batch path skips the CSP engine entirely, so for a qualifying design its
+cost is the generated tick function alone; the saving over the compiled path is
+the engine's per-tick overhead. Measure it with `perf-sv` on the design you
+care about rather than taking a number from here.
 
 ## Running benchmarks
 

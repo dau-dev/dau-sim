@@ -250,9 +250,9 @@ def _lower_lhs(val, names: _SignalNames) -> str:
     if isinstance(val, ASignal):
         return names.get(val)
     if isinstance(val, ASlice):
-        # Slice assignment: we need to handle this at the Assign level
-        # For now, treat as assigning to the base signal (width handled by IR)
-        return _lower_lhs(val.value, names)
+        # a slice on the left would be lowered as a write of the whole signal,
+        # clobbering the bits outside the slice; refuse until it is lowered properly
+        raise NotImplementedError(f"slice assignment to {names.get(val.value)}[{val.start}:{val.stop}] is not supported; assign the whole signal")
     raise NotImplementedError(f"Unsupported LHS: {type(val).__name__}")
 
 

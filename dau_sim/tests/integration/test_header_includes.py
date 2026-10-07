@@ -13,11 +13,9 @@ the runner and checks the same contract everywhere the suite runs.
 from __future__ import annotations
 
 from pathlib import Path
-from shutil import which
-
-import pytest
 
 from dau_sim.integrations.cocotb import run_cocotb_testbench
+from dau_sim.tests.verilator_support import requires_cocotb_verilator
 
 _HEADER = """\
 `ifndef WIDTH_SVH
@@ -53,7 +51,7 @@ async def increments(dut):
 """
 
 
-@pytest.mark.skipif(which("verilator") is None, reason="verilator not found")
+@requires_cocotb_verilator
 def test_a_header_beside_its_source_is_found(tmp_path: Path, monkeypatch) -> None:
     """Without the include path this raises CalledProcessError from verilator."""
     hdl = tmp_path / "hdl"

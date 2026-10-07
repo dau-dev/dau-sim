@@ -77,7 +77,7 @@ def collect_stmt_writes(stmt: Stmt) -> set[str]:
     return set()
 
 
-@dataclass
+@dataclass(frozen=True)
 class Assignment:
     """A single combinational assignment with its dependency info.
 

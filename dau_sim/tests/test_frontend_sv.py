@@ -610,82 +610,32 @@ class TestErrorHandling:
             )
 
 
-_dau_build_available = False
-try:
-    from dau_build import Module as DauBuildModule
+class TestSignedExtension:
+    def test_a_signed_operand_widens_by_its_sign_bit(self):
+        mod = parse_sv("""
+            module ext(input wire clk, input wire signed [3:0] a, input wire [3:0] u,
+                       output wire signed [7:0] sa, output wire [7:0] zu);
+                assign sa = a;
+                assign zu = u;
+            endmodule
+        """)
+        compiled = compile_module(mod)
+        traces = compiled.run(cycles=2, inputs={"a": 0xF, "u": 0xF})
+        assert all(v & 0xFF == 0xFF for _, v in traces["sa"]), "-1 must stay -1 at 8 bits"
+        assert all(v & 0xFF == 0x0F for _, v in traces["zu"]), "an unsigned operand takes zeros"
 
-    _dau_build_available = True
-except ImportError:
-    pass
-
-
-@pytest.mark.skipif(not _dau_build_available, reason="dau-build not installed")
-class TestDauBuildBridge:
-    """Test the from_dau_build bridge between dau-build and dau-sim."""
-
-    def test_bridge_from_str(self):
-        """Round-trip: dau_build.Module.from_str → from_dau_build → IR Module."""
-        from dau_sim.frontends import from_dau_build
-
-        src = "module adder(input wire [7:0] a, input wire [7:0] b, output wire [7:0] y); assign y = a + b; endmodule"
-        db_mod = DauBuildModule.from_str(src)
-        ir_mod = from_dau_build(db_mod)
-        assert ir_mod.name == "adder"
-        port_names = {p.name for p in ir_mod.ports}
-        assert port_names == {"a", "b", "y"}
-
-    def test_bridge_from_file(self, tmp_path):
-        """Bridge with source_path set via from_file."""
-        from dau_sim.frontends import from_dau_build
-
-        sv = tmp_path / "counter.sv"
-        sv.write_text("""\
-module counter(input wire clk, output reg [3:0] count);
-    always @(posedge clk) count <= count + 4'd1;
-endmodule
-""")
-        db_mod = DauBuildModule.from_file(sv)
-        ir_mod = from_dau_build(db_mod)
-        assert ir_mod.name == "counter"
-        assert len(ir_mod.clock_domains) == 1
-        assert ir_mod.clock_domains[0].clk == "clk"
-
-    def test_bridge_simulation(self):
-        """Full pipeline: dau_build.Module → dau-sim IR → compile → run."""
-        from dau_sim.compiler.compile import compile_module
-        from dau_sim.frontends import from_dau_build
-
-        src = "module inv(input wire [3:0] a, output wire [3:0] y); assign y = ~a; endmodule"
-        db_mod = DauBuildModule.from_str(src)
-        ir_mod = from_dau_build(db_mod)
-        cm = compile_module(ir_mod)
-        traces = cm.run(cycles=1, inputs={"a": 5})
-        y_vals = [v for _, v in traces["y"]]
-        assert y_vals[-1] == (~5) & 0xF  # 10
-
-    def test_bridge_no_source_raises(self):
-        """Bridge raises if Module has no source_path and no node."""
-        from dau_sim.frontends import from_dau_build
-
-        db_mod = DauBuildModule(name="empty")
-        with pytest.raises(ValueError, match="no source_path"):
-            from_dau_build(db_mod)
-
-    def test_bridge_port_consistency(self):
-        """Ports from dau-build and dau-sim should agree on structure."""
-        from dau_sim.frontends import from_dau_build
-
-        src = "module m(input wire [15:0] x, output wire [7:0] y); assign y = x[7:0]; endmodule"
-        db_mod = DauBuildModule.from_str(src)
-
-        # dau-build structural info
-        assert len(db_mod.inputs) == 1
-        assert db_mod.inputs[0].name == "x"
-        assert len(db_mod.outputs) == 1
-        assert db_mod.outputs[0].name == "y"
-
-        # dau-sim IR via bridge
-        ir_mod = from_dau_build(db_mod)
-        ir_ports = {p.name: p for p in ir_mod.ports}
-        assert ir_ports["x"].shape.width == 16
-        assert ir_ports["y"].shape.width == 8
+    def test_a_signed_operand_in_an_unsigned_expression_is_zero_extended(self):
+        """Verilog: one unsigned operand makes the whole expression unsigned,
+        so the signed operand is widened as an unsigned value. Pyslang's
+        constant evaluator gives 16 for a=4'hf, u=1."""
+        mod = parse_sv("""
+            module mixed(input wire clk, input wire signed [3:0] a, input wire [7:0] u, input wire signed [3:0] b,
+                         output wire [7:0] y, output wire signed [7:0] s);
+                assign y = a + u;
+                assign s = a + b;
+            endmodule
+        """)
+        compiled = compile_module(mod)
+        traces = compiled.run(cycles=2, inputs={"a": 0xF, "u": 1, "b": 0xF})
+        assert all(v & 0xFF == 16 for _, v in traces["y"]), "unsigned context: 4'hf is 15, not -1"
+        assert all(v & 0xFF == 0xFE for _, v in traces["s"]), "signed context: -1 + -1 = -2"

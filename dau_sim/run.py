@@ -11,10 +11,13 @@ from datetime import timedelta
 from pathlib import Path
 
 from ccflow import CallableModel, Flow, NullContext, ResultBase
+from pydantic import ConfigDict, Field
 
 
 class RunSvResult(ResultBase):
     """The final value of every signal after the run, and where the VCD went."""
+
+    model_config = ConfigDict(frozen=True)
 
     module_name: str
     cycles: int
@@ -28,22 +31,28 @@ class RunSvTask(CallableModel):
     held, and report every signal's final value. With ``vcd`` set, the
     traces are written there at ``timescale``."""
 
+    model_config = ConfigDict(frozen=True)
+
     path: Path
     top: str | None = None
-    cycles: int = 10
-    clock_period_us: float = 1.0
+    cycles: int = Field(default=10, ge=1)
+    clock_period_us: float = Field(default=1.0, gt=0)
     inputs: dict[str, int] | None = None
     vcd: Path | None = None
     timescale: str = "1ns"
+
+    def check(self) -> None:
+        """The construction invariants, re-checked at use (model_copy skips them)."""
+        if self.cycles < 1:
+            raise ValueError(f"cycles must be at least 1, got {self.cycles}")
+        if self.clock_period_us <= 0:
+            raise ValueError(f"clock_period_us must be positive, got {self.clock_period_us}")
 
     @Flow.call
     def __call__(self, context: NullContext) -> RunSvResult:  # noqa: ARG002 (ccflow requires the name `context`)
         from dau_sim.api import Simulator
 
-        if self.cycles < 1:
-            raise ValueError(f"cycles must be at least 1, got {self.cycles}")
-        if self.clock_period_us <= 0:
-            raise ValueError(f"clock_period_us must be positive, got {self.clock_period_us}")
+        self.check()
         sim = Simulator.from_sv_file(str(self.path), top=self.top)
         result = sim.run(cycles=self.cycles, clock_period=timedelta(microseconds=self.clock_period_us), inputs=self.inputs or {})
         if self.vcd is not None:

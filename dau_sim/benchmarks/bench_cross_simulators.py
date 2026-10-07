@@ -4,21 +4,11 @@ import atexit
 import os
 import shutil
 import subprocess
-import sys
 import tempfile
 import textwrap
 from pathlib import Path
 
 import pytest
-
-REPO_ROOT = Path(__file__).resolve().parents[2]
-AMARANTH_REPO = REPO_ROOT / "amaranth"
-
-if str(REPO_ROOT) not in sys.path:
-    sys.path.insert(0, str(REPO_ROOT))
-if str(AMARANTH_REPO) not in sys.path:
-    sys.path.insert(0, str(AMARANTH_REPO))
-
 
 _VERILATOR_RUNTIME_CACHE: dict[int, tuple[Path, Path]] = {}
 CROSS_SIM_CYCLES = int(os.getenv("DAU_BENCH_CYCLES", "5000"))

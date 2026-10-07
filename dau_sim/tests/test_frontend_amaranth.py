@@ -1382,3 +1382,18 @@ class TestStdlibInterop:
         hi_vals = [v for _, v in traces["hi"]]
         assert 0xB in lo_vals  # lower nibble of 0xAB
         assert 0xA in hi_vals  # upper nibble of 0xAB
+
+
+class TestSliceAssignment:
+    def test_a_slice_on_the_left_is_refused_rather_than_clobbering_the_signal(self):
+        class C(Component):
+            a: In(4)
+            y: Out(8)
+
+            def elaborate(self, platform):
+                m = Module()
+                m.d.comb += self.y[0:4].eq(self.a)
+                return m
+
+        with pytest.raises(NotImplementedError, match="slice assignment"):
+            from_amaranth(C())

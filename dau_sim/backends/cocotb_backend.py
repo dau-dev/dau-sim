@@ -766,7 +766,9 @@ def _create_simulator_module(engine: SimulationEngine) -> types.ModuleType:
         return "dau-sim"
 
     def get_simulator_version() -> str:
-        return "0.1.0"
+        from dau_sim import __version__
+
+        return __version__
 
     def is_running() -> bool:
         return engine._running
@@ -891,7 +893,9 @@ def _run_with_patched_simulator(
         cocotb.argv = []
         cocotb.plusargs = {}
         cocotb.SIM_NAME = "dau-sim"
-        cocotb.SIM_VERSION = "0.1.0"
+        from dau_sim import __version__
+
+        cocotb.SIM_VERSION = __version__
         cocotb.RANDOM_SEED = int(time.time())
         random.seed(cocotb.RANDOM_SEED)
         cocotb.packages = types.SimpleNamespace()
