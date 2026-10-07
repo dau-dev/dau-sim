@@ -611,3 +611,36 @@ class TestMemoryExecution:
         )
         rd_vals = [v for _, v in traces["rd_data"]]
         assert 0xFFBB in rd_vals
+
+
+def test_generated_code_never_contains_the_signal_name():
+    """An HDL signal name is user input; the generated Python names locals by
+    index, so a name that is not an identifier, or that reads as code, compiles
+    and runs like any other."""
+    from dau_sim.ir import Assign, Binary, BinaryOp, ClockDomain, CombBlock, Module, Port, PortDirection, Shape, Signal, SignalRef
+
+    hostile = "a-b; import os; os.system('true') #"
+    m = Module(
+        name="hostile",
+        ports=(
+            Port(signal=Signal(name=hostile, shape=Shape(8)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="b", shape=Shape(8)), direction=PortDirection.INPUT),
+            Port(signal=Signal(name="sum", shape=Shape(8)), direction=PortDirection.OUTPUT),
+        ),
+        clock_domains=(ClockDomain(name="sync", clk="b"),),
+        comb_blocks=(
+            CombBlock(
+                stmts=(
+                    Assign(
+                        target="sum",
+                        value=Binary(
+                            shape=Shape(8), op=BinaryOp.ADD, left=SignalRef(shape=Shape(8), name=hostile), right=SignalRef(shape=Shape(8), name="b")
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    )
+    compiled = compile_module(m)
+    traces = compiled.run(cycles=2, inputs={hostile: 10, "b": 20})
+    assert [v for _, v in traces["sum"]] == [30, 30]

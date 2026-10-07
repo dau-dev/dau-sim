@@ -34,6 +34,7 @@ def run_verilator_testbench(
     work_dir: Path | str,
     verilator: str = "verilator",
     extra_args: Sequence[str] = (),
+    timeout_s: float = 600.0,
 ) -> VerilatorTestbenchResult:
     verilator_path = which(verilator)
     if verilator_path is None:
@@ -65,13 +66,13 @@ def run_verilator_testbench(
         *extra_args,
         *(str(source_path) for source_path in source_paths),
     )
-    compile_result = subprocess.run(compile_command, cwd=root, capture_output=True, text=True, check=False)
+    compile_result = subprocess.run(compile_command, cwd=root, capture_output=True, text=True, check=False, timeout=timeout_s)
     if compile_result.returncode != 0:
         raise VerilatorExecutionError(_format_failure("verilator compile", compile_command, compile_result))
 
     executable_path = obj_dir / f"V{top_module}"
     run_command = (str(executable_path),)
-    run_result = subprocess.run(run_command, cwd=root, capture_output=True, text=True, check=False)
+    run_result = subprocess.run(run_command, cwd=root, capture_output=True, text=True, check=False, timeout=timeout_s)
     if run_result.returncode != 0:
         raise VerilatorExecutionError(_format_failure("verilator run", run_command, run_result))
 

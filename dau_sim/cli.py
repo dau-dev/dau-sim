@@ -27,6 +27,19 @@ def _parse_kv_pairs(items: list[str]) -> dict[str, int]:
     return parsed
 
 
+def _config_dir(config_dir: Path | None) -> str | None:
+    return None if config_dir is None else str(config_dir)
+
+
+def _explain(task: str, model_values: dict, config_dir: Path | None) -> str:
+    """The composed task as yaml, the way every other operation shows itself before it runs."""
+    from omegaconf import OmegaConf
+
+    from dau_sim.config import request_config
+
+    return OmegaConf.to_yaml(request_config("task", task, model_values=model_values, config_dir=_config_dir(config_dir)).cfg.model)
+
+
 @app.command("run-sv")
 def run_sv(
     path: Annotated[Path, typer.Argument(exists=True, dir_okay=False, readable=True, help="SystemVerilog or Verilog source file.")],
@@ -36,23 +49,25 @@ def run_sv(
     inputs: Annotated[list[str], typer.Option("--input", "-i", help="Signal assignments, e.g. -i en=1 -i a=0x10.")] = [],  # noqa: B006  # typer owns this default; body never mutates it
     vcd: Annotated[Path | None, typer.Option("--vcd", help="Optional output VCD path.")] = None,
     timescale: str = typer.Option("1ns", help="VCD timescale."),
+    config_dir: Annotated[Path | None, typer.Option("--config-dir", help="Hydra overlay directory to compose with.")] = None,
+    explain: bool = typer.Option(False, "--explain", help="Print the composed task and exit without running it."),
 ) -> None:
     parsed_inputs = _parse_kv_pairs(inputs)
     from dau_sim.config import run_request_config
 
-    result = run_request_config(
-        "task",
-        "tasks/sim/run-sv",
-        model_values={
-            "path": path,
-            "top": top,
-            "cycles": cycles,
-            "clock_period_us": clock_period_us,
-            "inputs": parsed_inputs,
-            "vcd": vcd,
-            "timescale": timescale,
-        },
-    )
+    model_values = {
+        "path": path,
+        "top": top,
+        "cycles": cycles,
+        "clock_period_us": clock_period_us,
+        "inputs": parsed_inputs,
+        "vcd": vcd,
+        "timescale": timescale,
+    }
+    if explain:
+        console.print(_explain("tasks/sim/run-sv", model_values, config_dir))
+        return
+    result = run_request_config("task", "tasks/sim/run-sv", model_values=model_values, config_dir=_config_dir(config_dir))
 
     latest_table = Table(title="Latest signal values")
     latest_table.add_column("Signal")
@@ -76,24 +91,26 @@ def perf_sv(
     inputs: Annotated[list[str], typer.Option("--input", "-i", help="Signal assignments, e.g. -i en=1.")] = [],  # noqa: B006  # typer owns this default; body never mutates it
     amaranth_cps: float | None = typer.Option(None, "--amaranth-cps", min=0.0, help="Optional Amaranth baseline cycles/sec."),
     verilator_cps: float | None = typer.Option(None, "--verilator-cps", min=0.0, help="Optional Verilator baseline cycles/sec."),
+    config_dir: Annotated[Path | None, typer.Option("--config-dir", help="Hydra overlay directory to compose with.")] = None,
+    explain: bool = typer.Option(False, "--explain", help="Print the composed task and exit without running it."),
 ) -> None:
     parsed_inputs = _parse_kv_pairs(inputs)
     from dau_sim.config import run_request_config
 
-    result = run_request_config(
-        "task",
-        "tasks/analysis/perf-sv",
-        model_values={
-            "path": path,
-            "top": top,
-            "cycles": cycles,
-            "repeats": repeats,
-            "warmup": warmup,
-            "inputs": parsed_inputs,
-            "amaranth_cycles_per_second": amaranth_cps,
-            "verilator_cycles_per_second": verilator_cps,
-        },
-    )
+    model_values = {
+        "path": path,
+        "top": top,
+        "cycles": cycles,
+        "repeats": repeats,
+        "warmup": warmup,
+        "inputs": parsed_inputs,
+        "amaranth_cycles_per_second": amaranth_cps,
+        "verilator_cycles_per_second": verilator_cps,
+    }
+    if explain:
+        console.print(_explain("tasks/analysis/perf-sv", model_values, config_dir))
+        return
+    result = run_request_config("task", "tasks/analysis/perf-sv", model_values=model_values, config_dir=_config_dir(config_dir))
     bench = result.benchmark
     sep = result.node_separation
     delta = result.delta

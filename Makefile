@@ -1,31 +1,23 @@
 #########
 # BUILD #
 #########
-.PHONY: develop-py develop-js develop
+.PHONY: develop-py develop
 develop-py:
 	uv pip install -e .[develop]
 
-develop-js: requirements-js
+develop: develop-py  ## setup project for development
 
-develop: develop-js develop-py  ## setup project for development
-
-.PHONY: requirements-py requirements-js requirements
+.PHONY: requirements-py requirements
 requirements-py:  ## install prerequisite python build requirements
 	uv pip install -r pyproject.toml --extra develop
 
-requirements-js:  ## install prerequisite javascript build requirements
-	cd js; pnpm install && npx playwright install
+requirements: requirements-py  ## setup project for development
 
-requirements: requirements-js requirements-py  ## setup project for development
-
-.PHONY: build-py build-js build
+.PHONY: build-py build
 build-py:
 	python -m build -w -n
 
-build-js:
-	cd js; pnpm build
-
-build: build-js build-py  ## build the project
+build: build-py  ## build the project
 
 .PHONY: install
 install:  ## install python library
@@ -34,36 +26,30 @@ install:  ## install python library
 #########
 # LINTS #
 #########
-.PHONY: lint-py lint-js lint lints
+.PHONY: lint-py lint-docs lint lints
 lint-py:  ## run python linter with ruff
 	python -m ruff check dau_sim
 	python -m ruff format --check dau_sim
-
-lint-js:  ## run js linter
-	cd js; pnpm lint
 
 lint-docs:  ## lint docs with mdformat and codespell
 	python -m mdformat --check README.md docs/src
 	python -m codespell_lib README.md docs/src
 
-lint: lint-js lint-py lint-docs  ## run project linters
+lint: lint-py lint-docs  ## run project linters
 
 # alias
 lints: lint
 
-.PHONY: fix-py fix-js fix-docs fix format
+.PHONY: fix-py fix-docs fix format
 fix-py:  ## fix python formatting with ruff
 	python -m ruff check --fix dau_sim
 	python -m ruff format dau_sim
-
-fix-js:  ## fix js formatting
-	cd js; pnpm fix
 
 fix-docs:  ## autoformat docs with mdformat and codespell
 	python -m mdformat README.md docs/src
 	python -m codespell_lib --write README.md docs/src
 
-fix: fix-js fix-py fix-docs  ## run project autoformatters
+fix: fix-py fix-docs  ## run project autoformatters
 
 # alias
 format: fix
@@ -97,18 +83,11 @@ tests-py: test-py
 coverage-py:  ## run python tests and collect test coverage
 	python -m pytest -v dau_sim/tests --cov=dau_sim --cov-report term-missing --cov-report xml
 
-.PHONY: test-js tests-js coverage-js
-test-js:  ## run js tests
-	cd js; pnpm test
-
 # alias
-tests-js: test-js
-
-coverage-js: test-js  ## run js tests and collect test coverage
 
 .PHONY: test coverage tests
-test: test-py test-js  ## run all tests
-coverage: coverage-py coverage-js  ## run all tests and collect test coverage
+test: test-py  ## run all tests
+coverage: coverage-py  ## run all tests and collect test coverage
 
 # alias
 tests: test
@@ -116,7 +95,7 @@ tests: test
 ##############
 # BENCHMARKS #
 ##############
-.PHONY: benchmark benchmark-local benchmark-local-quick benchmark-cross-quick benchmark-cross-runtime benchmark-steady-state benchmark-compare
+.PHONY: benchmark benchmark-local benchmark-local-quick benchmark-cross-quick benchmark-cross-runtime benchmark-compare
 
 BENCHMARK_DIR := dau_sim/benchmarks
 BENCHMARK_RESULTS_DIR := $(BENCHMARK_DIR)/results
@@ -139,9 +118,6 @@ benchmark-cross-quick:  ## run quick cross-simulator benchmarks only
 benchmark-cross-runtime:  ## run cross-simulator benchmarks with larger cycle count for runtime-dominant comparisons
 	mkdir -p $(BENCHMARK_RESULTS_DIR)
 	DAU_BENCH_CYCLES=500000 python -m pytest $(BENCHMARK_DIR)/bench_cross_simulators.py -v --benchmark-only --benchmark-min-rounds=3 --benchmark-columns=mean,stddev,median,rounds --benchmark-save=cross-runtime-500k --benchmark-storage=file://$(BENCHMARK_RESULTS_DIR) --benchmark-json=$(BENCHMARK_RESULTS_DIR)/cross-runtime-500k.json
-
-benchmark-steady-state:  ## run compile-once steady-state runtime comparison harness
-	python .benchmarks/steady_state_perf_compare.py --cycles 100000 --warmup 1 --repeats 5
 
 benchmark-compare:  ## compare latest benchmark run against previous saved run
 	python -m pytest $(BENCHMARK_FILES) -v --benchmark-only --benchmark-compare --benchmark-storage=file://$(BENCHMARK_RESULTS_DIR)
@@ -166,18 +142,15 @@ major:  ## bump a major version
 ########
 # DIST #
 ########
-.PHONY: dist dist-py dist-js dist-check publish
+.PHONY: dist dist-py dist-check publish
 
 dist-py:  ## build python dists
 	python -m build -w -s
 
-dist-js:  # build js dists
-	cd js; pnpm pack
-
 dist-check:  ## run python dist checker with twine
 	python -m twine check dist/*
 
-dist: clean build dist-js dist-py dist-check  ## build all dists
+dist: clean build dist-py dist-check  ## build all dists
 
 publish: dist  ## publish python assets
 

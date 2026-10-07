@@ -160,7 +160,8 @@ class Module(BaseModel):
 
     def port_by_name(self, name: str) -> Port | None:
         for p in self.ports:
-            return p if p.name == name else None
+            if p.name == name:
+                return p
         return None
 
     def signal_by_name(self, name: str) -> Signal | None:

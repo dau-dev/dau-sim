@@ -19,8 +19,9 @@ Usage::
 from __future__ import annotations
 
 import io
+import re
 import string
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import TextIO
 
@@ -55,7 +56,7 @@ def _make_id(index: int) -> str:
 
 def _datetime_to_timescale_ticks(
     timestamps: list[datetime],
-    timescale_ns: int = 1,
+    timescale_ps: int = 1000,
 ) -> list[int]:
     """Convert datetime timestamps to integer VCD time ticks.
 
@@ -67,8 +68,7 @@ def _datetime_to_timescale_ticks(
     ticks = []
     for ts in timestamps:
         delta = ts - base
-        ns = int(delta.total_seconds() * 1_000_000_000)
-        ticks.append(ns // timescale_ns)
+        ticks.append(_picoseconds(delta) // timescale_ps)
     return ticks
 
 
@@ -109,7 +109,9 @@ def _write_header(
     """
     if date:
         out.write(f"$date\n  {date}\n$end\n")
-    out.write("$version dau-sim 0.1.0 $end\n")
+    from dau_sim import __version__
+
+    out.write(f"$version dau-sim {__version__} $end\n")
     out.write(f"$timescale {timescale} $end\n")
 
     # Scope
@@ -141,7 +143,7 @@ def _write_changes(
     out: TextIO,
     signals: dict[str, tuple[str, int, str]],
     traces: dict[str, list[tuple[datetime, int]]],
-    timescale_ns: int = 1,
+    timescale_ps: int = 1000,
     base_time: datetime | None = None,
 ) -> None:
     """Write time-stamped value changes."""
@@ -161,9 +163,7 @@ def _write_changes(
         if sig_name not in signals:
             continue
         for ts, val in trace:
-            delta = ts - base_time
-            ns = int(delta.total_seconds() * 1_000_000_000)
-            tick = ns // timescale_ns
+            tick = _picoseconds(ts - base_time) // timescale_ps
             events.append((tick, sig_name, val))
 
     # Sort by tick, then by signal name for determinism
@@ -249,8 +249,7 @@ def _traces_to_vcd_stream(
     scope: str | None = None,
 ) -> None:
     """Core implementation: write VCD to a stream."""
-    # Parse timescale to get ns multiplier
-    timescale_ns = _parse_timescale_ns(timescale)
+    timescale_ps = parse_timescale_ps(timescale)
 
     # Build signal metadata
     shapes: dict[str, Shape] = {}
@@ -355,18 +354,25 @@ def _traces_to_vcd_stream(
         for sig_name, trace in traces.items():
             trimmed[sig_name] = trace[1:] if len(trace) > 1 else []
 
-    _write_changes(out, signal_table, trimmed, timescale_ns=timescale_ns, base_time=base_time)
+    _write_changes(out, signal_table, trimmed, timescale_ps=timescale_ps, base_time=base_time)
 
 
-def _parse_timescale_ns(timescale: str) -> int:
-    """Parse a VCD timescale string to nanoseconds.
+_TIMESCALE = re.compile(r"(1|10|100)\s*(fs|ps|ns|us|ms|s)")
+_UNIT_PS = {"fs": 0.001, "ps": 1, "ns": 1_000, "us": 1_000_000, "ms": 1_000_000_000, "s": 1_000_000_000_000}
 
-    Supports: "1ns", "10ns", "100ns", "1us", "1ps", etc.
-    """
-    ts = timescale.strip().lower()
-    units = {"ps": 0.001, "ns": 1, "us": 1000, "ms": 1_000_000, "s": 1_000_000_000}
-    for suffix, mult in units.items():
-        if ts.endswith(suffix):
-            num = int(ts[: -len(suffix)])
-            return max(1, int(num * mult))
-    return 1  # default to 1ns
+
+def parse_timescale_ps(timescale: str) -> int:
+    """A VCD timescale (``1ps``, ``10ns``, ``100us``) in picoseconds.
+
+    The VCD grammar allows the magnitudes 1, 10 and 100 with the units from
+    femtoseconds to seconds; anything else is refused rather than rounded to
+    a nanosecond. Timestamps are kept to the picosecond, so a femtosecond
+    scale has a floor of one picosecond."""
+    match = _TIMESCALE.fullmatch(timescale.strip().lower())
+    if match is None:
+        raise ValueError(f"invalid VCD timescale {timescale!r}: expected 1, 10 or 100 of fs, ps, ns, us, ms or s")
+    return max(1, int(int(match.group(1)) * _UNIT_PS[match.group(2)]))
+
+
+def _picoseconds(delta: timedelta) -> int:
+    return delta.days * 86_400_000_000_000_000 + delta.seconds * 1_000_000_000_000 + delta.microseconds * 1_000_000

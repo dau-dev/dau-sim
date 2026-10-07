@@ -7,6 +7,7 @@ Tests cover:
 - Full integration with cocotb scheduler
 """
 
+from dau_sim import __version__
 from dau_sim.backends.cocotb_backend import (
     _PHASE_NORMAL,
     _PHASE_READONLY,
@@ -624,7 +625,7 @@ class TestSimulatorModule:
         engine = SimulationEngine(_make_comb_module())
         mod = _create_simulator_module(engine)
         assert mod.get_simulator_product() == "dau-sim"
-        assert mod.get_simulator_version() == "0.1.0"
+        assert mod.get_simulator_version() == __version__
 
     def test_stop_simulator(self):
         engine = SimulationEngine(_make_comb_module())
@@ -702,7 +703,7 @@ class TestCocotbIntegration:
         cocotb.argv = []
         cocotb.plusargs = {}
         cocotb.SIM_NAME = "dau-sim"
-        cocotb.SIM_VERSION = "0.1.0"
+        cocotb.SIM_VERSION = __version__
         cocotb.RANDOM_SEED = 0
         random.seed(0)
         cocotb.packages = types.SimpleNamespace()

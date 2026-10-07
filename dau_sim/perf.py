@@ -4,6 +4,7 @@ from statistics import median
 from time import perf_counter
 
 from ccflow import CallableModel, Flow, NullContext, ResultBase
+from pydantic import ConfigDict, Field
 
 from dau_sim.compiler import compile_module
 from dau_sim.compiler.depanalysis import build_assignments
@@ -11,12 +12,16 @@ from dau_sim.ir.module import Module
 
 
 class BenchmarkResult(ResultBase):
+    model_config = ConfigDict(frozen=True)
+
     compile_seconds_median: float
     run_seconds_median: float
     cycles_per_second: float
 
 
 class NodeSeparationStats(ResultBase):
+    model_config = ConfigDict(frozen=True)
+
     comb_blocks: int
     dependency_edges: int
     connected_components: int
@@ -25,6 +30,8 @@ class NodeSeparationStats(ResultBase):
 
 
 class PerformanceDelta(ResultBase):
+    model_config = ConfigDict(frozen=True)
+
     dau_cycles_per_second: float
     vs_amaranth_ratio: float | None
     vs_verilator_ratio: float | None
@@ -32,26 +39,35 @@ class PerformanceDelta(ResultBase):
 
 
 class PerfSvResult(ResultBase):
+    model_config = ConfigDict(frozen=True)
+
     benchmark: BenchmarkResult
     node_separation: NodeSeparationStats
     delta: PerformanceDelta
 
 
 class PerfSvTask(CallableModel):
+    model_config = ConfigDict(frozen=True)
+
     path: Path
     top: str | None = None
-    cycles: int = 30000
-    repeats: int = 3
-    warmup: int = 1
+    cycles: int = Field(default=30000, ge=1)
+    repeats: int = Field(default=3, ge=1)
+    warmup: int = Field(default=1, ge=0)
     inputs: dict[str, int] | None = None
-    clock_period_us: float = 1.0
+    clock_period_us: float = Field(default=1.0, gt=0)
     amaranth_cycles_per_second: float | None = None
     verilator_cycles_per_second: float | None = None
+
+    def check(self) -> None:
+        """The construction invariants, re-checked at use (model_copy skips them)."""
+        _check_benchmark_arguments(cycles=self.cycles, repeats=self.repeats, warmup=self.warmup, clock_period_us=self.clock_period_us)
 
     @Flow.call
     def __call__(self, context: NullContext) -> PerfSvResult:  # noqa: ARG002 (ccflow requires the name `context`)
         from dau_sim.api import Simulator
 
+        self.check()
         module = Simulator.from_sv_file(str(self.path), top=self.top).module
         benchmark = benchmark_module(
             module,
@@ -72,6 +88,17 @@ class PerfSvTask(CallableModel):
         )
 
 
+def _check_benchmark_arguments(*, cycles: int, repeats: int, warmup: int, clock_period_us: float) -> None:
+    if cycles < 1:
+        raise ValueError(f"cycles must be at least 1, got {cycles}")
+    if repeats < 1:
+        raise ValueError(f"repeats must be at least 1, got {repeats}")
+    if warmup < 0:
+        raise ValueError(f"warmup cannot be negative, got {warmup}")
+    if clock_period_us <= 0:
+        raise ValueError(f"clock period must be positive, got {clock_period_us} us")
+
+
 def benchmark_module(
     module: Module,
     *,
@@ -81,16 +108,17 @@ def benchmark_module(
     inputs: dict[str, int] | None = None,
     clock_period: timedelta = timedelta(microseconds=1),
 ) -> BenchmarkResult:
+    _check_benchmark_arguments(cycles=cycles, repeats=repeats, warmup=warmup, clock_period_us=clock_period.total_seconds() * 1e6)
     compile_times: list[float] = []
     run_times: list[float] = []
 
-    for _ in range(max(1, repeats)):
+    for _ in range(repeats):
         t0 = perf_counter()
         compiled = compile_module(module)
         t1 = perf_counter()
         compile_times.append(t1 - t0)
 
-        for _ in range(max(0, warmup)):
+        for _ in range(warmup):
             compiled.run(cycles=cycles, inputs=inputs, clock_period=clock_period)
 
         t2 = perf_counter()

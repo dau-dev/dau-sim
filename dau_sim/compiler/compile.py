@@ -431,7 +431,6 @@ def _sim_tick(
     tick: ts[bool],
     init_signals: ts[dict],
     comb_order: ts[object],
-    seq_blocks: ts[object],
     shapes: ts[object],
     memories: ts[object],
     mem_init: ts[object],
@@ -444,7 +443,6 @@ def _sim_tick(
     with csp.state():
         s_signals: dict = {}
         s_comb_order: list = []
-        s_seq_blocks: tuple = ()
         s_shapes: dict = {}
         s_initialized: bool = False
         s_finished: bool = False
@@ -456,8 +454,6 @@ def _sim_tick(
         s_initialized = True
     if csp.ticked(comb_order):
         s_comb_order = comb_order
-    if csp.ticked(seq_blocks):
-        s_seq_blocks = seq_blocks
     if csp.ticked(shapes):
         s_shapes = shapes
     if csp.ticked(memories):
@@ -467,10 +463,6 @@ def _sim_tick(
 
     if csp.ticked(tick) and s_initialized and not s_finished:
         try:
-            # Sequential blocks (legacy path — no edge gating)
-            for sb in s_seq_blocks:
-                _exec_stmts(sb.stmts, s_signals, s_shapes)
-
             # Memory reads (combinational only, no fired domains)
             if s_memories:
                 _exec_mem_reads(s_mem_state, s_memories, s_signals, [])
@@ -488,7 +480,6 @@ def _sim_tick_4(
     tick: ts[bool],
     init_signals: ts[dict],
     comb_order: ts[object],
-    seq_blocks: ts[object],
     shapes: ts[object],
     memories: ts[object],
     mem_init: ts[object],
@@ -497,7 +488,6 @@ def _sim_tick_4(
     with csp.state():
         s_signals: dict = {}
         s_comb_order: list = []
-        s_seq_blocks: tuple = ()
         s_shapes: dict = {}
         s_initialized: bool = False
         s_finished: bool = False
@@ -509,8 +499,6 @@ def _sim_tick_4(
         s_initialized = True
     if csp.ticked(comb_order):
         s_comb_order = comb_order
-    if csp.ticked(seq_blocks):
-        s_seq_blocks = seq_blocks
     if csp.ticked(shapes):
         s_shapes = shapes
     if csp.ticked(memories):
@@ -520,9 +508,6 @@ def _sim_tick_4(
 
     if csp.ticked(tick) and s_initialized and not s_finished:
         try:
-            for sb in s_seq_blocks:
-                _exec_stmts_4(sb.stmts, s_signals, s_shapes)
-
             # Memory reads (combinational only, no fired domains)
             if s_memories:
                 _exec_mem_reads(s_mem_state, s_memories, s_signals, [])
@@ -1208,7 +1193,7 @@ class CompiledModule:
 
         # Compile per-domain seq block functions
         seq_fns: dict[str, callable] = {}
-        for dname, dinfo in self._domain_info.items():
+        for dom_i, (dname, dinfo) in enumerate(self._domain_info.items()):
             sbs = dinfo["seq_blocks"]
             if not sbs:
                 continue
@@ -1222,7 +1207,7 @@ class CompiledModule:
                 stmts_tuple,
                 reads,
                 writes | reads,
-                name=f"_seq_{dname}",
+                name=f"_seq_{dom_i}",
             )
 
         # Compile per-component comb functions
@@ -1325,7 +1310,7 @@ class CompiledModule:
         omitted, all domains use ``clock_period``.
 
         ``trace_signals`` optionally restricts which signals are traced and
-        returned. When omitted, all signals are traced (backward compatible).
+        returned. When omitted, all signals are traced.
 
         ``return_traces`` disables graph outputs when ``False`` so the engine
         runs without materializing per-signal traces.
@@ -1444,20 +1429,18 @@ class CompiledModule:
         output_numpy: bool,
     ) -> dict[str, list[tuple[datetime, int]]]:
         """Combinational tick mode: one evaluation per timer tick, no edge semantics."""
-        seq_blocks = self.module.seq_blocks
 
         @csp.graph
         def sim_graph():
             tick = csp.timer(clock_period, True)
             init_edge = csp.const(init)
             comb_edge = csp.const(comb_order)
-            seq_edge = csp.const(seq_blocks)
             shapes_edge = csp.const(shapes)
             mem_edge = csp.const(self.module.memories)
             mem_init_edge = csp.const(self._mem_init)
 
             if four_state:
-                all_signals = _sim_tick_4(tick, init_edge, comb_edge, seq_edge, shapes_edge, mem_edge, mem_init_edge)
+                all_signals = _sim_tick_4(tick, init_edge, comb_edge, shapes_edge, mem_edge, mem_init_edge)
                 if return_traces:
                     for name in all_names:
                         sig_out = _extract_signal_4(all_signals, name)
@@ -1465,7 +1448,7 @@ class CompiledModule:
                 else:
                     csp.add_graph_output("__sink__", _trace_sink(all_signals))
             else:
-                all_signals = _sim_tick(tick, init_edge, comb_edge, seq_edge, shapes_edge, mem_edge, mem_init_edge)
+                all_signals = _sim_tick(tick, init_edge, comb_edge, shapes_edge, mem_edge, mem_init_edge)
                 if return_traces:
                     for name in all_names:
                         sig_out = _extract_signal(all_signals, name)

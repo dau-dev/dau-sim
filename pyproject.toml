@@ -1,7 +1,6 @@
 [build-system]
 requires = [
     "hatchling",
-    "hatch-js",
 ]
 build-backend = "hatchling.build"
 
@@ -14,24 +13,22 @@ description = "dau simulator"
 readme = "README.md"
 license = { text = "Apache-2.0" }
 version = "0.2.0"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 keywords = []
 
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Programming Language :: Python",
     "Programming Language :: Python :: Implementation :: CPython",
-    "Programming Language :: Python :: Implementation :: PyPy",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
 ]
 
 dependencies = [
     "amaranth",
     "ccflow>=0.8.5",
+    "omegaconf",
     "csp",
     "hydra-core",
     "pydantic",
@@ -41,12 +38,14 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+cocotb = [
+    "cocotb>=2.1",
+]
 develop = [
     "build",
     "bump-my-version",
     "check-dist",
     "codespell",
-    "hatch-js",
     "hatchling",
     "mdformat",
     "mdformat-tables>=1",
@@ -60,7 +59,6 @@ develop = [
     "wheel",
     # integrations
     "cocotb>=2.1",
-    "dau-build",
 ]
 
 [project.scripts]
@@ -78,10 +76,6 @@ current_version = "0.2.0"
 commit = true
 tag = true
 commit_args = "-s"
-pre_commit_hooks = [
-    "pnpm --dir js install --lockfile-only --no-frozen-lockfile --ignore-scripts",
-    "git add js/pnpm-lock.yaml",
-]
 
 [[tool.bumpversion.files]]
 filename = "dau_sim/__init__.py"
@@ -92,11 +86,6 @@ replace = '__version__ = "{new_version}"'
 filename = "pyproject.toml"
 search = 'version = "{current_version}"'
 replace = 'version = "{new_version}"'
-
-[[tool.bumpversion.files]]
-filename = "js/package.json"
-search = '"version": "{current_version}"'
-replace = '"version": "{new_version}"'
 
 [tool.codespell]
 ignore-words-list = ["inout"]
@@ -128,27 +117,11 @@ src = "/"
 [tool.hatch.build.targets.sdist]
 packages = [
     "dau_sim",
-    "js",
-]
-exclude = [
-    "js/dist",
-    "js/node_modules",
 ]
 
 [tool.hatch.build.targets.wheel]
 packages = [
     "dau_sim",
-]
-exclude = [
-    "js",
-]
-
-[tool.hatch.build.hooks.hatch-js]
-path = "js"
-build_cmd = "build"
-tool = "pnpm"
-targets = [
-    "dau_sim/extension/cdn/index.js",
 ]
 
 [tool.pytest.ini_options]
@@ -208,5 +181,6 @@ pages = [
     "docs/src/amaranth.md",
     "docs/src/verilog.md",
     "docs/src/cocotb.md",
+    "docs/src/benchmarks.md",
 ]
 use-autoapi = false

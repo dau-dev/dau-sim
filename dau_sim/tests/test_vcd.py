@@ -5,9 +5,10 @@ from datetime import datetime, timedelta
 import pytest
 
 from dau_sim.adapters.vcd import (
+    _datetime_to_timescale_ticks,
     _format_value,
     _make_id,
-    _parse_timescale_ns,
+    parse_timescale_ps,
     traces_to_vcd,
     write_vcd,
 )
@@ -130,20 +131,33 @@ class TestMakeId:
 
 
 class TestParseTimescale:
-    def test_1ns(self):
-        assert _parse_timescale_ns("1ns") == 1
+    def test_magnitudes_and_units_in_picoseconds(self):
+        assert parse_timescale_ps("1ns") == 1_000
+        assert parse_timescale_ps("10ns") == 10_000
+        assert parse_timescale_ps("1us") == 1_000_000
+        assert parse_timescale_ps("1ps") == 1
+        assert parse_timescale_ps("1ms") == 1_000_000_000
+        assert parse_timescale_ps(" 100 PS ") == 100
 
-    def test_10ns(self):
-        assert _parse_timescale_ns("10ns") == 10
+    def test_femtoseconds_floor_at_one_picosecond(self):
+        assert parse_timescale_ps("1fs") == 1
+        assert parse_timescale_ps("100fs") == 1
 
-    def test_1us(self):
-        assert _parse_timescale_ns("1us") == 1000
+    def test_invalid_timescales_are_refused_not_defaulted(self):
+        for bad in ("", "ns", "2ns", "1000ns", "1 hour", "1n"):
+            with pytest.raises(ValueError, match="invalid VCD timescale"):
+                parse_timescale_ps(bad)
 
-    def test_1ps(self):
-        assert _parse_timescale_ns("1ps") == 1  # min 1
 
-    def test_1ms(self):
-        assert _parse_timescale_ns("1ms") == 1_000_000
+class TestSubNanosecondTicks:
+    def test_a_picosecond_timescale_counts_picoseconds(self):
+        """The old parser rounded "1ps" up to a nanosecond, so a 1ps VCD was
+        a thousand times too short."""
+        base = datetime(2024, 1, 1)  # noqa: DTZ001  # naive simulation-epoch trace timestamp
+        stamps = [base, base + timedelta(microseconds=1), base + timedelta(microseconds=2)]
+        assert _datetime_to_timescale_ticks(stamps, timescale_ps=parse_timescale_ps("1ps")) == [0, 1_000_000, 2_000_000]
+        assert _datetime_to_timescale_ticks(stamps, timescale_ps=parse_timescale_ps("1ns")) == [0, 1_000, 2_000]
+        assert _datetime_to_timescale_ticks(stamps, timescale_ps=parse_timescale_ps("1us")) == [0, 1, 2]
 
 
 class TestFormatValue:

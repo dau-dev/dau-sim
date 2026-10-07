@@ -213,11 +213,12 @@ class _ParallelView:
     :class:`threading.Barrier` so all threads advance together.
     """
 
-    def __init__(self, ctx: TestbenchContext, barrier: threading.Barrier, lock: threading.Lock, index: int):
+    def __init__(self, ctx: TestbenchContext, barrier: threading.Barrier, lock: threading.Lock, index: int, wait_s: float = 30.0):
         self._ctx = ctx
         self._barrier = barrier
         self._lock = lock
         self._index = index
+        self._wait_s = wait_s
         self._error: Exception | None = None
 
     @property
@@ -251,8 +252,10 @@ class _ParallelView:
         All other threads wait at the barrier.
         """
         for _ in range(n):
-            # all threads arrive at the barrier
-            idx = self._barrier.wait()
+            # all threads arrive at the barrier; a peer that has returned
+            # early never arrives, and the bounded wait turns that into a
+            # BrokenBarrierError instead of a hang
+            idx = self._barrier.wait(timeout=self._wait_s)
 
             # exactly one thread (the one that gets index 0 from the barrier)
             # performs the tick
@@ -260,7 +263,7 @@ class _ParallelView:
                 self._ctx.tick(1)
 
             # wait until the tick is complete before any thread proceeds
-            self._barrier.wait()
+            self._barrier.wait(timeout=self._wait_s)
 
     def assert_eq(self, signal: str, expected: int, msg: str = "") -> None:
         with self._lock:
@@ -289,6 +292,7 @@ def run_parallel_testbenches(
     clock_period: timedelta = timedelta(microseconds=1),
     clocks: dict[str, timedelta] | None = None,
     max_cycles: int = 10000,
+    wait_s: float = 30.0,
 ) -> TestbenchResult:
     """Run multiple testbench functions in parallel against a compiled module.
 
@@ -307,7 +311,7 @@ def run_parallel_testbenches(
     barrier = threading.Barrier(len(fns))
     lock = threading.Lock()
 
-    views = [_ParallelView(ctx, barrier, lock, i) for i in range(len(fns))]
+    views = [_ParallelView(ctx, barrier, lock, i, wait_s) for i in range(len(fns))]
     errors: list[tuple[int, Exception]] = []
     errors_lock = threading.Lock()
 

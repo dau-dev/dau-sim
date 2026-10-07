@@ -16,6 +16,7 @@ import random
 import sys
 import types
 
+from dau_sim import __version__
 from dau_sim.backends.cocotb_backend import (
     SimulationEngine,
     _create_simulator_module,
@@ -200,7 +201,7 @@ class CocotbExampleTestBase:
         cocotb.argv = []
         cocotb.plusargs = {}
         cocotb.SIM_NAME = "dau-sim"
-        cocotb.SIM_VERSION = "0.1.0"
+        cocotb.SIM_VERSION = __version__
         cocotb.RANDOM_SEED = 0
         random.seed(0)
         cocotb.packages = types.SimpleNamespace()

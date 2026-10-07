@@ -48,6 +48,7 @@ class CodeGen:
         # Precompute masks
         self._masks: dict[str, int] = {n: _width_mask(s.width) for n, s in shapes.items()}
         self._counter = 0
+        self._local_names: dict[str, str] = {}
 
     @property
     def signal_names(self) -> list[str]:
@@ -99,6 +100,9 @@ class CodeGen:
         at the top and stores changed signals back at the bottom.
         """
         self._counter = 0
+        self._local_names = {}
+        if not name.isidentifier():
+            raise ValueError(f"generated function name must be an identifier, got {name!r}")
         lines: list[str] = []
         lines.append(f"def {name}(S, changed):")
 
@@ -137,8 +141,16 @@ class CodeGen:
         return fn
 
     def _local_name(self, sig: str) -> str:
-        """Generate a valid Python local variable name for a signal."""
-        return f"_s_{sig.replace('.', '_').replace('[', '_').replace(']', '_').replace('$', '_')}"
+        """The local variable standing for ``sig`` in the block being compiled.
+
+        Named by index, never from the signal's own text: an HDL name is user
+        input and must not reach the source the compiler executes."""
+        try:
+            return self._local_names[sig]
+        except KeyError:
+            local = f"_s{len(self._local_names)}"
+            self._local_names[sig] = local
+            return local
 
     def _make_globals(self) -> dict:
         """Build the globals dict for compiled code."""

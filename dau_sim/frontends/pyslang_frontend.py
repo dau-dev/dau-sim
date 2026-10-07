@@ -29,7 +29,6 @@ _ps_ast = getattr(ps, "ast", ps)
 _ps_syntax = getattr(ps, "syntax", ps)
 
 __all__ = (
-    "from_dau_build",
     "parse_sv",
     "parse_sv_file",
 )
@@ -198,10 +197,16 @@ def _rewrap(inner: Expr, target: Shape) -> Expr:
         return inner
     if inner.shape.width > target.width:
         return Slice(shape=target, value=inner, low=0, high=target.width)
-    # Extension: wrap in a Concat with zero-padding MSB bits
+    # Extension: a signed operand replicates its sign bit, an unsigned one
+    # takes zeros
     pad_width = target.width - inner.shape.width
     if pad_width > 0:
-        pad = Const(shape=Shape(pad_width, False), value=0)
+        pad_shape = Shape(pad_width, False)
+        if inner.shape.signed:
+            msb = Slice(shape=Shape(1, False), value=inner, low=inner.shape.width - 1, high=inner.shape.width)
+            pad = Mux(shape=pad_shape, sel=msb, if_true=Const(shape=pad_shape, value=(1 << pad_width) - 1), if_false=Const(shape=pad_shape, value=0))
+        else:
+            pad = Const(shape=pad_shape, value=0)
         return Concat(shape=target, parts=(pad, inner))
     # Same width, different signedness — just return inner; evaluator handles it
     return inner
@@ -507,41 +512,3 @@ def parse_sv_file(path: str, *, top: str | None = None) -> Module:
     with open(path) as f:
         source = f.read()
     return parse_sv(source, top=top)
-
-
-def from_dau_build(mod, *, top: str | None = None) -> Module:
-    """Bridge: lower a ``dau_build.Module`` to a dau-sim IR :class:`Module`.
-
-    ``dau_build`` performs *syntactic* extraction (ports, wires, hierarchy as
-    metadata with string expressions).  ``dau-sim`` needs *semantic* lowering
-    (typed expression/statement IR for simulation).  This bridge re-compiles the
-    underlying source via pyslang's Compilation API to produce a simulatable IR.
-
-    Parameters
-    ----------
-    mod : dau_build.Module
-        A module previously obtained via ``dau_build.Module.from_file()`` or
-        ``dau_build.Module.from_str()``.  Must have a ``source_path`` pointing
-        to the original ``.sv`` file, or a ``node`` from which source text can
-        be recovered.
-    top : str | None
-        Name of the top-level module to extract.  Defaults to the name stored
-        in *mod*.
-
-    Returns
-    -------
-    Module
-        The lowered dau-sim IR module.
-    """
-    top = top or mod.name
-
-    # Recover source text
-    if mod.source_path is not None:
-        return parse_sv_file(str(mod.source_path), top=top)
-
-    # Fallback: reconstruct source from the syntax node stored on the model
-    if mod.node is not None:
-        source = str(mod.node)
-        return parse_sv(source, top=top)
-
-    raise ValueError("Cannot lower dau_build.Module: no source_path or syntax node available.")

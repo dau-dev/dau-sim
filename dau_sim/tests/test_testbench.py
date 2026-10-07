@@ -495,7 +495,7 @@ class TestUpDownCounter(unittest.TestCase):
         self.assertEqual(ctx.get("count"), 6)
 
 
-class Phase5Counter(wiring.Component):
+class EnableCounter(wiring.Component):
     en: In(1)
     count: Out(8)
 
@@ -506,7 +506,7 @@ class Phase5Counter(wiring.Component):
         return m
 
 
-class Phase5Mux(wiring.Component):
+class TwoWayMux(wiring.Component):
     sel: In(1)
     a: In(8)
     b: In(8)
@@ -526,7 +526,7 @@ class TestAmaranthTestbench(unittest.TestCase):
         """Full Amaranth → IR → compile → testbench pipeline."""
         from dau_sim.frontends import from_amaranth
 
-        ir = from_amaranth(Phase5Counter())
+        ir = from_amaranth(EnableCounter())
         cm = compile_module(ir)
 
         def test_fn(ctx):
@@ -546,7 +546,7 @@ class TestAmaranthTestbench(unittest.TestCase):
         """Amaranth combinational design testbench."""
         from dau_sim.frontends import from_amaranth
 
-        ir = from_amaranth(Phase5Mux())
+        ir = from_amaranth(TwoWayMux())
         cm = compile_module(ir)
 
         def test_fn(ctx):
