@@ -1,14 +1,11 @@
 from __future__ import annotations
 
-from datetime import timedelta
 from pathlib import Path
 from typing import Annotated
 
 import typer
 from rich.console import Console
 from rich.table import Table
-
-from dau_sim.api import Simulator
 
 app = typer.Typer(help="dau-sim command line interface")
 console = Console()
@@ -41,25 +38,32 @@ def run_sv(
     timescale: str = typer.Option("1ns", help="VCD timescale."),
 ) -> None:
     parsed_inputs = _parse_kv_pairs(inputs)
-    sim = Simulator.from_sv_file(str(path), top=top)
-    result = sim.run(cycles=cycles, clock_period=timedelta(microseconds=clock_period_us), inputs=parsed_inputs)
+    from dau_sim.config import run_request_config
 
-    if vcd is not None:
-        sim.write_vcd(str(vcd), result, timescale=timescale)
+    result = run_request_config(
+        "task",
+        "tasks/sim/run-sv",
+        model_values={
+            "path": path,
+            "top": top,
+            "cycles": cycles,
+            "clock_period_us": clock_period_us,
+            "inputs": parsed_inputs,
+            "vcd": vcd,
+            "timescale": timescale,
+        },
+    )
 
     latest_table = Table(title="Latest signal values")
     latest_table.add_column("Signal")
     latest_table.add_column("Value", justify="right")
-
-    for signal, _ in sorted(result.traces):
-        latest = result.latest(signal)
-        if latest is not None:
-            latest_table.add_row(signal, str(latest))
+    for signal, value in result.latest.items():
+        latest_table.add_row(signal, str(value))
 
     console.print(f"Simulation completed for module '{result.module_name}'.")
     console.print(latest_table)
-    if vcd is not None:
-        console.print(f"Wrote VCD: {vcd}")
+    if result.vcd_path is not None:
+        console.print(f"Wrote VCD: {result.vcd_path}")
 
 
 @app.command("perf-sv")

@@ -1,0 +1,15 @@
+# @package model
+
+# Run one SystemVerilog or Verilog design for a number of cycles and report
+# every signal's final value; optionally write a VCD.
+#   dau-sim run-sv design.sv --top top_module --cycles 1000 --vcd out.vcd
+# is this task behind a command line; compose it directly with
+#   task=tasks/sim/run-sv model.path=design.sv model.top=top_module
+_target_: dau_sim.run.RunSvTask
+path: ???
+top: null
+cycles: 10
+clock_period_us: 1.0
+inputs: null
+vcd: null
+timescale: 1ns
