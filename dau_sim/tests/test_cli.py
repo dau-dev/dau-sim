@@ -45,8 +45,37 @@ endmodule
     runner = CliRunner()
     result = runner.invoke(app, ["run-sv", str(src), "--top", "adder", "--cycles", "1", "-i", "a=40", "-i", "b=2"])
 
-    assert result.exit_code == 0
+    assert result.exit_code == 0, result.stdout
     assert "Simulation completed" in result.stdout
+    assert "42" in result.stdout
+
+
+def test_run_sv_command_invokes_composed_task(tmp_path: Path, monkeypatch) -> None:
+    """The command is a front end over ``task=tasks/sim/run-sv``: every option
+    lands in the task model, so a run is configured the same way whether it
+    comes from the shell or from a composed config."""
+    from dau_sim.run import RunSvResult
+
+    src = tmp_path / "adder.sv"
+    src.write_text("module adder(input logic [7:0] a, output logic [7:0] y); assign y = a; endmodule")
+    captured: dict[str, object] = {}
+
+    def fake_run_request_config(request_kind, request_name, *, model_values=None, **_kwargs):
+        captured["request_kind"] = request_kind
+        captured["request_name"] = request_name
+        captured["model_values"] = model_values
+        return RunSvResult(module_name="adder", cycles=3, latest={"y": 7}, vcd_path=tmp_path / "out.vcd")
+
+    monkeypatch.setattr("dau_sim.config.run_request_config", fake_run_request_config)
+    result = CliRunner().invoke(app, ["run-sv", str(src), "--top", "adder", "--cycles", "3", "-i", "a=7", "--vcd", str(tmp_path / "out.vcd")])
+
+    assert result.exit_code == 0, result.stdout
+    assert captured["request_kind"] == "task"
+    assert captured["request_name"] == "tasks/sim/run-sv"
+    assert captured["model_values"]["path"] == src
+    assert captured["model_values"]["inputs"] == {"a": 7}
+    assert captured["model_values"]["cycles"] == 3
+    assert "Wrote VCD" in result.stdout
 
 
 def test_perf_sv_command_invokes_composed_task(tmp_path: Path, monkeypatch) -> None:
