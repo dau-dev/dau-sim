@@ -197,12 +197,14 @@ def _rewrap(inner: Expr, target: Shape) -> Expr:
         return inner
     if inner.shape.width > target.width:
         return Slice(shape=target, value=inner, low=0, high=target.width)
-    # Extension: a signed operand replicates its sign bit, an unsigned one
-    # takes zeros
+    # Extension: a signed operand widened into a signed context replicates
+    # its sign bit; in an unsigned context (any unsigned operand in the
+    # expression) Verilog treats it as unsigned and it takes zeros, which is
+    # what pyslang's propagated conversion type says
     pad_width = target.width - inner.shape.width
     if pad_width > 0:
         pad_shape = Shape(pad_width, False)
-        if inner.shape.signed:
+        if inner.shape.signed and target.signed:
             msb = Slice(shape=Shape(1, False), value=inner, low=inner.shape.width - 1, high=inner.shape.width)
             pad = Mux(shape=pad_shape, sel=msb, if_true=Const(shape=pad_shape, value=(1 << pad_width) - 1), if_false=Const(shape=pad_shape, value=0))
         else:

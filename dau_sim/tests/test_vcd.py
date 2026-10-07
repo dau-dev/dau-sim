@@ -139,12 +139,11 @@ class TestParseTimescale:
         assert parse_timescale_ps("1ms") == 1_000_000_000
         assert parse_timescale_ps(" 100 PS ") == 100
 
-    def test_femtoseconds_floor_at_one_picosecond(self):
-        assert parse_timescale_ps("1fs") == 1
-        assert parse_timescale_ps("100fs") == 1
-
     def test_invalid_timescales_are_refused_not_defaulted(self):
-        for bad in ("", "ns", "2ns", "1000ns", "1 hour", "1n"):
+        """A femtosecond scale is in the VCD grammar but below the picosecond
+        the timestamps carry; writing it would put a wrong header over the
+        ticks, so it is refused with the rest."""
+        for bad in ("", "ns", "2ns", "1000ns", "1 hour", "1n", "1fs", "100fs"):
             with pytest.raises(ValueError, match="invalid VCD timescale"):
                 parse_timescale_ps(bad)
 

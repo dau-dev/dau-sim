@@ -28,7 +28,9 @@ def _parse_kv_pairs(items: list[str]) -> dict[str, int]:
 
 
 def _config_dir(config_dir: Path | None) -> str | None:
-    return None if config_dir is None else str(config_dir)
+    # the loader resolves a relative directory against the installed package,
+    # not the caller's working directory, so hand it an absolute path
+    return None if config_dir is None else str(config_dir.resolve())
 
 
 def _explain(task: str, model_values: dict, config_dir: Path | None) -> str:

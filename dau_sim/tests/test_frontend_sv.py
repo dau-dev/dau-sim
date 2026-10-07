@@ -623,3 +623,19 @@ class TestSignedExtension:
         traces = compiled.run(cycles=2, inputs={"a": 0xF, "u": 0xF})
         assert all(v & 0xFF == 0xFF for _, v in traces["sa"]), "-1 must stay -1 at 8 bits"
         assert all(v & 0xFF == 0x0F for _, v in traces["zu"]), "an unsigned operand takes zeros"
+
+    def test_a_signed_operand_in_an_unsigned_expression_is_zero_extended(self):
+        """Verilog: one unsigned operand makes the whole expression unsigned,
+        so the signed operand is widened as an unsigned value. Pyslang's
+        constant evaluator gives 16 for a=4'hf, u=1."""
+        mod = parse_sv("""
+            module mixed(input wire clk, input wire signed [3:0] a, input wire [7:0] u, input wire signed [3:0] b,
+                         output wire [7:0] y, output wire signed [7:0] s);
+                assign y = a + u;
+                assign s = a + b;
+            endmodule
+        """)
+        compiled = compile_module(mod)
+        traces = compiled.run(cycles=2, inputs={"a": 0xF, "u": 1, "b": 0xF})
+        assert all(v & 0xFF == 16 for _, v in traces["y"]), "unsigned context: 4'hf is 15, not -1"
+        assert all(v & 0xFF == 0xFE for _, v in traces["s"]), "signed context: -1 + -1 = -2"
