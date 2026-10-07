@@ -125,3 +125,26 @@ endmodule
     assert captured["model_values"]["path"] == src
     assert "dau-sim cycles/sec" in result.stdout
     assert "Node separation diagnostics" in result.stdout
+
+
+def test_a_relative_config_dir_resolves_against_the_callers_directory(tmp_path: Path, monkeypatch) -> None:
+    """The config loader searches a relative directory under the installed
+    package, so the CLI hands it an absolute path."""
+    from dau_sim.run import RunSvResult
+
+    src = tmp_path / "adder.sv"
+    src.write_text("module adder(input logic [7:0] a, output logic [7:0] y); assign y = a; endmodule")
+    overlay = tmp_path / "overlay"
+    overlay.mkdir()
+    captured: dict[str, object] = {}
+
+    def fake_run_request_config(request_kind, request_name, *, model_values=None, config_dir=None, **_kwargs):
+        captured["config_dir"] = config_dir
+        return RunSvResult(module_name="adder", cycles=1, latest={"y": 0}, vcd_path=None)
+
+    monkeypatch.setattr("dau_sim.config.run_request_config", fake_run_request_config)
+    monkeypatch.chdir(tmp_path)
+    result = CliRunner().invoke(app, ["run-sv", str(src), "--top", "adder", "--config-dir", "overlay"])
+
+    assert result.exit_code == 0, result.stdout
+    assert captured["config_dir"] == str(overlay.resolve())

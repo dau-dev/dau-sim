@@ -23,8 +23,8 @@ def test_ready_valid_sum_runs_real_cocotb_against_systemverilog(tmp_path: Path) 
     assert results.is_file()
 
 
-@requires_cocotb_verilator
 def test_run_cocotb_testbench_validates_inputs(tmp_path: Path) -> None:
+    """Argument validation happens before the runner is built, so it needs no Verilator."""
     with pytest.raises(ValueError, match="hdl_toplevel"):
         run_cocotb_testbench(sources=(_SV_DIR / "ready_valid_sum.sv",), hdl_toplevel="", test_module="x", build_dir=tmp_path)
     with pytest.raises(ValueError, match="at least one"):
