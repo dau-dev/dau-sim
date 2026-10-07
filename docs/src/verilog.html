@@ -204,6 +204,7 @@
 <li class="toctree-l1"><a class="reference internal" href="amaranth.html">Amaranth</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Verilog / SystemVerilog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cocotb.html">cocotb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarks.html">Benchmarks</a></li>
 </ul>
 
 </div>
@@ -257,7 +258,7 @@
 <span class="s2">    );</span>
 <span class="s2">        assign y = a + b;</span>
 <span class="s2">    endmodule</span>
-<span class="s2">"""</span><span class="p">,</span> <span class="n">top_module</span><span class="o">=</span><span class="s2">"adder"</span><span class="p">)</span>
+<span class="s2">"""</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="s2">"adder"</span><span class="p">)</span>
 
 <span class="n">cm</span> <span class="o">=</span> <span class="n">compile_module</span><span class="p">(</span><span class="n">ir_module</span><span class="p">)</span>
 <span class="n">traces</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cycles</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">"a"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">:</span> <span class="mi">55</span><span class="p">})</span>
@@ -271,7 +272,7 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.frontends</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_sv_file</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.compiler</span><span class="w"> </span><span class="kn">import</span> <span class="n">compile_module</span>
 
-<span class="n">ir_module</span> <span class="o">=</span> <span class="n">parse_sv_file</span><span class="p">(</span><span class="s2">"design.sv"</span><span class="p">,</span> <span class="n">top_module</span><span class="o">=</span><span class="s2">"adder"</span><span class="p">)</span>
+<span class="n">ir_module</span> <span class="o">=</span> <span class="n">parse_sv_file</span><span class="p">(</span><span class="s2">"design.sv"</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="s2">"adder"</span><span class="p">)</span>
 <span class="n">cm</span> <span class="o">=</span> <span class="n">compile_module</span><span class="p">(</span><span class="n">ir_module</span><span class="p">)</span>
 <span class="n">traces</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cycles</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">"a"</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
 </pre></div>

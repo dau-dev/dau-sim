@@ -204,6 +204,7 @@
 <li class="toctree-l1"><a class="reference internal" href="docs/src/amaranth.html">Amaranth</a></li>
 <li class="toctree-l1"><a class="reference internal" href="docs/src/verilog.html">Verilog / SystemVerilog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="docs/src/cocotb.html">cocotb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/src/benchmarks.html">Benchmarks</a></li>
 </ul>
 
 </div>
@@ -307,7 +308,8 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 tiles. The rest of the stack uses it through composition: the simulate task
 in <code class="docutils literal notranslate"><span class="pre">dau-build</span></code> drives it from the same declarative build spec as synthesis,
 so one description both simulates and builds:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dau-build<span class="w"> </span><span class="nv">task</span><span class="o">=</span>tasks/sim/simulate<span class="w"> </span>model.module<span class="o">=</span>dau_identity_top<span class="w">   </span>model.spec_path<span class="o">=</span>examples/identity/dau-build.yaml
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># in a dau-build checkout, which carries the identity example</span>
+dau-build<span class="w"> </span><span class="nv">task</span><span class="o">=</span>tasks/sim/simulate<span class="w"> </span>model.module<span class="o">=</span>dau_identity_top<span class="w"> </span>model.spec_path<span class="o">=</span>examples/identity/dau-build.yaml
 </pre></div>
 </div>
 <p>Design-specific verification, such as the golden-equal cocotb benches for

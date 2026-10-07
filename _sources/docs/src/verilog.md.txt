@@ -15,7 +15,7 @@ ir_module = parse_sv("""
     );
         assign y = a + b;
     endmodule
-""", top_module="adder")
+""", top="adder")
 
 cm = compile_module(ir_module)
 traces = cm.run(cycles=1, inputs={"a": 100, "b": 55})
@@ -29,7 +29,7 @@ traces = cm.run(cycles=1, inputs={"a": 100, "b": 55})
 from dau_sim.frontends import parse_sv_file
 from dau_sim.compiler import compile_module
 
-ir_module = parse_sv_file("design.sv", top_module="adder")
+ir_module = parse_sv_file("design.sv", top="adder")
 cm = compile_module(ir_module)
 traces = cm.run(cycles=10, inputs={"a": 42, "b": 10})
 ```

@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
+<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="prev" title="cocotb" href="cocotb.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
         <title>Benchmarks - dau sim v0.2.0</title>
@@ -197,13 +197,14 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul>
+  <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="amaranth.html">Amaranth</a></li>
 <li class="toctree-l1"><a class="reference internal" href="verilog.html">Verilog / SystemVerilog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cocotb.html">cocotb</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Benchmarks</a></li>
 </ul>
 
 </div>
@@ -317,49 +318,10 @@
 </tbody>
 </table>
 </div>
-</section>
-<section id="results-at-100k-cycles">
-<h4>Results at 100k cycles<a class="headerlink" href="#results-at-100k-cycles" title="Link to this heading">¶</a></h4>
-<div class="table-wrapper colwidths-auto docutils container">
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Backend</p></th>
-<th class="head"><p>Mean</p></th>
-<th class="head"><p>vs Verilator runtime</p></th>
-<th class="head"><p>vs Amaranth</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>verilator-runtime</p></td>
-<td><p>22.5 ms</p></td>
-<td><p>1.0×</p></td>
-<td><p>70× faster</p></td>
-</tr>
-<tr class="row-odd"><td><p>dau-sim</p></td>
-<td><p>154 ms</p></td>
-<td><p>6.8× slower</p></td>
-<td><p>10× faster</p></td>
-</tr>
-<tr class="row-even"><td><p>amaranth-sim</p></td>
-<td><p>1,568 ms</p></td>
-<td><p>70× slower</p></td>
-<td><p>1.0×</p></td>
-</tr>
-<tr class="row-odd"><td><p>verilator-compile-run</p></td>
-<td><p>4,509 ms</p></td>
-<td><p>200× slower</p></td>
-<td><p>2.9× faster</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Key observations:</p>
-<ul class="simple">
-<li><p><strong>dau-sim is 3–10× faster than Amaranth’s pysim</strong> at every cycle count, and the gap widens at higher counts because dau-sim’s per-tick overhead is lower.</p></li>
-<li><p><strong>Verilator’s runtime sets the upper bound</strong>: compiled C++ runs the counter at about 5M cycles/sec. dau-sim is 7–27× behind, depending on cycle count.</p></li>
-<li><p><strong>Verilator compile+run is slower than dau-sim</strong> for small and medium workloads because compilation dominates. dau-sim has no compile step, which matters when you are iterating on a design.</p></li>
-<li><p>The Amaranth counter has a reset signal (<code class="docutils literal notranslate"><span class="pre">rst</span></code>), which keeps dau-sim off its fastest batch path. For IR designs without a reset, dau-sim takes about 30 ms for 100k cycles, 1.3× slower than Verilator’s runtime.</p></li>
-</ul>
+<p>The 500k-cycle table is the run recorded in
+<code class="docutils literal notranslate"><span class="pre">dau_sim/benchmarks/results/cross-runtime-500k.json</span></code> (2026-04-03, one laptop,
+machine details in the file). Rerun the suite on your machine before comparing
+against it; the ratios move with the host.</p>
 </section>
 </section>
 <section id="compile-partitioning-bench-compile-partitioning-py">
@@ -390,7 +352,7 @@
 <li><p>Re-evaluates the affected combinational blocks (selective settle)</p></li>
 <li><p>Emits trace output if requested</p></li>
 </ol>
-<p>This path handles every design, including those with resets, combinational logic and memories.</p>
+<p>This path handles the designs the frontends lower, including those with resets, combinational logic and memories.</p>
 </section>
 <section id="fast-tick-path">
 <h3>Fast-tick path<a class="headerlink" href="#fast-tick-path" title="Link to this heading">¶</a></h3>
@@ -399,37 +361,10 @@
 <section id="batch-no-trace-path">
 <h3>Batch no-trace path<a class="headerlink" href="#batch-no-trace-path" title="Link to this heading">¶</a></h3>
 <p>When <code class="docutils literal notranslate"><span class="pre">return_traces=False</span></code> and the design qualifies for fast-tick, dau-sim skips the CSP engine and runs every tick in a plain Python <code class="docutils literal notranslate"><span class="pre">for</span></code> loop. For a 200k-tick simulation that removes about 400k CSP scheduling events.</p>
-</section>
-<section id="performance-by-execution-mode-100k-cycle-counter">
-<h3>Performance by execution mode (100k-cycle counter)<a class="headerlink" href="#performance-by-execution-mode-100k-cycle-counter" title="Link to this heading">¶</a></h3>
-<div class="table-wrapper colwidths-auto docutils container">
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Mode</p></th>
-<th class="head"><p>Time</p></th>
-<th class="head"><p>Speedup vs interpreter</p></th>
-<th class="head"><p>Throughput</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Interpreter (pre-optimization baseline)</p></td>
-<td><p>420 ms</p></td>
-<td><p>1.0×</p></td>
-<td><p>238k cycles/sec</p></td>
-</tr>
-<tr class="row-odd"><td><p>CSP compiled (with fast-tick)</p></td>
-<td><p>71 ms</p></td>
-<td><p>5.9×</p></td>
-<td><p>1.4M cycles/sec</p></td>
-</tr>
-<tr class="row-even"><td><p>Batch no-trace</p></td>
-<td><p>30 ms</p></td>
-<td><p>13.9×</p></td>
-<td><p>3.3M cycles/sec</p></td>
-</tr>
-</tbody>
-</table>
-</div>
+<p>The batch path skips the CSP engine entirely, so for a qualifying design its
+cost is the generated tick function alone; the saving over the compiled path is
+the engine’s per-tick overhead. Measure it with <code class="docutils literal notranslate"><span class="pre">perf-sv</span></code> on the design you
+care about rather than taking a number from here.</p>
 </section>
 </section>
 <section id="running-benchmarks">
@@ -455,7 +390,17 @@ pytest<span class="w"> </span>dau_sim/benchmarks/bench_cross_simulators.py<span 
         
         <div class="related-pages">
           
-          
+          <a class="prev-page" href="cocotb.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">cocotb</div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -490,7 +435,6 @@ pytest<span class="w"> </span>dau_sim/benchmarks/bench_cross_simulators.py<span 
 <li><a class="reference internal" href="#benchmark-suite">Benchmark suite</a><ul>
 <li><a class="reference internal" href="#cross-simulator-comparison-bench-cross-simulators-py">Cross-simulator comparison (<code class="docutils literal notranslate"><span class="pre">bench_cross_simulators.py</span></code>)</a><ul>
 <li><a class="reference internal" href="#results-at-500k-cycles">Results at 500k cycles</a></li>
-<li><a class="reference internal" href="#results-at-100k-cycles">Results at 100k cycles</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#compile-partitioning-bench-compile-partitioning-py">Compile partitioning (<code class="docutils literal notranslate"><span class="pre">bench_compile_partitioning.py</span></code>)</a></li>
@@ -501,7 +445,6 @@ pytest<span class="w"> </span>dau_sim/benchmarks/bench_cross_simulators.py<span 
 <li><a class="reference internal" href="#csp-compiled-path-default">CSP compiled path (default)</a></li>
 <li><a class="reference internal" href="#fast-tick-path">Fast-tick path</a></li>
 <li><a class="reference internal" href="#batch-no-trace-path">Batch no-trace path</a></li>
-<li><a class="reference internal" href="#performance-by-execution-mode-100k-cycle-counter">Performance by execution mode (100k-cycle counter)</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#running-benchmarks">Running benchmarks</a></li>

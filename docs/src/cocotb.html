@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="prev" title="Verilog / SystemVerilog" href="verilog.html">
+<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="Benchmarks" href="benchmarks.html"><link rel="prev" title="Verilog / SystemVerilog" href="verilog.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
         <title>cocotb - dau sim v0.2.0</title>
@@ -204,6 +204,7 @@
 <li class="toctree-l1"><a class="reference internal" href="amaranth.html">Amaranth</a></li>
 <li class="toctree-l1"><a class="reference internal" href="verilog.html">Verilog / SystemVerilog</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">cocotb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarks.html">Benchmarks</a></li>
 </ul>
 
 </div>
@@ -244,8 +245,9 @@
         <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="cocotb">
 <h1>cocotb<a class="headerlink" href="#cocotb" title="Link to this heading">¶</a></h1>
-<p>dau-sim has a pure-Python <a class="reference external" href="https://www.cocotb.org/">cocotb</a> backend, so existing cocotb testbenches run against it with no Verilog compilation and no external simulator.</p>
+<p>dau-sim has a pure-Python <a class="reference external" href="https://www.cocotb.org/">cocotb</a> backend, so a cocotb testbench that uses the triggers and handles below runs against it with no Verilog compilation and no external simulator. Testbenches that depend on simulator-specific features (VPI access beyond signal handles, <code class="docutils literal notranslate"><span class="pre">$dumpvars</span></code>, force/release from cocotb) are outside what the backend implements.</p>
 <p>The backend implements Verilog non-blocking assignment (NBA) semantics, so <code class="docutils literal notranslate"><span class="pre">RisingEdge</span></code> callbacks see pre-NBA values, as they would in an HDL simulator.</p>
+<p>cocotb is an optional dependency: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;dau-sim[cocotb]&quot;</span></code>.</p>
 <section id="running-a-testbench">
 <h2>Running a testbench<a class="headerlink" href="#running-a-testbench" title="Link to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dau_sim.frontends</span><span class="w"> </span><span class="kn">import</span> <span class="n">from_amaranth</span>
@@ -283,7 +285,7 @@
 <span class="nd">@cocotb</span><span class="o">.</span><span class="n">test</span><span class="p">()</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">test_counting</span><span class="p">(</span><span class="n">dut</span><span class="p">):</span>
     <span class="n">clock</span> <span class="o">=</span> <span class="n">Clock</span><span class="p">(</span><span class="n">dut</span><span class="o">.</span><span class="n">clk</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"ns"</span><span class="p">)</span>
-    <span class="n">clock</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">cocotb</span><span class="o">.</span><span class="n">start_soon</span><span class="p">(</span><span class="n">clock</span><span class="o">.</span><span class="n">start</span><span class="p">())</span>
 
     <span class="n">dut</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">await</span> <span class="n">RisingEdge</span><span class="p">(</span><span class="n">dut</span><span class="o">.</span><span class="n">clk</span><span class="p">)</span>
@@ -351,7 +353,15 @@
       <footer>
         
         <div class="related-pages">
-          
+          <a class="next-page" href="benchmarks.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Benchmarks</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
           <a class="prev-page" href="verilog.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">

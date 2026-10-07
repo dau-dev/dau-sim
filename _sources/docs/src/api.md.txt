@@ -15,12 +15,11 @@ sim.write_vcd("out.vcd", result)
 
 ## Frontends
 
-| Function                               | Description                                           |
-| -------------------------------------- | ----------------------------------------------------- |
-| `from_amaranth(elaboratable)`          | Lower an Amaranth `Elaboratable` or `Component` to IR |
-| `parse_sv(source, top_module=None)`    | Parse SystemVerilog source string to IR               |
-| `parse_sv_file(path, top_module=None)` | Parse SystemVerilog file to IR                        |
-| `from_dau_build(mod)`                  | Bridge from a `dau_build.Module` to IR                |
+| Function                        | Description                                           |
+| ------------------------------- | ----------------------------------------------------- |
+| `from_amaranth(elaboratable)`   | Lower an Amaranth `Elaboratable` or `Component` to IR |
+| `parse_sv(source, top=None)`    | Parse SystemVerilog source string to IR               |
+| `parse_sv_file(path, top=None)` | Parse SystemVerilog file to IR                        |
 
 ## Compiler
 

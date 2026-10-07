@@ -1,8 +1,10 @@
 # cocotb
 
-dau-sim has a pure-Python [cocotb](https://www.cocotb.org/) backend, so existing cocotb testbenches run against it with no Verilog compilation and no external simulator.
+dau-sim has a pure-Python [cocotb](https://www.cocotb.org/) backend, so a cocotb testbench that uses the triggers and handles below runs against it with no Verilog compilation and no external simulator. Testbenches that depend on simulator-specific features (VPI access beyond signal handles, `$dumpvars`, force/release from cocotb) are outside what the backend implements.
 
 The backend implements Verilog non-blocking assignment (NBA) semantics, so `RisingEdge` callbacks see pre-NBA values, as they would in an HDL simulator.
+
+cocotb is an optional dependency: `pip install "dau-sim[cocotb]"`.
 
 ## Running a testbench
 
@@ -43,7 +45,7 @@ from cocotb._gpi_triggers import RisingEdge
 @cocotb.test()
 async def test_counting(dut):
     clock = Clock(dut.clk, 10, unit="ns")
-    clock.start()
+    cocotb.start_soon(clock.start())
 
     dut.en.value = 0
     await RisingEdge(dut.clk)

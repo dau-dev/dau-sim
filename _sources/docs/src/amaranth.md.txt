@@ -1,6 +1,6 @@
 # Amaranth
 
-dau-sim accepts any [Amaranth HDL](https://amaranth-lang.org/) `Elaboratable` or `Component` through `from_amaranth()`, which lowers it to the dau-sim IR before compilation.
+dau-sim accepts an [Amaranth HDL](https://amaranth-lang.org/) `Elaboratable` or `Component` through `from_amaranth()`, which lowers it to the dau-sim IR before compilation. The frontend lowers synchronous and combinational assignments, `If`/`Elif`/`Else`, `Switch`, memories and submodules; a construct it does not lower (a slice on the left of an assignment, for one) is refused with `NotImplementedError` rather than approximated.
 
 ## Basic example: a counter
 
