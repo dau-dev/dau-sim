@@ -278,6 +278,10 @@
 </pre></div>
 </div>
 </section>
+<section id="four-state-comparisons">
+<h2>Four-state comparisons<a class="headerlink" href="#four-state-comparisons" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">==</span></code> and <code class="docutils literal notranslate"><span class="pre">!=</span></code> follow IEEE 1800: with <code class="docutils literal notranslate"><span class="pre">four_state=True</span></code> they yield X when an operand has an X or Z bit. <code class="docutils literal notranslate"><span class="pre">===</span></code> and <code class="docutils literal notranslate"><span class="pre">!==</span></code> compare X and Z bits as values and always yield 0 or 1. In the default two-state simulation the two pairs agree, since no operand can hold an unknown bit.</p>
+</section>
 <section id="hand-constructed-ir">
 <h2>Hand-constructed IR<a class="headerlink" href="#hand-constructed-ir" title="Link to this heading">¶</a></h2>
 <p>For programmatic design generation, build the IR directly and skip the frontend:</p>
@@ -373,6 +377,7 @@
 <li><a class="reference internal" href="#">Verilog / SystemVerilog</a><ul>
 <li><a class="reference internal" href="#simulate-from-source-string">Simulate from source string</a></li>
 <li><a class="reference internal" href="#simulate-from-file">Simulate from file</a></li>
+<li><a class="reference internal" href="#four-state-comparisons">Four-state comparisons</a></li>
 <li><a class="reference internal" href="#hand-constructed-ir">Hand-constructed IR</a></li>
 </ul>
 </li>

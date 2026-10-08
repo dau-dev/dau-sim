@@ -34,6 +34,10 @@ cm = compile_module(ir_module)
 traces = cm.run(cycles=10, inputs={"a": 42, "b": 10})
 ```
 
+## Four-state comparisons
+
+`==` and `!=` follow IEEE 1800: with `four_state=True` they yield X when an operand has an X or Z bit. `===` and `!==` compare X and Z bits as values and always yield 0 or 1. In the default two-state simulation the two pairs agree, since no operand can hold an unknown bit.
+
 ## Hand-constructed IR
 
 For programmatic design generation, build the IR directly and skip the frontend:
