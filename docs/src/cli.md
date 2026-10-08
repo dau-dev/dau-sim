@@ -21,7 +21,7 @@ from dau_sim.config import run_request_config
 result = run_request_config(
     "task",
     "tasks/analysis/perf-sv",
-    model_values={"path": "design.sv", "top": "top_module", "cycles": 30000},
+    overrides=["model.path=design.sv", "model.top=top_module", "model.cycles=30000"],
 )
 print(result.benchmark.cycles_per_second)
 ```

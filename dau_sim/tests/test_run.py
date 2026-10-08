@@ -4,7 +4,7 @@ from pathlib import Path
 
 from ccflow import NullContext
 
-from dau_sim.config import run_request_config
+from dau_sim.config import model_overrides, run_request_config
 from dau_sim.run import RunSvResult, RunSvTask
 
 ADDER = """
@@ -40,5 +40,7 @@ def test_the_task_writes_a_vcd_when_asked(tmp_path: Path) -> None:
 def test_the_task_composes_from_the_config_tree(tmp_path: Path) -> None:
     src = tmp_path / "adder.sv"
     src.write_text(ADDER)
-    result = run_request_config("task", "tasks/sim/run-sv", model_values={"path": src, "top": "adder", "cycles": 1, "inputs": {"a": 2, "b": 3}})
+    result = run_request_config(
+        "task", "tasks/sim/run-sv", overrides=model_overrides({"path": src, "top": "adder", "cycles": 1, "inputs": {"a": 2, "b": 3}})
+    )
     assert result.latest["y"] == 5

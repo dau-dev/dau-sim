@@ -33,13 +33,13 @@ def _config_dir(config_dir: Path | None) -> str | None:
     return None if config_dir is None else str(config_dir.resolve())
 
 
-def _explain(task: str, model_values: dict, config_dir: Path | None) -> str:
+def _explain(task: str, overrides: list[str], config_dir: Path | None) -> str:
     """The composed task as yaml, the way every other operation shows itself before it runs."""
     from omegaconf import OmegaConf
 
     from dau_sim.config import request_config
 
-    return OmegaConf.to_yaml(request_config("task", task, model_values=model_values, config_dir=_config_dir(config_dir)).cfg.model)
+    return OmegaConf.to_yaml(request_config("task", task, overrides=overrides, config_dir=_config_dir(config_dir)).cfg.model)
 
 
 @app.command("run-sv")
@@ -55,21 +55,23 @@ def run_sv(
     explain: bool = typer.Option(False, "--explain", help="Print the composed task and exit without running it."),
 ) -> None:
     parsed_inputs = _parse_kv_pairs(inputs)
-    from dau_sim.config import run_request_config
+    from dau_sim.config import model_overrides, run_request_config
 
-    model_values = {
-        "path": path,
-        "top": top,
-        "cycles": cycles,
-        "clock_period_us": clock_period_us,
-        "inputs": parsed_inputs,
-        "vcd": vcd,
-        "timescale": timescale,
-    }
+    overrides = model_overrides(
+        {
+            "path": path,
+            "top": top,
+            "cycles": cycles,
+            "clock_period_us": clock_period_us,
+            "inputs": parsed_inputs,
+            "vcd": vcd,
+            "timescale": timescale,
+        }
+    )
     if explain:
-        console.print(_explain("tasks/sim/run-sv", model_values, config_dir))
+        console.print(_explain("tasks/sim/run-sv", overrides, config_dir))
         return
-    result = run_request_config("task", "tasks/sim/run-sv", model_values=model_values, config_dir=_config_dir(config_dir))
+    result = run_request_config("task", "tasks/sim/run-sv", overrides=overrides, config_dir=_config_dir(config_dir))
 
     latest_table = Table(title="Latest signal values")
     latest_table.add_column("Signal")
@@ -97,22 +99,24 @@ def perf_sv(
     explain: bool = typer.Option(False, "--explain", help="Print the composed task and exit without running it."),
 ) -> None:
     parsed_inputs = _parse_kv_pairs(inputs)
-    from dau_sim.config import run_request_config
+    from dau_sim.config import model_overrides, run_request_config
 
-    model_values = {
-        "path": path,
-        "top": top,
-        "cycles": cycles,
-        "repeats": repeats,
-        "warmup": warmup,
-        "inputs": parsed_inputs,
-        "amaranth_cycles_per_second": amaranth_cps,
-        "verilator_cycles_per_second": verilator_cps,
-    }
+    overrides = model_overrides(
+        {
+            "path": path,
+            "top": top,
+            "cycles": cycles,
+            "repeats": repeats,
+            "warmup": warmup,
+            "inputs": parsed_inputs,
+            "amaranth_cycles_per_second": amaranth_cps,
+            "verilator_cycles_per_second": verilator_cps,
+        }
+    )
     if explain:
-        console.print(_explain("tasks/analysis/perf-sv", model_values, config_dir))
+        console.print(_explain("tasks/analysis/perf-sv", overrides, config_dir))
         return
-    result = run_request_config("task", "tasks/analysis/perf-sv", model_values=model_values, config_dir=_config_dir(config_dir))
+    result = run_request_config("task", "tasks/analysis/perf-sv", overrides=overrides, config_dir=_config_dir(config_dir))
     bench = result.benchmark
     sep = result.node_separation
     delta = result.delta
