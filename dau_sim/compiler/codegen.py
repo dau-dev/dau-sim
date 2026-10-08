@@ -376,6 +376,8 @@ class CodeGen:
         _cmp_ops = {
             BinaryOp.EQ: "==",
             BinaryOp.NE: "!=",
+            BinaryOp.CASE_EQ: "==",
+            BinaryOp.CASE_NE: "!=",
             BinaryOp.LT: "<",
             BinaryOp.LE: "<=",
             BinaryOp.GT: ">",
@@ -660,6 +662,8 @@ class CodeGen:
         _cmp_ops = {
             BinaryOp.EQ: "==",
             BinaryOp.NE: "!=",
+            BinaryOp.CASE_EQ: "==",
+            BinaryOp.CASE_NE: "!=",
             BinaryOp.LT: "<",
             BinaryOp.LE: "<=",
             BinaryOp.GT: ">",

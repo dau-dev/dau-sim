@@ -42,6 +42,8 @@ _BINARY_SYMBOLS: dict[BinaryOp, str] = {
     BinaryOp.SHR: ">>",
     BinaryOp.EQ: "==",
     BinaryOp.NE: "!=",
+    BinaryOp.CASE_EQ: "===",
+    BinaryOp.CASE_NE: "!==",
     BinaryOp.LT: "<",
     BinaryOp.LE: "<=",
     BinaryOp.GT: ">",

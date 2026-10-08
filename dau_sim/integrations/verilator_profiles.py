@@ -5,7 +5,6 @@ from dau_sim.integrations.profiles import SimulationProfile, available_simulatio
 
 class VerilatorProfile(SimulationProfile):
     top_module: str
-    expect_stdout: str
 
 
 def available_verilator_profiles(*, config_dir: str | None = None) -> tuple[str, ...]:

@@ -191,9 +191,9 @@ def _binary_defined(op: BinaryOp, left: FourState, right: FourState, out: Shape)
         if left.shape.signed:
             return FourState.from_int(lv >> rv, out)
         return FourState.from_int(lu >> rv, out)
-    if op == BinaryOp.EQ:
+    if op == BinaryOp.EQ or op == BinaryOp.CASE_EQ:
         return FourState.from_int(1 if lv == rv else 0, out)
-    if op == BinaryOp.NE:
+    if op == BinaryOp.NE or op == BinaryOp.CASE_NE:
         return FourState.from_int(1 if lv != rv else 0, out)
     if op == BinaryOp.LT:
         return FourState.from_int(1 if lv < rv else 0, out)
@@ -270,6 +270,11 @@ def _binary_with_x(op: BinaryOp, left: FourState, right: FourState, out: Shape) 
         if l_known_zero and r_known_zero:
             return FourState.from_int(0, out)
         return _all_x(out)
+
+    # Case equality compares X and Z as values and is never X itself
+    if op == BinaryOp.CASE_EQ or op == BinaryOp.CASE_NE:
+        same = left.aval == right.aval and left.bval == right.bval
+        return FourState.from_int(1 if same == (op == BinaryOp.CASE_EQ) else 0, out)
 
     # Arithmetic, shift, comparison with X: result is all-X
     return _all_x(out)
