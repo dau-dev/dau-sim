@@ -107,9 +107,7 @@ ignore_errors = true
 fail_under = 50
 
 [tool.hatch.build]
-artifacts = [
-    "dau_sim/extension",
-]
+artifacts = []
 
 [tool.hatch.build.sources]
 src = "/"
@@ -123,6 +121,8 @@ packages = [
 packages = [
     "dau_sim",
 ]
+
+[tool.hatch.build.targets.wheel.shared-data]
 
 [tool.pytest.ini_options]
 addopts = [

@@ -24,17 +24,3 @@ updates:
     labels:
       - "lang: python"
       - "part: dependencies"
-
-  - package-ecosystem: "npm"
-    directory: "/js"
-    schedule:
-      interval: "monthly"
-    cooldown:
-      default-days: 7
-    groups:
-      javascript:
-        patterns:
-          - "*"
-    labels:
-      - "lang: javascript"
-      - "part: dependencies"
