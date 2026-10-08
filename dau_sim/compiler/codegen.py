@@ -158,7 +158,7 @@ class CodeGen:
         from dau_sim.compiler.eval import _sys_random_rng
 
         return {
-            "__builtins__": {"int": int, "print": print, "abs": abs},
+            "__builtins__": {"int": int, "print": print, "abs": abs, "range": range},
             "_SimulationFinish": SimulationFinish,
             "_sys_random_rng": _sys_random_rng,
         }
@@ -700,100 +700,138 @@ class CodeGen:
             extracted = f"(({val} >> {low}) & {mask})"
         return self._emit_mask(extracted, expr.shape)
 
-    def build_fast_tick(
+    def build_run_loop(
         self,
         domain_info: dict[str, dict],
-    ) -> callable | None:
-        """Generate a compiled tick function that inlines clock toggle + seq body.
+        comb_components: tuple,
+        init_values: dict[str, int],
+        traced: tuple[str, ...] = (),
+    ) -> callable:
+        """Generate one function that runs the whole simulation.
 
-        Returns None if any domain has a reset (fast path not applicable).
-        The generated function signature is ``fn(S, clock_arr, tc)``
-        and returns True if any domain fired, False otherwise.
+        ``fn(S, clock_arr, tc, n_ticks, ticks, vals)`` advances ``n_ticks``
+        ticks from tick count ``tc``. Every signal lives in a Python local for
+        the duration of the loop and is written back to ``S`` at the end (also
+        when ``$finish`` raises). Per tick, in the order the CSP engine uses:
+        every domain toggles its clock at its half period and notes whether
+        it fired; an active asynchronous reset drives its domain's written
+        signals to their init values and cancels that domain's firing; each
+        fired domain runs its sequential block, or its synchronous reset; if
+        anything fired, each combinational component whose external inputs
+        changed since the tick began is re-evaluated (components are
+        disconnected from each other, so only sequentially written signals
+        and clocks can move them) and, for each traced signal, the value is
+        appended to ``vals[k]`` with the tick appended to ``ticks``.
         """
-        from dau_sim.ir.types import EdgePolarity
-
-        for dinfo in domain_info.values():
-            if dinfo["rst_signal"] is not None:
-                return None
+        from dau_sim.compiler.eval import mask_value
+        from dau_sim.ir.types import EdgePolarity, ResetStyle
 
         self._counter = 0
-        lines: list[str] = ["def _fast_tick(S, clock_arr, tc):"]
+        self._local_names = {}
+        all_sigs = set(self._sig_index)
+        local = self._local_name
+        lines: list[str] = ["def _run(S, clock_arr, tc, n_ticks, ticks, vals):"]
+        for sig in self._sig_names:
+            lines.append(f"    {local(sig)} = S[{self._sig_index[sig]}]")
+        domains = list(domain_info.items())
+        for d_i in range(len(domains)):
+            lines.append(f"    _c{d_i} = clock_arr[{d_i}]")
+        for k in range(len(traced)):
+            lines.append(f"    _o{k} = vals[{k}]")
 
-        for d_i, (dname, dinfo) in enumerate(domain_info.items()):
-            hpt = dinfo["half_period_ticks"]
-            clk_signal = dinfo["clk_signal"]
-            clk_idx = self._sig_index.get(clk_signal, -1)
-            edge = dinfo["edge"]
-            if edge == EdgePolarity.POSEDGE:
-                fire_target = 1
-            elif edge == EdgePolarity.NEGEDGE:
-                fire_target = 0
-            else:
-                fire_target = -1
+        def reset_assignments(dinfo: dict, indent: int) -> list[str]:
+            pad = "    " * indent
+            out = []
+            for sig in sorted(dinfo["written_signals"]):
+                if sig in self._sig_index:
+                    value = mask_value(init_values.get(sig, 0), self._shapes[sig])
+                    out.append(f"{pad}{local(sig)} = {value}")
+            return out
 
-            # Determine base indent (skip modulo when hpt==1)
-            if hpt == 1:
-                base_indent = 1
-            else:
-                lines.append(f"    if tc % {hpt} == 0:")
-                base_indent = 2
+        def reset_condition(dinfo: dict) -> str:
+            rst = local(dinfo["rst_signal"])
+            return rst if dinfo["rst_active_high"] else f"not {rst}"
 
-            pad = "    " * base_indent
-            lines.append(f"{pad}old_clk_{d_i} = clock_arr[{d_i}]")
-            lines.append(f"{pad}new_clk_{d_i} = 1 - old_clk_{d_i}")
-            lines.append(f"{pad}clock_arr[{d_i}] = new_clk_{d_i}")
-            if clk_idx >= 0:
-                lines.append(f"{pad}S[{clk_idx}] = new_clk_{d_i}")
-
-            # Collect seq stmts for this domain
-            all_stmts: list = []
-            for sb in dinfo.get("seq_blocks", []):
-                all_stmts.extend(sb.stmts)
-            stmts_tuple = tuple(all_stmts)
-
-            if not stmts_tuple:
+        seq_written = {sig for _, dinfo in domains for sig in dinfo["written_signals"]}
+        clocks = {dinfo["clk_signal"] for _, dinfo in domains}
+        components = []
+        for comp in comb_components:
+            if not comp.signals:
+                # routed by signal, a component that touches none is never scheduled by the engine either
                 continue
+            stmts = tuple(stmt for assignment in comp.assignments for stmt in assignment.stmts)
+            moving = sorted((comp.reads - comp.writes) & (seq_written | clocks) & all_sigs)
+            components.append((stmts, moving))
+        # seed the combinational logic from the initial state, as the engine does before its first tick
+        for stmts, _ in components:
+            lines.extend(self._compile_stmts_local(stmts, indent=1, local_reads=all_sigs))
+        watched = sorted({sig for _, moving in components for sig in moving})
+        snapshot = {sig: f"_p{k}" for k, sig in enumerate(watched)}
 
-            reads, writes = collect_reads_writes(stmts_tuple)
-            all_sigs = reads | writes
-
-            # Determine seq indent based on edge check
-            if fire_target == -1:
-                # BOTH edges — always fires on toggle
-                seq_indent = base_indent
+        lines.append("    try:")
+        lines.append("        for tc in range(tc + 1, tc + n_ticks + 1):")
+        lines.append("            _f = 0")
+        for sig in watched:
+            lines.append(f"            {snapshot[sig]} = {local(sig)}")
+        for d_i, (_, dinfo) in enumerate(domains):
+            hpt = dinfo["half_period_ticks"]
+            edge = dinfo["edge"]
+            fire_target = 1 if edge == EdgePolarity.POSEDGE else 0 if edge == EdgePolarity.NEGEDGE else -1
+            lines.append(f"            _d{d_i} = 0")
+            indent = 3
+            if hpt != 1:
+                lines.append(f"            if tc % {hpt} == 0:")
+                indent = 4
+            pad = "    " * indent
+            lines.append(f"{pad}_c{d_i} = 1 - _c{d_i}")
+            clk = dinfo["clk_signal"]
+            if clk in self._sig_index:
+                lines.append(f"{pad}{local(clk)} = _c{d_i}")
+            if fire_target < 0:
+                lines.append(f"{pad}_d{d_i} = 1")
             else:
-                lines.append(f"{pad}if new_clk_{d_i} == {fire_target}:")
-                seq_indent = base_indent + 1
-
-            seq_pad = "    " * seq_indent
-
-            # Load locals
-            for sig in sorted(all_sigs):
-                idx = self._sig_index[sig]
-                local = self._local_name(sig)
-                lines.append(f"{seq_pad}{local} = S[{idx}]")
-
-            # Compile body
-            body = self._compile_stmts_local(stmts_tuple, indent=seq_indent, local_reads=all_sigs)
-            if body:
-                lines.extend(body)
-
-            # Store writes (no changed tracking)
-            for sig in sorted(writes):
-                idx = self._sig_index[sig]
-                local = self._local_name(sig)
-                lines.append(f"{seq_pad}if S[{idx}] != {local}:")
-                lines.append(f"{seq_pad}    S[{idx}] = {local}")
-
-        if len(lines) == 1:
-            lines.append("    pass")
+                lines.append(f"{pad}if _c{d_i} == {fire_target}:")
+                lines.append(f"{pad}    _d{d_i} = 1")
+        for d_i, (_, dinfo) in enumerate(domains):
+            if dinfo["rst_signal"] is not None and dinfo["rst_style"] == ResetStyle.ASYNC:
+                lines.append(f"            if {reset_condition(dinfo)}:")
+                lines.extend(reset_assignments(dinfo, 4))
+                lines.append(f"                _d{d_i} = 0")
+        for d_i, (_, dinfo) in enumerate(domains):
+            stmts = tuple(stmt for sb in dinfo.get("seq_blocks", []) for stmt in sb.stmts)
+            lines.append(f"            if _d{d_i}:")
+            lines.append("                _f = 1")
+            if dinfo["rst_signal"] is not None and dinfo["rst_style"] == ResetStyle.SYNC:
+                lines.append(f"                if {reset_condition(dinfo)}:")
+                lines.extend(reset_assignments(dinfo, 5) or ["                    pass"])
+                if stmts:
+                    lines.append("                else:")
+                    lines.extend(self._compile_stmts_local(stmts, indent=5, local_reads=all_sigs) or ["                    pass"])
+            elif stmts:
+                lines.extend(self._compile_stmts_local(stmts, indent=4, local_reads=all_sigs))
+        reactive = [(stmts, moving) for stmts, moving in components if moving]
+        if reactive or traced:
+            lines.append("            if _f:")
+            for stmts, moving in reactive:
+                lines.append("                if " + " or ".join(f"{local(sig)} != {snapshot[sig]}" for sig in moving) + ":")
+                lines.extend(self._compile_stmts_local(stmts, indent=5, local_reads=all_sigs) or ["                    pass"])
+            if traced:
+                lines.append("                ticks.append(tc)")
+                for k, sig in enumerate(traced):
+                    lines.append(f"                _o{k}.append({local(sig)})")
+        store = [f"S[{self._sig_index[sig]}] = {local(sig)}" for sig in self._sig_names]
+        store += [f"clock_arr[{d_i}] = _c{d_i}" for d_i in range(len(domains))]
+        lines.append("    except _SimulationFinish:")
+        lines.extend("        " + line for line in store)
+        lines.append("        raise")
+        lines.extend("    " + line for line in store)
 
         source = "\n".join(lines)
         globs = self._make_globals()
-        code = compile(source, "<codegen:_fast_tick>", "exec")
+        code = compile(source, "<codegen:_run>", "exec")
         ns: dict = {}
         exec(code, globs, ns)  # noqa: S102
-        fn = ns["_fast_tick"]
+        fn = ns["_run"]
         fn._codegen_source = source
         return fn
 
