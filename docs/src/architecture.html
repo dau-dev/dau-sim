@@ -298,17 +298,16 @@
 <ol class="arabic simple">
 <li><p><strong>Dependency analysis</strong> works out which combinational blocks depend on which signals (<code class="docutils literal notranslate"><span class="pre">depanalysis.py</span></code>).</p></li>
 <li><p><strong>Code generation</strong> emits flat Python functions from the IR statement and expression trees (<code class="docutils literal notranslate"><span class="pre">codegen.py</span></code>).</p></li>
-<li><p><strong>Optimization</strong> picks the execution tier (interpreter, fast-tick, or batch no-trace) that the design qualifies for.</p></li>
+<li><p><strong>Execution</strong> runs the design as one generated loop, or inside the CSP engine when it has memories or runs four-state.</p></li>
 </ol>
+</section>
+<section id="generated-run-loop">
+<h3>Generated run loop<a class="headerlink" href="#generated-run-loop" title="Link to this heading">¶</a></h3>
+<p>Two-state designs without memories run as one generated Python function: signals in locals, clocks toggled at their half-periods, resets and sequential blocks inlined per domain, and each combinational component re-evaluated only when one of its external inputs changed in that tick. Traces are recorded on fired ticks.</p>
 </section>
 <section id="csp-engine">
 <h3>CSP Engine<a class="headerlink" href="#csp-engine" title="Link to this heading">¶</a></h3>
-<p>The compiled design runs inside a <a class="reference external" href="https://github.com/Point72/csp">csp</a> graph:</p>
-<ul class="simple">
-<li><p>Hardware signals are CSP time-series edges.</p></li>
-<li><p>Combinational logic is a set of CSP nodes, re-evaluated only when an input changes (selective settle).</p></li>
-<li><p>Clock domains are CSP clock processes with posedge and negedge semantics.</p></li>
-</ul>
+<p>Designs with memories, and four-state runs, execute inside a <a class="reference external" href="https://github.com/Point72/csp">csp</a> graph: one tick node driving the compiled (or, for four-state, interpreted) sequential and combinational functions, memory ports in between, and traces as graph outputs.</p>
 </section>
 <section id="adapters">
 <h3>Adapters<a class="headerlink" href="#adapters" title="Link to this heading">¶</a></h3>
@@ -382,6 +381,7 @@
 <li><a class="reference internal" href="#frontends">Frontends</a></li>
 <li><a class="reference internal" href="#intermediate-representation-ir">Intermediate Representation (IR)</a></li>
 <li><a class="reference internal" href="#compiler">Compiler</a></li>
+<li><a class="reference internal" href="#generated-run-loop">Generated run loop</a></li>
 <li><a class="reference internal" href="#csp-engine">CSP Engine</a></li>
 <li><a class="reference internal" href="#adapters">Adapters</a></li>
 </ul>

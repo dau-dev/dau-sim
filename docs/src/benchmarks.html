@@ -245,7 +245,7 @@
         <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="benchmarks">
 <h1>Benchmarks<a class="headerlink" href="#benchmarks" title="Link to this heading">¶</a></h1>
-<p>The benchmark suite under <code class="docutils literal notranslate"><span class="pre">dau_sim/benchmarks/</span></code> tracks simulation throughput across backends and measures compile and evaluation cost inside dau-sim. All numbers below were collected on an Apple M1 Pro (arm64, CPython 3.12) unless noted otherwise.</p>
+<p>The benchmark suite under <code class="docutils literal notranslate"><span class="pre">dau_sim/benchmarks/</span></code> tracks simulation throughput across backends and measures compile and evaluation cost inside dau-sim. All numbers below were collected on an Apple M5 Pro (arm64, CPython 3.12) unless noted otherwise.</p>
 <section id="benchmark-suite">
 <h2>Benchmark suite<a class="headerlink" href="#benchmark-suite" title="Link to this heading">¶</a></h2>
 <section id="cross-simulator-comparison-bench-cross-simulators-py">
@@ -295,32 +295,36 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>verilator-runtime</p></td>
-<td><p>93 ms</p></td>
-<td><p>1.0×</p></td>
-<td><p>87× faster</p></td>
+<tr class="row-even"><td><p>dau-sim</p></td>
+<td><p>48 ms</p></td>
+<td><p>1.16× faster</p></td>
+<td><p>85× faster</p></td>
 </tr>
-<tr class="row-odd"><td><p>dau-sim</p></td>
-<td><p>2.49 s</p></td>
-<td><p>27× slower</p></td>
-<td><p>3.2× faster</p></td>
+<tr class="row-odd"><td><p>verilator-runtime</p></td>
+<td><p>56 ms</p></td>
+<td><p>1.0×</p></td>
+<td><p>73× faster</p></td>
 </tr>
 <tr class="row-even"><td><p>verilator-compile-run</p></td>
-<td><p>4.85 s</p></td>
-<td><p>52× slower</p></td>
-<td><p>1.7× faster</p></td>
+<td><p>3.09 s</p></td>
+<td><p>55× slower</p></td>
+<td><p>1.3× faster</p></td>
 </tr>
 <tr class="row-odd"><td><p>amaranth-sim</p></td>
-<td><p>8.08 s</p></td>
-<td><p>87× slower</p></td>
+<td><p>4.08 s</p></td>
+<td><p>73× slower</p></td>
 <td><p>1.0×</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <p>The 500k-cycle table is the run recorded in
-<code class="docutils literal notranslate"><span class="pre">dau_sim/benchmarks/results/cross-runtime-500k.json</span></code> (2026-04-03, one laptop,
-machine details in the file). Rerun the suite on your machine before comparing
+<code class="docutils literal notranslate"><span class="pre">dau_sim/benchmarks/results/cross-runtime-500k.json</span></code> (2026-10-08, one laptop,
+machine details in the file). dau-sim runs with <code class="docutils literal notranslate"><span class="pre">return_traces=False</span></code> here;
+with traces on, the same run takes about 2.5× longer (the list appends per
+fired tick). The design is a 32-bit counter, the smallest sequential design
+there is; on larger designs the per-statement cost of Python widens the gap
+again. Rerun the suite on your machine before comparing
 against it; the ratios move with the host.</p>
 </section>
 </section>
@@ -339,32 +343,24 @@ against it; the ratios move with the host.</p>
 </div>
 </section>
 </section>
-<section id="execution-modes-and-optimization-tiers">
-<h2>Execution modes and optimization tiers<a class="headerlink" href="#execution-modes-and-optimization-tiers" title="Link to this heading">¶</a></h2>
-<p>dau-sim picks an execution strategy from the design and from whether you asked for traces:</p>
-<section id="csp-compiled-path-default">
-<h3>CSP compiled path (default)<a class="headerlink" href="#csp-compiled-path-default" title="Link to this heading">¶</a></h3>
-<p>The compiler generates flat Python functions from the IR statement and expression trees (<code class="docutils literal notranslate"><span class="pre">dau_sim/compiler/codegen.py</span></code>) and runs them inside a single CSP node. Each tick:</p>
+<section id="execution-modes">
+<h2>Execution modes<a class="headerlink" href="#execution-modes" title="Link to this heading">¶</a></h2>
+<p>dau-sim picks an execution strategy from the design:</p>
+<section id="generated-run-loop-default">
+<h3>Generated run loop (default)<a class="headerlink" href="#generated-run-loop-default" title="Link to this heading">¶</a></h3>
+<p>For two-state designs without memories, the compiler generates one Python function for the whole run (<code class="docutils literal notranslate"><span class="pre">CodeGen.build_run_loop</span></code> in <code class="docutils literal notranslate"><span class="pre">dau_sim/compiler/codegen.py</span></code>). Every signal lives in a Python local for the duration of the loop and is written back at the end, so a tick costs a handful of local operations and no function calls. Each tick, in order:</p>
 <ol class="arabic simple">
-<li><p>Toggles clock signals at their half-period</p></li>
-<li><p>Detects rising and falling edges with inlined comparisons</p></li>
-<li><p>Runs the compiled sequential block for each domain that fired</p></li>
-<li><p>Re-evaluates the affected combinational blocks (selective settle)</p></li>
-<li><p>Emits trace output if requested</p></li>
+<li><p>Toggles each clock at its half-period and notes which domains fired</p></li>
+<li><p>Applies an active asynchronous reset (init values, and the domain does not fire)</p></li>
+<li><p>Runs the sequential block, or the synchronous reset, of each domain that fired</p></li>
+<li><p>Re-evaluates each combinational component whose external inputs changed since the tick began</p></li>
+<li><p>If a domain fired and traces were asked for, records the traced signals</p></li>
 </ol>
-<p>This path handles the designs the frontends lower, including those with resets, combinational logic and memories.</p>
+<p>The loop covers resets, combinational logic and <code class="docutils literal notranslate"><span class="pre">$finish</span></code>. Traces cost one list append per traced signal per fired tick; <code class="docutils literal notranslate"><span class="pre">return_traces=False</span></code> removes them.</p>
 </section>
-<section id="fast-tick-path">
-<h3>Fast-tick path<a class="headerlink" href="#fast-tick-path" title="Link to this heading">¶</a></h3>
-<p>For designs with <strong>no combinational logic, no memories and no resets</strong>, the compiler generates a single <code class="docutils literal notranslate"><span class="pre">_fast_tick(S,</span> <span class="pre">clock_arr,</span> <span class="pre">tc)</span></code> function that inlines the clock toggle, edge detection and sequential block body. There is no function-call overhead and no changed-set tracking.</p>
-</section>
-<section id="batch-no-trace-path">
-<h3>Batch no-trace path<a class="headerlink" href="#batch-no-trace-path" title="Link to this heading">¶</a></h3>
-<p>When <code class="docutils literal notranslate"><span class="pre">return_traces=False</span></code> and the design qualifies for fast-tick, dau-sim skips the CSP engine and runs every tick in a plain Python <code class="docutils literal notranslate"><span class="pre">for</span></code> loop. For a 200k-tick simulation that removes about 400k CSP scheduling events.</p>
-<p>The batch path skips the CSP engine entirely, so for a qualifying design its
-cost is the generated tick function alone; the saving over the compiled path is
-the engine’s per-tick overhead. Measure it with <code class="docutils literal notranslate"><span class="pre">perf-sv</span></code> on the design you
-care about rather than taking a number from here.</p>
+<section id="csp-engine">
+<h3>CSP engine<a class="headerlink" href="#csp-engine" title="Link to this heading">¶</a></h3>
+<p>Designs with memories, and four-state (X/Z) runs, execute inside a <a class="reference external" href="https://github.com/Point72/csp">csp</a> graph: one node per tick, with codegen-compiled sequential and combinational functions (two-state) or the tree-walking evaluator (four-state), memory ports evaluated between the sequential blocks and the combinational settle, and traces as graph outputs.</p>
 </section>
 </section>
 <section id="running-benchmarks">
@@ -441,10 +437,9 @@ pytest<span class="w"> </span>dau_sim/benchmarks/bench_cross_simulators.py<span 
 <li><a class="reference internal" href="#selective-settle-bench-selective-settle-py">Selective settle (<code class="docutils literal notranslate"><span class="pre">bench_selective_settle.py</span></code>)</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#execution-modes-and-optimization-tiers">Execution modes and optimization tiers</a><ul>
-<li><a class="reference internal" href="#csp-compiled-path-default">CSP compiled path (default)</a></li>
-<li><a class="reference internal" href="#fast-tick-path">Fast-tick path</a></li>
-<li><a class="reference internal" href="#batch-no-trace-path">Batch no-trace path</a></li>
+<li><a class="reference internal" href="#execution-modes">Execution modes</a><ul>
+<li><a class="reference internal" href="#generated-run-loop-default">Generated run loop (default)</a></li>
+<li><a class="reference internal" href="#csp-engine">CSP engine</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#running-benchmarks">Running benchmarks</a></li>

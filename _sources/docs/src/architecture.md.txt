@@ -53,15 +53,15 @@ Key files: `dau_sim/ir/module.py`, `dau_sim/ir/expr.py`, `dau_sim/ir/stmt.py`, `
 
 1. **Dependency analysis** works out which combinational blocks depend on which signals (`depanalysis.py`).
 1. **Code generation** emits flat Python functions from the IR statement and expression trees (`codegen.py`).
-1. **Optimization** picks the execution tier (interpreter, fast-tick, or batch no-trace) that the design qualifies for.
+1. **Execution** runs the design as one generated loop, or inside the CSP engine when it has memories or runs four-state.
+
+### Generated run loop
+
+Two-state designs without memories run as one generated Python function: signals in locals, clocks toggled at their half-periods, resets and sequential blocks inlined per domain, and each combinational component re-evaluated only when one of its external inputs changed in that tick. Traces are recorded on fired ticks.
 
 ### CSP Engine
 
-The compiled design runs inside a [csp](https://github.com/Point72/csp) graph:
-
-- Hardware signals are CSP time-series edges.
-- Combinational logic is a set of CSP nodes, re-evaluated only when an input changes (selective settle).
-- Clock domains are CSP clock processes with posedge and negedge semantics.
+Designs with memories, and four-state runs, execute inside a [csp](https://github.com/Point72/csp) graph: one tick node driving the compiled (or, for four-state, interpreted) sequential and combinational functions, memory ports in between, and traces as graph outputs.
 
 ### Adapters
 
