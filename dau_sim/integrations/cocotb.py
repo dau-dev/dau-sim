@@ -12,17 +12,7 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 
-from dau_sim.integrations.profiles import SimulationProfile
-
 DEFAULT_BUILD_ARGS = ("--timing", "-Wno-fatal")
-
-
-class CocotbProfile(SimulationProfile):
-    """A registered cocotb bench: HDL sources, the toplevel they build,
-    and the cocotb test module that drives it."""
-
-    hdl_toplevel: str
-    test_module: str
 
 
 class CocotbRunnerUnavailableError(RuntimeError):

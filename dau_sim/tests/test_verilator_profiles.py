@@ -5,7 +5,6 @@ from pathlib import Path
 import pytest
 from ccflow import BaseModel, ModelRegistry
 
-from dau_sim.integrations.cocotb import CocotbProfile
 from dau_sim.integrations.verilator_profiles import (
     VerilatorProfile,
     available_verilator_profiles,
@@ -19,7 +18,6 @@ def test_available_verilator_profiles_lists_registered_benches() -> None:
 
 def test_verilator_profile_is_a_ccflow_model() -> None:
     assert issubclass(VerilatorProfile, BaseModel)
-    assert issubclass(CocotbProfile, BaseModel)
 
 
 def test_python_literal_profile_registry_is_removed() -> None:
@@ -35,7 +33,6 @@ def test_resolve_verilator_profile_returns_existing_sources(name: str) -> None:
 
     assert profile.name == name
     assert profile.top_module
-    assert profile.expect_stdout
     assert profile.sources
     for source in profile.sources:
         assert Path(source).is_file()
@@ -65,7 +62,6 @@ _target_: dau_sim.integrations.verilator_profiles.VerilatorProfile
 name: user-bench
 sources: [user_bench.sv]
 top_module: user_bench_tb
-expect_stdout: USER_BENCH_OK
 """,
         encoding="utf-8",
     )

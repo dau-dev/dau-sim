@@ -175,9 +175,9 @@ def _eval_binary(
         unsigned_left = left & _width_mask(l_shape.width)
         return mask_value(unsigned_left >> right, out_shape)
     # Comparison operators — always produce 1-bit result
-    if op is BinaryOp.EQ:
+    if op is BinaryOp.EQ or op is BinaryOp.CASE_EQ:
         return 1 if left == right else 0
-    if op is BinaryOp.NE:
+    if op is BinaryOp.NE or op is BinaryOp.CASE_NE:
         return 1 if left != right else 0
     if op is BinaryOp.LT:
         return 1 if left < right else 0

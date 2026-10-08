@@ -40,6 +40,10 @@ class BinaryOp(Enum):
     # Comparison (result is always 1-bit unsigned)
     EQ = auto()
     NE = auto()
+    # Case equality (=== / !==): X and Z bits compare as values, the result
+    # is never X; identical to EQ/NE on two-state values
+    CASE_EQ = auto()
+    CASE_NE = auto()
     LT = auto()
     LE = auto()
     GT = auto()
