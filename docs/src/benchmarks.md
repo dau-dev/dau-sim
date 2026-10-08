@@ -1,6 +1,6 @@
 # Benchmarks
 
-The benchmark suite under `dau_sim/benchmarks/` tracks simulation throughput across backends and measures compile and evaluation cost inside dau-sim. All numbers below were collected on an Apple M1 Pro (arm64, CPython 3.12) unless noted otherwise.
+The benchmark suite under `dau_sim/benchmarks/` tracks simulation throughput across backends and measures compile and evaluation cost inside dau-sim. All numbers below were collected on an Apple M5 Pro (arm64, CPython 3.12) unless noted otherwise.
 
 ## Benchmark suite
 
@@ -29,14 +29,18 @@ DAU_BENCH_CYCLES=100000 pytest dau_sim/benchmarks/bench_cross_simulators.py \
 
 | Backend               | Mean   | vs Verilator runtime | vs Amaranth |
 | --------------------- | ------ | -------------------- | ----------- |
-| verilator-runtime     | 93 ms  | 1.0×                 | 87× faster  |
-| dau-sim               | 2.49 s | 27× slower           | 3.2× faster |
-| verilator-compile-run | 4.85 s | 52× slower           | 1.7× faster |
-| amaranth-sim          | 8.08 s | 87× slower           | 1.0×        |
+| dau-sim               | 48 ms  | 1.16× faster         | 85× faster  |
+| verilator-runtime     | 56 ms  | 1.0×                 | 73× faster  |
+| verilator-compile-run | 3.09 s | 55× slower           | 1.3× faster |
+| amaranth-sim          | 4.08 s | 73× slower           | 1.0×        |
 
 The 500k-cycle table is the run recorded in
-`dau_sim/benchmarks/results/cross-runtime-500k.json` (2026-04-03, one laptop,
-machine details in the file). Rerun the suite on your machine before comparing
+`dau_sim/benchmarks/results/cross-runtime-500k.json` (2026-10-08, one laptop,
+machine details in the file). dau-sim runs with `return_traces=False` here;
+with traces on, the same run takes about 2.5× longer (the list appends per
+fired tick). The design is a 32-bit counter, the smallest sequential design
+there is; on larger designs the per-statement cost of Python widens the gap
+again. Rerun the suite on your machine before comparing
 against it; the ratios move with the host.
 
 ### Compile partitioning (`bench_compile_partitioning.py`)
@@ -55,34 +59,25 @@ Measures the runtime of a sequential design with N independent combinational com
 pytest dau_sim/benchmarks/bench_selective_settle.py --benchmark-only
 ```
 
-## Execution modes and optimization tiers
+## Execution modes
 
-dau-sim picks an execution strategy from the design and from whether you asked for traces:
+dau-sim picks an execution strategy from the design:
 
-### CSP compiled path (default)
+### Generated run loop (default)
 
-The compiler generates flat Python functions from the IR statement and expression trees (`dau_sim/compiler/codegen.py`) and runs them inside a single CSP node. Each tick:
+For two-state designs without memories, the compiler generates one Python function for the whole run (`CodeGen.build_run_loop` in `dau_sim/compiler/codegen.py`). Every signal lives in a Python local for the duration of the loop and is written back at the end, so a tick costs a handful of local operations and no function calls. Each tick, in order:
 
-1. Toggles clock signals at their half-period
-1. Detects rising and falling edges with inlined comparisons
-1. Runs the compiled sequential block for each domain that fired
-1. Re-evaluates the affected combinational blocks (selective settle)
-1. Emits trace output if requested
+1. Toggles each clock at its half-period and notes which domains fired
+1. Applies an active asynchronous reset (init values, and the domain does not fire)
+1. Runs the sequential block, or the synchronous reset, of each domain that fired
+1. Re-evaluates each combinational component whose external inputs changed since the tick began
+1. If a domain fired and traces were asked for, records the traced signals
 
-This path handles the designs the frontends lower, including those with resets, combinational logic and memories.
+The loop covers resets, combinational logic and `$finish`. Traces cost one list append per traced signal per fired tick; `return_traces=False` removes them.
 
-### Fast-tick path
+### CSP engine
 
-For designs with **no combinational logic, no memories and no resets**, the compiler generates a single `_fast_tick(S, clock_arr, tc)` function that inlines the clock toggle, edge detection and sequential block body. There is no function-call overhead and no changed-set tracking.
-
-### Batch no-trace path
-
-When `return_traces=False` and the design qualifies for fast-tick, dau-sim skips the CSP engine and runs every tick in a plain Python `for` loop. For a 200k-tick simulation that removes about 400k CSP scheduling events.
-
-The batch path skips the CSP engine entirely, so for a qualifying design its
-cost is the generated tick function alone; the saving over the compiled path is
-the engine's per-tick overhead. Measure it with `perf-sv` on the design you
-care about rather than taking a number from here.
+Designs with memories, and four-state (X/Z) runs, execute inside a [csp](https://github.com/Point72/csp) graph: one node per tick, with codegen-compiled sequential and combinational functions (two-state) or the tree-walking evaluator (four-state), memory ports evaluated between the sequential blocks and the combinational settle, and traces as graph outputs.
 
 ## Running benchmarks
 

@@ -3,18 +3,18 @@
     "node": "redacted",
     "processor": "arm",
     "machine": "arm64",
-    "python_compiler": "Clang 17.0.0 (clang-1700.6.3.2)",
+    "python_compiler": "Clang 21.0.0 (clang-2100.1.1.101)",
     "python_implementation": "CPython",
-    "python_implementation_version": "3.12.12",
-    "python_version": "3.12.12",
+    "python_implementation_version": "3.12.14",
+    "python_version": "3.12.14",
     "python_build": [
       "main",
-      "Oct  9 2025 11:07:00"
+      "Aug 12 2026 13:57:54"
     ],
-    "release": "25.4.0",
+    "release": "25.6.0",
     "system": "Darwin",
     "cpu": {
-      "python_version": "3.12.12.final.0 (64 bit)",
+      "python_version": "3.12.14.final.0 (64 bit)",
       "cpuinfo_version": [
         9,
         0,
@@ -23,18 +23,18 @@
       "cpuinfo_version_string": "9.0.0",
       "arch": "ARM_8",
       "bits": 64,
-      "count": 10,
+      "count": 18,
       "arch_string_raw": "arm64",
-      "brand_raw": "Apple M1 Pro"
+      "brand_raw": "Apple M5 Pro"
     }
   },
   "commit_info": {
-    "id": "51fb4ce5f2f9aa22febc1d3d3335fb980b6b1f5e",
-    "time": "2026-04-02T20:20:18-04:00",
-    "author_time": "2026-04-02T20:20:18-04:00",
+    "id": "4edf346b74472a4c7291f96d231054976a2ae08e",
+    "time": "2026-10-08T10:45:02-04:00",
+    "author_time": "2026-10-08T10:45:02-04:00",
     "dirty": true,
     "project": "dau-sim",
-    "branch": "tkp/cli"
+    "branch": "tkp/run-loop"
   },
   "benchmarks": [
     {
@@ -43,7 +43,7 @@
       "fullname": "dau_sim/benchmarks/bench_cross_simulators.py::test_benchmark_cross_simulators[dau-sim-_run_dau_sim]",
       "params": {
         "backend": "dau-sim",
-        "runner": "UNSERIALIZABLE[<function _run_dau_sim at 0x10b87c220>]"
+        "runner": "UNSERIALIZABLE[<function _run_dau_sim at 0x10bfb1080>]"
       },
       "param": "dau-sim-_run_dau_sim",
       "extra_info": {},
@@ -56,26 +56,44 @@
         "warmup": false
       },
       "stats": {
-        "min": 2.4158451670082286,
-        "max": 2.642661375008174,
-        "mean": 2.4916352776732915,
-        "stddev": 0.1307927303809527,
-        "rounds": 3,
-        "median": 2.416399291003472,
-        "iqr": 0.1701121559999592,
-        "q1": 2.4159836980070395,
-        "q3": 2.5860958540069987,
-        "iqr_outliers": 0,
-        "stddev_outliers": 1,
-        "outliers": "1;0",
-        "ld15iqr": 2.4158451670082286,
-        "hd15iqr": 2.642661375008174,
-        "ops": 0.40134284859452135,
-        "total": 7.474905833019875,
+        "min": 0.04721041675657034,
+        "max": 0.04938541678711772,
+        "mean": 0.04800557744290147,
+        "stddev": 0.0005881682315541343,
+        "rounds": 21,
+        "median": 0.04785212501883507,
+        "iqr": 0.0006628026021644473,
+        "q1": 0.04766073892824352,
+        "q3": 0.048323541530407965,
+        "iqr_outliers": 1,
+        "stddev_outliers": 7,
+        "outliers": "7;1",
+        "ld15iqr": 0.04721041675657034,
+        "hd15iqr": 0.04938541678711772,
+        "ops": 20.830912849437432,
+        "total": 1.008117126300931,
         "data": [
-          2.642661375008174,
-          2.4158451670082286,
-          2.416399291003472
+          0.04777966672554612,
+          0.04721041675657034,
+          0.04737083287909627,
+          0.04851983394473791,
+          0.04833491612225771,
+          0.047924334183335304,
+          0.04785212501883507,
+          0.04774749977514148,
+          0.04785920912399888,
+          0.04776833299547434,
+          0.04794100020080805,
+          0.047377292066812515,
+          0.04741083411499858,
+          0.04827262507751584,
+          0.048319749999791384,
+          0.04883045796304941,
+          0.049204417038708925,
+          0.04938541678711772,
+          0.04766791593283415,
+          0.047639207914471626,
+          0.04770104167982936
         ],
         "iterations": 1
       }
@@ -86,7 +104,7 @@
       "fullname": "dau_sim/benchmarks/bench_cross_simulators.py::test_benchmark_cross_simulators[amaranth-sim-_run_amaranth_sim]",
       "params": {
         "backend": "amaranth-sim",
-        "runner": "UNSERIALIZABLE[<function _run_amaranth_sim at 0x10b87c2c0>]"
+        "runner": "UNSERIALIZABLE[<function _run_amaranth_sim at 0x10bfb1260>]"
       },
       "param": "amaranth-sim-_run_amaranth_sim",
       "extra_info": {},
@@ -99,26 +117,26 @@
         "warmup": false
       },
       "stats": {
-        "min": 7.975877832999686,
-        "max": 8.180118999996921,
-        "mean": 8.081079694330887,
-        "stddev": 0.1022599452050647,
+        "min": 4.0520945829339325,
+        "max": 4.095927624963224,
+        "mean": 4.080349166567127,
+        "stddev": 0.02451218078130419,
         "rounds": 3,
-        "median": 8.087242249996052,
-        "iqr": 0.15318087524792645,
-        "q1": 8.003718937248777,
-        "q3": 8.156899812496704,
+        "median": 4.093025291804224,
+        "iqr": 0.032874781521968544,
+        "q1": 4.0623272601515055,
+        "q3": 4.095202041673474,
         "iqr_outliers": 0,
         "stddev_outliers": 1,
         "outliers": "1;0",
-        "ld15iqr": 7.975877832999686,
-        "hd15iqr": 8.180118999996921,
-        "ops": 0.12374584063334126,
-        "total": 24.24323908299266,
+        "ld15iqr": 4.0520945829339325,
+        "hd15iqr": 4.095927624963224,
+        "ops": 0.24507706551038094,
+        "total": 12.24104749970138,
         "data": [
-          8.180118999996921,
-          8.087242249996052,
-          7.975877832999686
+          4.093025291804224,
+          4.0520945829339325,
+          4.095927624963224
         ],
         "iterations": 1
       }
@@ -129,7 +147,7 @@
       "fullname": "dau_sim/benchmarks/bench_cross_simulators.py::test_benchmark_cross_simulators[verilator-compile-run-_run_verilator]",
       "params": {
         "backend": "verilator-compile-run",
-        "runner": "UNSERIALIZABLE[<function _run_verilator at 0x10e867ec0>]"
+        "runner": "UNSERIALIZABLE[<function _run_verilator at 0x11feb5d00>]"
       },
       "param": "verilator-compile-run-_run_verilator",
       "extra_info": {},
@@ -142,26 +160,26 @@
         "warmup": false
       },
       "stats": {
-        "min": 4.751216499993461,
-        "max": 5.017071541005862,
-        "mean": 4.850330582999352,
-        "stddev": 0.14525760350043027,
+        "min": 3.010402209125459,
+        "max": 3.2023045420646667,
+        "mean": 3.090606930976113,
+        "stddev": 0.09975208219025115,
         "rounds": 3,
-        "median": 4.782703707998735,
-        "iqr": 0.19939128075930057,
-        "q1": 4.75908830199478,
-        "q3": 4.95847958275408,
+        "median": 3.059114041738212,
+        "iqr": 0.14392674970440567,
+        "q1": 3.0225801672786474,
+        "q3": 3.166506916983053,
         "iqr_outliers": 0,
         "stddev_outliers": 1,
         "outliers": "1;0",
-        "ld15iqr": 4.751216499993461,
-        "hd15iqr": 5.017071541005862,
-        "ops": 0.20617151406237116,
-        "total": 14.550991748998058,
+        "ld15iqr": 3.010402209125459,
+        "hd15iqr": 3.2023045420646667,
+        "ops": 0.3235610423238674,
+        "total": 9.271820792928338,
         "data": [
-          5.017071541005862,
-          4.782703707998735,
-          4.751216499993461
+          3.010402209125459,
+          3.2023045420646667,
+          3.059114041738212
         ],
         "iterations": 1
       }
@@ -172,7 +190,7 @@
       "fullname": "dau_sim/benchmarks/bench_cross_simulators.py::test_benchmark_cross_simulators[verilator-runtime-_run_verilator_runtime]",
       "params": {
         "backend": "verilator-runtime",
-        "runner": "UNSERIALIZABLE[<function _run_verilator_runtime at 0x10e867f60>]"
+        "runner": "UNSERIALIZABLE[<function _run_verilator_runtime at 0x11feb5da0>]"
       },
       "param": "verilator-runtime-_run_verilator_runtime",
       "extra_info": {},
@@ -185,39 +203,46 @@
         "warmup": false
       },
       "stats": {
-        "min": 0.09133362499414943,
-        "max": 0.09577366700978018,
-        "mean": 0.0929246477277378,
-        "stddev": 0.001491811905904667,
-        "rounds": 11,
-        "median": 0.09270979100256227,
-        "iqr": 0.002462926993757719,
-        "q1": 0.09152869800163899,
-        "q3": 0.0939916249953967,
+        "min": 0.053015874698758125,
+        "max": 0.058630208019167185,
+        "mean": 0.05574413430359629,
+        "stddev": 0.0015898646442857936,
+        "rounds": 18,
+        "median": 0.05560179124586284,
+        "iqr": 0.0022975830361247063,
+        "q1": 0.05469525000080466,
+        "q3": 0.05699283303692937,
         "iqr_outliers": 0,
-        "stddev_outliers": 4,
-        "outliers": "4;0",
-        "ld15iqr": 0.09133362499414943,
-        "hd15iqr": 0.09577366700978018,
-        "ops": 10.761407489323226,
-        "total": 1.0221711250051158,
+        "stddev_outliers": 6,
+        "outliers": "6;0",
+        "ld15iqr": 0.053015874698758125,
+        "hd15iqr": 0.058630208019167185,
+        "ops": 17.939107181282136,
+        "total": 1.0033944174647331,
         "data": [
-          0.09577366700978018,
-          0.09145700000226498,
-          0.09174379199976102,
-          0.09270979100256227,
-          0.0920421670016367,
-          0.09360687500156928,
-          0.09463154200057033,
-          0.09333158300432842,
-          0.09411987499333918,
-          0.09142120799515396,
-          0.09133362499414943
+          0.05511120893061161,
+          0.05469525000080466,
+          0.055796083994209766,
+          0.055458624847233295,
+          0.05808641714975238,
+          0.05699283303692937,
+          0.05718054203316569,
+          0.053356041200459,
+          0.05574495764449239,
+          0.05535466689616442,
+          0.05666062515228987,
+          0.057266166899353266,
+          0.055053249932825565,
+          0.056883332785218954,
+          0.05410662526264787,
+          0.053015874698758125,
+          0.05400170898064971,
+          0.058630208019167185
         ],
         "iterations": 1
       }
     }
   ],
-  "datetime": "2026-04-03T00:27:27.367975+00:00",
+  "datetime": "2026-10-08T14:55:10.253473+00:00",
   "version": "5.2.3"
 }

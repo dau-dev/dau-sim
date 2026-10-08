@@ -845,7 +845,6 @@ def _sim_engine_compiled(
         s_n_signals: int = 0
         s_has_comb: bool = False
         s_has_memories: bool = False
-        s_fast_tick_fn: object = None  # compiled fast-tick function (or None)
         # Pre-extracted domain data (flat lists indexed by domain order)
         s_n_domains: int = 0
         s_domain_names: list = []
@@ -872,7 +871,6 @@ def _sim_engine_compiled(
         s_comb_fns = meta["comb_fns"]
         s_comb_idx = meta["comb_idx"]
         s_has_comb = len(s_comb_fns) > 0
-        s_fast_tick_fn = meta.get("fast_tick_fn")
 
     if csp.ticked(init_signals):
         s_S = [0] * s_n_signals
@@ -929,131 +927,114 @@ def _sim_engine_compiled(
     if csp.ticked(tick) and s_initialized and not s_finished:
         S = s_S
 
-        if s_fast_tick_fn is not None:
-            # ── Fast path: compiled tick (no comb, no memory, no reset) ──
-            s_tick_count += 1
-            try:
-                s_fast_tick_fn(S, s_clock_arr, s_tick_count)
-            except SimulationFinish:
-                s_finished = True
-            if return_traces:
-                _any_fired = False
-                for d_i in range(s_n_domains):
-                    if s_tick_count % s_domain_hpts[d_i] == 0:
-                        ft = s_domain_fire_target[d_i]
-                        if ft < 0 or s_clock_arr[d_i] == ft:
-                            _any_fired = True
-                if _any_fired:
-                    return {s_sig_names[i]: S[i] for i in range(s_n_signals)}
-        else:
-            # ── Full path: handles comb, memory, resets ──
+        # ── Full path: handles comb, memory, resets ──
 
-            # Seed combinational logic before first edge
-            if s_tick_count == 0:
-                if s_has_comb:
-                    init_changed: set = set(range(s_n_signals))
-                    for comp_id in _affected_component_ids_arr(s_comb_idx, init_changed):
-                        s_comb_fns[comp_id](S, init_changed)
-                if s_has_memories:
-                    sig_dict = {s_sig_names[i]: S[i] for i in range(s_n_signals)}
-                    _exec_mem_reads(s_mem_state, s_memories, sig_dict, [])
-                    for name, idx in s_sig_index.items():
-                        S[idx] = sig_dict.get(name, S[idx])
+        # Seed combinational logic before first edge
+        if s_tick_count == 0:
+            if s_has_comb:
+                init_changed: set = set(range(s_n_signals))
+                for comp_id in _affected_component_ids_arr(s_comb_idx, init_changed):
+                    s_comb_fns[comp_id](S, init_changed)
+            if s_has_memories:
+                sig_dict = {s_sig_names[i]: S[i] for i in range(s_n_signals)}
+                _exec_mem_reads(s_mem_state, s_memories, sig_dict, [])
+                for name, idx in s_sig_index.items():
+                    S[idx] = sig_dict.get(name, S[idx])
 
-            s_tick_count += 1
-            tc = s_tick_count
-            changed = s_changed
-            changed.clear()
+        s_tick_count += 1
+        tc = s_tick_count
+        changed = s_changed
+        changed.clear()
 
-            # Toggle clocks and detect edges
-            fired = s_fired
-            fired.clear()
-            n_domains = s_n_domains
-            domain_hpts = s_domain_hpts
-            domain_clk_idx = s_domain_clk_idx
-            domain_fire_target = s_domain_fire_target
-            clock_arr = s_clock_arr
+        # Toggle clocks and detect edges
+        fired = s_fired
+        fired.clear()
+        n_domains = s_n_domains
+        domain_hpts = s_domain_hpts
+        domain_clk_idx = s_domain_clk_idx
+        domain_fire_target = s_domain_fire_target
+        clock_arr = s_clock_arr
+        for d_i in range(n_domains):
+            if tc % domain_hpts[d_i] == 0:
+                old_clk = clock_arr[d_i]
+                new_clk = 1 - old_clk
+                clock_arr[d_i] = new_clk
+                clk_idx = domain_clk_idx[d_i]
+                if clk_idx >= 0 and S[clk_idx] != new_clk:
+                    changed.add(clk_idx)
+                    S[clk_idx] = new_clk
+                ft = domain_fire_target[d_i]
+                if ft < 0 or new_clk == ft:
+                    fired.append(d_i)
+
+        # Async reset (skipped when no domains have resets)
+        if s_has_any_reset:
             for d_i in range(n_domains):
-                if tc % domain_hpts[d_i] == 0:
-                    old_clk = clock_arr[d_i]
-                    new_clk = 1 - old_clk
-                    clock_arr[d_i] = new_clk
-                    clk_idx = domain_clk_idx[d_i]
-                    if clk_idx >= 0 and S[clk_idx] != new_clk:
-                        changed.add(clk_idx)
-                        S[clk_idx] = new_clk
-                    ft = domain_fire_target[d_i]
-                    if ft < 0 or new_clk == ft:
-                        fired.append(d_i)
+                rst_idx = s_domain_rst_idx[d_i]
+                if rst_idx < 0 or s_domain_rst_style[d_i] != ResetStyle.ASYNC:
+                    continue
+                rst_val = S[rst_idx]
+                rst_active = rst_val if s_domain_rst_active_high[d_i] else (not rst_val)
+                if rst_active:
+                    for sidx in s_domain_written_indices[d_i]:
+                        sig_name = s_sig_names[sidx]
+                        reset_val = mask_value(s_init_values.get(sig_name, 0), s_shapes[sig_name])
+                        if S[sidx] != reset_val:
+                            changed.add(sidx)
+                        S[sidx] = reset_val
+                    if d_i in fired:
+                        fired.remove(d_i)
 
-            # Async reset (skipped when no domains have resets)
-            if s_has_any_reset:
-                for d_i in range(n_domains):
+        # Sequential blocks — call compiled functions
+        try:
+            for d_i in fired:
+                if s_has_any_reset:
                     rst_idx = s_domain_rst_idx[d_i]
-                    if rst_idx < 0 or s_domain_rst_style[d_i] != ResetStyle.ASYNC:
-                        continue
-                    rst_val = S[rst_idx]
-                    rst_active = rst_val if s_domain_rst_active_high[d_i] else (not rst_val)
-                    if rst_active:
-                        for sidx in s_domain_written_indices[d_i]:
-                            sig_name = s_sig_names[sidx]
-                            reset_val = mask_value(s_init_values.get(sig_name, 0), s_shapes[sig_name])
-                            if S[sidx] != reset_val:
-                                changed.add(sidx)
-                            S[sidx] = reset_val
-                        if d_i in fired:
-                            fired.remove(d_i)
+                    if rst_idx >= 0 and s_domain_rst_style[d_i] == ResetStyle.SYNC:
+                        rst_val = S[rst_idx]
+                        rst_active = rst_val if s_domain_rst_active_high[d_i] else (not rst_val)
+                        if rst_active:
+                            for sidx in s_domain_written_indices[d_i]:
+                                sig_name = s_sig_names[sidx]
+                                reset_val = mask_value(s_init_values.get(sig_name, 0), s_shapes[sig_name])
+                                if S[sidx] != reset_val:
+                                    changed.add(sidx)
+                                S[sidx] = reset_val
+                            continue
 
-            # Sequential blocks — call compiled functions
-            try:
-                for d_i in fired:
-                    if s_has_any_reset:
-                        rst_idx = s_domain_rst_idx[d_i]
-                        if rst_idx >= 0 and s_domain_rst_style[d_i] == ResetStyle.SYNC:
-                            rst_val = S[rst_idx]
-                            rst_active = rst_val if s_domain_rst_active_high[d_i] else (not rst_val)
-                            if rst_active:
-                                for sidx in s_domain_written_indices[d_i]:
-                                    sig_name = s_sig_names[sidx]
-                                    reset_val = mask_value(s_init_values.get(sig_name, 0), s_shapes[sig_name])
-                                    if S[sidx] != reset_val:
-                                        changed.add(sidx)
-                                    S[sidx] = reset_val
-                                continue
+                seq_fn = s_domain_seq_fn[d_i]
+                if seq_fn is not None:
+                    seq_fn(S, changed)
 
-                    seq_fn = s_domain_seq_fn[d_i]
-                    if seq_fn is not None:
-                        seq_fn(S, changed)
+            # Memory operations
+            if s_has_memories and fired:
+                sig_dict = {s_sig_names[i]: S[i] for i in range(s_n_signals)}
+                fired_names = [s_domain_names[d_i] for d_i in fired]
+                _exec_mem_writes(s_mem_state, s_memories, sig_dict, fired_names)
+                _exec_mem_reads(s_mem_state, s_memories, sig_dict, fired_names)
+                for name, idx in s_sig_index.items():
+                    new_val = sig_dict.get(name, S[idx])
+                    if S[idx] != new_val:
+                        changed.add(idx)
+                        S[idx] = new_val
+            elif s_has_memories:
+                sig_dict = {s_sig_names[i]: S[i] for i in range(s_n_signals)}
+                _exec_mem_reads(s_mem_state, s_memories, sig_dict, None)
+                for name, idx in s_sig_index.items():
+                    new_val = sig_dict.get(name, S[idx])
+                    if S[idx] != new_val:
+                        changed.add(idx)
+                        S[idx] = new_val
 
-                # Memory operations
-                if s_has_memories and fired:
-                    sig_dict = {s_sig_names[i]: S[i] for i in range(s_n_signals)}
-                    fired_names = [s_domain_names[d_i] for d_i in fired]
-                    _exec_mem_writes(s_mem_state, s_memories, sig_dict, fired_names)
-                    _exec_mem_reads(s_mem_state, s_memories, sig_dict, fired_names)
-                    for name, idx in s_sig_index.items():
-                        new_val = sig_dict.get(name, S[idx])
-                        if S[idx] != new_val:
-                            changed.add(idx)
-                            S[idx] = new_val
-                elif s_has_memories:
-                    sig_dict = {s_sig_names[i]: S[i] for i in range(s_n_signals)}
-                    _exec_mem_reads(s_mem_state, s_memories, sig_dict, None)
-                    for name, idx in s_sig_index.items():
-                        new_val = sig_dict.get(name, S[idx])
-                        if S[idx] != new_val:
-                            changed.add(idx)
-                            S[idx] = new_val
+            # Settle combinational logic
+            if s_has_comb and fired and changed:
+                for comp_id in _affected_component_ids_arr(s_comb_idx, changed):
+                    s_comb_fns[comp_id](S, changed)
+        except SimulationFinish:
+            s_finished = True
 
-                # Settle combinational logic
-                if s_has_comb and fired and changed:
-                    for comp_id in _affected_component_ids_arr(s_comb_idx, changed):
-                        s_comb_fns[comp_id](S, changed)
-            except SimulationFinish:
-                s_finished = True
-
-            if fired and return_traces:
-                return {s_sig_names[i]: S[i] for i in range(s_n_signals)}
+        if fired and return_traces:
+            return {s_sig_names[i]: S[i] for i in range(s_n_signals)}
 
 
 @csp.node
@@ -1234,15 +1215,6 @@ class CompiledModule:
             if idx is not None:
                 comb_idx[idx] = bitmask
 
-        # Build fast tick function (deferred to _run_sequential when hpt is known)
-        # Eligibility: no comb components, no memories, no resets
-        fast_tick_eligible = len(comb_fns) == 0 and len(self.module.memories) == 0
-        if fast_tick_eligible:
-            for dinfo in self._domain_info.values():
-                if dinfo["rst_signal"] is not None:
-                    fast_tick_eligible = False
-                    break
-
         return {
             "sig_names": sig_names,
             "sig_index": sig_index,
@@ -1250,7 +1222,6 @@ class CompiledModule:
             "seq_fns": seq_fns,
             "comb_fns": comb_fns,
             "comb_idx": comb_idx,
-            "fast_tick_eligible": fast_tick_eligible,
         }
 
     def run_testbench(
@@ -1482,40 +1453,19 @@ class CompiledModule:
         # Compute per-domain half-period in ticks (mutates domain_info dicts)
         gcd_ns = _compute_half_period_ticks(clock_period, clocks, domain_info)
 
-        # Build fast tick function now that half_period_ticks is known
-        if not four_state and self._compiled_meta and self._compiled_meta.get("fast_tick_eligible"):
-            cg = CodeGen(self._shapes)
-            fast_tick_fn = cg.build_fast_tick(domain_info)
-            self._compiled_meta["fast_tick_fn"] = fast_tick_fn
-        elif self._compiled_meta:
-            self._compiled_meta["fast_tick_fn"] = None
-
         # Total ticks: 2 half-periods per cycle * cycles, scaled by primary
         # domain's half_period_ticks.
         primary_name = next(iter(domain_info))
         primary_hpt = domain_info[primary_name]["half_period_ticks"]
         total_ticks = 2 * cycles * primary_hpt
 
-        # ── Batch no-trace fast path: bypass CSP entirely ──
-        if not return_traces and not four_state and self._compiled_meta and self._compiled_meta.get("fast_tick_fn"):
-            fast_tick = self._compiled_meta["fast_tick_fn"]
-            sig_index = self._compiled_meta["sig_index"]
-            n_signals = self._compiled_meta["n_signals"]
-            S = [0] * n_signals
-            for name, val in init.items():
-                idx = sig_index.get(name)
-                if idx is not None:
-                    S[idx] = val
-            clock_arr = [0] * len(domain_info)
-            try:
-                for tc in range(1, total_ticks + 1):
-                    fast_tick(S, clock_arr, tc)
-            except SimulationFinish:
-                pass
-            return {}
-
         # Timer period — just for CSP timestamps (must be >= 1µs for timedelta)
         tick_period = timedelta(microseconds=max(1, gcd_ns // 1000))
+
+        # Two-state designs without memories run as one generated loop; the
+        # CSP engine stays for memories and four-state values
+        if not four_state and not self.module.memories and self._compiled_meta is not None:
+            return self._run_generated_loop(domain_info, init, all_names, total_ticks, tick_period, return_traces, output_numpy)
 
         @csp.graph
         def sim_graph():
@@ -1590,6 +1540,41 @@ class CompiledModule:
         if not return_traces:
             return {}
         return self._collect_traces(raw, all_names, four_state, output_numpy)
+
+    def _run_generated_loop(
+        self,
+        domain_info: dict[str, dict],
+        init: dict,
+        all_names: list[str],
+        total_ticks: int,
+        tick_period: timedelta,
+        return_traces: bool,
+        output_numpy: bool,
+    ) -> dict:
+        cg = CodeGen(self._shapes)
+        traced = tuple(all_names) if return_traces else ()
+        run = cg.build_run_loop(domain_info, self._comb_components, self._init_values, traced)
+        S = [0] * len(cg.signal_names)
+        for name, val in init.items():
+            idx = cg.signal_index.get(name)
+            if idx is not None:
+                S[idx] = val
+        clock_arr = [0] * len(domain_info)
+        ticks: list[int] = []
+        vals: list[list[int]] = [[] for _ in traced]
+        # a $finish inside a tick ends the loop after that tick is recorded; one
+        # raised while seeding the combinational logic propagates, as from the engine
+        run(S, clock_arr, 0, total_ticks, ticks, vals)
+        if not return_traces:
+            return {}
+        starttime = datetime(2000, 1, 1)  # noqa: DTZ001  # naive simulation epoch anchor, not a real timestamp
+        if output_numpy:
+            import numpy as np
+
+            times = np.datetime64(starttime, "ns") + np.array(ticks, dtype="int64") * np.timedelta64(int(tick_period.total_seconds() * 1e9), "ns")
+            return {name: (times, np.array(values, dtype="int64")) for name, values in zip(traced, vals)}
+        stamps = [starttime + tick_period * tc for tc in ticks]
+        return {name: list(zip(stamps, values)) for name, values in zip(traced, vals)}
 
     @staticmethod
     def _collect_traces(
