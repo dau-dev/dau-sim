@@ -94,6 +94,27 @@ def test_a_change_reverted_within_one_tick_still_settles_the_component():
     assert buf.getvalue().splitlines() == ["q=0"] * 4  # the seed, then once per edge
 
 
+def test_a_set_and_revert_within_one_block_is_no_change():
+    """One block writing q=1 then q=0 leaves q as it was; the engine's
+    compiled blocks compare only their final values, and so does the loop."""
+    m = Module(
+        name="revert_in_block",
+        ports=(_in("clk", width=Shape(1)), _out("q", width=Shape(1)), _out("r", width=Shape(1))),
+        clock_domains=(ClockDomain(name="a", clk="clk", edge=EdgePolarity.POSEDGE),),
+        seq_blocks=(
+            SeqBlock(
+                domain="a",
+                stmts=(Assign(target="q", value=Const(shape=Shape(1), value=1)), Assign(target="q", value=Const(shape=Shape(1), value=0))),
+            ),
+        ),
+        comb_blocks=(CombBlock(stmts=(Print(format_str="q={}", args=(_ref("q", Shape(1)),)), Assign(target="r", value=_ref("q", Shape(1))))),),
+    )
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        compile_module(m).run(cycles=3)
+    assert buf.getvalue().splitlines() == ["q=0"]  # the seed only
+
+
 def test_finish_inside_a_tick_keeps_that_ticks_writes_and_its_trace():
     """A block's writes before ``$finish`` take effect and the finishing tick
     is recorded, as a simulator finishing at the end of the time step does.

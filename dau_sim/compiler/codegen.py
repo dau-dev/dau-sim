@@ -720,9 +720,12 @@ class CodeGen:
         anything fired, each combinational component one of whose signals
         changed is re-evaluated (components are disconnected from each
         other, so only sequentially written signals and clocks can move
-        them; a change is noted after every reset and sequential block, so a
-        value set and reverted within one tick still counts, as it does in
-        the engine's changed set) and, for each traced signal, the value is
+        them; a change is noted after every reset and sequential block for
+        the signals that domain writes, and at every clock toggle, so a value
+        set by one domain and reverted by another in the same tick still
+        counts, as it does in the engine's changed set; a set-and-revert
+        within one block is no change, as the engine's compiled blocks also
+        compare only their final values) and, for each traced signal, the value is
         appended to ``vals[k]`` with the tick appended to ``ticks``. A
         ``$finish`` inside a tick ends the run after that tick's trace is
         recorded; one raised while seeding the combinational logic
@@ -774,9 +777,10 @@ class CodeGen:
         snapshot = {sig: f"_p{k}" for k, sig in enumerate(watched)}
         moved = {sig: f"_x{k}" for k, sig in enumerate(watched)}
 
-        def note_changes(indent: int) -> list[str]:
+        def note_changes(dinfo: dict, indent: int) -> list[str]:
+            """Compare only what this domain can have written; clocks are flagged at their toggle."""
             pad = "    " * indent
-            return [f"{pad}if {local(sig)} != {snapshot[sig]}: {moved[sig]} = 1" for sig in watched]
+            return [f"{pad}if {local(sig)} != {snapshot[sig]}: {moved[sig]} = 1" for sig in watched if sig in dinfo["written_signals"]]
 
         lines.append("    _fin = 0")
         lines.append("    for tc in range(tc + 1, tc + n_ticks + 1):")
@@ -799,6 +803,8 @@ class CodeGen:
             clk = dinfo["clk_signal"]
             if clk in self._sig_index:
                 lines.append(f"{pad}{local(clk)} = _c{d_i}")
+                if clk in moved:
+                    lines.append(f"{pad}{moved[clk]} = 1")
             if fire_target < 0:
                 lines.append(f"{pad}_d{d_i} = 1")
             else:
@@ -808,7 +814,7 @@ class CodeGen:
             if dinfo["rst_signal"] is not None and dinfo["rst_style"] == ResetStyle.ASYNC:
                 lines.append(f"            if {reset_condition(dinfo)}:")
                 lines.extend(reset_assignments(dinfo, 4))
-                lines.extend(note_changes(4))
+                lines.extend(note_changes(dinfo, 4))
                 lines.append(f"                _d{d_i} = 0")
         for d_i, (_, dinfo) in enumerate(domains):
             stmts = tuple(stmt for sb in dinfo.get("seq_blocks", []) for stmt in sb.stmts)
@@ -822,7 +828,7 @@ class CodeGen:
                     lines.extend(self._compile_stmts_local(stmts, indent=5, local_reads=all_sigs) or ["                    pass"])
             elif stmts:
                 lines.extend(self._compile_stmts_local(stmts, indent=4, local_reads=all_sigs))
-            lines.extend(note_changes(4))
+            lines.extend(note_changes(dinfo, 4))
         reactive = [(stmts, moving) for stmts, moving in components if moving]
         if reactive:
             lines.append("            if _f:")
