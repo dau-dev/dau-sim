@@ -717,11 +717,16 @@ class CodeGen:
         it fired; an active asynchronous reset drives its domain's written
         signals to their init values and cancels that domain's firing; each
         fired domain runs its sequential block, or its synchronous reset; if
-        anything fired, each combinational component whose external inputs
-        changed since the tick began is re-evaluated (components are
-        disconnected from each other, so only sequentially written signals
-        and clocks can move them) and, for each traced signal, the value is
-        appended to ``vals[k]`` with the tick appended to ``ticks``.
+        anything fired, each combinational component one of whose signals
+        changed is re-evaluated (components are disconnected from each
+        other, so only sequentially written signals and clocks can move
+        them; a change is noted after every reset and sequential block, so a
+        value set and reverted within one tick still counts, as it does in
+        the engine's changed set) and, for each traced signal, the value is
+        appended to ``vals[k]`` with the tick appended to ``ticks``. A
+        ``$finish`` inside a tick ends the run after that tick's trace is
+        recorded; one raised while seeding the combinational logic
+        propagates, as it does from the engine.
         """
         from dau_sim.compiler.eval import mask_value
         from dau_sim.ir.types import EdgePolarity, ResetStyle
@@ -760,19 +765,26 @@ class CodeGen:
                 # routed by signal, a component that touches none is never scheduled by the engine either
                 continue
             stmts = tuple(stmt for assignment in comp.assignments for stmt in assignment.stmts)
-            moving = sorted((comp.reads - comp.writes) & (seq_written | clocks) & all_sigs)
+            moving = sorted(comp.signals & (seq_written | clocks) & all_sigs)
             components.append((stmts, moving))
         # seed the combinational logic from the initial state, as the engine does before its first tick
         for stmts, _ in components:
             lines.extend(self._compile_stmts_local(stmts, indent=1, local_reads=all_sigs))
         watched = sorted({sig for _, moving in components for sig in moving})
         snapshot = {sig: f"_p{k}" for k, sig in enumerate(watched)}
+        moved = {sig: f"_x{k}" for k, sig in enumerate(watched)}
 
-        lines.append("    try:")
-        lines.append("        for tc in range(tc + 1, tc + n_ticks + 1):")
-        lines.append("            _f = 0")
+        def note_changes(indent: int) -> list[str]:
+            pad = "    " * indent
+            return [f"{pad}if {local(sig)} != {snapshot[sig]}: {moved[sig]} = 1" for sig in watched]
+
+        lines.append("    _fin = 0")
+        lines.append("    for tc in range(tc + 1, tc + n_ticks + 1):")
+        lines.append("        _f = 0")
         for sig in watched:
-            lines.append(f"            {snapshot[sig]} = {local(sig)}")
+            lines.append(f"        {snapshot[sig]} = {local(sig)}")
+            lines.append(f"        {moved[sig]} = 0")
+        lines.append("        try:")
         for d_i, (_, dinfo) in enumerate(domains):
             hpt = dinfo["half_period_ticks"]
             edge = dinfo["edge"]
@@ -796,6 +808,7 @@ class CodeGen:
             if dinfo["rst_signal"] is not None and dinfo["rst_style"] == ResetStyle.ASYNC:
                 lines.append(f"            if {reset_condition(dinfo)}:")
                 lines.extend(reset_assignments(dinfo, 4))
+                lines.extend(note_changes(4))
                 lines.append(f"                _d{d_i} = 0")
         for d_i, (_, dinfo) in enumerate(domains):
             stmts = tuple(stmt for sb in dinfo.get("seq_blocks", []) for stmt in sb.stmts)
@@ -809,22 +822,24 @@ class CodeGen:
                     lines.extend(self._compile_stmts_local(stmts, indent=5, local_reads=all_sigs) or ["                    pass"])
             elif stmts:
                 lines.extend(self._compile_stmts_local(stmts, indent=4, local_reads=all_sigs))
+            lines.extend(note_changes(4))
         reactive = [(stmts, moving) for stmts, moving in components if moving]
-        if reactive or traced:
+        if reactive:
             lines.append("            if _f:")
             for stmts, moving in reactive:
-                lines.append("                if " + " or ".join(f"{local(sig)} != {snapshot[sig]}" for sig in moving) + ":")
+                lines.append("                if " + " or ".join(moved[sig] for sig in moving) + ":")
                 lines.extend(self._compile_stmts_local(stmts, indent=5, local_reads=all_sigs) or ["                    pass"])
-            if traced:
-                lines.append("                ticks.append(tc)")
-                for k, sig in enumerate(traced):
-                    lines.append(f"                _o{k}.append({local(sig)})")
-        store = [f"S[{self._sig_index[sig]}] = {local(sig)}" for sig in self._sig_names]
-        store += [f"clock_arr[{d_i}] = _c{d_i}" for d_i in range(len(domains))]
-        lines.append("    except _SimulationFinish:")
-        lines.extend("        " + line for line in store)
-        lines.append("        raise")
-        lines.extend("    " + line for line in store)
+        lines.append("        except _SimulationFinish:")
+        lines.append("            _fin = 1")
+        if traced:
+            lines.append("        if _f:")
+            lines.append("            ticks.append(tc)")
+            for k, sig in enumerate(traced):
+                lines.append(f"            _o{k}.append({local(sig)})")
+        lines.append("        if _fin:")
+        lines.append("            break")
+        lines.extend(f"    S[{self._sig_index[sig]}] = {local(sig)}" for sig in self._sig_names)
+        lines.extend(f"    clock_arr[{d_i}] = _c{d_i}" for d_i in range(len(domains)))
 
         source = "\n".join(lines)
         globs = self._make_globals()

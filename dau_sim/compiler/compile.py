@@ -1562,10 +1562,9 @@ class CompiledModule:
         clock_arr = [0] * len(domain_info)
         ticks: list[int] = []
         vals: list[list[int]] = [[] for _ in traced]
-        try:
-            run(S, clock_arr, 0, total_ticks, ticks, vals)
-        except SimulationFinish:
-            pass
+        # a $finish inside a tick ends the loop after that tick is recorded; one
+        # raised while seeding the combinational logic propagates, as from the engine
+        run(S, clock_arr, 0, total_ticks, ticks, vals)
         if not return_traces:
             return {}
         starttime = datetime(2000, 1, 1)  # noqa: DTZ001  # naive simulation epoch anchor, not a real timestamp
