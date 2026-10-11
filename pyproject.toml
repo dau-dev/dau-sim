@@ -48,6 +48,7 @@ develop = [
     "codespell",
     "hatchling",
     "mdformat",
+    "mdformat-frontmatter",
     "mdformat-tables>=1",
     "pytest",
     "pytest-benchmark",
@@ -93,7 +94,10 @@ ignore-words-list = ["inout"]
 [tool.coverage.run]
 branch = true
 omit = [
+<<<<<<< before updating
     # a bare directory path matches no file; coverage omit takes globs
+=======
+>>>>>>> after updating
     "dau_sim/tests/integration/*",
 ]
 
