@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Any, cast
+
 import pytest
 
 from dau_sim.compiler import compile_module
@@ -119,6 +121,8 @@ def test_mid_lane_rejects_success_status() -> None:
 class TestCocotbStreamContractMonitor(CocotbExampleTestBase):
     def test_context_manager_attaches_to_prefixed_interface(self) -> None:
         import cocotb
+
+        cocotb = cast(Any, cocotb)
 
         engine = self._setup(_broken_stream_module("mutates_payload"))
         violations: list[str] = []

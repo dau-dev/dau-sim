@@ -9,6 +9,8 @@ by integer signal IDs, with shapes/masks precomputed at compile time.
 
 from __future__ import annotations
 
+from collections.abc import Callable
+
 from dau_sim.ir.expr import (
     Binary,
     BinaryOp,
@@ -67,7 +69,7 @@ class CodeGen:
         stmts: tuple[Stmt, ...],
         *,
         name: str = "_compiled_block",
-    ) -> callable:
+    ) -> Callable[..., None]:
         """Compile a statement block into a callable ``fn(S, changed)``."""
         self._counter = 0
         lines: list[str] = []
@@ -93,7 +95,7 @@ class CodeGen:
         write_signals: set[str],
         *,
         name: str = "_compiled_block",
-    ) -> callable:
+    ) -> Callable[..., None]:
         """Compile a block with local-variable optimization.
 
         Generates code that loads all read/written signals into locals
@@ -173,12 +175,11 @@ class CodeGen:
 
     def _compile_stmt(self, stmt: Stmt, indent: int) -> list[str]:
         pad = "    " * indent
-        st = type(stmt)
 
-        if st is Assign:
+        if type(stmt) is Assign:
             return self._compile_assign(stmt, indent)
 
-        if st is IfElse:
+        if type(stmt) is IfElse:
             lines: list[str] = []
             cond_expr = self._emit_expr(stmt.cond)
             lines.append(f"{pad}if {cond_expr}:")
@@ -190,28 +191,28 @@ class CodeGen:
                 lines.extend(else_ if else_ else [f"{pad}    pass"])
             return lines
 
-        if st is Switch:
+        if type(stmt) is Switch:
             return self._compile_switch(stmt, indent)
 
-        if st is Assert:
+        if type(stmt) is Assert:
             cond_expr = self._emit_expr(stmt.cond)
             msg = repr(stmt.message or "assertion failed")
             return [f"{pad}if not ({cond_expr}): raise AssertionError({msg})"]
 
-        if st is Print:
+        if type(stmt) is Print:
             args = ", ".join(self._emit_expr(a) for a in stmt.args)
             return [f"{pad}print({stmt.format_str!r}.format({args}))"]
 
-        if st is Finish:
+        if type(stmt) is Finish:
             return [f"{pad}raise _SimulationFinish({stmt.exit_code})"]
 
-        if st is Delay:
+        if type(stmt) is Delay:
             return []  # no-op in synchronous execution
 
-        if st is ReadMem:
+        if type(stmt) is ReadMem:
             return []  # handled at init-block level
 
-        raise TypeError(f"Unknown statement type: {st.__name__}")
+        raise TypeError(f"Unknown statement type: {type(stmt).__name__}")
 
     def _compile_assign(self, stmt: Assign, indent: int) -> list[str]:
         pad = "    " * indent
@@ -260,36 +261,35 @@ class CodeGen:
 
     def _emit_expr(self, expr: Expr) -> str:
         """Emit a Python expression string for an IR expression."""
-        et = type(expr)
 
-        if et is Const:
+        if type(expr) is Const:
             return self._emit_const(expr)
 
-        if et is SignalRef:
+        if type(expr) is SignalRef:
             return self._emit_signal_ref(expr)
 
-        if et is Unary:
+        if type(expr) is Unary:
             return self._emit_unary(expr)
 
-        if et is Binary:
+        if type(expr) is Binary:
             return self._emit_binary(expr)
 
-        if et is Mux:
+        if type(expr) is Mux:
             sel = self._emit_expr(expr.sel)
             t = self._emit_expr(expr.if_true)
             f = self._emit_expr(expr.if_false)
             return self._emit_mask(f"({t} if {sel} else {f})", expr.shape)
 
-        if et is Concat:
+        if type(expr) is Concat:
             return self._emit_concat(expr)
 
-        if et is Slice:
+        if type(expr) is Slice:
             return self._emit_slice(expr)
 
-        if et is SysRandom:
+        if type(expr) is SysRandom:
             return self._emit_sysrandom(expr)
 
-        raise TypeError(f"Unknown expression type: {et.__name__}")
+        raise TypeError(f"Unknown expression type: {type(expr).__name__}")
 
     def _emit_const(self, expr: Const) -> str:
         width = expr.shape.width
@@ -465,12 +465,11 @@ class CodeGen:
         local_reads: set[str],
     ) -> list[str]:
         pad = "    " * indent
-        st = type(stmt)
 
-        if st is Assign:
+        if type(stmt) is Assign:
             return self._compile_assign_local(stmt, indent, local_reads)
 
-        if st is IfElse:
+        if type(stmt) is IfElse:
             lines: list[str] = []
             cond_expr = self._emit_expr_local(stmt.cond, local_reads)
             lines.append(f"{pad}if {cond_expr}:")
@@ -482,28 +481,28 @@ class CodeGen:
                 lines.extend(else_ if else_ else [f"{pad}    pass"])
             return lines
 
-        if st is Switch:
+        if type(stmt) is Switch:
             return self._compile_switch_local(stmt, indent, local_reads)
 
-        if st is Assert:
+        if type(stmt) is Assert:
             cond_expr = self._emit_expr_local(stmt.cond, local_reads)
             msg = repr(stmt.message or "assertion failed")
             return [f"{pad}if not ({cond_expr}): raise AssertionError({msg})"]
 
-        if st is Print:
+        if type(stmt) is Print:
             args = ", ".join(self._emit_expr_local(a, local_reads) for a in stmt.args)
             return [f"{pad}print({stmt.format_str!r}.format({args}))"]
 
-        if st is Finish:
+        if type(stmt) is Finish:
             return [f"{pad}raise _SimulationFinish({stmt.exit_code})"]
 
-        if st is Delay:
+        if type(stmt) is Delay:
             return []
 
-        if st is ReadMem:
+        if type(stmt) is ReadMem:
             return []
 
-        raise TypeError(f"Unknown statement type: {st.__name__}")
+        raise TypeError(f"Unknown statement type: {type(stmt).__name__}")
 
     def _compile_assign_local(
         self,
@@ -565,12 +564,11 @@ class CodeGen:
 
     def _emit_expr_local(self, expr: Expr, local_reads: set[str]) -> str:
         """Emit expression using local variables for signal reads where possible."""
-        et = type(expr)
 
-        if et is Const:
+        if type(expr) is Const:
             return self._emit_const(expr)
 
-        if et is SignalRef:
+        if type(expr) is SignalRef:
             if expr.name in local_reads:
                 local = self._local_name(expr.name)
                 width = expr.shape.width
@@ -582,31 +580,31 @@ class CodeGen:
                 return f"({local} & {mask})"
             return self._emit_signal_ref(expr)
 
-        if et is Unary:
+        if type(expr) is Unary:
             a = self._emit_expr_local(expr.operand, local_reads)
             return self._emit_unary_raw(expr.op, a, expr.operand.shape, expr.shape)
 
-        if et is Binary:
+        if type(expr) is Binary:
             left = self._emit_expr_local(expr.left, local_reads)
             right = self._emit_expr_local(expr.right, local_reads)
             return self._emit_binary_raw(expr.op, left, right, expr.left.shape, expr.right.shape, expr.shape)
 
-        if et is Mux:
+        if type(expr) is Mux:
             sel = self._emit_expr_local(expr.sel, local_reads)
             t = self._emit_expr_local(expr.if_true, local_reads)
             f = self._emit_expr_local(expr.if_false, local_reads)
             return self._emit_mask(f"({t} if {sel} else {f})", expr.shape)
 
-        if et is Concat:
+        if type(expr) is Concat:
             return self._emit_concat_local(expr, local_reads)
 
-        if et is Slice:
+        if type(expr) is Slice:
             return self._emit_slice_local(expr, local_reads)
 
-        if et is SysRandom:
+        if type(expr) is SysRandom:
             return self._emit_sysrandom(expr)
 
-        raise TypeError(f"Unknown expression type: {et.__name__}")
+        raise TypeError(f"Unknown expression type: {type(expr).__name__}")
 
     def _emit_unary_raw(self, op: UnaryOp, a: str, a_shape: Shape, out_shape: Shape) -> str:
         if op is UnaryOp.NOT:
@@ -710,7 +708,7 @@ class CodeGen:
         comb_components: tuple,
         init_values: dict[str, int],
         traced: tuple[str, ...] = (),
-    ) -> callable:
+    ) -> Callable[..., None]:
         """Generate one function that runs the whole simulation.
 
         ``fn(S, clock_arr, tc, n_ticks, ticks, vals)`` advances ``n_ticks``
@@ -871,45 +869,43 @@ def collect_reads_writes(stmts: tuple[Stmt, ...]) -> tuple[set[str], set[str]]:
 
 
 def _collect_rw_stmt(stmt: Stmt, reads: set[str], writes: set[str]) -> None:
-    st = type(stmt)
-    if st is Assign:
+    if type(stmt) is Assign:
         writes.add(stmt.target)
         _collect_rw_expr(stmt.value, reads)
-    elif st is IfElse:
+    elif type(stmt) is IfElse:
         _collect_rw_expr(stmt.cond, reads)
         for s in stmt.then_body:
             _collect_rw_stmt(s, reads, writes)
         for s in stmt.else_body:
             _collect_rw_stmt(s, reads, writes)
-    elif st is Switch:
+    elif type(stmt) is Switch:
         _collect_rw_expr(stmt.test, reads)
         for _, body in stmt.cases:
             for s in body:
                 _collect_rw_stmt(s, reads, writes)
-    elif st is Assert:
+    elif type(stmt) is Assert:
         _collect_rw_expr(stmt.cond, reads)
-    elif st is Print:
+    elif type(stmt) is Print:
         for a in stmt.args:
             _collect_rw_expr(a, reads)
 
 
 def _collect_rw_expr(expr: Expr, reads: set[str]) -> None:
-    et = type(expr)
-    if et is SignalRef:
+    if type(expr) is SignalRef:
         reads.add(expr.name)
-    elif et is Unary:
+    elif type(expr) is Unary:
         _collect_rw_expr(expr.operand, reads)
-    elif et is Binary:
+    elif type(expr) is Binary:
         _collect_rw_expr(expr.left, reads)
         _collect_rw_expr(expr.right, reads)
-    elif et is Mux:
+    elif type(expr) is Mux:
         _collect_rw_expr(expr.sel, reads)
         _collect_rw_expr(expr.if_true, reads)
         _collect_rw_expr(expr.if_false, reads)
-    elif et is Concat:
+    elif type(expr) is Concat:
         for p in expr.parts:
             _collect_rw_expr(p, reads)
-    elif et is Slice:
+    elif type(expr) is Slice:
         _collect_rw_expr(expr.value, reads)
-    elif et is SysRandom and expr.seed is not None:
+    elif type(expr) is SysRandom and expr.seed is not None:
         _collect_rw_expr(expr.seed, reads)

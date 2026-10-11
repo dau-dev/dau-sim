@@ -184,3 +184,19 @@ pages = [
     "docs/src/benchmarks.md",
 ]
 use-autoapi = false
+
+# These annotations describe HDL ports rather than Python types.
+[[tool.ty.overrides]]
+include = [
+    "dau_sim/tests/test_frontend_amaranth.py",
+    "dau_sim/tests/test_testbench.py",
+    "dau_sim/tests/test_vcd.py",
+]
+[tool.ty.overrides.rules]
+invalid-type-form = "ignore"
+
+# CSP nodes may skip emitting a value on a tick.
+[[tool.ty.overrides]]
+include = ["dau_sim/compiler/compile.py"]
+[tool.ty.overrides.rules]
+invalid-return-type = "ignore"

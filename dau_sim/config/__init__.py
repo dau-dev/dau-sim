@@ -88,7 +88,7 @@ def compose_config(
 
 def profile_names(*, config_dir: str | None = None, version_base: str | None = None) -> tuple[str, ...]:
     result = _load_base_config(config_dir=config_dir, version_base=version_base, debug=True)
-    return tuple(sorted(result.group_options.get("profile/profiles", ())))
+    return tuple(sorted((result.group_options or {}).get("profile/profiles", ())))
 
 
 def _load_base_config(
@@ -102,7 +102,7 @@ def _load_base_config(
     return base_load_config(
         root_config_dir=parent_dir,
         root_config_name="base",
-        config_dir=config_dir,
+        config_dir=config_dir or "",
         overrides=list(overrides or ()),
         version_base=version_base,
         basepath=parent_dir,

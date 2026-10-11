@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from ccflow import BaseModel
 from pydantic import ConfigDict
@@ -14,7 +14,7 @@ class SimulationResult(BaseModel):
     model_config = ConfigDict(frozen=True)
 
     module_name: str
-    traces: tuple[tuple[str, tuple[tuple[object, int], ...]], ...]
+    traces: tuple[tuple[str, tuple[tuple[datetime, int], ...]], ...]
 
     def latest(self, signal: str) -> int | None:
         """Return the most recent value for a signal, if available."""
@@ -94,4 +94,4 @@ class Simulator:
         signals: list[str] | None = None,
         exclude: list[str] | None = None,
     ) -> None:
-        self._compiled.write_vcd(path, dict(result.traces), timescale=timescale, signals=signals, exclude=exclude)
+        self._compiled.write_vcd(path, {name: list(values) for name, values in result.traces}, timescale=timescale, signals=signals, exclude=exclude)

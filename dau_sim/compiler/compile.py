@@ -1,10 +1,19 @@
 from __future__ import annotations
 
 import math
+from collections.abc import Callable
 from datetime import datetime, timedelta
+from typing import TYPE_CHECKING, Any
 
 import csp
-from csp import ts
+
+if TYPE_CHECKING:
+    from typing import Annotated, TypeAlias, TypeVar
+
+    T = TypeVar("T")
+    ts: TypeAlias = Annotated[T, "CSP stream"]  # noqa: PYI042
+else:
+    from csp import ts
 
 from dau_sim.compiler.codegen import CodeGen, collect_reads_writes
 from dau_sim.compiler.depanalysis import (
@@ -53,9 +62,8 @@ def _exec_stmt(
     changed_signals: set[str] | None = None,
 ) -> None:
     """Execute a single statement, mutating current signal values."""
-    stmt_type = type(stmt)
 
-    if stmt_type is Assign:
+    if type(stmt) is Assign:
         target = stmt.target
         val = mask_value(eval_expr(stmt.value, current), shapes[target])
         old_val = current.get(target)
@@ -64,13 +72,13 @@ def _exec_stmt(
         current[target] = val
         return
 
-    if stmt_type is IfElse:
+    if type(stmt) is IfElse:
         cond = eval_expr(stmt.cond, current)
         body = stmt.then_body if cond else stmt.else_body
         _exec_stmts(body, current, shapes, mem_state, changed_signals)
         return
 
-    if stmt_type is Switch:
+    if type(stmt) is Switch:
         test = eval_expr(stmt.test, current)
         default_stmts: tuple[Stmt, ...] = ()
         for pattern, stmts in stmt.cases:
@@ -83,25 +91,25 @@ def _exec_stmt(
             _exec_stmts(default_stmts, current, shapes, mem_state, changed_signals)
         return
 
-    if stmt_type is Assert:
+    if type(stmt) is Assert:
         cond = eval_expr(stmt.cond, current)
         if not cond:
             msg = stmt.message or "assertion failed"
             raise AssertionError(msg)
         return
 
-    if stmt_type is Print:
+    if type(stmt) is Print:
         args = [eval_expr(a, current) for a in stmt.args]
         print(stmt.format_str.format(*args))
         return
 
-    if stmt_type is Finish:
+    if type(stmt) is Finish:
         raise SimulationFinish(stmt.exit_code)
 
-    if stmt_type is Delay:
+    if type(stmt) is Delay:
         return  # Delay is a no-op in synchronous execution; handled by InitBlock runner
 
-    if stmt_type is ReadMem:
+    if type(stmt) is ReadMem:
         if mem_state is None:
             raise RuntimeError("$readmemh/$readmemb requires mem_state (use in initial block)")
         _exec_readmem(stmt, mem_state)
@@ -430,10 +438,10 @@ def _edge_fires(edge: EdgePolarity, old_clk: int, new_clk: int) -> bool:
 def _sim_tick(
     tick: ts[bool],
     init_signals: ts[dict],
-    comb_order: ts[object],
-    shapes: ts[object],
-    memories: ts[object],
-    mem_init: ts[object],
+    comb_order: ts[list],
+    shapes: ts[dict],
+    memories: ts[tuple],
+    mem_init: ts[dict],
 ) -> ts[dict]:
     """Combinational-only simulation node (no clock edge semantics).
 
@@ -479,10 +487,10 @@ def _sim_tick(
 def _sim_tick_4(
     tick: ts[bool],
     init_signals: ts[dict],
-    comb_order: ts[object],
-    shapes: ts[object],
-    memories: ts[object],
-    mem_init: ts[object],
+    comb_order: ts[list],
+    shapes: ts[dict],
+    memories: ts[tuple],
+    mem_init: ts[dict],
 ) -> ts[dict]:
     """Four-state combinational-only simulation node."""
     with csp.state():
@@ -523,13 +531,13 @@ def _sim_tick_4(
 def _sim_engine_seq(
     tick: ts[bool],
     init_signals: ts[dict],
-    comb_components: ts[object],
-    comb_component_index: ts[object],
-    domain_info: ts[object],
-    shapes: ts[object],
-    init_values: ts[object],
-    memories: ts[object],
-    mem_init: ts[object],
+    comb_components: ts[tuple],
+    comb_component_index: ts[dict],
+    domain_info: ts[dict],
+    shapes: ts[dict],
+    init_values: ts[dict],
+    memories: ts[tuple],
+    mem_init: ts[dict],
 ) -> ts[dict]:
     """Clock-aware simulation engine (two-state).
 
@@ -662,13 +670,13 @@ def _sim_engine_seq(
 def _sim_engine_seq_4(
     tick: ts[bool],
     init_signals: ts[dict],
-    comb_components: ts[object],
-    comb_component_index: ts[object],
-    domain_info: ts[object],
-    shapes: ts[object],
-    init_values: ts[object],
-    memories: ts[object],
-    mem_init: ts[object],
+    comb_components: ts[tuple],
+    comb_component_index: ts[dict],
+    domain_info: ts[dict],
+    shapes: ts[dict],
+    init_values: ts[dict],
+    memories: ts[tuple],
+    mem_init: ts[dict],
 ) -> ts[dict]:
     """Clock-aware simulation engine (four-state)."""
     with csp.state():
@@ -813,12 +821,12 @@ def _affected_component_ids_arr(
 def _sim_engine_compiled(
     tick: ts[bool],
     init_signals: ts[dict],
-    domain_info: ts[object],
-    shapes: ts[object],
-    init_values: ts[object],
-    memories: ts[object],
-    mem_init: ts[object],
-    compiled_meta: ts[object],
+    domain_info: ts[dict],
+    shapes: ts[dict],
+    init_values: ts[dict],
+    memories: ts[tuple],
+    mem_init: ts[dict],
+    compiled_meta: ts[dict],
     return_traces: bool = True,
 ) -> ts[dict]:
     """Clock-aware compiled simulation engine (two-state).
@@ -1173,7 +1181,7 @@ class CompiledModule:
         sig_index = cg.signal_index
 
         # Compile per-domain seq block functions
-        seq_fns: dict[str, callable] = {}
+        seq_fns: dict[str, Callable[..., None]] = {}
         for dom_i, (dname, dinfo) in enumerate(self._domain_info.items()):
             sbs = dinfo["seq_blocks"]
             if not sbs:
@@ -1192,7 +1200,7 @@ class CompiledModule:
             )
 
         # Compile per-component comb functions
-        comb_fns: list[callable] = []
+        comb_fns: list[Callable[..., None]] = []
         for comp_i, comp in enumerate(self._comb_components):
             all_stmts = []
             for assignment in comp.assignments:
@@ -1353,7 +1361,7 @@ class CompiledModule:
                 # $finish in init block → return single-point traces
                 if not return_traces:
                     return {}
-                starttime = datetime(2000, 1, 1)  # noqa: DTZ001  # naive simulation epoch anchor, not a real timestamp
+                starttime = datetime(2000, 1, 1)  # naive simulation epoch anchor, not a real timestamp
                 return {name: [(starttime, init.get(name, 0))] for name in out_names}
 
         # Persist any $readmemh/$readmemb changes back to mem_init
@@ -1427,7 +1435,7 @@ class CompiledModule:
                 else:
                     csp.add_graph_output("__sink__", _trace_sink(all_signals))
 
-        starttime = datetime(2000, 1, 1)  # noqa: DTZ001  # naive simulation epoch anchor, not a real timestamp
+        starttime = datetime(2000, 1, 1)  # naive simulation epoch anchor, not a real timestamp
         endtime = starttime + clock_period * cycles
 
         raw = csp.run(sim_graph, starttime=starttime, endtime=endtime, output_numpy=output_numpy)
@@ -1533,7 +1541,7 @@ class CompiledModule:
                 else:
                     csp.add_graph_output("__sink__", _trace_sink(all_signals))
 
-        starttime = datetime(2000, 1, 1)  # noqa: DTZ001  # naive simulation epoch anchor, not a real timestamp
+        starttime = datetime(2000, 1, 1)  # naive simulation epoch anchor, not a real timestamp
         endtime = starttime + tick_period * total_ticks
 
         raw = csp.run(sim_graph, starttime=starttime, endtime=endtime, output_numpy=output_numpy)
@@ -1567,7 +1575,7 @@ class CompiledModule:
         run(S, clock_arr, 0, total_ticks, ticks, vals)
         if not return_traces:
             return {}
-        starttime = datetime(2000, 1, 1)  # noqa: DTZ001  # naive simulation epoch anchor, not a real timestamp
+        starttime = datetime(2000, 1, 1)  # naive simulation epoch anchor, not a real timestamp
         if output_numpy:
             import numpy as np
 
@@ -1582,15 +1590,15 @@ class CompiledModule:
         all_names: list[str],
         four_state: bool,
         output_numpy: bool,
-    ) -> dict[str, list[tuple[datetime, int]]]:
-        result: dict[str, list[tuple[datetime, int]]] = {}
+    ) -> dict[str, Any]:
+        result: dict[str, Any] = {}
         for name in all_names:
             if name in raw:
                 if output_numpy:
                     times, values = raw[name]
                     if four_state:
                         values = [v.to_int for v in values]
-                    result[name] = (times, values)  # type: ignore[assignment]
+                    result[name] = (times, values)
                     continue
                 if four_state:
                     result[name] = [(t, v.to_int) for t, v in raw[name]]

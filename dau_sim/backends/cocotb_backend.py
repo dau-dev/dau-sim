@@ -25,7 +25,7 @@ import sys
 import time
 import types
 from collections.abc import Callable
-from typing import Any
+from typing import Any, cast
 
 from dau_sim.compiler.compile import (
     _build_domain_info,
@@ -700,9 +700,9 @@ class SimulationEngine:
 # Simulator module — drop-in replacement for cocotb.simulator
 
 
-def _create_simulator_module(engine: SimulationEngine) -> types.ModuleType:
+def _create_simulator_module(engine: SimulationEngine) -> Any:
     """Create a module object that mimics ``cocotb.simulator``."""
-    mod = types.ModuleType("cocotb.simulator")
+    mod: Any = types.ModuleType("cocotb.simulator")
     mod.__package__ = "cocotb"
 
     # Constants
@@ -752,7 +752,7 @@ def _create_simulator_module(engine: SimulationEngine) -> types.ModuleType:
     def register_value_change_callback(signal: DauSimHandle, func: Callable, edge: int, *args: Any) -> DauSimCallback:
         return engine.register_value_change_callback(signal, func, edge, *args)
 
-    def get_root_handle(name: str | None = None) -> DauSimHandle:  # noqa: ARG001 (cocotb simulator API)
+    def get_root_handle(name: str | None = None) -> DauSimHandle | None:  # noqa: ARG001 (cocotb simulator API)
         return engine._root_handle
 
     def get_sim_time() -> tuple[int, int]:
@@ -837,9 +837,9 @@ def run_cocotb(
     else:
         # Try Amaranth
         try:
-            from dau_sim.frontends.amaranth_frontend import lower_amaranth_design
+            from dau_sim.frontends.amaranth_frontend import from_amaranth
 
-            ir_module = lower_amaranth_design(design)
+            ir_module = from_amaranth(design)
         except (ImportError, TypeError):
             raise TypeError(f"Cannot lower design of type {type(design).__name__}. Pass an Amaranth Elaboratable or a dau-sim IR Module.")
 
@@ -866,6 +866,8 @@ def _run_with_patched_simulator(
     import cocotb._event_loop
     import cocotb._gpi_triggers
     import cocotb.simtime
+
+    cocotb = cast(Any, cocotb)
     # isort: on
 
     # Save originals

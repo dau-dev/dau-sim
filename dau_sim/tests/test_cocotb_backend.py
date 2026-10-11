@@ -1,3 +1,5 @@
+from typing import Any, cast
+
 """Tests for the cocotb backend (pure-Python GPI replacement).
 
 Tests cover:
@@ -645,6 +647,7 @@ class TestSimulatorModule:
         engine = SimulationEngine(_make_comb_module())
         engine.build_handle_hierarchy()
         mod = _create_simulator_module(engine)
+        assert engine._root_handle is not None
         h = engine._root_handle.get_handle_by_name("a")
         cb = mod.register_value_change_callback(h, lambda *a: None, RISING)
         assert isinstance(cb, DauSimCallback)
@@ -671,12 +674,16 @@ class TestCocotbIntegration:
 
         import cocotb
 
+        cocotb = cast(Any, cocotb)
+
         # isort: off
         import cocotb.handle  # must precede cocotb._gpi_triggers (circular import)
         import cocotb._event_loop
         import cocotb._gpi_triggers
         import cocotb._test_manager
         import cocotb.simtime
+
+        cocotb = cast(Any, cocotb)
         # isort: on
 
         engine = SimulationEngine(module)
@@ -719,7 +726,7 @@ class TestCocotbIntegration:
         from cocotb._base_triggers import Event
         from cocotb._test_manager import TestManager
 
-        test = TestManager.__new__(TestManager)
+        test: Any = TestManager.__new__(TestManager)
         test._tasks = {}
         test._excs = []
         test._finishing = False
@@ -737,11 +744,15 @@ class TestCocotbIntegration:
 
         import cocotb
 
+        cocotb = cast(Any, cocotb)
+
         # isort: off
         import cocotb.handle  # must precede cocotb._gpi_triggers (circular import)
         import cocotb._gpi_triggers
         import cocotb._test_manager
         import cocotb.simtime
+
+        cocotb = cast(Any, cocotb)
         # isort: on
 
         cocotb.handle._handle2obj.clear()
@@ -760,6 +771,8 @@ class TestCocotbIntegration:
     def test_timer_trigger(self):
         """A Timer(100) trigger should fire after 100 sim time steps."""
         import cocotb
+
+        cocotb = cast(Any, cocotb)
 
         engine = self._setup_cocotb(_make_comb_module())
         try:
@@ -791,6 +804,8 @@ class TestCocotbIntegration:
     def test_rising_edge_trigger(self):
         """RisingEdge should fire when signal goes 0→1."""
         import cocotb
+
+        cocotb = cast(Any, cocotb)
 
         engine = self._setup_cocotb(_make_counter_module())
         try:
@@ -831,6 +846,8 @@ class TestCocotbIntegration:
         """Use cocotb.clock.Clock to drive the counter and verify count increments."""
         import cocotb
 
+        cocotb = cast(Any, cocotb)
+
         engine = self._setup_cocotb(_make_counter_module())
         try:
             from cocotb._gpi_triggers import RisingEdge
@@ -867,6 +884,8 @@ class TestCocotbIntegration:
         """Verify that combinational logic settles after signal writes."""
         import cocotb
 
+        cocotb = cast(Any, cocotb)
+
         engine = self._setup_cocotb(_make_comb_module())
         try:
             from cocotb._gpi_triggers import Timer
@@ -900,6 +919,8 @@ class TestCocotbIntegration:
     def test_timer_and_edge_same_timestep(self):
         """Timer+edge combination should complete when both happen together."""
         import cocotb
+
+        cocotb = cast(Any, cocotb)
 
         engine = self._setup_cocotb(_make_comb_module())
         try:
@@ -935,3 +956,20 @@ class TestCocotbIntegration:
             assert result[0] == 100
         finally:
             self._teardown_cocotb()
+
+
+def test_run_cocotb_lowers_amaranth_design(monkeypatch):
+    from dau_sim.backends import cocotb_backend
+
+    design = object()
+    module = _make_comb_module()
+    captured = []
+
+    def lower(value):
+        assert value is design
+        return module
+
+    monkeypatch.setattr("dau_sim.frontends.amaranth_frontend.from_amaranth", lower)
+    monkeypatch.setattr(cocotb_backend, "_run_with_patched_simulator", lambda engine, _simulator, _test_module: captured.append(engine._module))
+    cocotb_backend.run_cocotb(design, test_module="test_design")
+    assert captured == [module]

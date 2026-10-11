@@ -9,6 +9,7 @@ Given a set of combinational assignments, determine:
 from __future__ import annotations
 
 from collections import deque
+from collections.abc import Sequence
 from dataclasses import dataclass
 
 from dau_sim.ir.expr import Binary, Concat, Const, Expr, Mux, SignalRef, Slice, Unary
@@ -123,7 +124,7 @@ class CombLoopError(Exception):
         return f"Combinational loop detected: {path}"
 
 
-def build_assignments(stmts_list: list[tuple[int, tuple[Stmt, ...]]]) -> list[Assignment]:
+def build_assignments(stmts_list: Sequence[tuple[int, tuple[Stmt, ...]]]) -> list[Assignment]:
     """Build Assignment objects from indexed statement groups.
 
     Each entry is (index, stmts) where stmts is a tuple of statements
