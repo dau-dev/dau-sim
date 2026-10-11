@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pyslang as ps
 
 from dau_sim.ir.expr import (
@@ -25,8 +27,11 @@ from dau_sim.ir.module import (
 from dau_sim.ir.stmt import Assign, IfElse, Stmt
 from dau_sim.ir.types import EdgePolarity, PortDirection, ResetStyle, Shape
 
-_ps_ast = getattr(ps, "ast", ps)
-_ps_syntax = getattr(ps, "syntax", ps)
+if TYPE_CHECKING:
+    from pyslang import ast as _ps_ast, syntax as _ps_syntax
+else:
+    _ps_ast = getattr(ps, "ast", ps)
+    _ps_syntax = getattr(ps, "syntax", ps)
 
 __all__ = (
     "parse_sv",
@@ -58,7 +63,7 @@ _BINOP_MAP: dict[_ps_ast.BinaryOperator, BinaryOp] = {
     _ps_ast.BinaryOperator.LogicalOr: BinaryOp.LOGIC_OR,
 }
 
-_UNOP_MAP: dict[_ps_ast.UnaryOperator, UnaryOp] = {
+_UNOP_MAP: dict[_ps_ast.UnaryOperator, UnaryOp | None] = {
     _ps_ast.UnaryOperator.BitwiseNot: UnaryOp.NOT,
     _ps_ast.UnaryOperator.Minus: UnaryOp.NEG,
     _ps_ast.UnaryOperator.Plus: None,  # unary + is identity

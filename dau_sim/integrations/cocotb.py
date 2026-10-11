@@ -11,6 +11,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 from pathlib import Path
+from typing import Any
 
 DEFAULT_BUILD_ARGS = ("--timing", "-Wno-fatal")
 
@@ -59,7 +60,7 @@ def run_cocotb_testbench(
     include_dirs = sorted({source_path.parent for source_path in source_paths})
 
     runner = get_runner("verilator")
-    build_kwargs = {"parameters": dict(parameters)} if parameters else {}
+    build_kwargs: dict[str, Any] = {"parameters": dict(parameters)} if parameters else {}
     runner.build(
         sources=source_paths,
         hdl_toplevel=hdl_toplevel,

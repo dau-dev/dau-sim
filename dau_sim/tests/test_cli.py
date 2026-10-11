@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Any
 
 import typer
 from typer.testing import CliRunner
@@ -58,12 +59,12 @@ def test_run_sv_command_invokes_composed_task(tmp_path: Path, monkeypatch) -> No
 
     src = tmp_path / "adder.sv"
     src.write_text("module adder(input logic [7:0] a, output logic [7:0] y); assign y = a; endmodule")
-    captured: dict[str, object] = {}
+    captured: dict[str, Any] = {}
 
     def fake_run_request_config(request_kind, request_name, *, overrides=None, **_kwargs):
         captured["request_kind"] = request_kind
         captured["request_name"] = request_name
-        captured["overrides"] = list(overrides)
+        captured["overrides"] = list(overrides or ())
         return RunSvResult(module_name="adder", cycles=3, latest={"y": 7}, vcd_path=tmp_path / "out.vcd")
 
     monkeypatch.setattr("dau_sim.config.run_request_config", fake_run_request_config)
@@ -98,7 +99,7 @@ endmodule
     captured = {}
 
     def fake_run_request_config(request_kind, request_name, *, overrides, **kwargs):
-        captured.update(request_kind=request_kind, request_name=request_name, overrides=list(overrides), kwargs=kwargs)
+        captured.update(request_kind=request_kind, request_name=request_name, overrides=list(overrides or ()), kwargs=kwargs)
         return PerfSvResult(
             benchmark=BenchmarkResult(compile_seconds_median=0.1, run_seconds_median=0.2, cycles_per_second=50.0),
             node_separation=NodeSeparationStats(
@@ -138,7 +139,7 @@ def test_a_relative_config_dir_resolves_against_the_callers_directory(tmp_path: 
     src.write_text("module adder(input logic [7:0] a, output logic [7:0] y); assign y = a; endmodule")
     overlay = tmp_path / "overlay"
     overlay.mkdir()
-    captured: dict[str, object] = {}
+    captured: dict[str, Any] = {}
 
     def fake_run_request_config(request_kind, request_name, *, overrides=None, config_dir=None, **_kwargs):
         captured["config_dir"] = config_dir

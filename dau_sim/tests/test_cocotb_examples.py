@@ -1,3 +1,5 @@
+from typing import Any, cast
+
 """End-to-end tests based on cocotb's official examples.
 
 Each test translates a cocotb example HDL design into dau-sim IR, sets up
@@ -170,11 +172,15 @@ class CocotbExampleTestBase:
         """Build engine, patch cocotb.simulator, return engine."""
         # isort: off
         import cocotb
+
+        cocotb = cast(Any, cocotb)
         import cocotb.handle  # must precede cocotb._gpi_triggers (circular import)
         import cocotb._event_loop
         import cocotb._gpi_triggers
         import cocotb._test_manager
         import cocotb.simtime
+
+        cocotb = cast(Any, cocotb)
         # isort: on
 
         engine = SimulationEngine(module)
@@ -217,7 +223,7 @@ class CocotbExampleTestBase:
         from cocotb._base_triggers import Event
         from cocotb._test_manager import TestManager
 
-        test = TestManager.__new__(TestManager)
+        test: Any = TestManager.__new__(TestManager)
         test._tasks = {}
         test._excs = []
         test._finishing = False
@@ -234,10 +240,14 @@ class CocotbExampleTestBase:
     def _teardown(self):
         # isort: off
         import cocotb
+
+        cocotb = cast(Any, cocotb)
         import cocotb.handle  # must precede cocotb._gpi_triggers (circular import)
         import cocotb._gpi_triggers
         import cocotb._test_manager
         import cocotb.simtime
+
+        cocotb = cast(Any, cocotb)
         # isort: on
 
         cocotb.handle._handle2obj.clear()
@@ -256,6 +266,8 @@ class CocotbExampleTestBase:
     def _run_coroutine(self, coro, max_steps=10_000_000):
         """Schedule *coro* and run the engine."""
         import cocotb
+
+        cocotb = cast(Any, cocotb)
         from cocotb.task import Task
 
         task = Task(coro)
@@ -275,6 +287,8 @@ class TestDFF(CocotbExampleTestBase):
     def test_dff_d_propagates_to_q(self):
         """Test that d propagates to q on each rising clock edge."""
         import cocotb
+
+        cocotb = cast(Any, cocotb)
 
         engine = self._setup(_make_dff())
         try:
@@ -324,6 +338,8 @@ class TestDFF(CocotbExampleTestBase):
         """Verify q doesn't change when no clock edge occurs."""
         import cocotb
 
+        cocotb = cast(Any, cocotb)
+
         engine = self._setup(_make_dff())
         try:
             from cocotb._gpi_triggers import RisingEdge, Timer
@@ -369,6 +385,8 @@ class TestAdder(CocotbExampleTestBase):
         """Test for 5 + 10 = 15."""
         import cocotb
 
+        cocotb = cast(Any, cocotb)
+
         engine = self._setup(_make_adder())
         try:
             from cocotb._gpi_triggers import Timer
@@ -388,6 +406,8 @@ class TestAdder(CocotbExampleTestBase):
     def test_adder_randomised(self):
         """Test for adding 2 random numbers multiple times."""
         import cocotb
+
+        cocotb = cast(Any, cocotb)
 
         engine = self._setup(_make_adder())
         try:
@@ -414,6 +434,8 @@ class TestAdder(CocotbExampleTestBase):
     def test_adder_overflow(self):
         """Verify the 5-bit output captures the carry for max inputs."""
         import cocotb
+
+        cocotb = cast(Any, cocotb)
 
         engine = self._setup(_make_adder())
         try:
@@ -447,6 +469,8 @@ class TestSimpleCounter(CocotbExampleTestBase):
         - Disable and verify counter holds
         """
         import cocotb
+
+        cocotb = cast(Any, cocotb)
 
         engine = self._setup(_make_simple_counter())
         try:
@@ -502,6 +526,8 @@ class TestSimpleCounter(CocotbExampleTestBase):
         """
         import cocotb
 
+        cocotb = cast(Any, cocotb)
+
         engine = self._setup(_make_simple_counter())
         try:
             from cocotb._gpi_triggers import FallingEdge, RisingEdge
@@ -550,6 +576,8 @@ class TestSimpleCounter(CocotbExampleTestBase):
         """Verify the 'set' input loads din into counter."""
         import cocotb
 
+        cocotb = cast(Any, cocotb)
+
         engine = self._setup(_make_simple_counter())
         try:
             from cocotb._gpi_triggers import RisingEdge
@@ -596,6 +624,8 @@ class TestSimpleCounter(CocotbExampleTestBase):
     def test_counter_reset_during_count(self):
         """Verify rst resets counter even while ena is active."""
         import cocotb
+
+        cocotb = cast(Any, cocotb)
 
         engine = self._setup(_make_simple_counter())
         try:
@@ -652,6 +682,8 @@ class TestSimpleCounter(CocotbExampleTestBase):
         """Verify start_soon() works for concurrent clock + test coroutines."""
         import cocotb
 
+        cocotb = cast(Any, cocotb)
+
         engine = self._setup(_make_simple_counter())
         try:
             from cocotb._gpi_triggers import FallingEdge, RisingEdge
@@ -703,6 +735,8 @@ class TestSimpleCounter(CocotbExampleTestBase):
     def test_counter_holds_when_disabled(self):
         """Counter should hold its value when neither ena nor set is active."""
         import cocotb
+
+        cocotb = cast(Any, cocotb)
 
         engine = self._setup(_make_simple_counter())
         try:

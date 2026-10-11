@@ -264,6 +264,7 @@ class TestRewriter:
     def test_rewrite_signalref(self):
         expr = SignalRef(shape=Shape(8), name="count")
         result = prefix_expr(expr, "child")
+        assert isinstance(result, SignalRef)
         assert result.name == "child.count"
 
     def test_rewrite_const_unchanged(self):
@@ -274,12 +275,17 @@ class TestRewriter:
     def test_rewrite_binary_expr(self):
         expr = Binary(shape=Shape(8), op=BinaryOp.ADD, left=SignalRef(shape=Shape(8), name="a"), right=SignalRef(shape=Shape(8), name="b"))
         result = prefix_expr(expr, "sub")
+        assert isinstance(result, Binary)
+        assert isinstance(result.left, SignalRef)
         assert result.left.name == "sub.a"
+        assert isinstance(result.right, SignalRef)
         assert result.right.name == "sub.b"
 
     def test_rewrite_unary_expr(self):
         expr = Unary(shape=Shape(8), op=UnaryOp.NOT, operand=SignalRef(shape=Shape(8), name="x"))
         result = prefix_expr(expr, "p")
+        assert isinstance(result, Unary)
+        assert isinstance(result.operand, SignalRef)
         assert result.operand.name == "p.x"
 
     def test_rewrite_mux_expr(self):
@@ -290,25 +296,36 @@ class TestRewriter:
             if_false=SignalRef(shape=Shape(8), name="b"),
         )
         result = prefix_expr(expr, "m")
+        assert isinstance(result, Mux)
+        assert isinstance(result.sel, SignalRef)
         assert result.sel.name == "m.sel"
+        assert isinstance(result.if_true, SignalRef)
         assert result.if_true.name == "m.a"
+        assert isinstance(result.if_false, SignalRef)
         assert result.if_false.name == "m.b"
 
     def test_rewrite_concat_expr(self):
         expr = Concat(shape=Shape(16), parts=(SignalRef(shape=Shape(8), name="hi"), SignalRef(shape=Shape(8), name="lo")))
         result = prefix_expr(expr, "c")
+        assert isinstance(result, Concat)
+        assert isinstance(result.parts[0], SignalRef)
         assert result.parts[0].name == "c.hi"
+        assert isinstance(result.parts[1], SignalRef)
         assert result.parts[1].name == "c.lo"
 
     def test_rewrite_slice_expr(self):
         expr = Slice(shape=Shape(4), value=SignalRef(shape=Shape(8), name="val"), low=0, high=4)
         result = prefix_expr(expr, "s")
+        assert isinstance(result, Slice)
+        assert isinstance(result.value, SignalRef)
         assert result.value.name == "s.val"
 
     def test_rewrite_assign_stmt(self):
         stmt = Assign(target="out", value=SignalRef(shape=Shape(1), name="in_sig"))
         result = prefix_stmt(stmt, "child")
+        assert isinstance(result, Assign)
         assert result.target == "child.out"
+        assert isinstance(result.value, SignalRef)
         assert result.value.name == "child.in_sig"
 
     def test_rewrite_ifelse_stmt(self):
@@ -318,7 +335,10 @@ class TestRewriter:
             else_body=(Assign(target="o", value=Const(shape=Shape(1), value=0)),),
         )
         result = prefix_stmt(stmt, "x")
+        assert isinstance(result, IfElse)
+        assert isinstance(result.cond, SignalRef)
         assert result.cond.name == "x.en"
+        assert isinstance(result.then_body[0], Assign)
         assert result.then_body[0].target == "x.o"
 
     def test_rewrite_switch_stmt(self):
@@ -327,7 +347,10 @@ class TestRewriter:
             cases=((0, (Assign(target="y", value=Const(shape=Shape(1), value=0)),)),),
         )
         result = prefix_stmt(stmt, "p")
+        assert isinstance(result, IrSwitch)
+        assert isinstance(result.test, SignalRef)
         assert result.test.name == "p.sel"
+        assert isinstance(result.cases[0][1][0], Assign)
         assert result.cases[0][1][0].target == "p.y"
 
     def test_prefix_stmts_batch(self):
@@ -336,6 +359,9 @@ class TestRewriter:
             Assign(target="b", value=SignalRef(shape=Shape(1), name="c")),
         )
         result = prefix_stmts(stmts, "mod")
+        assert isinstance(result[0], Assign)
+        assert isinstance(result[1], Assign)
+        assert isinstance(result[1].value, SignalRef)
         assert result[0].target == "mod.a"
         assert result[1].target == "mod.b"
         assert result[1].value.name == "mod.c"

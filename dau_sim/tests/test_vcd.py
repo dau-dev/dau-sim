@@ -152,7 +152,7 @@ class TestSubNanosecondTicks:
     def test_a_picosecond_timescale_counts_picoseconds(self):
         """The old parser rounded "1ps" up to a nanosecond, so a 1ps VCD was
         a thousand times too short."""
-        base = datetime(2024, 1, 1)  # noqa: DTZ001  # naive simulation-epoch trace timestamp
+        base = datetime(2024, 1, 1)  # naive simulation-epoch trace timestamp
         stamps = [base, base + timedelta(microseconds=1), base + timedelta(microseconds=2)]
         assert _datetime_to_timescale_ticks(stamps, timescale_ps=parse_timescale_ps("1ps")) == [0, 1_000_000, 2_000_000]
         assert _datetime_to_timescale_ticks(stamps, timescale_ps=parse_timescale_ps("1ns")) == [0, 1_000, 2_000]
@@ -379,7 +379,7 @@ class TestVCDEndToEnd:
 
     def test_no_module_fallback(self):
         """Without module metadata, signals default to 1-bit wire."""
-        t0 = datetime(2000, 1, 1)  # noqa: DTZ001  # naive simulation-epoch trace timestamp
+        t0 = datetime(2000, 1, 1)  # naive simulation-epoch trace timestamp
         traces = {
             "x": [(t0, 0), (t0 + timedelta(microseconds=1), 1)],
         }
@@ -390,7 +390,7 @@ class TestVCDEndToEnd:
         assert "$scope module top $end" in vcd
 
     def test_custom_scope(self):
-        t0 = datetime(2000, 1, 1)  # noqa: DTZ001  # naive simulation-epoch trace timestamp
+        t0 = datetime(2000, 1, 1)  # naive simulation-epoch trace timestamp
         traces = {"x": [(t0, 0)]}
         vcd = traces_to_vcd(traces, scope="my_dut")
         assert "$scope module my_dut $end" in vcd
@@ -428,7 +428,7 @@ class TestVCDFileIO:
 
     def test_standalone_write_vcd(self):
         """write_vcd standalone function should work."""
-        t0 = datetime(2000, 1, 1)  # noqa: DTZ001  # naive simulation-epoch trace timestamp
+        t0 = datetime(2000, 1, 1)  # naive simulation-epoch trace timestamp
         traces = {"sig": [(t0, 1), (t0 + timedelta(microseconds=1), 0)]}
 
         with tempfile.NamedTemporaryFile(suffix=".vcd", delete=False) as f:

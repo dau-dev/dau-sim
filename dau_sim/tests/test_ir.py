@@ -1,3 +1,5 @@
+from typing import Any, cast
+
 """Tests for IR data structures: types, expressions, module construction, validation, and printing."""
 
 import unittest
@@ -46,7 +48,7 @@ def test_shape_basics():
 def test_shape_frozen():
     s = Shape(4)
     try:
-        s.width = 5
+        cast(Any, s).width = 5
         raise AssertionError("Should have raised")
     except AttributeError:
         pass
@@ -96,12 +98,12 @@ class TestIRNodes(unittest.TestCase):
     def test_delay_frozen(self):
         d = Delay(ticks=5)
         with self.assertRaises(ValidationError):
-            d.ticks = 10
+            cast(Any, d).ticks = 10
 
     def test_finish_frozen(self):
         f = Finish(exit_code=1)
         with self.assertRaises(ValidationError):
-            f.exit_code = 2
+            cast(Any, f).exit_code = 2
 
     def test_finish_default_exit_code(self):
         f = Finish()
@@ -110,7 +112,7 @@ class TestIRNodes(unittest.TestCase):
     def test_init_block_frozen(self):
         ib = InitBlock(stmts=())
         with self.assertRaises(ValidationError):
-            ib.stmts = ()
+            cast(Any, ib).stmts = ()
 
 
 def _make_counter_module() -> Module:
@@ -166,7 +168,9 @@ def test_module_construction():
     assert m.name == "counter"
     assert len(m.ports) == 3
     assert len(m.seq_blocks) == 1
-    assert m.signal_by_name("count").shape == Shape(4)
+    count = m.signal_by_name("count")
+    assert count is not None
+    assert count.shape == Shape(4)
 
 
 def test_module_all_signal_names():

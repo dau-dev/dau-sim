@@ -56,9 +56,7 @@ def eval_expr(expr: Expr, signals: dict[str, int]) -> int:
 
     Returns an int value truncated to the expression's shape.
     """
-    expr_type = type(expr)
-
-    if expr_type is Const:
+    if type(expr) is Const:
         width = expr.shape.width
         if width == 0:
             return 0
@@ -68,7 +66,7 @@ def eval_expr(expr: Expr, signals: dict[str, int]) -> int:
             raw -= 1 << width
         return raw
 
-    if expr_type is SignalRef:
+    if type(expr) is SignalRef:
         width = expr.shape.width
         if width == 0:
             return 0
@@ -78,34 +76,34 @@ def eval_expr(expr: Expr, signals: dict[str, int]) -> int:
             raw -= 1 << width
         return raw
 
-    if expr_type is Unary:
+    if type(expr) is Unary:
         a = eval_expr(expr.operand, signals)
         return _eval_unary(expr.op, a, expr.operand.shape, expr.shape)
 
-    if expr_type is Binary:
+    if type(expr) is Binary:
         left = eval_expr(expr.left, signals)
         right = eval_expr(expr.right, signals)
         return _eval_binary(expr.op, left, right, expr.left.shape, expr.right.shape, expr.shape)
 
-    if expr_type is Mux:
+    if type(expr) is Mux:
         sel = eval_expr(expr.sel, signals)
         if sel:
             return mask_value(eval_expr(expr.if_true, signals), expr.shape)
         return mask_value(eval_expr(expr.if_false, signals), expr.shape)
 
-    if expr_type is Concat:
+    if type(expr) is Concat:
         result = 0
         for part in expr.parts:
             result = (result << part.shape.width) | (eval_expr(part, signals) & _width_mask(part.shape.width))
         return mask_value(result, expr.shape)
 
-    if expr_type is Slice:
+    if type(expr) is Slice:
         val = eval_expr(expr.value, signals)
         # Extract bits [low:high)
         extracted = (val >> expr.low) & _width_mask(expr.high - expr.low)
         return mask_value(extracted, expr.shape)
 
-    if expr_type is SysRandom:
+    if type(expr) is SysRandom:
         if expr.seed is not None:
             seed_val = eval_expr(expr.seed, signals)
             _sys_random_rng.seed(seed_val)
