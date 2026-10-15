@@ -4,8 +4,8 @@ defaults:
   - _self_
   - optional task: null
   - optional profile: null
-  - callable: callable
 
+callable: /model
 context: {}
 
 cli:
