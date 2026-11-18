@@ -489,21 +489,21 @@ class SimulationEngine:
         if self._has_seq and not comb_only:
             # Detect clock edges from signal changes
             for dname, dinfo in self._domain_info.items():
-                clk_sig = dinfo["clk_signal"]
+                clk_sig = dinfo.clk_signal
                 old_clk = self._prev_signals.get(clk_sig, 0)
                 new_clk = self._signals.get(clk_sig, 0)
-                if old_clk != new_clk and _edge_fires(dinfo["edge"], old_clk, new_clk):
+                if old_clk != new_clk and _edge_fires(dinfo.edge, old_clk, new_clk):
                     fired_domains.append(dname)
 
             # Async reset
             for dname, dinfo in self._domain_info.items():
-                rst_sig = dinfo["rst_signal"]
-                if rst_sig is None or dinfo["rst_style"] != ResetStyle.ASYNC:
+                rst_sig = dinfo.rst_signal
+                if rst_sig is None or dinfo.rst_style != ResetStyle.ASYNC:
                     continue
                 rst_val = self._signals.get(rst_sig, 0)
-                rst_active = rst_val if dinfo["rst_active_high"] else (not rst_val)
+                rst_active = rst_val if dinfo.rst_active_high else (not rst_val)
                 if rst_active:
-                    for sig_name in dinfo["written_signals"]:
+                    for sig_name in dinfo.written_signals:
                         self._signals[sig_name] = mask_value(self._init_values.get(sig_name, 0), self._shapes[sig_name])
                     if dname in fired_domains:
                         fired_domains.remove(dname)
@@ -511,15 +511,15 @@ class SimulationEngine:
             # Seq blocks on active edges
             for dname in fired_domains:
                 dinfo = self._domain_info[dname]
-                rst_sig = dinfo["rst_signal"]
-                if rst_sig is not None and dinfo["rst_style"] == ResetStyle.SYNC:
+                rst_sig = dinfo.rst_signal
+                if rst_sig is not None and dinfo.rst_style == ResetStyle.SYNC:
                     rst_val = self._signals.get(rst_sig, 0)
-                    rst_active = rst_val if dinfo["rst_active_high"] else (not rst_val)
+                    rst_active = rst_val if dinfo.rst_active_high else (not rst_val)
                     if rst_active:
-                        for sig_name in dinfo["written_signals"]:
+                        for sig_name in dinfo.written_signals:
                             self._signals[sig_name] = mask_value(self._init_values.get(sig_name, 0), self._shapes[sig_name])
                         continue
-                for sb in dinfo["seq_blocks"]:
+                for sb in dinfo.seq_blocks:
                     _exec_stmts(sb.stmts, self._signals, self._shapes)
 
             # Memory writes
@@ -635,7 +635,7 @@ class SimulationEngine:
         seq_written: set[str] = set()
         if self._has_seq:
             for dinfo in self._domain_info.values():
-                seq_written.update(dinfo.get("written_signals", ()))
+                seq_written.update(dinfo.written_signals)
 
         nba: dict[str, int] = {}
         for sig in seq_written:
