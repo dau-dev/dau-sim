@@ -199,4 +199,4 @@ invalid-type-form = "ignore"
 [[tool.ty.overrides]]
 include = ["dau_sim/compiler/compile.py"]
 [tool.ty.overrides.rules]
-invalid-return-type = "ignore"
+invalid-implicit-return = "ignore"
