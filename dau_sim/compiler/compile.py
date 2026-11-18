@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import math
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
+from dataclasses import dataclass
 from datetime import datetime, timedelta
+from types import MappingProxyType
 from typing import TYPE_CHECKING, Any
 
 import csp
@@ -231,41 +233,60 @@ def _exec_stmt_4(
         pass  # ReadMem is handled at init-block level only (two-state exec)
 
 
+@dataclass(frozen=True, slots=True)
+class DomainInfo:
+    """Per-domain metadata for the sequential engine."""
+
+    clk_signal: str
+    # which edge triggers sequential blocks
+    edge: EdgePolarity
+    rst_signal: str | None
+    rst_style: ResetStyle
+    rst_active_high: bool
+    seq_blocks: tuple[SeqBlock, ...]
+    # signals written by this domain's seq blocks
+    written_signals: frozenset[str]
+
+
+# compared and hashed by identity: it holds compiled functions, and its
+# read-only maps do not hash
+@dataclass(frozen=True, slots=True, eq=False)
+class CompiledMeta:
+    """The codegen-compiled functions and signal layout the compiled engine runs."""
+
+    sig_names: tuple[str, ...]
+    sig_index: Mapping[str, int]
+    n_signals: int
+    seq_fns: Mapping[str, Callable[..., None]]
+    comb_fns: tuple[Callable[..., None], ...]
+    comb_idx: Mapping[int, int]
+
+
 def _build_domain_info(
     module: Module,
-) -> dict[str, dict]:
-    """Precompute per-domain metadata for the sequential engine.
-
-    Returns a dict keyed by domain name with:
-        clk_signal: str           - signal name of the clock
-        edge: EdgePolarity        - which edge triggers sequential blocks
-        rst_signal: str | None    - signal name of reset (or None)
-        rst_style: ResetStyle     - sync or async
-        rst_active_high: bool
-        seq_blocks: list[SeqBlock]
-        written_signals: set[str] - signals written by this domain's seq blocks
-    """
+) -> dict[str, DomainInfo]:
+    """Precompute per-domain metadata for the sequential engine, keyed by domain name."""
     # Group seq blocks by domain
     domain_seq: dict[str, list[SeqBlock]] = {}
     for sb in module.seq_blocks:
         domain_seq.setdefault(sb.domain, []).append(sb)
 
-    info: dict[str, dict] = {}
+    info: dict[str, DomainInfo] = {}
     for cd in module.clock_domains:
         sbs = domain_seq.get(cd.name, [])
         written: set[str] = set()
         for sb in sbs:
             for stmt in sb.stmts:
                 written |= collect_stmt_writes(stmt)
-        info[cd.name] = {
-            "clk_signal": cd.clk,
-            "edge": cd.edge,
-            "rst_signal": cd.rst,
-            "rst_style": cd.rst_style,
-            "rst_active_high": cd.rst_active_high,
-            "seq_blocks": sbs,
-            "written_signals": written,
-        }
+        info[cd.name] = DomainInfo(
+            clk_signal=cd.clk,
+            edge=cd.edge,
+            rst_signal=cd.rst,
+            rst_style=cd.rst_style,
+            rst_active_high=cd.rst_active_high,
+            seq_blocks=tuple(sbs),
+            written_signals=frozenset(written),
+        )
     return info
 
 
@@ -287,13 +308,12 @@ def _timedelta_ns(td: timedelta) -> int:
 def _compute_half_period_ticks(
     clock_period: timedelta,
     clocks: dict[str, timedelta] | None,
-    domain_info: dict[str, dict],
-) -> int:
-    """Compute per-domain half_period_ticks and return the GCD tick count.
+    domain_info: Mapping[str, DomainInfo],
+) -> tuple[int, dict[str, int]]:
+    """Compute the GCD half-period in nanoseconds and each domain's half_period_ticks.
 
     Each domain's half-period is expressed as an integer multiple of the
-    finest simulation tick.  Returns the number of ticks that correspond
-    to one GCD unit (always 1 — the GCD *is* the tick).
+    finest simulation tick, which is the GCD of the half-periods.
     """
     if clocks:
         periods_ns = {d: _timedelta_ns(clocks[d]) if d in clocks else _timedelta_ns(clock_period) for d in domain_info}
@@ -309,10 +329,7 @@ def _compute_half_period_ticks(
     if gcd_ns == 0:
         gcd_ns = 1
 
-    for dname, dinfo in domain_info.items():
-        dinfo["half_period_ticks"] = half_ns[dname] // gcd_ns
-
-    return gcd_ns
+    return gcd_ns, {dname: half_ns[dname] // gcd_ns for dname in domain_info}
 
 
 def _exec_mem_writes(
@@ -534,6 +551,7 @@ def _sim_engine_seq(
     comb_components: ts[tuple],
     comb_component_index: ts[dict],
     domain_info: ts[dict],
+    half_period_ticks: ts[dict],
     shapes: ts[dict],
     init_values: ts[dict],
     memories: ts[tuple],
@@ -569,9 +587,9 @@ def _sim_engine_seq(
         s_comb_component_index = comb_component_index
     if csp.ticked(domain_info):
         s_domain_info = domain_info
-        for dname, dinfo in s_domain_info.items():
+        for dname in s_domain_info:
             s_clock_states[dname] = 0
-            s_half_period_ticks[dname] = dinfo.get("half_period_ticks", 1)
+            s_half_period_ticks[dname] = half_period_ticks[dname]
     if csp.ticked(shapes):
         s_shapes = shapes
     if csp.ticked(init_values):
@@ -602,22 +620,22 @@ def _sim_engine_seq(
                 new_clk = 1 - old_clk
                 s_clock_states[dname] = new_clk
                 # Update clock signal in state
-                if s_signals.get(dinfo["clk_signal"]) != new_clk:
-                    changed_signals.add(dinfo["clk_signal"])
-                s_signals[dinfo["clk_signal"]] = new_clk
+                if s_signals.get(dinfo.clk_signal) != new_clk:
+                    changed_signals.add(dinfo.clk_signal)
+                s_signals[dinfo.clk_signal] = new_clk
 
-                if _edge_fires(dinfo["edge"], old_clk, new_clk):
+                if _edge_fires(dinfo.edge, old_clk, new_clk):
                     fired_domains.append(dname)
 
         # Async reset (fires regardless of clock edge)
         for dname, dinfo in s_domain_info.items():
-            rst_sig = dinfo["rst_signal"]
-            if rst_sig is None or dinfo["rst_style"] != ResetStyle.ASYNC:
+            rst_sig = dinfo.rst_signal
+            if rst_sig is None or dinfo.rst_style != ResetStyle.ASYNC:
                 continue
             rst_val = s_signals.get(rst_sig, 0)
-            rst_active = rst_val if dinfo["rst_active_high"] else (not rst_val)
+            rst_active = rst_val if dinfo.rst_active_high else (not rst_val)
             if rst_active:
-                for sig_name in dinfo["written_signals"]:
+                for sig_name in dinfo.written_signals:
                     reset_val = mask_value(s_init_values.get(sig_name, 0), s_shapes[sig_name])
                     if s_signals.get(sig_name) != reset_val:
                         changed_signals.add(sig_name)
@@ -632,12 +650,12 @@ def _sim_engine_seq(
                 dinfo = s_domain_info[dname]
 
                 # Sync reset check
-                rst_sig = dinfo["rst_signal"]
-                if rst_sig is not None and dinfo["rst_style"] == ResetStyle.SYNC:
+                rst_sig = dinfo.rst_signal
+                if rst_sig is not None and dinfo.rst_style == ResetStyle.SYNC:
                     rst_val = s_signals.get(rst_sig, 0)
-                    rst_active = rst_val if dinfo["rst_active_high"] else (not rst_val)
+                    rst_active = rst_val if dinfo.rst_active_high else (not rst_val)
                     if rst_active:
-                        for sig_name in dinfo["written_signals"]:
+                        for sig_name in dinfo.written_signals:
                             reset_val = mask_value(s_init_values.get(sig_name, 0), s_shapes[sig_name])
                             if s_signals.get(sig_name) != reset_val:
                                 changed_signals.add(sig_name)
@@ -645,7 +663,7 @@ def _sim_engine_seq(
                         continue
 
                 # Normal execution
-                for sb in dinfo["seq_blocks"]:
+                for sb in dinfo.seq_blocks:
                     _exec_stmts(sb.stmts, s_signals, s_shapes, changed_signals=changed_signals)
 
             # Memory writes (after seq blocks, before comb settle)
@@ -673,6 +691,7 @@ def _sim_engine_seq_4(
     comb_components: ts[tuple],
     comb_component_index: ts[dict],
     domain_info: ts[dict],
+    half_period_ticks: ts[dict],
     shapes: ts[dict],
     init_values: ts[dict],
     memories: ts[tuple],
@@ -703,9 +722,9 @@ def _sim_engine_seq_4(
         s_comb_component_index = comb_component_index
     if csp.ticked(domain_info):
         s_domain_info = domain_info
-        for dname, dinfo in s_domain_info.items():
+        for dname in s_domain_info:
             s_clock_states[dname] = 0
-            s_half_period_ticks[dname] = dinfo.get("half_period_ticks", 1)
+            s_half_period_ticks[dname] = half_period_ticks[dname]
     if csp.ticked(shapes):
         s_shapes = shapes
     if csp.ticked(init_values):
@@ -735,24 +754,24 @@ def _sim_engine_seq_4(
                 new_clk = 1 - old_clk
                 s_clock_states[dname] = new_clk
                 new_clk_value = FourState.from_int(new_clk, Shape(1))
-                if s_signals.get(dinfo["clk_signal"]) != new_clk_value:
-                    changed_signals.add(dinfo["clk_signal"])
-                s_signals[dinfo["clk_signal"]] = new_clk_value
-                if _edge_fires(dinfo["edge"], old_clk, new_clk):
+                if s_signals.get(dinfo.clk_signal) != new_clk_value:
+                    changed_signals.add(dinfo.clk_signal)
+                s_signals[dinfo.clk_signal] = new_clk_value
+                if _edge_fires(dinfo.edge, old_clk, new_clk):
                     fired_domains.append(dname)
 
         # Async reset
         for dname, dinfo in s_domain_info.items():
-            rst_sig = dinfo["rst_signal"]
-            if rst_sig is None or dinfo["rst_style"] != ResetStyle.ASYNC:
+            rst_sig = dinfo.rst_signal
+            if rst_sig is None or dinfo.rst_style != ResetStyle.ASYNC:
                 continue
             rst_fs = s_signals.get(rst_sig, FourState.from_int(0, Shape(1)))
             if rst_fs.is_fully_defined:
-                rst_active = rst_fs.aval if dinfo["rst_active_high"] else (not rst_fs.aval)
+                rst_active = rst_fs.aval if dinfo.rst_active_high else (not rst_fs.aval)
             else:
                 rst_active = False
             if rst_active:
-                for sig_name in dinfo["written_signals"]:
+                for sig_name in dinfo.written_signals:
                     reset_val = FourState.from_int(s_init_values.get(sig_name, 0), s_shapes[sig_name])
                     if s_signals.get(sig_name) != reset_val:
                         changed_signals.add(sig_name)
@@ -764,21 +783,21 @@ def _sim_engine_seq_4(
         try:
             for dname in fired_domains:
                 dinfo = s_domain_info[dname]
-                rst_sig = dinfo["rst_signal"]
-                if rst_sig is not None and dinfo["rst_style"] == ResetStyle.SYNC:
+                rst_sig = dinfo.rst_signal
+                if rst_sig is not None and dinfo.rst_style == ResetStyle.SYNC:
                     rst_fs = s_signals.get(rst_sig, FourState.from_int(0, Shape(1)))
                     if rst_fs.is_fully_defined:
-                        rst_active = rst_fs.aval if dinfo["rst_active_high"] else (not rst_fs.aval)
+                        rst_active = rst_fs.aval if dinfo.rst_active_high else (not rst_fs.aval)
                     else:
                         rst_active = False
                     if rst_active:
-                        for sig_name in dinfo["written_signals"]:
+                        for sig_name in dinfo.written_signals:
                             reset_val = FourState.from_int(s_init_values.get(sig_name, 0), s_shapes[sig_name])
                             if s_signals.get(sig_name) != reset_val:
                                 changed_signals.add(sig_name)
                             s_signals[sig_name] = reset_val
                         continue
-                for sb in dinfo["seq_blocks"]:
+                for sb in dinfo.seq_blocks:
                     _exec_stmts_4(sb.stmts, s_signals, s_shapes, changed_signals)
 
             # Memory writes (after seq blocks, before comb settle)
@@ -800,7 +819,7 @@ def _sim_engine_seq_4(
 
 
 def _affected_component_ids_arr(
-    component_index: dict[int, int],
+    component_index: Mapping[int, int],
     changed: set[int],
 ) -> list[int]:
     """Like affected_component_ids but operates on integer signal indices."""
@@ -822,11 +841,12 @@ def _sim_engine_compiled(
     tick: ts[bool],
     init_signals: ts[dict],
     domain_info: ts[dict],
+    half_period_ticks: ts[dict],
     shapes: ts[dict],
     init_values: ts[dict],
     memories: ts[tuple],
     mem_init: ts[dict],
-    compiled_meta: ts[dict],
+    compiled_meta: ts[CompiledMeta],
     return_traces: bool = True,
 ) -> ts[dict]:
     """Clock-aware compiled simulation engine (two-state).
@@ -837,8 +857,8 @@ def _sim_engine_compiled(
     """
     with csp.state():
         s_S: list = []  # signal array (list[int])
-        s_sig_names: list = []  # index -> signal name
-        s_sig_index: dict = {}  # signal name -> index
+        s_sig_names: tuple = ()  # index -> signal name
+        s_sig_index: Mapping = {}  # signal name -> index
         s_shapes: dict = {}
         s_init_values: dict = {}
         s_initialized: bool = False
@@ -847,9 +867,9 @@ def _sim_engine_compiled(
         s_memories: tuple = ()
         s_mem_state: dict = {}
         # Compiled artifacts
-        s_seq_fns: dict = {}  # domain name -> compiled callable
-        s_comb_fns: list = []
-        s_comb_idx: dict = {}
+        s_seq_fns: Mapping = {}  # domain name -> compiled callable
+        s_comb_fns: tuple = ()
+        s_comb_idx: Mapping = {}
         s_n_signals: int = 0
         s_has_comb: bool = False
         s_has_memories: bool = False
@@ -872,12 +892,12 @@ def _sim_engine_compiled(
 
     if csp.ticked(compiled_meta):
         meta = compiled_meta
-        s_sig_names = meta["sig_names"]
-        s_sig_index = meta["sig_index"]
-        s_n_signals = meta["n_signals"]
-        s_seq_fns = meta["seq_fns"]
-        s_comb_fns = meta["comb_fns"]
-        s_comb_idx = meta["comb_idx"]
+        s_sig_names = meta.sig_names
+        s_sig_index = meta.sig_index
+        s_n_signals = meta.n_signals
+        s_seq_fns = meta.seq_fns
+        s_comb_fns = meta.comb_fns
+        s_comb_idx = meta.comb_idx
         s_has_comb = len(s_comb_fns) > 0
 
     if csp.ticked(init_signals):
@@ -901,20 +921,20 @@ def _sim_engine_compiled(
         s_clock_arr = []
         for dname, dinfo in domain_info.items():
             s_domain_names.append(dname)
-            s_domain_hpts.append(dinfo.get("half_period_ticks", 1))
-            s_domain_clk_idx.append(s_sig_index.get(dinfo["clk_signal"], -1))
-            edge = dinfo["edge"]
+            s_domain_hpts.append(half_period_ticks[dname])
+            s_domain_clk_idx.append(s_sig_index.get(dinfo.clk_signal, -1))
+            edge = dinfo.edge
             if edge == EdgePolarity.POSEDGE:
                 s_domain_fire_target.append(1)
             elif edge == EdgePolarity.NEGEDGE:
                 s_domain_fire_target.append(0)
             else:
                 s_domain_fire_target.append(-1)
-            rst_signal = dinfo["rst_signal"]
+            rst_signal = dinfo.rst_signal
             s_domain_rst_idx.append(s_sig_index.get(rst_signal, -1) if rst_signal else -1)
-            s_domain_rst_style.append(dinfo["rst_style"])
-            s_domain_rst_active_high.append(dinfo["rst_active_high"])
-            written_idx = [s_sig_index[n] for n in dinfo["written_signals"] if n in s_sig_index]
+            s_domain_rst_style.append(dinfo.rst_style)
+            s_domain_rst_active_high.append(dinfo.rst_active_high)
+            written_idx = [s_sig_index[n] for n in dinfo.written_signals if n in s_sig_index]
             s_domain_written_indices.append(written_idx)
             s_domain_seq_fn.append(s_seq_fns.get(dname))
             s_clock_arr.append(0)
@@ -1126,7 +1146,7 @@ class CompiledModule:
                     self._shapes[wp.en] = Shape(en_width)
 
         # ── Codegen: compile IR blocks into Python functions ──
-        self._compiled_meta: dict | None = None
+        self._compiled_meta: CompiledMeta | None = None
         if not four_state:
             self._compiled_meta = self._build_compiled_meta()
 
@@ -1174,7 +1194,7 @@ class CompiledModule:
             traces = select_signals(traces, include=signals, exclude=exclude)
         return _traces_to_vcd(traces, module=self.module, timescale=timescale)
 
-    def _build_compiled_meta(self) -> dict:
+    def _build_compiled_meta(self) -> CompiledMeta:
         """Compile IR blocks into Python functions for the compiled engine."""
         cg = CodeGen(self._shapes)
         sig_names = cg.signal_names
@@ -1183,7 +1203,7 @@ class CompiledModule:
         # Compile per-domain seq block functions
         seq_fns: dict[str, Callable[..., None]] = {}
         for dom_i, (dname, dinfo) in enumerate(self._domain_info.items()):
-            sbs = dinfo["seq_blocks"]
+            sbs = dinfo.seq_blocks
             if not sbs:
                 continue
             # Merge all seq block stmts for this domain into one function
@@ -1223,14 +1243,14 @@ class CompiledModule:
             if idx is not None:
                 comb_idx[idx] = bitmask
 
-        return {
-            "sig_names": sig_names,
-            "sig_index": sig_index,
-            "n_signals": len(sig_names),
-            "seq_fns": seq_fns,
-            "comb_fns": comb_fns,
-            "comb_idx": comb_idx,
-        }
+        return CompiledMeta(
+            sig_names=tuple(sig_names),
+            sig_index=MappingProxyType(sig_index),
+            n_signals=len(sig_names),
+            seq_fns=MappingProxyType(seq_fns),
+            comb_fns=tuple(comb_fns),
+            comb_idx=MappingProxyType(comb_idx),
+        )
 
     def run_testbench(
         self,
@@ -1449,7 +1469,7 @@ class CompiledModule:
         clock_period: timedelta,
         clocks: dict[str, timedelta] | None,
         init: dict,
-        domain_info: dict[str, dict],
+        domain_info: dict[str, DomainInfo],
         init_values: dict[str, int],
         shapes: dict[str, Shape],
         four_state: bool,
@@ -1458,13 +1478,13 @@ class CompiledModule:
         output_numpy: bool,
     ) -> dict[str, list[tuple[datetime, int]]]:
         """Clock-edge mode: edge-driven sequential simulation."""
-        # Compute per-domain half-period in ticks (mutates domain_info dicts)
-        gcd_ns = _compute_half_period_ticks(clock_period, clocks, domain_info)
+        # Compute per-domain half-period in ticks
+        gcd_ns, half_period_ticks = _compute_half_period_ticks(clock_period, clocks, domain_info)
 
         # Total ticks: 2 half-periods per cycle * cycles, scaled by primary
         # domain's half_period_ticks.
         primary_name = next(iter(domain_info))
-        primary_hpt = domain_info[primary_name]["half_period_ticks"]
+        primary_hpt = half_period_ticks[primary_name]
         total_ticks = 2 * cycles * primary_hpt
 
         # Timer period — just for CSP timestamps (must be >= 1µs for timedelta)
@@ -1473,13 +1493,14 @@ class CompiledModule:
         # Two-state designs without memories run as one generated loop; the
         # CSP engine stays for memories and four-state values
         if not four_state and not self.module.memories and self._compiled_meta is not None:
-            return self._run_generated_loop(domain_info, init, all_names, total_ticks, tick_period, return_traces, output_numpy)
+            return self._run_generated_loop(domain_info, half_period_ticks, init, all_names, total_ticks, tick_period, return_traces, output_numpy)
 
         @csp.graph
         def sim_graph():
             tick = csp.timer(tick_period, True)
             init_edge = csp.const(init)
             domain_edge = csp.const(domain_info)
+            half_period_edge = csp.const(half_period_ticks)
             shapes_edge = csp.const(shapes)
             init_vals_edge = csp.const(init_values)
             mem_edge = csp.const(self.module.memories)
@@ -1494,6 +1515,7 @@ class CompiledModule:
                     comb_edge,
                     comb_index_edge,
                     domain_edge,
+                    half_period_edge,
                     shapes_edge,
                     init_vals_edge,
                     mem_edge,
@@ -1513,6 +1535,7 @@ class CompiledModule:
                         tick,
                         init_edge,
                         domain_edge,
+                        half_period_edge,
                         shapes_edge,
                         init_vals_edge,
                         mem_edge,
@@ -1529,6 +1552,7 @@ class CompiledModule:
                         comb_edge,
                         comb_index_edge,
                         domain_edge,
+                        half_period_edge,
                         shapes_edge,
                         init_vals_edge,
                         mem_edge,
@@ -1551,7 +1575,8 @@ class CompiledModule:
 
     def _run_generated_loop(
         self,
-        domain_info: dict[str, dict],
+        domain_info: dict[str, DomainInfo],
+        half_period_ticks: dict[str, int],
         init: dict,
         all_names: list[str],
         total_ticks: int,
@@ -1561,7 +1586,7 @@ class CompiledModule:
     ) -> dict:
         cg = CodeGen(self._shapes)
         traced = tuple(all_names) if return_traces else ()
-        run = cg.build_run_loop(domain_info, self._comb_components, self._init_values, traced)
+        run = cg.build_run_loop(domain_info, half_period_ticks, self._comb_components, self._init_values, traced)
         S = [0] * len(cg.signal_names)
         for name, val in init.items():
             idx = cg.signal_index.get(name)

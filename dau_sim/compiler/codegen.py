@@ -9,7 +9,8 @@ by integer signal IDs, with shapes/masks precomputed at compile time.
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
+from typing import TYPE_CHECKING
 
 from dau_sim.ir.expr import (
     Binary,
@@ -26,6 +27,9 @@ from dau_sim.ir.expr import (
 )
 from dau_sim.ir.stmt import Assert, Assign, Delay, Finish, IfElse, Print, ReadMem, Stmt, Switch
 from dau_sim.ir.types import Shape
+
+if TYPE_CHECKING:
+    from dau_sim.compiler.compile import DomainInfo
 
 
 def _width_mask(width: int) -> int:
@@ -704,7 +708,8 @@ class CodeGen:
 
     def build_run_loop(
         self,
-        domain_info: dict[str, dict],
+        domain_info: Mapping[str, DomainInfo],
+        half_period_ticks: Mapping[str, int],
         comb_components: tuple,
         init_values: dict[str, int],
         traced: tuple[str, ...] = (),
@@ -749,21 +754,22 @@ class CodeGen:
         for k in range(len(traced)):
             lines.append(f"    _o{k} = vals[{k}]")
 
-        def reset_assignments(dinfo: dict, indent: int) -> list[str]:
+        def reset_assignments(dinfo: DomainInfo, indent: int) -> list[str]:
             pad = "    " * indent
             out = []
-            for sig in sorted(dinfo["written_signals"]):
+            for sig in sorted(dinfo.written_signals):
                 if sig in self._sig_index:
                     value = mask_value(init_values.get(sig, 0), self._shapes[sig])
                     out.append(f"{pad}{local(sig)} = {value}")
             return out
 
-        def reset_condition(dinfo: dict) -> str:
-            rst = local(dinfo["rst_signal"])
-            return rst if dinfo["rst_active_high"] else f"not {rst}"
+        def reset_condition(dinfo: DomainInfo) -> str:
+            assert dinfo.rst_signal is not None
+            rst = local(dinfo.rst_signal)
+            return rst if dinfo.rst_active_high else f"not {rst}"
 
-        seq_written = {sig for _, dinfo in domains for sig in dinfo["written_signals"]}
-        clocks = {dinfo["clk_signal"] for _, dinfo in domains}
+        seq_written = {sig for _, dinfo in domains for sig in dinfo.written_signals}
+        clocks = {dinfo.clk_signal for _, dinfo in domains}
         components = []
         for comp in comb_components:
             if not comp.signals:
@@ -779,10 +785,10 @@ class CodeGen:
         snapshot = {sig: f"_p{k}" for k, sig in enumerate(watched)}
         moved = {sig: f"_x{k}" for k, sig in enumerate(watched)}
 
-        def note_changes(dinfo: dict, indent: int) -> list[str]:
+        def note_changes(dinfo: DomainInfo, indent: int) -> list[str]:
             """Compare only what this domain can have written; clocks are flagged at their toggle."""
             pad = "    " * indent
-            return [f"{pad}if {local(sig)} != {snapshot[sig]}: {moved[sig]} = 1" for sig in watched if sig in dinfo["written_signals"]]
+            return [f"{pad}if {local(sig)} != {snapshot[sig]}: {moved[sig]} = 1" for sig in watched if sig in dinfo.written_signals]
 
         lines.append("    _fin = 0")
         lines.append("    for tc in range(tc + 1, tc + n_ticks + 1):")
@@ -791,9 +797,9 @@ class CodeGen:
             lines.append(f"        {snapshot[sig]} = {local(sig)}")
             lines.append(f"        {moved[sig]} = 0")
         lines.append("        try:")
-        for d_i, (_, dinfo) in enumerate(domains):
-            hpt = dinfo["half_period_ticks"]
-            edge = dinfo["edge"]
+        for d_i, (dname, dinfo) in enumerate(domains):
+            hpt = half_period_ticks[dname]
+            edge = dinfo.edge
             fire_target = 1 if edge == EdgePolarity.POSEDGE else 0 if edge == EdgePolarity.NEGEDGE else -1
             lines.append(f"            _d{d_i} = 0")
             indent = 3
@@ -802,7 +808,7 @@ class CodeGen:
                 indent = 4
             pad = "    " * indent
             lines.append(f"{pad}_c{d_i} = 1 - _c{d_i}")
-            clk = dinfo["clk_signal"]
+            clk = dinfo.clk_signal
             if clk in self._sig_index:
                 lines.append(f"{pad}{local(clk)} = _c{d_i}")
                 if clk in moved:
@@ -813,16 +819,16 @@ class CodeGen:
                 lines.append(f"{pad}if _c{d_i} == {fire_target}:")
                 lines.append(f"{pad}    _d{d_i} = 1")
         for d_i, (_, dinfo) in enumerate(domains):
-            if dinfo["rst_signal"] is not None and dinfo["rst_style"] == ResetStyle.ASYNC:
+            if dinfo.rst_signal is not None and dinfo.rst_style == ResetStyle.ASYNC:
                 lines.append(f"            if {reset_condition(dinfo)}:")
                 lines.extend(reset_assignments(dinfo, 4))
                 lines.extend(note_changes(dinfo, 4))
                 lines.append(f"                _d{d_i} = 0")
         for d_i, (_, dinfo) in enumerate(domains):
-            stmts = tuple(stmt for sb in dinfo.get("seq_blocks", []) for stmt in sb.stmts)
+            stmts = tuple(stmt for sb in dinfo.seq_blocks for stmt in sb.stmts)
             lines.append(f"            if _d{d_i}:")
             lines.append("                _f = 1")
-            if dinfo["rst_signal"] is not None and dinfo["rst_style"] == ResetStyle.SYNC:
+            if dinfo.rst_signal is not None and dinfo.rst_style == ResetStyle.SYNC:
                 lines.append(f"                if {reset_condition(dinfo)}:")
                 lines.extend(reset_assignments(dinfo, 5) or ["                    pass"])
                 if stmts:

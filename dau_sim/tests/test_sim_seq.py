@@ -552,6 +552,15 @@ class TestDualClock:
         assert fast_vals[-1] == 10, f"Expected fast_count=10, got {fast_vals[-1]}"
         assert slow_vals[-1] == 5, f"Expected slow_count=5, got {slow_vals[-1]}"
 
+    def test_a_run_leaves_the_domain_info_unchanged(self):
+        """Half-period ticks belong to one run's clocks, so a run computes them
+        beside the compiled domain info instead of writing them into it."""
+        from dau_sim.compiler.compile import _build_domain_info
+
+        cm = compile_module(_make_dual_clock())
+        cm.run(cycles=2, clocks={"fast": timedelta(microseconds=1), "slow": timedelta(microseconds=2)})
+        assert cm._domain_info == _build_domain_info(cm.module)
+
 
 def _make_mixed_edge_single_clock() -> Module:
     """Two counters sharing one clock, one posedge and one negedge."""

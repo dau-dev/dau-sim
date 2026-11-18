@@ -311,8 +311,8 @@ class TestEngineInit:
         engine = SimulationEngine(m)
         assert "sync" in engine._domain_info
         di = engine._domain_info["sync"]
-        assert di["clk_signal"] == "clk"
-        assert di["edge"] == EdgePolarity.POSEDGE
+        assert di.clk_signal == "clk"
+        assert di.edge == EdgePolarity.POSEDGE
 
     def test_has_seq_flag(self):
         assert SimulationEngine(_make_counter_module())._has_seq is True
