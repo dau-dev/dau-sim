@@ -29,7 +29,9 @@ dependencies = [
     "amaranth",
     "ccflow>=0.8.5",
     "omegaconf",
-    "csp",
+    # the compiled simulator runs on csp, which publishes no Linux ARM wheels;
+    # the integrations (verilator, cocotb, profiles) do not import it
+    "csp; sys_platform != 'linux' or platform_machine != 'aarch64'",
     "hydra-core",
     "pydantic",
     "pyslang",
