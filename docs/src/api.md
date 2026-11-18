@@ -41,7 +41,7 @@ sim.write_vcd("out.vcd", result)
 
 Simulation profiles are options in the Hydra `profile` group and instantiate ccflow models in `ModelRegistry`. The packaged profile is selected with `profile=profiles/ready-valid-sum`. Other packages and user config directories can add `profile/profiles/*.yaml` entries of their own; no registration code is needed.
 
-`RunSvTask` (`task=tasks/sim/run-sv`) runs a design and returns a `RunSvResult` with every signal's final value. `PerfSvTask` (`task=tasks/analysis/perf-sv`) returns a `PerfSvResult` whose benchmark, node-separation and comparison metrics are `ResultBase` models. Both are ccflow `CallableModel`s; the `dau-sim` command is a front end over them.
+`RunSvTask` (`task=tasks/sim/run-sv`) runs a design and returns a `RunSvResult` with every signal's final value. `PerfSvTask` (`task=tasks/analysis/perf-sv`) returns a `PerfSvResult` whose benchmark, node-separation and comparison metrics are `ResultBase` models. Both are ccflow `CallableModel`s with every field required, since their defaults are in the task configs; the `dau-sim` command is a front end over them.
 
 ## IR types
 

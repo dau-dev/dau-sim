@@ -125,9 +125,29 @@ endmodule
     assert captured["request_kind"] == "task"
     assert captured["request_name"] == "tasks/analysis/perf-sv"
     assert f"model.path='{src}'" in captured["overrides"]
-    assert "model.amaranth_cycles_per_second=null" in captured["overrides"]
+    assert not any(item.startswith("model.amaranth_cycles_per_second=") for item in captured["overrides"])
     assert "dau-sim cycles/sec" in result.stdout
     assert "Node separation diagnostics" in result.stdout
+
+
+def test_options_left_unset_keep_the_task_config_values(tmp_path: Path, monkeypatch) -> None:
+    """The task yaml holds the defaults. An option the caller did not set
+    adds no override, so the composed config decides its value."""
+    from dau_sim.run import RunSvResult
+
+    src = tmp_path / "adder.sv"
+    src.write_text("module adder(input logic [7:0] a, output logic [7:0] y); assign y = a; endmodule")
+    captured: dict[str, Any] = {}
+
+    def fake_run_request_config(request_kind, request_name, *, overrides=None, **_kwargs):
+        captured["overrides"] = list(overrides or ())
+        return RunSvResult(module_name="adder", cycles=10, latest={"y": 0}, vcd_path=None)
+
+    monkeypatch.setattr("dau_sim.config.run_request_config", fake_run_request_config)
+    result = CliRunner().invoke(app, ["run-sv", str(src)])
+
+    assert result.exit_code == 0, result.stdout
+    assert captured["overrides"] == [f"model.path='{src}'"]
 
 
 def test_a_relative_config_dir_resolves_against_the_callers_directory(tmp_path: Path, monkeypatch) -> None:

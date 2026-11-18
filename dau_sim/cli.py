@@ -33,6 +33,11 @@ def _config_dir(config_dir: Path | None) -> str | None:
     return None if config_dir is None else str(config_dir.resolve())
 
 
+def _given(values: dict[str, object]) -> dict[str, object]:
+    """The options the caller set; the rest keep the task config's values."""
+    return {key: value for key, value in values.items() if value is not None}
+
+
 def _explain(task: str, overrides: list[str], config_dir: Path | None) -> str:
     """The composed task as yaml, the way every other operation shows itself before it runs."""
     from omegaconf import OmegaConf
@@ -46,11 +51,11 @@ def _explain(task: str, overrides: list[str], config_dir: Path | None) -> str:
 def run_sv(
     path: Annotated[Path, typer.Argument(exists=True, dir_okay=False, readable=True, help="SystemVerilog or Verilog source file.")],
     top: str | None = typer.Option(None, "--top", help="Top module name."),
-    cycles: int = typer.Option(10, min=1, help="Number of cycles."),
-    clock_period_us: float = typer.Option(1.0, "--clock-us", min=0.001, help="Clock period in microseconds."),
+    cycles: int | None = typer.Option(None, min=1, help="Number of cycles."),
+    clock_period_us: float | None = typer.Option(None, "--clock-us", min=0.001, help="Clock period in microseconds."),
     inputs: Annotated[list[str], typer.Option("--input", "-i", help="Signal assignments, e.g. -i en=1 -i a=0x10.")] = [],  # noqa: B006  # typer owns this default; body never mutates it
     vcd: Annotated[Path | None, typer.Option("--vcd", help="Optional output VCD path.")] = None,
-    timescale: str = typer.Option("1ns", help="VCD timescale."),
+    timescale: str | None = typer.Option(None, help="VCD timescale."),
     config_dir: Annotated[Path | None, typer.Option("--config-dir", help="Hydra overlay directory to compose with.")] = None,
     explain: bool = typer.Option(False, "--explain", help="Print the composed task and exit without running it."),
 ) -> None:
@@ -58,15 +63,17 @@ def run_sv(
     from dau_sim.config import model_overrides, run_request_config
 
     overrides = model_overrides(
-        {
-            "path": path,
-            "top": top,
-            "cycles": cycles,
-            "clock_period_us": clock_period_us,
-            "inputs": parsed_inputs,
-            "vcd": vcd,
-            "timescale": timescale,
-        }
+        _given(
+            {
+                "path": path,
+                "top": top,
+                "cycles": cycles,
+                "clock_period_us": clock_period_us,
+                "inputs": parsed_inputs or None,
+                "vcd": vcd,
+                "timescale": timescale,
+            }
+        )
     )
     if explain:
         console.print(_explain("tasks/sim/run-sv", overrides, config_dir))
@@ -89,9 +96,9 @@ def run_sv(
 def perf_sv(
     path: Annotated[Path, typer.Argument(exists=True, dir_okay=False, readable=True, help="SystemVerilog or Verilog source file.")],
     top: str | None = typer.Option(None, "--top", help="Top module name."),
-    cycles: int = typer.Option(30000, min=1, help="Cycles per measured run."),
-    repeats: int = typer.Option(3, min=1, help="Measured repetitions."),
-    warmup: int = typer.Option(1, min=0, help="Warmup runs per repetition."),
+    cycles: int | None = typer.Option(None, min=1, help="Cycles per measured run."),
+    repeats: int | None = typer.Option(None, min=1, help="Measured repetitions."),
+    warmup: int | None = typer.Option(None, min=0, help="Warmup runs per repetition."),
     inputs: Annotated[list[str], typer.Option("--input", "-i", help="Signal assignments, e.g. -i en=1.")] = [],  # noqa: B006  # typer owns this default; body never mutates it
     amaranth_cps: float | None = typer.Option(None, "--amaranth-cps", min=0.0, help="Optional Amaranth baseline cycles/sec."),
     verilator_cps: float | None = typer.Option(None, "--verilator-cps", min=0.0, help="Optional Verilator baseline cycles/sec."),
@@ -102,16 +109,18 @@ def perf_sv(
     from dau_sim.config import model_overrides, run_request_config
 
     overrides = model_overrides(
-        {
-            "path": path,
-            "top": top,
-            "cycles": cycles,
-            "repeats": repeats,
-            "warmup": warmup,
-            "inputs": parsed_inputs,
-            "amaranth_cycles_per_second": amaranth_cps,
-            "verilator_cycles_per_second": verilator_cps,
-        }
+        _given(
+            {
+                "path": path,
+                "top": top,
+                "cycles": cycles,
+                "repeats": repeats,
+                "warmup": warmup,
+                "inputs": parsed_inputs or None,
+                "amaranth_cycles_per_second": amaranth_cps,
+                "verilator_cycles_per_second": verilator_cps,
+            }
+        )
     )
     if explain:
         console.print(_explain("tasks/analysis/perf-sv", overrides, config_dir))

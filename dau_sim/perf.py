@@ -1,7 +1,9 @@
+from collections.abc import Mapping
 from datetime import timedelta
 from pathlib import Path
 from statistics import median
 from time import perf_counter
+from typing import Annotated
 
 from ccflow import CallableModel, Flow, NullContext, ResultBase
 from pydantic import ConfigDict, Field
@@ -9,6 +11,7 @@ from pydantic import ConfigDict, Field
 from dau_sim.compiler import compile_module
 from dau_sim.compiler.depanalysis import build_assignments
 from dau_sim.ir.module import Module
+from dau_sim.run import ReadOnly
 
 
 class BenchmarkResult(ResultBase):
@@ -47,17 +50,20 @@ class PerfSvResult(ResultBase):
 
 
 class PerfSvTask(CallableModel):
+    """Benchmark one SystemVerilog design. Every field is required: the
+    defaults are in the task config, ``task=tasks/analysis/perf-sv``."""
+
     model_config = ConfigDict(frozen=True)
 
     path: Path
-    top: str | None = None
-    cycles: int = Field(default=30000, ge=1)
-    repeats: int = Field(default=3, ge=1)
-    warmup: int = Field(default=1, ge=0)
-    inputs: dict[str, int] | None = None
-    clock_period_us: float = Field(default=1.0, gt=0)
-    amaranth_cycles_per_second: float | None = None
-    verilator_cycles_per_second: float | None = None
+    top: str | None
+    cycles: int = Field(ge=1)
+    repeats: int = Field(ge=1)
+    warmup: int = Field(ge=0)
+    inputs: Annotated[Mapping[str, int], *ReadOnly] | None
+    clock_period_us: float = Field(gt=0)
+    amaranth_cycles_per_second: float | None
+    verilator_cycles_per_second: float | None
 
     def check(self) -> None:
         """The construction invariants, re-checked at use (model_copy skips them)."""
@@ -74,7 +80,7 @@ class PerfSvTask(CallableModel):
             cycles=self.cycles,
             repeats=self.repeats,
             warmup=self.warmup,
-            inputs=self.inputs,
+            inputs=None if self.inputs is None else dict(self.inputs),
             clock_period=timedelta(microseconds=self.clock_period_us),
         )
         return PerfSvResult(
