@@ -1,3 +1,5 @@
+import pytest
+
 from dau_sim.api import Simulator
 from dau_sim.ir.expr import Binary, BinaryOp, SignalRef
 from dau_sim.ir.module import CombBlock, Module, Port, Signal
@@ -51,3 +53,21 @@ def test_simulation_result_to_rows() -> None:
     assert {"signal", "timestamp", "value"}.issubset(rows[0].keys())
     assert rows[-1]["signal"] == "y"
     assert rows[-1]["value"] == 14
+
+
+def test_the_package_top_level_loads_the_simulator_on_first_use() -> None:
+    """Importing dau_sim (as hydra does to reach dau_sim.config) does not
+    import csp; the simulator's names resolve when asked for."""
+    import subprocess
+    import sys
+
+    probe = "import sys, dau_sim; assert 'csp' not in sys.modules, 'csp loaded at import'"
+    subprocess.run([sys.executable, "-c", probe], check=True)
+
+    import dau_sim
+    from dau_sim import api
+
+    assert dau_sim.Simulator is api.Simulator
+    assert dau_sim.SimulationResult is api.SimulationResult
+    with pytest.raises(AttributeError, match="no attribute 'nothing_here'"):
+        dau_sim.nothing_here  # noqa: B018
