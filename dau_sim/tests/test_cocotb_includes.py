@@ -4,7 +4,7 @@ Verilator does not search the including file's own directory, so
 ```include "types.svh"`` fails with "Cannot find include file" unless the
 directory is passed as ``-I``. dau-core adding one shared header broke five
 benches in dau this way, none of which had any reason to know a header
-existed -- they just listed the tile sources they always listed.
+existed -- they just listed the core sources they always listed.
 
 The contract is that every directory contributing a source is an include
 path. That is what a caller listing those sources already means, and it

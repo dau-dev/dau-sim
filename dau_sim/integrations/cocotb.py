@@ -55,8 +55,8 @@ def run_cocotb_testbench(
     # that includes a header sitting beside it fails to compile unless the
     # directory is passed explicitly. Every directory that contributes a source
     # is an include path: that is what a caller listing those sources means,
-    # and it lets a header be added to a tile without every bench that compiles
-    # the tile learning that headers exist.
+    # and it lets a header be added to a core without every bench that compiles
+    # the core learning that headers exist.
     include_dirs = sorted({source_path.parent for source_path in source_paths})
 
     runner = get_runner("verilator")
