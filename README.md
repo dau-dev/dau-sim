@@ -63,7 +63,7 @@ cm.write_vcd("counter.vcd", traces)
 ## In the DAU stack
 
 `dau-sim` is a general simulator. It knows nothing about DAU contracts or
-tiles. The rest of the stack uses it through composition: the simulate task
+cores. The rest of the stack uses it through composition: the simulate task
 in `dau-build` drives it from the same declarative build spec as synthesis,
 so one description both simulates and builds:
 
@@ -73,7 +73,7 @@ dau-build task=tasks/sim/simulate model.module=dau_identity_top model.spec_path=
 ```
 
 Design-specific verification, such as the golden-equal cocotb benches for
-the DAU operator tiles, lives with the tiles in `dau-core`.
+the DAU operator cores, lives with the cores in `dau-core`.
 
 ## Documentation
 
