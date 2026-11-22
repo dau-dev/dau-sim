@@ -219,7 +219,7 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 <section id="in-the-dau-stack">
 <h2>In the DAU stack<a class="headerlink" href="#in-the-dau-stack" title="Link to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">dau-sim</span></code> is a general simulator. It knows nothing about DAU contracts or
-tiles. The rest of the stack uses it through composition: the simulate task
+cores. The rest of the stack uses it through composition: the simulate task
 in <code class="docutils literal notranslate"><span class="pre">dau-build</span></code> drives it from the same declarative build spec as synthesis,
 so one description both simulates and builds:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># in a dau-build checkout, which carries the identity example</span>
@@ -227,7 +227,7 @@ dau-build<span class="w"> </span><span class="nv">task</span><span class="o">=</
 </pre></div>
 </div>
 <p>Design-specific verification, such as the golden-equal cocotb benches for
-the DAU operator tiles, lives with the tiles in <code class="docutils literal notranslate"><span class="pre">dau-core</span></code>.</p>
+the DAU operator cores, lives with the cores in <code class="docutils literal notranslate"><span class="pre">dau-core</span></code>.</p>
 </section>
 <section id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h2>
