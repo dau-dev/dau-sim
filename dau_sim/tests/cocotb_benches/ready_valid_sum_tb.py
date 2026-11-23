@@ -48,6 +48,30 @@ async def sums_samples_and_holds_result_under_backpressure(dut):
     assert int(dut.input_ready.value) == 1
 
 
+@cocotb.test()
+async def reset_clears_a_held_result(dut):
+    cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start(start_high=False))
+
+    dut.rst.value = 1
+    dut.input_valid.value = 0
+    dut.input_last.value = 0
+    dut.input_value.value = 0
+    dut.result_ready.value = 0
+    await RisingEdge(dut.clk)
+    dut.rst.value = 0
+    await RisingEdge(dut.clk)
+
+    await _send_sample(dut, 5, last=True)
+    await RisingEdge(dut.clk)
+    assert int(dut.result_valid.value) == 1
+
+    dut.rst.value = 1
+    await RisingEdge(dut.clk)
+    dut.rst.value = 0
+    await RisingEdge(dut.clk)
+    assert int(dut.result_valid.value) == 0
+
+
 async def _send_sample(dut, value: int, *, last: bool) -> None:
     while int(dut.input_ready.value) == 0:
         await RisingEdge(dut.clk)

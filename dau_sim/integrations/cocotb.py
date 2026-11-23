@@ -30,10 +30,17 @@ def run_cocotb_testbench(
     build_args: Sequence[str] = DEFAULT_BUILD_ARGS,
     parameters: Mapping[str, object] | None = None,
     always: bool = True,
+    waves: bool = False,
+    testcase: str | None = None,
 ) -> Path:
     """Build the sources with Verilator and run the cocotb test module
-    against ``hdl_toplevel``. Returns the results XML path; raises on any
-    failing test (the cocotb runner's behavior)."""
+    against ``hdl_toplevel``. Returns the results XML path, which records
+    each test's outcome. The cocotb runner raises on a failing test only
+    when it runs under pytest, so a caller elsewhere reads the results.
+
+    ``waves`` records a waveform into ``build_dir`` as ``dump.vcd``, which the
+    simulation run writes (Verilator under cocotb 2 traces to VCD).
+    ``testcase`` runs only the test function of that name."""
     try:
         from cocotb_tools.runner import get_runner
     except ImportError as exc:  # pragma: no cover - environment-dependent
@@ -68,6 +75,7 @@ def run_cocotb_testbench(
         always=always,
         build_args=tuple(build_args),
         includes=include_dirs,
+        waves=waves,
         **build_kwargs,
     )
     runner.test(
@@ -75,5 +83,7 @@ def run_cocotb_testbench(
         test_module=test_module,
         build_dir=build_root,
         results_xml=str(results_path),
+        waves=waves,
+        testcase=testcase,
     )
     return results_path
